@@ -1,1 +1,1 @@
-Blobk based, open world exploration game.
+Block based, open world exploration game.
