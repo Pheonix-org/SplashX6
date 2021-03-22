@@ -112,10 +112,10 @@ public class window {
                 glfwSetWindowShouldClose(window, true);                                                           // We will detect this in the rendering loop
             }
             else if (key == GLFW_KEY_MINUS && action == GLFW_PRESS) {
-                utility.Debug.debugValue++;
+                utility.Debug.debugValue--;
             }
             else if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS) {
-
+                utility.Debug.debugValue++;
             }
 
         });
