@@ -1,5 +1,7 @@
 package rendering;
 
+import org.mapeditor.core.Map;
+import org.mapeditor.io.TMXMapReader;
 import utility.Debug;
 
 import java.util.Random;
@@ -17,6 +19,15 @@ import java.util.Random;
  */
 public class WorldRenderer extends Renderer {
 
+    Map WorldMap;
+
+    public WorldRenderer(Map map) {
+        super();
+        setWorldMap(map);
+        // TODO load tiles from map to vram, but avoid duplicates
+
+    }
+
     //#region constants
     //#endregion constants
 
@@ -27,8 +38,25 @@ public class WorldRenderer extends Renderer {
     //#endregion constructors
 
     //#region operations
+
+    public void setWorldMap(Map map){
+        if (map == null) return;
+        WorldMap = map;
+        loadTilesets(WorldMap.getTileSets());
+    }
+
+    @Override
+    public void preRender() {
+        try {
+//            setWorldMap(new TMXMapReader().readMap(ClassLoader.getSystemResourceAsStream("testmap.tmx")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void renderFrame() {
+
         int cols = 4;
         int rows = 20;
         for (int y = rows; y >= 0; y--) {

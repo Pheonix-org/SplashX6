@@ -40,7 +40,7 @@ public class main extends OPEXGame {
      */
     @Override
     public void run() {
-        new window(new WorldRenderer());
+        new window(new WorldRenderer(null));
     }
 
     @Override

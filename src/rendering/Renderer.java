@@ -4,17 +4,19 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
+import org.mapeditor.core.Tile;
+import org.mapeditor.core.TileSet;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -77,17 +79,16 @@ public abstract class Renderer {
      */
     public static void postInit() {
         if (renderInitalised) return;
-        try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource("tilesets").toURI()))) {
-            paths
-                    .filter(Files::isRegularFile).forEach(v -> {RenderHelper.importTexture(v.toString()); System.out.println("Loaded " + v.toString());});
-        } catch (URISyntaxException | IOException e) {
-            // Resource folder not available.
-            e.printStackTrace();
-        }
+//        try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource("tilesets").toURI()))) {
+//            paths
+//                    .filter(Files::isRegularFile).forEach(v -> {RenderHelper.importTexture(v.toString()); System.out.println("Loaded " + v.toString());});
+//        } catch (URISyntaxException | IOException e) {
+//            // Resource folder not available.
+//            e.printStackTrace();
+//        }
 
         renderInitalised = true;
     }
-
 
     /**
      * <h2>Renders a quad to context with the current texture.</h2>
@@ -172,6 +173,8 @@ public abstract class Renderer {
             return -1;
         }
 
+
+
         // We no have an buffer of colours, representing the image. Now we just need to save it to video ram via opengl
 
         int texId = GL11.glGenTextures();                                                                               // Create a new texture object in memory, and get the id of it.
@@ -189,5 +192,60 @@ public abstract class Renderer {
         return texId;
     }
 
+    public int importTexture(Tile tile){
+        ByteBuffer buf = null;
+        int width;
+        int height;
+
+        try {
+            //BufferedImage ➙ ByteArrayOutputStream ➙ byte[] ➙ ByteArrayInputStream
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(tile.getImage(), "png", os);
+            InputStream is = new ByteArrayInputStream(os.toByteArray());
+            PNGDecoder decoder = new PNGDecoder(is);                       // Link the PNG decoder to this stream
+
+            width = tile.getWidth();                                                                                    // Fetch the size. only done once for speed.
+            height = tile.getHeight();
+
+            buf = ByteBuffer.allocateDirect(4 * width * height);                                                        // Decode the PNG file in a ByteBuffer
+            decoder.decode(buf, width * 4, PNGDecoder.Format.RGBA);
+
+            buf.flip();                                                                                                 // Clean up
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+            return -1;
+        }
+
+        // We no have an buffer of colours, representing the image. Now we just need to save it to video ram via opengl
+
+        int texId = GL11.glGenTextures();                                                                               // Create a new texture object in memory, and get the id of it.
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);                                                                  // specify that this texture is 2D
+
+        GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);                                                         // specify length of color data in buffer, so it's read properly
+
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0,                            // Place image buffer into memory
+                GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buf);
+
+        GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);                                                                      // Create 2d mipmap from active texture
+
+        textures.put(texId, tile.getTileSet().getName() + tile.getId());                                                // Store the id and path, so we know the ID of all images
+        System.out.println("Loaded " + textures.get(texId));
+        return texId;
+    }
+
+    public void loadTilesets(List<TileSet> s){
+        for (TileSet set : s){
+            for (int i = 0; i >= 0 ; i++){
+                Tile t = set.getTile(i);
+                if (t == null) break;
+                importTexture(t);
+            }
+        }
+    }
+
     public abstract void renderFrame();
+
+    public void preRender() {};
 }

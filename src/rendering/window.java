@@ -170,8 +170,9 @@ public class window {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         Renderer.postInit();
 
-        glClearColor(0f, 0f, 0f, 0f);                                                    // Color which the window is cleared with
+        glClearColor(0f, 0f, 0f, 0f);                                                            // Color which the window is cleared with
 
+        renderer.preRender();
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
@@ -180,8 +181,8 @@ public class window {
             renderer.renderFrame();
 
             glfwSwapBuffers(window);                                                                                    // swap the buffer
-
             glfwPollEvents();
+
         }
     }
 
