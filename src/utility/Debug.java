@@ -1,3 +1,7 @@
+package utility;
+
+import java.util.Random;
+
 /**
  * <h1>Collection of debug / development tools</h1>
  * <br>
@@ -14,7 +18,9 @@ public class Debug {
     /**
      * A keyboard controllable value that can be used for anything.
      */
-    public static int debugValue = 0;
+    public static int debugValue = 1;
+
+    public static final Random random = new Random();
     //#endregion constants
 
     //#region fields

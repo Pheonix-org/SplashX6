@@ -2,6 +2,7 @@ import com.shinkson47.opex.backend.runtime.errormanagement.exceptions.OPEXStartF
 import com.shinkson47.opex.backend.runtime.threading.OPEXGame;
 import com.shinkson47.opex.backend.toolbox.Version;
 import com.shinkson47.opex.frontend.window.prefabs.Splash;
+import rendering.WorldRenderer;
 import rendering.window;
 
 
@@ -32,17 +33,14 @@ public class main extends OPEXGame {
         // I'll need to create an option to prevent starting awt.
 
         //new OPEX(new main());
-
-        new window(); // Create and show a new window.
     }
 
     /**
      * OPEX has run the game. Game code starts here.
      */
-    //TODO not called atm
     @Override
     public void run() {
-        new window();
+        new window(new WorldRenderer());
     }
 
     @Override
