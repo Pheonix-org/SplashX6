@@ -24,7 +24,7 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  * @version 1
  * @since v1
  */
-public class window {
+public class Window {
     //#region constants
     /**
      * The default size of the window, used when no size is provided.
@@ -55,7 +55,7 @@ public class window {
     /**
      * Creates a new window with default size and title
      */
-    public window(Renderer renderer){
+    public Window(Renderer renderer){
         this(DEFAULT_TITLE, renderer);
     }
 
@@ -63,7 +63,7 @@ public class window {
      * Creates a new window with detault size
      * @param title title of the window
      */
-    public window(String title, Renderer renderer){
+    public Window(String title, Renderer renderer){
         this(DEFAULT_X, DEFAULT_Y, title, renderer);
     }
 
@@ -72,7 +72,7 @@ public class window {
      * @param height height of the window
      * @param width width of the window
      */
-    public window(int height, int width, Renderer renderer){
+    public Window(int height, int width, Renderer renderer){
         this(height, width, DEFAULT_TITLE, renderer);
     }
 
@@ -82,7 +82,7 @@ public class window {
      * @param _width width of the window
      * @param title title of the window
      */
-    public window(int _height, int _width, String title, Renderer _renderer){
+    public Window(int _height, int _width, String title, Renderer _renderer){
         renderer = _renderer;
         init(_height, _width, title);
     }
@@ -96,7 +96,7 @@ public class window {
      * @param width Width of the window
      * @param title title of the window
      */
-    public void init(int height, int width, String title) {
+    private void init(int height, int width, String title) {
         Renderer.preInit();                                                                                             // Notify of window init. used for first time rendering set-up.
         GLFWErrorCallback.createPrint(System.err).set();                                                                // Error call back stream. Prints errors to system.err
 

@@ -3,7 +3,7 @@ import com.shinkson47.opex.backend.runtime.threading.OPEXGame;
 import com.shinkson47.opex.backend.toolbox.Version;
 import com.shinkson47.opex.frontend.window.prefabs.Splash;
 import rendering.WorldRenderer;
-import rendering.window;
+import rendering.Window;
 
 
 /**
@@ -40,7 +40,7 @@ public class main extends OPEXGame {
      */
     @Override
     public void run() {
-        new window(new WorldRenderer(null));
+        new Window(new WorldRenderer(null));
     }
 
     @Override

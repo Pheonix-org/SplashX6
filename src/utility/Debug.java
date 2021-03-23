@@ -1,14 +1,10 @@
 package utility;
 
 import org.mapeditor.core.Map;
-import org.mapeditor.core.TileLayer;
-import org.mapeditor.io.TMXMapReader;
 import rendering.WorldRenderer;
-import rendering.window;
+import rendering.Window;
 
 import java.util.Random;
-
-import static org.lwjgl.glfw.GLFW.glfwTerminate;
 
 /**
  * <h1>Collection of debug / development tools</h1>
@@ -45,7 +41,7 @@ public class Debug {
         Map map;
         try {
             WorldRenderer r = new WorldRenderer(null);
-            window w = new window(r);
+            Window w = new Window(r);
         } catch (Exception e) {
             e.printStackTrace();
         }
