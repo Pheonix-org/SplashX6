@@ -36,6 +36,7 @@ public class Debug {
     public static void main(String[] args) {
         tilesheetTest();
     }
+
     public static void tilesheetTest() {
         try {
             WorldRenderer r = new WorldRenderer();

@@ -19,5 +19,6 @@ public enum TileType {
     Desert,
     Mountain,
     Forest,
-    Jungle
+    Jungle,
+    base
 }
