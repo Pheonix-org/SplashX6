@@ -48,7 +48,7 @@ public class WorldRenderer extends Renderer {
     @Override
     public void preRender() {
         try {
-//            setWorldMap(new TMXMapReader().readMap(ClassLoader.getSystemResourceAsStream("testmap.tmx")));
+            setWorldMap(new TMXMapReader().readMap(ClassLoader.getSystemResourceAsStream("testmap.tmx")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -57,21 +57,21 @@ public class WorldRenderer extends Renderer {
     @Override
     public void renderFrame() {
 
-        int cols = 4;
-        int rows = 20;
-        for (int y = rows; y >= 0; y--) {
-            for (int x = cols; x >= 0; x--) {
-                //renderQuad(Debug.debugValue, TILE_WIDTH * (x % cols) + + (((x / cols) % 2 != 0) ? 0 : (TILE_WIDTH / 2)), (TILE_HEIGHT / 2) * y);
-                renderQuad(Debug.random.nextInt(textures.size()) + 1, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_WIDTH / 2 : 0), y * (TILE_HEIGHT / 2));
-            }
-        }
-        try {
-            synchronized(this) {
-                wait(1000);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        int cols = 4;
+//        int rows = 20;
+//        for (int y = rows; y >= 0; y--) {
+//            for (int x = cols; x >= 0; x--) {
+//                //renderQuad(Debug.debugValue, TILE_WIDTH * (x % cols) + + (((x / cols) % 2 != 0) ? 0 : (TILE_WIDTH / 2)), (TILE_HEIGHT / 2) * y);
+//                renderQuad(Debug.random.nextInt(textures.size()) + 1, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_WIDTH / 2 : 0), y * (TILE_HEIGHT / 2));
+//            }
+//        }
+//        try {
+//            synchronized(this) {
+//                wait(1000);
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
     //#endregion operations
 
