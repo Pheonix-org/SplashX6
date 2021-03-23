@@ -1,5 +1,9 @@
 package utility;
 
+import org.mapeditor.core.Map;
+import rendering.WorldRenderer;
+import rendering.Window;
+
 import java.util.Random;
 
 /**
@@ -30,6 +34,19 @@ public class Debug {
     //#endregion constructors
 
     //#region operations
+    public static void main(String[] args) {
+        tilesheetTest();
+    }
+    public static void tilesheetTest() {
+        Map map;
+        try {
+            WorldRenderer r = new WorldRenderer(null);
+            Window w = new Window(r);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     //#endregion operations
 
     //#region static
