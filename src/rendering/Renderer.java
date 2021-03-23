@@ -5,15 +5,18 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.Raster;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.stream.Stream;
 
@@ -43,7 +46,7 @@ public abstract class Renderer {
         public void renderFrame() { }
      };
 
-    public static final int TILE_WIDTH = 128, TILE_HEIGHT = TILE_WIDTH / 2;
+    public static final int TILE_WIDTH = 64, TILE_HEIGHT = TILE_WIDTH / 2;
 
     /**
      * <h2>Global store of ID's all textures loaded</h2>
@@ -77,13 +80,13 @@ public abstract class Renderer {
      */
     public static void postInit() {
         if (renderInitalised) return;
-        try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource("tilesets").toURI()))) {
-            paths
-                    .filter(Files::isRegularFile).forEach(v -> {RenderHelper.importTexture(v.toString()); System.out.println("Loaded " + v.toString());});
-        } catch (URISyntaxException | IOException e) {
-            // Resource folder not available.
-            e.printStackTrace();
-        }
+//        try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource("tilesets").toURI()))) {
+//            paths
+//                    .filter(Files::isRegularFile).forEach(v -> {RenderHelper.importTexture(v.toString()); System.out.println("Loaded " + v.toString());});
+//        } catch (URISyntaxException | IOException e) {
+//            // Resource folder not available.
+//            e.printStackTrace();
+//        }
 
         renderInitalised = true;
     }
@@ -154,7 +157,7 @@ public abstract class Renderer {
 
         try {
             File file;
-            InputStream in = new FileInputStream(path);                                // Open the PNG file as an InputStream
+            InputStream in = new FileInputStream(path);                                                                 // Open the PNG file as an InputStream
             PNGDecoder decoder = new PNGDecoder(in);                                                                    // Link the PNG decoder to this stream
 
             width = decoder.getWidth();                                                                                 // Fetch the size. only done once for speed.
@@ -173,21 +176,59 @@ public abstract class Renderer {
         }
 
         // We no have an buffer of colours, representing the image. Now we just need to save it to video ram via opengl
+        int texId = loadBufferedimageToOpenGL(buf, width, height);
+        textures.put(texId, path);                                                                                      // Store the id and path, so we know the ID of all images
+        return texId;
+    }
 
+    public static int loadBufferedimageToOpenGL(BufferedImage image, int width, int height) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ImageIO.write(image, "png", out);
+        return loadBufferedimageToOpenGL(ByteBuffer.wrap(out.toByteArray()), width, height);
+    }
+
+
+    public static int loadBufferedimageToOpenGL(ByteBuffer buf, int width, int height){
         int texId = GL11.glGenTextures();                                                                               // Create a new texture object in memory, and get the id of it.
         GL13.glActiveTexture(GL13.GL_TEXTURE0);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texId);                                                                  // specify that this texture is 2D
 
         GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);                                                         // specify length of color data in buffer, so it's read properly
 
-        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0,                            // Place image buffer into memory
+        GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0,                           // Place image buffer into memory
                 GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buf);
 
         GL30.glGenerateMipmap(GL11.GL_TEXTURE_2D);                                                                      // Create 2d mipmap from active texture
-
-        textures.put(texId, path);                                                                                      // Store the id and path, so we know the ID of all images
         return texId;
     }
+
+    public static ByteBuffer[] splitTilesheet(File imageFile, int tileWidth, int tileHeight) throws IOException {
+        ArrayList<ByteBuffer> tile = new ArrayList<>();
+
+        BufferedImage tilesheetImage = ImageIO.read(imageFile);
+
+        System.out.println("Segments are " + tileWidth + " x " + tileHeight);
+        int idx = 0;
+        for (int y = 0; y < tilesheetImage.getHeight(); y += tileHeight) {
+            for (int x = 0; x < tilesheetImage.getWidth(); x += tileWidth) {
+                ByteArrayOutputStream os = new ByteArrayOutputStream();
+                ImageIO.write(tilesheetImage.getSubimage(x, y, tileWidth, tileHeight), "png", os);
+                InputStream is = new ByteArrayInputStream(os.toByteArray());
+                PNGDecoder decoder = new PNGDecoder(is);
+                ByteBuffer buff = ByteBuffer.allocateDirect(4 * tileHeight * tileWidth);
+                decoder.decode(buff, tileWidth * 4, PNGDecoder.Format.RGBA);
+                buff.flip();
+                tile.add(buff);
+                os.close();
+                is.close();
+                idx++;
+            }
+        }
+
+        return tile.toArray(new ByteBuffer[0]);
+    }
+
+    public void preRender() {};
 
     public abstract void renderFrame();
 }

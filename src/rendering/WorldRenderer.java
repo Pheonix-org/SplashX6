@@ -1,7 +1,12 @@
 package rendering;
 
+import tiles.TileSet;
 import utility.Debug;
+import utility.main;
+import xmlwise.XmlParseException;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -29,19 +34,22 @@ public class WorldRenderer extends Renderer {
     //#region operations
     @Override
     public void renderFrame() {
-        int cols = 4;
-        int rows = 20;
+        int tex = TileSet.FindTileTexture("a.a_a_a_a");
+        int cols = (main.window.getWidth() / TILE_WIDTH);
+        int rows = ((main.window.getHeight() / TILE_HEIGHT) * 2) ;
         for (int y = rows; y >= 0; y--) {
             for (int x = cols; x >= 0; x--) {
                 //renderQuad(Debug.debugValue, TILE_WIDTH * (x % cols) + + (((x / cols) % 2 != 0) ? 0 : (TILE_WIDTH / 2)), (TILE_HEIGHT / 2) * y);
-                renderQuad(Debug.random.nextInt(textures.size()) + 1, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_WIDTH / 2 : 0), y * (TILE_HEIGHT / 2));
+                renderQuad(tex, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_WIDTH / 2 : 0), y * (TILE_HEIGHT / 2));
             }
         }
+    }
+
+    @Override
+    public void preRender() {
         try {
-            synchronized(this) {
-                wait(1000);
-            }
-        } catch (InterruptedException e) {
+            TileSet.loadTileset(new File("./tilesets/a.TileSet"));
+        } catch (IOException | XmlParseException e) {
             e.printStackTrace();
         }
     }
