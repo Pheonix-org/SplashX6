@@ -1,3 +1,5 @@
+package utility;
+
 import com.shinkson47.opex.backend.runtime.errormanagement.exceptions.OPEXStartFailure;
 import com.shinkson47.opex.backend.runtime.threading.OPEXGame;
 import com.shinkson47.opex.backend.toolbox.Version;
@@ -19,6 +21,7 @@ import rendering.Window;
  */
 public class main extends OPEXGame {
     //#region operations
+    public static Window window;
 
     /**
      * Main entry point. Starts OPEX with this game
@@ -32,7 +35,7 @@ public class main extends OPEXGame {
         // Skip starting opex for now, it initalises AWT, which uses GLFW. GLFW can't initalise for lwjgl if it's been initialized for awt swing.
         // I'll need to create an option to prevent starting awt.
 
-        //new OPEX(new main());
+        //new OPEX(new utility.main());
     }
 
     /**
