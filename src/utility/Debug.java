@@ -1,6 +1,5 @@
 package utility;
 
-import org.mapeditor.core.Map;
 import rendering.WorldRenderer;
 import rendering.Window;
 
@@ -38,9 +37,8 @@ public class Debug {
         tilesheetTest();
     }
     public static void tilesheetTest() {
-        Map map;
         try {
-            WorldRenderer r = new WorldRenderer(null);
+            WorldRenderer r = new WorldRenderer();
             Window w = new Window(r);
         } catch (Exception e) {
             e.printStackTrace();
