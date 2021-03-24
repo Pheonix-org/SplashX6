@@ -7,12 +7,13 @@ import xmlwise.XmlParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Random;
-import java.util.stream.Stream;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 
 /**
  * <h1>Renders a game world</h1>
@@ -37,7 +38,7 @@ public class WorldRenderer extends Renderer {
     //#endregion constructors
 
     //#region operations
-    final String sheetchars = "adgst";
+    final String sheetchars = "padgst";
     private char randomchar(){
         return sheetchars.charAt(Debug.random.nextInt(sheetchars.length()));
     }
@@ -53,7 +54,7 @@ public class WorldRenderer extends Renderer {
 
     @Override
     public void renderFrame() {
-        int tex = genRandomTile();
+        int tex = TileSet.FindTileTexture("t.t_a_a_t");
         int cols = (main.window.getWidth() / TILE_WIDTH);
         int rows = ((main.window.getHeight() / TILE_HEIGHT) * 2) ;
         for (int y = rows; y >= 0; y--) {
@@ -62,6 +63,7 @@ public class WorldRenderer extends Renderer {
                 renderQuad(tex, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_WIDTH / 2 : 0), y * (TILE_HEIGHT / 2));
             }
         }
+
         synchronized (this){
             try {
                 wait(1000);
@@ -71,25 +73,37 @@ public class WorldRenderer extends Renderer {
         }
     }
 
+    // TODO create some kind of startup helper, we shouldn't load stuff on a pre-render
     @Override
     public void preRender() {
-         try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource("tilesets/").toURI()))) {
-            paths
-                    .filter(Files::isRegularFile)
-                        .forEach(v -> {
-                            if (!v.toString().endsWith("tileset"))
-                                return;
-                            try {
-                                TileSet.loadTileset(new File(String.valueOf(v)));
-                            } catch (IOException | XmlParseException e) {
-                                // This *.tileset file could not be read
-                                e.printStackTrace();
-                            }
-                            System.out.println("Loaded " + v.toString());
-                        });
-            } catch (URISyntaxException | IOException e) {
+        renderQuad(importTexture("splash.png"), 0,0,0, main.window.getWidth(), main.window.getHeight());
+        glfwSwapBuffers(main.window.getID());
+
+
+         try {
+             // This is all lambda, good luck reading it - it's all one line of code lol
+             Files.walk(                                                                                                // Walk through filesystem
+                     Paths.get(ClassLoader.getSystemResource("tilesets/")                                         // under the tileset directory
+                             .toURI())
+             )
+                     .filter(Files::isRegularFile)                                                                      // Looking for files (not directories)
+                     .filter(path -> path.toString().endsWith(".tileset"))                                              // That end with .tileset
+
+                     .forEach(v -> {                                                                                    // For every resulting *.tileset file,
+                try {
+                    TileSet.loadTileset(new File(String.valueOf(v)));                                                   // load the tileset
+                } catch (IOException | XmlParseException e) {
+                    // This *.tileset file could not be read
+                    System.err.println("Failed to load tileset file '" + v.getFileName() + "'!");
+                }
+                System.out.println("Loaded tileset " + v.toString());
+
+             });
+             } catch (URISyntaxException | IOException e) {
                 // Resource folder not available.
                 e.printStackTrace();
+                System.err.println("Failed to find or access tileset directory!");
+                System.exit(-1);
          }
     }
     //#endregion operations
