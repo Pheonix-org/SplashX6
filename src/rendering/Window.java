@@ -2,9 +2,12 @@ package rendering;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.glfw.GLFWWindowFocusCallback;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.MemoryStack;
+import utility.main;
 
+import java.awt.*;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
@@ -14,7 +17,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 /**
- * <h1>The main game window</h1>
+ * <h1>The utility.main game window</h1>
  * <br>
  * <p>
  * A headless window which displays a provided renderer.
@@ -26,11 +29,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  */
 public class Window {
     //#region constants
-    /**
-     * The default size of the window, used when no size is provided.
-     */
-    public static final int DEFAULT_X = 800, DEFAULT_Y = DEFAULT_X;
-
     /**
      * The default title on the window, when none is provided
      */
@@ -48,6 +46,17 @@ public class Window {
      */
     private Renderer renderer;
 
+    /**
+     * <h2>Represents the rendering height of the window upon creation</h2>
+     * is set to the size of the screen
+     */
+    private int height = 1920;
+
+    /**
+     * <h2>Represents the rendering width of the window upon creation</h2>
+     * is set to the size of the screen
+     */
+    private int width = 1080;
     //#endregion fields
 
     //#region constructors
@@ -60,31 +69,14 @@ public class Window {
     }
 
     /**
-     * Creates a new window with detault size
-     * @param title title of the window
-     */
-    public Window(String title, Renderer renderer){
-        this(DEFAULT_X, DEFAULT_Y, title, renderer);
-    }
-
-    /**
-     * Creates a new window with default title
-     * @param height height of the window
-     * @param width width of the window
-     */
-    public Window(int height, int width, Renderer renderer){
-        this(height, width, DEFAULT_TITLE, renderer);
-    }
-
-    /**
      * Creates a new window with no defaults
      * @param _height height of the window
      * @param _width width of the window
      * @param title title of the window
      */
-    public Window(int _height, int _width, String title, Renderer _renderer){
+    public Window(String title, Renderer _renderer){
         renderer = _renderer;
-        init(_height, _width, title);
+        init(title);
     }
     //#endregion constructors
 
@@ -96,16 +88,27 @@ public class Window {
      * @param width Width of the window
      * @param title title of the window
      */
-    private void init(int height, int width, String title) {
+    private void init(String title) {
         Renderer.preInit();                                                                                             // Notify of window init. used for first time rendering set-up.
         GLFWErrorCallback.createPrint(System.err).set();                                                                // Error call back stream. Prints errors to system.err
 
-        window = glfwCreateWindow(height, width, title, NULL, NULL);                                                    // Create the window in GLFW memory, and get the ID.
+        window = glfwCreateWindow(height, width, title, NULL, NULL);                                 // Create the window in GLFW memory, and get the ID.
+
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
+        main.window = this;
+        setCorrectRenderSize();
+
+
+        // Set a blank focus call back.
+        //
+        // I don't know why i have do do this.
+        // I think if glfw has no focus call back, it just doesn't get focus
+        // Either way, this is the only way for the window to actually get focus on mac, and register key
+        // presses.
+        glfwSetWindowFocusCallback(window, (o,x) -> {});
 
         // TODO figure out a nice way to specify key callbacks, outside of the window creation.
-
         // Setup a key callback. It will be called every time a key is pressed, repeated or released.
         glfwSetKeyCallback(window, (w, key, scancode, action, mods) -> {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
@@ -157,6 +160,16 @@ public class Window {
     }
 
     /**
+     * <h2>alters the render size to the size of the monitor</h2>
+     */
+    private void setCorrectRenderSize() {
+        final GLFWVidMode vmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        height = vmode.height();
+        width = vmode.width();
+        glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, width, height, vmode.refreshRate());
+    }
+
+    /**
      * <h2>Main execution loop</h2>
      * Thread stays here after creating a window, and does not continue untill window is closed via
      * glfwWindowShouldClose. Handles rendering, game updates, and input reading.
@@ -166,12 +179,12 @@ public class Window {
 
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, DEFAULT_X, 0, DEFAULT_Y, 1, -1);
+        GL11.glOrtho(0, width, 0, height, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         Renderer.postInit();
 
         glClearColor(0f, 0f, 0f, 0f);                                                    // Color which the window is cleared with
-
+        renderer.preRender();
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
@@ -183,6 +196,18 @@ public class Window {
 
             glfwPollEvents();
         }
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public long getID() {
+        return window;
     }
 
     //#endregion operations

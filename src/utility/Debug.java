@@ -22,6 +22,7 @@ public class Debug {
      * A keyboard controllable value that can be used for anything.
      */
     public static int debugValue = 1;
+    public static boolean verbose = false;
 
     public static final Random random = new Random();
     //#endregion constants
@@ -36,6 +37,7 @@ public class Debug {
     public static void main(String[] args) {
         tilesheetTest();
     }
+
     public static void tilesheetTest() {
         try {
             WorldRenderer r = new WorldRenderer();
@@ -48,5 +50,9 @@ public class Debug {
     //#endregion operations
 
     //#region static
+    public static boolean verbose(String s){
+        if (verbose) System.out.println(s);
+        return verbose;
+    }
     //#endregion static
 }
