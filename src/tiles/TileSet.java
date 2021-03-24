@@ -158,8 +158,12 @@ public class TileSet {
      * @return the corresponding open gl texture id for this tile, else -1
      */
     public static int FindTileTexture(String tileResourceString){
+        String tileset = tileResourceString.substring(0, tileResourceString.indexOf('.'));
+        String tile = tileResourceString.substring(tileResourceString.indexOf('.') + 1);
+
         for (TileSet set : LoadedTilesets){
-            Integer i = set.Textures.get(tileResourceString);
+            if (!set.tileSheet.equals(tileset)) continue;
+            Integer i = set.Textures.get(tile);
             if (i != null) return i;
         }
 

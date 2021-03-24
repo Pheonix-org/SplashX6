@@ -7,7 +7,12 @@ import xmlwise.XmlParseException;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Random;
+import java.util.stream.Stream;
 
 /**
  * <h1>Renders a game world</h1>
@@ -32,9 +37,23 @@ public class WorldRenderer extends Renderer {
     //#endregion constructors
 
     //#region operations
+    final String sheetchars = "adgst";
+    private char randomchar(){
+        return sheetchars.charAt(Debug.random.nextInt(sheetchars.length()));
+    }
+
+    private int genRandomTile(){
+        int id = -1;
+        while (id == -1) {
+            String s = randomchar() + "." + randomchar() + "_" + randomchar() + "_" + randomchar() + "_" + randomchar();
+            id = TileSet.FindTileTexture(s);
+        }
+        return id;
+    }
+
     @Override
     public void renderFrame() {
-        int tex = TileSet.FindTileTexture("a.a_a_a_a");
+        int tex = genRandomTile();
         int cols = (main.window.getWidth() / TILE_WIDTH);
         int rows = ((main.window.getHeight() / TILE_HEIGHT) * 2) ;
         for (int y = rows; y >= 0; y--) {
@@ -43,15 +62,35 @@ public class WorldRenderer extends Renderer {
                 renderQuad(tex, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_WIDTH / 2 : 0), y * (TILE_HEIGHT / 2));
             }
         }
+        synchronized (this){
+            try {
+                wait(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void preRender() {
-        try {
-            TileSet.loadTileset(new File("./tilesets/a.TileSet"));
-        } catch (IOException | XmlParseException e) {
-            e.printStackTrace();
-        }
+         try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource("tilesets/").toURI()))) {
+            paths
+                    .filter(Files::isRegularFile)
+                        .forEach(v -> {
+                            if (!v.toString().endsWith("tileset"))
+                                return;
+                            try {
+                                TileSet.loadTileset(new File(String.valueOf(v)));
+                            } catch (IOException | XmlParseException e) {
+                                // This *.tileset file could not be read
+                                e.printStackTrace();
+                            }
+                            System.out.println("Loaded " + v.toString());
+                        });
+            } catch (URISyntaxException | IOException e) {
+                // Resource folder not available.
+                e.printStackTrace();
+         }
     }
     //#endregion operations
 
