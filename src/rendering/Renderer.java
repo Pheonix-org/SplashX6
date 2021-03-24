@@ -4,6 +4,7 @@ import de.matthiasmann.twl.utils.PNGDecoder;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL30;
+import utility.Debug;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -80,6 +81,7 @@ public abstract class Renderer {
      */
     public static void postInit() {
         if (renderInitalised) return;
+        glMatrixMode(GL_TEXTURE);  glScalef(-1,1,1);                                                         // Textures are inverted horrizontally, this scale tells gl to invert quads again so they render correctly.
 //        try (Stream<Path> paths = Files.walk(Paths.get(ClassLoader.getSystemResource("tilesets").toURI()))) {
 //            paths
 //                    .filter(Files::isRegularFile).forEach(v -> {RenderHelper.importTexture(v.toString()); System.out.println("Loaded " + v.toString());});
@@ -207,7 +209,6 @@ public abstract class Renderer {
 
         BufferedImage tilesheetImage = ImageIO.read(imageFile);
 
-        System.out.println("Segments are " + tileWidth + " x " + tileHeight);
         int idx = 0;
         for (int y = 0; y < tilesheetImage.getHeight(); y += tileHeight) {
             for (int x = 0; x < tilesheetImage.getWidth(); x += tileWidth) {
@@ -224,6 +225,7 @@ public abstract class Renderer {
                 idx++;
             }
         }
+        Debug.verbose("Split '" + imageFile.getName() + "' tilesheet, there are " + idx  + " tiles, which are each " +  + tileWidth + " x " + tileHeight);
 
         return tile.toArray(new ByteBuffer[0]);
     }

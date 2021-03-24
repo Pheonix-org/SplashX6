@@ -206,6 +206,10 @@ public class Window {
         return width;
     }
 
+    public long getID() {
+        return window;
+    }
+
     //#endregion operations
 
     //#region static

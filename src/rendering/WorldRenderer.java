@@ -54,7 +54,7 @@ public class WorldRenderer extends Renderer {
 
     @Override
     public void renderFrame() {
-        int tex = TileSet.FindTileTexture("t.t_a_a_t");
+        int tex = genRandomTile();
         int cols = (main.window.getWidth() / TILE_WIDTH);
         int rows = ((main.window.getHeight() / TILE_HEIGHT) * 2) ;
         for (int y = rows; y >= 0; y--) {
