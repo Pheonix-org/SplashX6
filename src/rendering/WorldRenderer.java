@@ -57,16 +57,16 @@ public class WorldRenderer extends Renderer {
         int tex = genRandomTile();
         int cols = (main.window.getWidth() / TILE_WIDTH);
         int rows = calcRows();
-        for (int y = rows; y >= 0; y--) {
-            for (int x = cols; x >= 0; x--) {
+        for (int y = 0; y < rows-1; y++) {
+            for (int x = 0; x < cols-1; x++) {
                 //renderQuad(Debug.debugValue, TILE_WIDTH * (x % cols) + + (((x / cols) % 2 != 0) ? 0 : (TILE_WIDTH / 2)), (TILE_HEIGHT / 2) * y);
                 renderQuad(tex, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_HALF_WIDTH : 0), BASE_HEIGHT + y * TILE_HALF_HEIGHT);
             }
         }
 
         glOverdrawBlendMode();
-        for (int y = rows; y >= 0; y--) {
-            for (int x = cols; x >= 0; x--) {
+        for (int y = 0; y < rows-1; y++) {
+            for (int x = 0; x < cols-1; x++) {
                 if ((x % 2 == 0) && (y % 2 == 0))
                 //renderQuad(Debug.debugValue, TILE_WIDTH * (x % cols) + + (((x / cols) % 2 != 0) ? 0 : (TILE_WIDTH / 2)), (TILE_HEIGHT / 2) * y);
                 //renderQuad(city, x * TILE_WIDTH + TILE_QUARTER_WIDTH, TILE_HALF_HEIGHT + TILE_QUARTER_HEIGHT + BASE_HEIGHT + y * TILE_HALF_HEIGHT, TILE_HALF_WIDTH, TILE_HALF_HEIGHT);
@@ -127,7 +127,7 @@ public class WorldRenderer extends Renderer {
 
     //#region static
     public static int calcRows(){
-        return (((main.window.getHeight() - GAMEVIEW_HEIGHT_REDUCTION) / TILE_HEIGHT) * 2);
+        return ((main.window.getHeight() - GAMEVIEW_HEIGHT_REDUCTION) / TILE_HEIGHT) * 2;
     }
 
     public static int calcHeight(){

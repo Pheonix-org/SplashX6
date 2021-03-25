@@ -28,8 +28,6 @@ public class StackTestRenderer extends Renderer {
 
     private static int baseUnderlayID = -1;
     private static int topUnderlayID = -1;
-    private static int y = 0;
-    private static int h = 0;
 
 
     @Override
@@ -40,15 +38,13 @@ public class StackTestRenderer extends Renderer {
         if (baseUnderlayID == -1) // The overlay image has already been loaded, don't do it again.
             baseUnderlayID = importTexture("base_underlay.png");
 
-        y = BASE_HEIGHT + WorldRenderer.calcHeight() + 1 + TILE_HEIGHT;
-        h = main.window.getHeight() - y;
     }
 
     @Override
     public void renderFrame() {
         glTileBlendMode();
         renderQuad( baseUnderlayID, 0,0, main.window.getWidth(), BASE_HEIGHT);
-        renderQuad( topUnderlayID, 0, y, main.window.getWidth(), h);
+        renderQuad( topUnderlayID, 0, main.window.getHeight() - TOP_HEIGHT, main.window.getWidth(), TOP_HEIGHT);
     }
     //#endregion operations
 
