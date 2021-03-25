@@ -2,6 +2,9 @@ package utility;
 
 import rendering.WorldRenderer;
 import rendering.Window;
+import tiles.TileSet;
+
+import javax.swing.*;
 
 
 /**
@@ -26,6 +29,24 @@ public class main {
      */
     public static void main(String[] args)  {
         new Window(new WorldRenderer());
+    }
+
+    /**
+     * <h2>Declare a fatal problem. Close the window, tell the user, close the game.</g2>
+     * @param s
+     */
+    public static void fatal(String s, Exception e) {
+        System.err.println(s);
+        e.printStackTrace();
+        window.fatal();
+    }
+
+    public static void startup() {
+        TileSet.loadAllTilesets();
+    }
+
+    public static void shutdown() {
+
     }
 
     //#endregion operations

@@ -158,14 +158,9 @@ public class Window {
 
         loop();                                                                                                         // Render loop. We'll make our renderer here.
 
-        // Loop returns = window is no longer rendering. destroy the window.
-        glfwFreeCallbacks(window);                                                                                      // Free the window callbacks and destroy the window
-        glfwDestroyWindow(window);
-
-        //We're no longer using glfw, our only window has closed. terminate glfw.
-        glfwTerminate();                                                                                                // Terminate GLFW and free the error callback
-        glfwSetErrorCallback(null).free();
+        dispose();
     }
+
 
     /**
      * <h2>alters the render size to the size of the monitor</h2>
@@ -201,6 +196,8 @@ public class Window {
 
         // We can't pre-render sooner, or use addRenderer, since we can't use GL features until we've configured the gl capabilities (above)
         RenderStack.forEach(Renderer::preRender);
+
+        main.startup();
 
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
@@ -261,6 +258,26 @@ public class Window {
         r.setStackPosition(0f);
         RenderStack.add(r);
         r.preRender();
+    }
+
+    /**
+     * <h2>Closes this window, terminates GLFW, frees callbacks.</h2>
+     * Call on the way to halt.
+     */
+    public void dispose() {
+        main.shutdown();
+        // Loop returns = window is no longer rendering. destroy the window.
+        glfwFreeCallbacks(window);                                                                                      // Free the window callbacks and destroy the window
+        glfwDestroyWindow(window);
+
+        //We're no longer using glfw, our only window has closed. terminate glfw.
+        glfwTerminate();                                                                                                // Terminate GLFW and free the error callback
+        glfwSetErrorCallback(null).free();
+    }
+
+    public void fatal(){
+        RenderStack.clear();
+        addRenderer(new ErrorRenderer());
     }
 
     //#endregion operations
