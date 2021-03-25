@@ -226,6 +226,11 @@ public abstract class Renderer {
         return texId;
     }
 
+    public void drawstring(float x,float y,float z, String string)
+    {
+
+    }
+
     /**
      * <h2>Splits a PNG tilesheet into an array of decoded PNG RGBA bytes</h2>
      * @param imageFile The tilesheet file to load
@@ -233,11 +238,23 @@ public abstract class Renderer {
      * @param tileHeight The witdh of the image
      * @return the ID of the texture once loaded. This id will be used to refer to it from now on.
      * @throws IOException If the image could not be accessed, read, split, or decoded.
+     * @throws Exception if the tile data for slicing is not valid
      */
-    public static ByteBuffer[] splitTilesheet(File imageFile, int tileWidth, int tileHeight) throws IOException {
+    public static ByteBuffer[] splitTilesheet(File imageFile, int tileWidth, int tileHeight, int cols) throws Exception {
         ArrayList<ByteBuffer> tile = new ArrayList<>();
 
         BufferedImage tilesheetImage = ImageIO.read(imageFile);
+
+        if (tileWidth > tilesheetImage.getWidth())
+            throw new Exception("Tile's width is declared larger than the tile sheet. That can't be right!");
+
+        if (tileHeight > tilesheetImage.getHeight())
+            throw new Exception("Tile's height is declared taller than the tile sheet. That can't be right!");
+
+        if (tilesheetImage.getWidth() / tileWidth != cols)
+            throw new Exception("Declared tile width does not match the calculated column width!");
+
+        // There's no check for height, but if these all parse then the trust in the sheet data being correct is high.
 
         int idx = 0;
         for (int y = 0; y < tilesheetImage.getHeight() - (tilesheetImage.getHeight() % tileHeight); y += tileHeight) {

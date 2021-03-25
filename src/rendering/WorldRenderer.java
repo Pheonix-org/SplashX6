@@ -64,16 +64,6 @@ public class WorldRenderer extends Renderer {
             }
         }
 
-        glOverdrawBlendMode();
-        for (int y = 0; y < rows-1; y++) {
-            for (int x = 0; x < cols-1; x++) {
-                if ((x % 2 == 0) && (y % 2 == 0))
-                //renderQuad(Debug.debugValue, TILE_WIDTH * (x % cols) + + (((x / cols) % 2 != 0) ? 0 : (TILE_WIDTH / 2)), (TILE_HEIGHT / 2) * y);
-                //renderQuad(city, x * TILE_WIDTH + TILE_QUARTER_WIDTH, TILE_HALF_HEIGHT + TILE_QUARTER_HEIGHT + BASE_HEIGHT + y * TILE_HALF_HEIGHT, TILE_HALF_WIDTH, TILE_HALF_HEIGHT);
-                renderQuad(city, x * TILE_WIDTH + TILE_HALF_WIDTH, 5 + BASE_HEIGHT + y * TILE_HALF_HEIGHT);
-            }
-        }
-
         synchronized (this){
             try {
                 wait(1000);
@@ -85,42 +75,13 @@ public class WorldRenderer extends Renderer {
 
 
     // TODO create some kind of startup helper, we shouldn't load stuff on a pre-render
-    int city;
 
     @Override
     public void preRender() {
         renderQuad(importTexture("splash.png"), 0,0, main.window.getWidth(), main.window.getHeight());
         glfwSwapBuffers(main.window.getID());
-
-
-         try {
-             // This is all lambda, good luck reading it - it's all one line of code lol
-             Files.walk(                                                                                                // Walk through filesystem
-                     Paths.get(ClassLoader.getSystemResource("tilesets/")                                         // under the tileset directory
-                             .toURI())
-             )
-                     .filter(Files::isRegularFile)                                                                      // Looking for files (not directories)
-                     .filter(path -> path.toString().endsWith(".tileset"))                                              // That end with .tileset
-
-                     .forEach(v -> {                                                                                    // For every resulting *.tileset file,
-                try {
-                    TileSet.loadTileset(new File(String.valueOf(v)));                                                   // load the tileset
-                } catch (IOException | XmlParseException e) {
-                    // This *.tileset file could not be read
-                    System.err.println("Failed to load tileset file '" + v.getFileName() + "'!");
-                }
-                System.out.println("Loaded tileset " + v.toString());
-
-             });
-             } catch (URISyntaxException | IOException e) {
-                // Resource folder not available.
-                e.printStackTrace();
-                System.err.println("Failed to find or access tileset directory!");
-                System.exit(-1);
-         }
-
-         city = TileSet.FindTileTexture("cities.asian_16_wall");
     }
+
 
 
     //#endregion operations

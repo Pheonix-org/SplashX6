@@ -1,12 +1,17 @@
 package tiles;
 
 import rendering.Renderer;
+import utility.main;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -126,10 +131,9 @@ public class TileSet {
         ByteBuffer[] tileImages;
         try {
             // Fetch linked tilesheet png, and split it into sub-images - which are the tiles on the tilesheet.
-            tileImages = Renderer.splitTilesheet(new File("./tilesets/" + tileSheet + ".png"), tileWidth, tileHeight);
-        } catch (IOException e) {
-            System.err.println("Failed to read tilesheet (" + tileSheet + ".png) for " + setName + "! This sheet will not be loaded!");
-            e.printStackTrace();
+            tileImages = Renderer.splitTilesheet(new File("./tilesets/" + tileSheet + ".png"), tileWidth, tileHeight, sheetColumns);
+        } catch (Exception e) {
+            main.fatal("Failed to read tilesheet (" + tileSheet + ".png) for " + setName + "! This sheet will not be loaded!", e);
             return false;
         }
 
@@ -189,6 +193,32 @@ public class TileSet {
      */
     public static void loadTileset(HashMap TilesetData) {
         new TileSet(TilesetData);
+    }
+
+    public static void loadAllTilesets(){
+
+        try {
+            // This is all lambda, good luck reading it - it's all one line of code lol
+            Files.walk(                                                                                                // Walk through filesystem
+                    Paths.get(ClassLoader.getSystemResource("tilesets/")                                         // under the tileset directory
+                            .toURI())
+            )
+                    .filter(Files::isRegularFile)                                                                      // Looking for files (not directories)
+                    .filter(path -> path.toString().endsWith(".tileset"))                                              // That end with .tileset
+
+                    .forEach(v -> {                                                                                    // For every resulting *.tileset file,
+                        try {
+                            TileSet.loadTileset(new File(String.valueOf(v)));                                                   // load the tileset
+                        } catch (IOException | XmlParseException e) {
+                            // This *.tileset file could not be read
+                            main.fatal("Failed to load tileset file '" + v.getFileName() + "'!", e);
+                        }
+                        System.out.println("Loaded tileset " + v.toString());
+
+                    });
+        } catch (URISyntaxException | IOException e) {
+            main.fatal("Failed to find or access tileset directory!", e);
+        }
     }
 
     //#endregion static
