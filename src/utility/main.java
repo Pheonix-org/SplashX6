@@ -1,9 +1,5 @@
 package utility;
 
-import com.shinkson47.opex.backend.runtime.errormanagement.exceptions.OPEXStartFailure;
-import com.shinkson47.opex.backend.runtime.threading.OPEXGame;
-import com.shinkson47.opex.backend.toolbox.Version;
-import com.shinkson47.opex.frontend.window.prefabs.Splash;
 import rendering.WorldRenderer;
 import rendering.Window;
 
@@ -19,7 +15,7 @@ import rendering.Window;
  * @version 1
  * @since v1
  */
-public class main extends OPEXGame {
+public class main {
     //#region operations
     public static Window window;
 
@@ -28,33 +24,10 @@ public class main extends OPEXGame {
      * @param args
      * @throws OPEXStartFailure
      */
-    public static void main(String[] args) throws OPEXStartFailure {
-        Splash.disable();   // You would not believe the amount of problems a simple splash screen is causing -_-
-        new main().run();
-
-        // Skip starting opex for now, it initalises AWT, which uses GLFW. GLFW can't initalise for lwjgl if it's been initialized for awt swing.
-        // I'll need to create an option to prevent starting awt.
-
-        //new OPEX(new utility.main());
-    }
-
-    /**
-     * OPEX has run the game. Game code starts here.
-     */
-    @Override
-    public void run() {
+    public static void main(String[] args)  {
         new Window(new WorldRenderer());
     }
 
-    @Override
-    public void stop() {
-
-    }
-
-    @Override
-    public Version version() {
-        return new Version(2021, 3, 20, "A");
-    }
     //#endregion operations
 
     //#region static

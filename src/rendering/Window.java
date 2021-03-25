@@ -2,16 +2,19 @@ package rendering;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.glfw.GLFWWindowFocusCallback;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL40;
+import org.lwjgl.opengl.GL40.*;
 import org.lwjgl.system.MemoryStack;
 import utility.main;
 
-import java.awt.*;
 import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL.createCapabilities;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.system.MemoryStack.stackPush;
@@ -42,9 +45,12 @@ public class Window {
     private long window = 0L;
 
     /**
-     * The renderer this window is displaying
+     * <h2>Collection of renderers actively rendering on this window.</h2>
+     * These renderers will be called in the order in which they were added,
+     * from there they will over-render each all previously rendered content
+     * in the gl frame buffer before it is displayed in the next frame.
      */
-    private Renderer renderer;
+    private final ArrayList<Renderer> RenderStack = new ArrayList<>();
 
     /**
      * <h2>Represents the rendering height of the window upon creation</h2>
@@ -75,7 +81,7 @@ public class Window {
      * @param title title of the window
      */
     public Window(String title, Renderer _renderer){
-        renderer = _renderer;
+        RenderStack.add(_renderer);
         init(title);
     }
     //#endregion constructors
@@ -92,13 +98,12 @@ public class Window {
         Renderer.preInit();                                                                                             // Notify of window init. used for first time rendering set-up.
         GLFWErrorCallback.createPrint(System.err).set();                                                                // Error call back stream. Prints errors to system.err
 
-        window = glfwCreateWindow(height, width, title, NULL, NULL);                                 // Create the window in GLFW memory, and get the ID.
+        window = glfwCreateWindow(height, width, title, NULL, NULL);                                                    // Create the window in GLFW memory, and get the ID.
 
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
         main.window = this;
         setCorrectRenderSize();
-
 
         // Set a blank focus call back.
         //
@@ -114,11 +119,13 @@ public class Window {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
                 glfwSetWindowShouldClose(window, true);                                                           // We will detect this in the rendering loop
             }
-            else if (key == GLFW_KEY_MINUS && action == GLFW_PRESS) {
+            else if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS) {
                 utility.Debug.debugValue--;
+                Renderer.reCalcTile();
             }
             else if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS) {
                 utility.Debug.debugValue++;
+                Renderer.reCalcTile();
             }
 
         });
@@ -148,6 +155,7 @@ public class Window {
         glfwMakeContextCurrent(window);                                                                                 // This window is our context.
         glfwSwapInterval(1);                                                                                            // Enable v-sync. This can't be done before context is set.
         glfwShowWindow(window);                                                                                         // Make the window visible
+
         loop();                                                                                                         // Render loop. We'll make our renderer here.
 
         // Loop returns = window is no longer rendering. destroy the window.
@@ -175,26 +183,35 @@ public class Window {
      * glfwWindowShouldClose. Handles rendering, game updates, and input reading.
      */
     private void loop() {
-        GL.createCapabilities();  // !! DO NOT REMOVE !!
+        createCapabilities();  // !! DO NOT REMOVE !!
 
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glLoadIdentity();
-        GL11.glOrtho(0, width, 0, height, 1, -1);
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        GL40.glMatrixMode(GL40.GL_PROJECTION);
+        GL40.glLoadIdentity();
+        GL40.glOrtho(0, width, 0, height, 1, -1);
+        GL40.glMatrixMode(GL40.GL_MODELVIEW);
         Renderer.postInit();
 
-        glClearColor(0f, 0f, 0f, 0f);                                                    // Color which the window is cleared with
-        renderer.preRender();
+        glClearColor(0f, 0f, 0f, 0f);                                                            // Color which the window is cleared with
+
+
+        // There should only be one renderer present at this point; the one that was parsed in the constructor.
+        // Either way, pre-render all renderers to ensure they're all ready to render.
+
+        // The WorldRenderer will display the splash screen, and load all tile sets. Next frame will clear splash screen.
+
+        // We can't pre-render sooner, or use addRenderer, since we can't use GL features until we've configured the gl capabilities (above)
+        RenderStack.forEach(Renderer::preRender);
+
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                                                   // clear the framebuffer
 
-            renderer.renderFrame();
+            RenderStack.forEach(Renderer::renderFrame);                                                                 // Invoke all renderers to render to the frame buffer.
 
-            glfwSwapBuffers(window);                                                                                    // swap the buffer
+            glfwSwapBuffers(window);                                                                                    // swap the buffer, displaying the buffer we just drew to.
 
-            glfwPollEvents();
+            glfwPollEvents();                                                                                           // Poll the window for events
         }
     }
 
@@ -206,8 +223,44 @@ public class Window {
         return width;
     }
 
+    /**
+     * @return the int ID of this window in GLFW memory
+     */
     public long getID() {
         return window;
+    }
+
+    /**
+     * <h2>Adds a new renderer to the {@link Window#RenderStack}</h2>
+     * Also invokes {@link Renderer#preRender} to ensure renderer is ready to render.
+     * This new renderer will render above all previously registered renderers.
+     * <br><br>
+     * O(n) - Has to alter the stack order of all existing renderers to add this one to the top.
+     * <br><br>
+     *     <blockquote>
+     *          <br>Visualisation
+     *          <br><br>
+     *          <br>4 Default renderer (Renderer obtained at construction of window)
+     *          <br>3 ...
+     *          <br>2 ...
+     *          <br>1 2nd oldest renderer's content
+     *          <br>0 Newest Renderer's content
+     *          <br>
+     *          <br>
+     *          <br>[^CAMERA^]
+     *          <br><br>
+     *     </blockquote>
+     *  Where everytime a new renderer is added, all existing renderers get shifted up,
+     *  and the newest is added at the bottom; closest to the camera, and on top of all
+     *  existing camera.
+     * @throws java.util.ConcurrentModificationException if called from within {@link Renderer#preInit()} or {@link Renderer#renderFrame()},
+     *         because they operate within the {@link Window#RenderStack}'s foreach operator.
+     */
+    public synchronized void addRenderer(Renderer r){
+        RenderStack.forEach(Renderer::NextStackPosition);
+        r.setStackPosition(0f);
+        RenderStack.add(r);
+        r.preRender();
     }
 
     //#endregion operations

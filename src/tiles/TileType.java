@@ -20,5 +20,6 @@ public enum TileType {
     Mountain,
     Forest,
     Jungle,
-    base
+    base,
+    city
 }
