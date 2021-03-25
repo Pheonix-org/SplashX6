@@ -80,6 +80,7 @@ public class WorldRenderer extends Renderer {
     public void preRender() {
         renderQuad(importTexture("splash.png"), 0,0, main.window.getWidth(), main.window.getHeight());
         glfwSwapBuffers(main.window.getID());
+        // Add audio here
     }
 
 
