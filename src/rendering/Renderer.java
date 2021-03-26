@@ -40,8 +40,13 @@ public abstract class Renderer {
     /**
      * <h2>Size in pixels of the tiles when displayed on screen</h2>
      */
-    public static int TILE_WIDTH = 128, TILE_HEIGHT = TILE_WIDTH / 2, TILE_HALF_HEIGHT = TILE_HEIGHT / 2, TILE_HALF_WIDTH = TILE_WIDTH / 2, TILE_QUARTER_HEIGHT = TILE_HALF_HEIGHT / 2, TILE_QUARTER_WIDTH = TILE_HALF_WIDTH / 2;
+    public static int TILE_WIDTH = 64, TILE_HEIGHT = TILE_WIDTH / 2, TILE_HALF_HEIGHT = TILE_HEIGHT / 2, TILE_HALF_WIDTH = TILE_WIDTH / 2, TILE_QUARTER_HEIGHT = TILE_HALF_HEIGHT / 2, TILE_QUARTER_WIDTH = TILE_HALF_WIDTH / 2;
 
+    /**
+     * <h2>The smallest permittable width for tiles.</h2>
+     * Tile quads rendering smaller than this cause rendering issues.
+     */
+    public static final int SMALLEST_TILE_WIDTH = 54;
     @Deprecated
     public static void reCalcTile(){
         TILE_WIDTH = 64 + Debug.debugValue;

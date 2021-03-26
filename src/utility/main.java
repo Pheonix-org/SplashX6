@@ -3,6 +3,7 @@ package utility;
 import rendering.WorldRenderer;
 import rendering.Window;
 import tiles.TileSet;
+import tiles.World;
 
 import javax.swing.*;
 
@@ -21,6 +22,7 @@ import javax.swing.*;
 public class main {
     //#region operations
     public static Window window;
+    private static WorldRenderer r = new WorldRenderer();
 
     /**
      * Main entry point. Starts OPEX with this game
@@ -28,7 +30,7 @@ public class main {
      * @throws OPEXStartFailure
      */
     public static void main(String[] args)  {
-        new Window(new WorldRenderer());
+        new Window(r);
     }
 
     /**
@@ -43,6 +45,7 @@ public class main {
 
     public static void startup() {
         TileSet.loadAllTilesets();
+        r.setWorld(new World());
     }
 
     public static void shutdown() {

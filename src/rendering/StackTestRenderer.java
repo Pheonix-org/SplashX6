@@ -51,9 +51,9 @@ public class StackTestRenderer extends Renderer {
 
     @Override
     public void renderFrame() {
-        glTileBlendMode();
-        renderQuad( baseUnderlayID, 0,0, main.window.getWidth(), BASE_HEIGHT);
-        renderQuad( topUnderlayID, 0, main.window.getHeight() - TOP_HEIGHT, main.window.getWidth(), TOP_HEIGHT);
++++++
+       renderQuad( baseUnderlayID, 0,0, main.window.getWidth(), BASE_HEIGHT);
+       renderQuad( topUnderlayID, 0, main.window.getHeight() - TOP_HEIGHT, main.window.getWidth(), TOP_HEIGHT);
     }
     //#endregion operations
 

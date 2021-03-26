@@ -127,6 +127,15 @@ public class Window {
                 utility.Debug.debugValue++;
                 Renderer.reCalcTile();
             }
+            else if (key == GLFW_KEY_W && action == GLFW_PRESS)
+                WorldRenderer.yoff += 2;
+            else if (key == GLFW_KEY_S && action == GLFW_PRESS)
+                WorldRenderer.yoff -= 2;
+            else if (key == GLFW_KEY_D && action == GLFW_PRESS)
+                WorldRenderer.xoff++;
+            else if (key == GLFW_KEY_A && action == GLFW_PRESS)
+                WorldRenderer.xoff--;
+
 
         });
 

@@ -1,0 +1,63 @@
+# Roadmap
+
+- [x] Open GL initalisation
+- [x] Baked UI assets
+- [x] Ready to use tilesets
+- [x] Can load tilesets
+- [x] Can render tiles
+- [x] Can handle key-presses
+- [x] Renders at native resolution
+
+- [ ] Secure tile loader (Recognises bad data and reports it better instead of silently crashing) 
+- [ ] Tile border can be specified in tileset data
+- [ ] Tile loader can ignore a border around tiles
+
+- [ ] Can display interactable menus
+- [ ] Page up / down scrolls menu items
+- [ ] User can see if there is more menu items
+- [ ] Function keys perform menu items
+
+- [ ] Open AL Initalisation
+- [ ] Music and sounds ready to use
+- [ ] Splash music
+- [ ] Game music based on game mood
+- [ ] Can play ui and in-hame sound effects seperately
+
+- [ ] Can store world
+- [ ] World stores units
+- [ ] Can render world
+- [ ] Can render units
+- [ ] Can render cities / structures
+- [ ] Renders isometrically
+
+- [ ] Can generate a basic, plain, world
+
+- [ ] WASD moves viewport
+- [ ] Mouse drag moves viewport
+
+- [ ] VV Better world generation VV
+- [ ] Generate plain base										(Fill world with water)
+- [ ] (Perlin land mass) Can generate continents				(Place continents)
+- [ ] (Perlin heatmap)   Can generate biomes					(Mutate any land based on biome heatmap)
+- [ ] (Perlin heightmap) Can generate hills & mountains			(Mutate biome land into hills and mountains based on heightmap)
+- [ ] Knowing now what each tile should be, place correct tile for position based on what is around it. (Convert generated map plan into tile resource strings. Pick tiles which blend correctly)
+
+- [ ] Tiles can render multiple layers (UI / rank, stuff that overlays some tiles.)
+- [ ] Pre-baked menus for units
+
+- [ ] Game hypervisor
+- [ ] User can see all units
+- [ ] User can select units
+- [ ] Settler unit can create city
+- [ ] User can move units one space per turn
+
+- [ ] Units can move to a point, set few tiles per turn
+- [ ] Units can only move on ground tiles
+- [ ] Function to know if a specific unit type can travel on a on a position (i.e can this unit go on a water / mountain tile. Include positions of units - can't walk through other units. Later this will also unclude tech tree, so land units can go in water when navigation is researched, etc)
+- [ ] Units can path find to position (a* pathfinding)
+
+- [ ] Custom splash image
+- [ ] Fog of war
+
+- [ ] Hex top-down view
+- [ ] Mini-map

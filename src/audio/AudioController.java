@@ -24,8 +24,6 @@ import static org.lwjgl.openal.ALC10.*;
  */
 public class AudioController {
 
-    private int
-
     public static void init() {
 
 // Can call "alc" functions at any time

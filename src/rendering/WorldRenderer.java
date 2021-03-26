@@ -1,10 +1,13 @@
 package rendering;
 
+import tiles.Tile;
 import tiles.TileSet;
+import tiles.World;
 import utility.Debug;
 import utility.main;
 import xmlwise.XmlParseException;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,48 +34,107 @@ public class WorldRenderer extends Renderer {
     //#endregion constants
 
     //#region fields
+
+    //TODO move this stuff to a game hypervisor
+    public static World world;
+
+    public static int xoff = 0, yoff = 0;
+
+
     //#endregion fields
 
     //#region constructors
     //#endregion constructors
 
     //#region operations
-    final String sheetchars = "padgst";
-    private char randomchar(){
-        return sheetchars.charAt(Debug.random.nextInt(sheetchars.length()));
+
+    public void setWorld(World world) {
+        this.world = world;
     }
 
-    private int genRandomTile(){
-        int id = -1;
-        while (id == -1) {
-            String s = randomchar() + "." + randomchar() + "_" + randomchar() + "_" + randomchar() + "_" + randomchar();
-            id = TileSet.FindTileTexture(s);
-        }
-        return id;
-    }
 
     @Override
     public void renderFrame() {
-        glTileBlendMode();
-        int tex = genRandomTile();
-        int cols = (main.window.getWidth() / TILE_WIDTH);
-        int rows = calcRows();
-        for (int y = 0; y < rows-1; y++) {
-            for (int x = 0; x < cols-1; x++) {
-                //renderQuad(Debug.debugValue, TILE_WIDTH * (x % cols) + + (((x / cols) % 2 != 0) ? 0 : (TILE_WIDTH / 2)), (TILE_HEIGHT / 2) * y);
-                renderQuad(tex, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_HALF_WIDTH : 0), BASE_HEIGHT + y * TILE_HALF_HEIGHT);
-            }
-        }
+        if (world == null) return;  // Don't render if there's no world to render.
 
-        synchronized (this){
-            try {
-                wait(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        glTileBlendMode();
+
+
+        final Rectangle clip = new Rectangle(0, BASE_HEIGHT, main.window.getWidth(), main.window.getHeight() - TOP_HEIGHT);
+
+        // Translate origin to top-center
+        double tileRatio = (double) TILE_WIDTH / (double) TILE_HEIGHT;
+        clip.x -= world.height() * (TILE_WIDTH / 2);
+
+        int mx = clip.y + (int) (clip.x / tileRatio);
+        int my = clip.y - (int) (clip.x / tileRatio);
+
+        // Calculate map coords and divide by tile size (tiles assumed to
+        // be square in normal projection)
+        Point rowItr = new Point(
+                (mx < 0 ? mx - TILE_HEIGHT : mx) / TILE_HEIGHT,
+                (my < 0 ? my - TILE_HEIGHT : my) / TILE_HEIGHT);
+        rowItr.x--;
+
+        // Location on the screen of the top corner of a tile.
+        int originX = (world.height() * TILE_WIDTH) / 2;
+
+        Point drawLoc = new Point(
+                ((rowItr.x - rowItr.y) * TILE_WIDTH / 2) + originX,
+                (rowItr.x + rowItr.y) * TILE_HEIGHT / 2);
+        drawLoc.x -= TILE_WIDTH / 2;
+        drawLoc.y -= TILE_HEIGHT / 2;
+
+        // Add offset from tile layer property
+//        drawLoc.x += layer.getOffsetX() != null ? layer.getOffsetX() : 0;
+//        drawLoc.y += layer.getOffsetY() != null ? layer.getOffsetY() : 0;
+
+        // Determine area to draw from clipping rectangle
+        int tileStepY = TILE_HEIGHT / 2 == 0 ? 1 : TILE_HEIGHT / 2;
+
+        int columns = clip.width / TILE_WIDTH + 3;
+        int rows = clip.height / tileStepY + 4;
+
+        // Prevent panning viewport from moving outside of the map
+        if (yoff < 0) yoff = 0;
+        if (xoff < 0) xoff = 0;
+        if (!(world.width() - columns < 0) && (xoff + columns) > world.width()) xoff = world.width() - columns;
+        if (!(world.height() - rows < 0) && (yoff + rows) > world.height()) yoff = world.height() - rows;
+
+        // Draw this map layer
+        for (int y = yoff; y < rows + yoff; y++) {
+            if (y < 0 || y >= world.worldTiles.length) break;
+            Point columnItr = new Point(rowItr);
+
+            for (int x = xoff; x < columns + xoff; x++) {
+                if (x < 0 || x >= world.worldTiles[y].length) break;
+                final Tile tile = world.worldTiles[y][x];
+
+                if (tile != null) {
+                    if (tile.cachedID == -1)
+                        continue;
+
+                    renderQuad(tile.cachedID,drawLoc.x, drawLoc.y, TILE_WIDTH, TILE_HEIGHT);
+                }
+
+                // Advance to the next tile
+                columnItr.x++;
+                columnItr.y--;
+                drawLoc.x += TILE_WIDTH;
             }
+
+            // Advance to the next row
+            if ((y & 1) > 0) {
+                rowItr.x++;
+                drawLoc.x += TILE_WIDTH / 2;
+            } else {
+                rowItr.y++;
+                drawLoc.x -= TILE_WIDTH / 2;
+            }
+            drawLoc.x -= columns * TILE_WIDTH;
+            drawLoc.y += tileStepY;
         }
     }
-
 
     // TODO create some kind of startup helper, we shouldn't load stuff on a pre-render
 
@@ -82,8 +144,6 @@ public class WorldRenderer extends Renderer {
         glfwSwapBuffers(main.window.getID());
         // Add audio here
     }
-
-
 
     //#endregion operations
 

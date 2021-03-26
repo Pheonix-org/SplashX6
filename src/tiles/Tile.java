@@ -1,5 +1,7 @@
 package tiles;
 
+import utility.Debug;
+
 /**
  * <h1></h1>
  * <br>
@@ -25,9 +27,14 @@ public class Tile {
     //#endregion constants
 
     //#region fields
+
     //#endregion fields
 
     //#region constructors
+    public Tile(){
+        this(genRandomTileString());
+    }
+
     public Tile(String TileName){
         this.tileName = TileName;
 
@@ -46,5 +53,26 @@ public class Tile {
     //#endregion operations
 
     //#region static
+
+
+    final static String sheetchars = "padgst";
+    private static String lastGen;
+    private static char randomchar(){
+        return sheetchars.charAt(Debug.random.nextInt(sheetchars.length()));
+    }
+
+    public static int genRandomTile(){
+        int id = -1;
+        while (id == -1) {
+            lastGen = randomchar() + "." + randomchar() + "_" + randomchar() + "_" + randomchar() + "_" + randomchar();
+            id = TileSet.FindTileTexture(lastGen);
+        }
+        return id;
+    }
+
+    public static String genRandomTileString(){
+        genRandomTile();
+        return lastGen;
+    }
     //#endregion static
 }

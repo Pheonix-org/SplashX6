@@ -168,7 +168,7 @@ public class TileSet {
         for (TileSet set : LoadedTilesets){
             if (!set.tileSheet.equals(tileset)) continue;
             Integer i = set.Textures.get(tile);
-            if (i != null) return i;
+            return (i != null) ? i : -1;
         }
 
         return -1;
