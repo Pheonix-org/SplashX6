@@ -106,6 +106,7 @@ public class TileSet {
         if (interpretData(TilesetData))
             LoadedTilesets.add(this);
     }
+
     //#endregion constructors
 
     //#region operations
@@ -155,6 +156,10 @@ public class TileSet {
         return true;                                // Success!
     }
 
+    //#endregion operations
+
+    //#region static
+
     /**
      * <h2>Finds a tile's gl texture ID using the tile's resource string</h2>
      * @param tileResourceString i.e a.s_s_s_s.
@@ -171,11 +176,19 @@ public class TileSet {
             return (i != null) ? i : -1;
         }
 
+        // Break here to find resource strings not matching any tile
         return -1;
     }
-    //#endregion operations
 
-    //#region static
+    public static String findSet(String resourceName) {
+        for (TileSet set : LoadedTilesets)
+            if (set.Textures.get(resourceName) != null)
+                return set.tileSheet;
+
+        return null;
+    }
+
+
     /**
      * <h2>loads all tiledata from a *.tileset file, and loads all tile textures from the linked tilesheet into memory.</h2>
      * Successfully loaded *.tilesets's are added to {@link TileSet#LoadedTilesets}, sets which fail to load are not.

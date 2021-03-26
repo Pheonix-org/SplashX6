@@ -119,22 +119,27 @@ public class Window {
             if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
                 glfwSetWindowShouldClose(window, true);                                                           // We will detect this in the rendering loop
             }
+            //TODO proper scale vars
             else if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS) {
-                utility.Debug.debugValue--;
+                utility.Debug.debugValue-=4;
                 Renderer.reCalcTile();
             }
             else if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS) {
-                utility.Debug.debugValue++;
+                utility.Debug.debugValue+=4;
                 Renderer.reCalcTile();
             }
+            else if (key == GLFW_KEY_F5 && action == GLFW_PRESS)
+                WorldRenderer.world.regenerate();
             else if (key == GLFW_KEY_W && action == GLFW_PRESS)
-                WorldRenderer.yoff += 2;
+                WorldRenderer.world.yoff += 2;
             else if (key == GLFW_KEY_S && action == GLFW_PRESS)
-                WorldRenderer.yoff -= 2;
+                WorldRenderer.world.yoff -= 2;
             else if (key == GLFW_KEY_D && action == GLFW_PRESS)
-                WorldRenderer.xoff++;
+                WorldRenderer.world.xoff++;
             else if (key == GLFW_KEY_A && action == GLFW_PRESS)
-                WorldRenderer.xoff--;
+                WorldRenderer.world.xoff--;
+            else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+                WorldRenderer.world.swapInterp();
 
 
         });

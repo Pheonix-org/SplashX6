@@ -38,7 +38,6 @@ public class WorldRenderer extends Renderer {
     //TODO move this stuff to a game hypervisor
     public static World world;
 
-    public static int xoff = 0, yoff = 0;
 
 
     //#endregion fields
@@ -58,81 +57,30 @@ public class WorldRenderer extends Renderer {
         if (world == null) return;  // Don't render if there's no world to render.
 
         glTileBlendMode();
+        world.regenerate();
 
+        final Rectangle viewport = new Rectangle(0, BASE_HEIGHT,main.window.getWidth(),main.window.getHeight() - TOP_HEIGHT);
 
-        final Rectangle clip = new Rectangle(0, BASE_HEIGHT, main.window.getWidth(), main.window.getHeight() - TOP_HEIGHT);
+        int columns = (int) (viewport.getWidth() / TILE_WIDTH); // TODO floor these doubles?
+        int rows    = (int) (viewport.getHeight() / TILE_HALF_HEIGHT);
 
-        // Translate origin to top-center
-        double tileRatio = (double) TILE_WIDTH / (double) TILE_HEIGHT;
-        clip.x -= world.height() * (TILE_WIDTH / 2);
+        Point drawLoc = new Point(viewport.x - TILE_QUARTER_WIDTH, viewport.y);
 
-        int mx = clip.y + (int) (clip.x / tileRatio);
-        int my = clip.y - (int) (clip.x / tileRatio);
-
-        // Calculate map coords and divide by tile size (tiles assumed to
-        // be square in normal projection)
-        Point rowItr = new Point(
-                (mx < 0 ? mx - TILE_HEIGHT : mx) / TILE_HEIGHT,
-                (my < 0 ? my - TILE_HEIGHT : my) / TILE_HEIGHT);
-        rowItr.x--;
-
-        // Location on the screen of the top corner of a tile.
-        int originX = (world.height() * TILE_WIDTH) / 2;
-
-        Point drawLoc = new Point(
-                ((rowItr.x - rowItr.y) * TILE_WIDTH / 2) + originX,
-                (rowItr.x + rowItr.y) * TILE_HEIGHT / 2);
-        drawLoc.x -= TILE_WIDTH / 2;
-        drawLoc.y -= TILE_HEIGHT / 2;
-
-        // Add offset from tile layer property
-//        drawLoc.x += layer.getOffsetX() != null ? layer.getOffsetX() : 0;
-//        drawLoc.y += layer.getOffsetY() != null ? layer.getOffsetY() : 0;
-
-        // Determine area to draw from clipping rectangle
-        int tileStepY = TILE_HEIGHT / 2 == 0 ? 1 : TILE_HEIGHT / 2;
-
-        int columns = clip.width / TILE_WIDTH + 3;
-        int rows = clip.height / tileStepY + 4;
-
-        // Prevent panning viewport from moving outside of the map
-        if (yoff < 0) yoff = 0;
-        if (xoff < 0) xoff = 0;
-        if (!(world.width() - columns < 0) && (xoff + columns) > world.width()) xoff = world.width() - columns;
-        if (!(world.height() - rows < 0) && (yoff + rows) > world.height()) yoff = world.height() - rows;
-
-        // Draw this map layer
-        for (int y = yoff; y < rows + yoff; y++) {
-            if (y < 0 || y >= world.worldTiles.length) break;
-            Point columnItr = new Point(rowItr);
-
-            for (int x = xoff; x < columns + xoff; x++) {
-                if (x < 0 || x >= world.worldTiles[y].length) break;
-                final Tile tile = world.worldTiles[y][x];
-
-                if (tile != null) {
-                    if (tile.cachedID == -1)
-                        continue;
-
-                    renderQuad(tile.cachedID,drawLoc.x, drawLoc.y, TILE_WIDTH, TILE_HEIGHT);
-                }
-
-                // Advance to the next tile
-                columnItr.x++;
-                columnItr.y--;
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) {
+                Tile tile = world.getTile(x,y);
+                if (tile == null || tile.cachedID == -1)
+                    continue; // This shouldn't be hit, it's just for safety. It would indicate a problem with the map data. TODO how should we handle this?
+                renderQuad(tile.cachedID, drawLoc.x, drawLoc.y, TILE_WIDTH, TILE_HEIGHT);
                 drawLoc.x += TILE_WIDTH;
             }
+            drawLoc.y += TILE_HALF_HEIGHT;
+            drawLoc.x = viewport.x;
 
-            // Advance to the next row
-            if ((y & 1) > 0) {
-                rowItr.x++;
-                drawLoc.x += TILE_WIDTH / 2;
-            } else {
-                rowItr.y++;
-                drawLoc.x -= TILE_WIDTH / 2;
-            }
-            drawLoc.x -= columns * TILE_WIDTH;
-            drawLoc.y += tileStepY;
+            if ((y & 1) == 1)
+                drawLoc.x -= TILE_QUARTER_WIDTH;
+            else
+                drawLoc.x += TILE_QUARTER_WIDTH;
         }
     }
 

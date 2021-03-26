@@ -21,7 +21,7 @@ public class Debug {
     /**
      * A keyboard controllable value that can be used for anything.
      */
-    public static int debugValue = 1;
+    public static int debugValue = 0;
     public static boolean verbose = false;
 
     public static final Random random = new Random();
