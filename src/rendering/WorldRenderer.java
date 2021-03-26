@@ -57,7 +57,6 @@ public class WorldRenderer extends Renderer {
         if (world == null) return;  // Don't render if there's no world to render.
 
         glTileBlendMode();
-        world.regenerate();
 
         final Rectangle viewport = new Rectangle(0, BASE_HEIGHT,main.window.getWidth(),main.window.getHeight() - TOP_HEIGHT);
 
