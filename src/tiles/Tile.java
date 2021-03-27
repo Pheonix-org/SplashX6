@@ -1,6 +1,6 @@
 package tiles;
 
-import utility.Debug;
+import utility.Utility;
 
 import java.util.Arrays;
 
@@ -74,7 +74,7 @@ public class Tile {
     final static String sheetchars = "padgst";
     private static String lastGen;
     private static char randomchar(){
-        return sheetchars.charAt(Debug.random.nextInt(sheetchars.length()));
+        return sheetchars.charAt(Utility.random.nextInt(sheetchars.length()));
     }
 
     public static int genRandomTile(){
@@ -96,7 +96,7 @@ public class Tile {
     }
 
     /**
-     * <h2>Modifies this tile to blend it with surrounding tiles.</h2>
+     * <h2>Returns a tile that represent this one after being blended with provided tiles</h2>
      */
     public Tile interpolate(Tile nw, Tile ne, Tile se, Tile sw) {
         // Good luck reading this garbage lol

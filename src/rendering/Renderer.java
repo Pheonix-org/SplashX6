@@ -47,6 +47,10 @@ public abstract class Renderer {
      * Tile quads rendering smaller than this cause rendering issues.
      */
     public static final int SMALLEST_TILE_WIDTH = 54;
+
+    /**
+     * temporary debug tile scaling (use keypad - and +). When implemented, scaling will be handled in the world and world renderer.
+     */
     @Deprecated
     public static void reCalcTile(){
         TILE_WIDTH = 64 + Debug.debugValue;
@@ -59,7 +63,7 @@ public abstract class Renderer {
 
 
     /**
-     * <h2>High in pixels, of the screen edge UI elements.</h2>
+     * <h2>Height in pixels of the screen edge UI elements.</h2>
      */
     public static final int BASE_HEIGHT = 250, TOP_HEIGHT = 45;
 
@@ -70,21 +74,22 @@ public abstract class Renderer {
     public static final int GAMEVIEW_HEIGHT_REDUCTION = BASE_HEIGHT + TOP_HEIGHT;
 
     /**
-     * <h2>Global store of ID's all textures loaded</h2>
-     * Maps gl texture ID's to the texture name path
+     * <h2>Global GL TEX ID store of ID's of loaded textures</h2>
+     * Maps gl texture ID's to the texture resource identifier
      */
     public static final Hashtable<Integer, String> textures = new Hashtable<>();
-
-    /**
-     * <h2>Has the graphics library been configured ready for use?</h2>
-     */
-    public static boolean renderInitalised = false;
+    //TODO this does not contain all loaded textures...
 
     /**
      * <h2>The position of this renderer on the z axis</h2>
      * @see Window#addRenderer(Renderer)
      */
     private float StackPosition = 0f;
+
+    /**
+     * <h2>Has the graphics library been configured ready for use?</h2>
+     */
+    public static boolean renderInitalised = false;
 
     /**
      * <h2>First time rendering set-up</h2>
@@ -115,16 +120,17 @@ public abstract class Renderer {
         //glEnable      (GL_COLOR_MATERIAL);
         glEnable      (GL_BLEND);
         glMatrixMode  (GL_TEXTURE);
-        glScalef(-1,1,1);                                                       // Textures are inverted horrizontally, this scale tells gl to invert quads again so they render correctly.
+        glColor4f(0,0,0,0);                                                                              // Quad colour is transparent
+        glScalef(-1,1,1);                                                                                    // Textures are inverted horizontally, this scale tells gl to invert quads again so they render correctly.
         glTileBlendMode();
         renderInitalised = true;
     }
 
     /**
-     * <h2>Renders a quad to context with the provided texture.</h2>
+     * <h2>Renders a quad to context, wrapped with the provided texture.</h2>
      * @param texture The gl texture ID to render
-     * @param x x position
-     * @param y y position
+     * @param x x screen position
+     * @param y y screen position
      */
     public void renderQuad(int texture, float x, float y) {
         renderQuad(texture, x, y, StackPosition, Renderer.TILE_WIDTH, Renderer.TILE_HEIGHT);
@@ -133,8 +139,8 @@ public abstract class Renderer {
     /**
      * <h2>Renders a quad to context with the provided texture.</h2>
      * @param texture The gl texture ID to render
-     * @param x x position
-     * @param y y position
+     * @param x x screen position
+     * @param y y screen position
      * @param w Quad width
      * @param h Quad height
      */
@@ -143,20 +149,19 @@ public abstract class Renderer {
     }
 
     private void renderQuad(int texture, float x, float y, float z, float w, float h) {
-        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);                                                       // I have no idea what this does, but it's magic. Without it, quad textures appear blueish and dark.
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);                                                     // I have no idea what this does, but it's magic. Without it, quad textures appear blueish and dark.
         glPushMatrix();
 
-        glTranslatef(x, y, z);                                                                                          // Move to position to draw TODO is this needed?
-        // set the color of the quad (R,G,B,A)
+        glTranslatef(x, y, z);                                                                                          // Set draw origin
 
-        GL40.glColor4f(0,0,0,0);
-        glBindTexture(GL_TEXTURE_2D, texture);                                                                          // select 2d texture to use by id
-        glBegin(GL_QUADS);                                                                                              // Notify we're drawing quad co-oords
-                glTexCoord3f(1.0f, 1.0f,z);    glVertex3f(x, y, z);                                                // Plot all four corners of the quad
-                glTexCoord3f(1.0f, 0.0f,z);    glVertex3f(x, y + h, z);                                        // VERT Co-ord : Placement of the quad's corners
-                glTexCoord3f(0.0f, 0.0f,z);    glVertex3f(x + w, y + h, z);                                 // TEX CO-ord : Placement of the texture within the quad. Value is from 0.0 to 1.0,
-                glTexCoord3f(0.0f, 1.0f,z);    glVertex3f(x + w, y, z);                                         // representing 0 to 100 percentage of the parent quad.
-            glEnd();                                                                                                    // Nofify we've finished drawing quad
+        glBindTexture(GL_TEXTURE_2D, texture);                                                                          // select 2D texture to use by id
+
+        glBegin(GL_QUADS);                                                                                              // Notify GL we're drawing quad co-oords
+                glTexCoord3f(1.0f, 1.0f,z);    glVertex3f(x, y, z);                                              // Plot all four corners of the quad
+                glTexCoord3f(1.0f, 0.0f,z);    glVertex3f(x, y + h, z);                                      // glVertCoord : Placement of the quad's corners
+                glTexCoord3f(0.0f, 0.0f,z);    glVertex3f(x + w, y + h, z);                               // glTexCoord  : Placement of the texture within the quad. Value is from 0.0 to 1.0,
+                glTexCoord3f(0.0f, 1.0f,z);    glVertex3f(x + w, y, z);                                       //               representing 0 to 100 percentage of the parent quad.
+            glEnd();                                                                                                    // Notify GL we've finished drawing quad
         glPopMatrix();
     }
 

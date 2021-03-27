@@ -138,10 +138,8 @@ public class Window {
                 WorldRenderer.world.xoff++;
             else if (key == GLFW_KEY_A && action == GLFW_PRESS)
                 WorldRenderer.world.xoff--;
-            else if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+            else if (key == GLFW_KEY_F6 && action == GLFW_PRESS)
                 WorldRenderer.world.swapInterp();
-
-
         });
 
 

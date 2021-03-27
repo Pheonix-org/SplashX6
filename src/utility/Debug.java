@@ -24,7 +24,7 @@ public class Debug {
     public static int debugValue = 0;
     public static boolean verbose = false;
 
-    public static final Random random = new Random();
+
     //#endregion constants
 
     //#region fields

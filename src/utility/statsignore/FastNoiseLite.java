@@ -1,4 +1,4 @@
-package utility;// MIT License
+package utility.statsignore;// MIT License
 //
 // Copyright(c) 2020 Jordan Peck (jordan.me2@gmail.com)
 // Copyright(c) 2020 Contributors
