@@ -140,7 +140,10 @@ public class TileSet {
         sheetRows = tileImages.length / sheetColumns;
 
         // Fetch 'tiles' dictionary as a hashmap
-        Tiles = (HashMap<String, String>) TilesetData.get("world");
+        Tiles = (HashMap<String, String>) TilesetData.get("tiles");
+
+        // TODO This isn't even the right key, how did this ever work???
+        // TODO mac doesn't raise an issue when there is no matching plist dictionary. How is this possible? XMLWise?
 
         // Store all tiles
         int tileIndex = 0;

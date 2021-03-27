@@ -207,7 +207,7 @@ public abstract class Renderer {
             return -1;
         }
 
-        // We no have an buffer of colours, representing the image. Now we just need to save it to video ram via opengl
+        // We no have a buffer of colours, representing the image. Now we just need to save it to video ram via opengl
         int texId = loadBufferedimageToOpenGL(buf, width, height);
         textures.put(texId, path);                                                                                      // Store the id and path, so we know the ID of all images
         return texId;

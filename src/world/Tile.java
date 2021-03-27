@@ -56,7 +56,9 @@ public class Tile {
         west  = _west;
 
         String tileNameT =  _north + "_" + _east + "_" + _south + "_" + _west;
-        tileSetName = TileSet.findSet(tileNameT);
+
+        tileSetName = TileSet.findSet(tileNameT); // TODO No null check
+        assert tileSetName != null;
         tileName = tileSetName + '.' + tileNameT;
 
         cachedID = TileSet.FindTileTexture(tileName);

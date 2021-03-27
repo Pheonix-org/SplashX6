@@ -1,3 +1,11 @@
+# Bug list
+
+- [ ] GL resolution is fucked on windows
+- [ ] Resources aren't accessible once exported
+- [ ] Blank space at y max on windows
+- [ ] Tileset data values aren't checked for format. Regex?
+- [ ] tileset dictionary key is invalid, but somehow still loads?
+
 # Roadmap
 
 - [x] Open GL initalisation

@@ -154,6 +154,9 @@ public class Window {
         width = vmode.width();
         height = vmode.height();
         glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, width, height, vmode.refreshRate());
+        // TODO Windows doesn't handle the fs call well :/
+        // Dylan had a similar problem with glfw sizing on windows.
+        // Always renders at 1080?
     }
 
     /**
