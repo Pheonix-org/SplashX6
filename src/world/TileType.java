@@ -1,4 +1,4 @@
-package tiles;
+package world;
 
 /**
  * <h1></h1>

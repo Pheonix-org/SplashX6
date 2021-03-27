@@ -1,11 +1,11 @@
 package utility;
 
+import input.InputHandler;
+import input.InputMaster;
 import rendering.WorldRenderer;
 import rendering.Window;
-import tiles.TileSet;
-import tiles.World;
-
-import javax.swing.*;
+import world.TileSet;
+import world.World;
 
 
 /**
@@ -45,7 +45,10 @@ public class main {
 
     public static void startup() {
         TileSet.loadAllTilesets();
+        InputMaster.setDefaultInputCallbacks();
+
         r.setWorld(new World());
+
     }
 
     public static void shutdown() {

@@ -33,12 +33,12 @@ public class ErrorRenderer extends Renderer {
      * <h2>Overridable method to perform initalisation code before a renderer renders the first frame</h2>
      */
     @Override
-    public void preRender() {
+    public void doPreRender() {
         error = importTexture("error.png");
     }
 
     @Override
-    public void renderFrame() {
+    public void doRender() {
         renderQuad(error, 0,0, main.window.getWidth(), main.window.getHeight());
     }
     //#endregion operations

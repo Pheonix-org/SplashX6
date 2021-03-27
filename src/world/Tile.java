@@ -1,4 +1,4 @@
-package tiles;
+package world;
 
 import utility.Utility;
 

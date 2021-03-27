@@ -1,19 +1,10 @@
 package rendering;
 
-import tiles.Tile;
-import tiles.TileSet;
-import tiles.World;
-import utility.Debug;
+import world.Tile;
+import world.World;
 import utility.main;
-import xmlwise.XmlParseException;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 
@@ -38,6 +29,8 @@ public class WorldRenderer extends Renderer {
     //TODO move this stuff to a game hypervisor
     public static World world;
 
+    public static int subXOff = 0;
+    public static int subYOff = 0;
 
 
     //#endregion fields
@@ -53,30 +46,31 @@ public class WorldRenderer extends Renderer {
 
 
     @Override
-    public void renderFrame() {
+    public void doRender() {
         if (world == null) return;  // Don't render if there's no world to render.
+
 
         glTileBlendMode();
 
-        final Rectangle viewport = new Rectangle(0, BASE_HEIGHT,main.window.getWidth(),main.window.getHeight() - TOP_HEIGHT);
+        final Rectangle viewport = new Rectangle(1-subXOff-(TILE_WIDTH*2), subYOff - (TILE_HEIGHT * 2), main.window.getWidth() + (TILE_WIDTH * 4),main.window.getHeight() + (TILE_WIDTH * 2));
 
         int columns = (int) (viewport.getWidth() / TILE_WIDTH); // TODO floor these doubles?
         int rows    = (int) (viewport.getHeight() / TILE_HALF_HEIGHT);
 
-        Point drawLoc = new Point(viewport.x - TILE_QUARTER_WIDTH, viewport.y);
+        Point drawLoc = new Point(viewport.x + TILE_QUARTER_WIDTH, viewport.y);
 
         for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < columns; x++) {
+            for (int x = 0; x < columns; x++) { // TODO doesn't care if world is smaller than is displayable, will still itterate over more rows than exist.
                 Tile tile = world.getTile(x,y);
                 if (tile == null || tile.cachedID == -1)
                     continue; // This shouldn't be hit, it's just for safety. It would indicate a problem with the map data. TODO how should we handle this?
-                renderQuad(tile.cachedID, drawLoc.x, drawLoc.y, TILE_WIDTH, TILE_HEIGHT);
+                renderQuad(tile.cachedID, drawLoc.x, drawLoc.y, TILE_WIDTH + 2, TILE_HEIGHT + 2); // Adding two pixels to the width and height removes black lines between tiles.
                 drawLoc.x += TILE_WIDTH;
             }
             drawLoc.y += TILE_HALF_HEIGHT;
             drawLoc.x = viewport.x;
 
-            if ((y & 1) == 1)
+            if ((y & 1) != 1)
                 drawLoc.x -= TILE_QUARTER_WIDTH;
             else
                 drawLoc.x += TILE_QUARTER_WIDTH;
@@ -86,7 +80,7 @@ public class WorldRenderer extends Renderer {
     // TODO create some kind of startup helper, we shouldn't load stuff on a pre-render
 
     @Override
-    public void preRender() {
+    public void doPreRender() {
         renderQuad(importTexture("splash.png"), 0,0, main.window.getWidth(), main.window.getHeight());
         glfwSwapBuffers(main.window.getID());
         // Add audio here

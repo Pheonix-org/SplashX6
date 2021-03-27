@@ -3,6 +3,7 @@ package rendering;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import org.lwjgl.opengl.GL40;
 import utility.Debug;
+import utility.Utility;
 import utility.main;
 
 import javax.imageio.ImageIO;
@@ -34,14 +35,15 @@ public abstract class Renderer {
      */
      public static Renderer RenderHelper = new Renderer(){
         @Override
-        public void renderFrame() { }
+        public void doRender() { }
      };
 
     /**
      * <h2>Size in pixels of the tiles when displayed on screen</h2>
      */
-    public static int TILE_WIDTH = 64, TILE_HEIGHT = TILE_WIDTH / 2, TILE_HALF_HEIGHT = TILE_HEIGHT / 2, TILE_HALF_WIDTH = TILE_WIDTH / 2, TILE_QUARTER_HEIGHT = TILE_HALF_HEIGHT / 2, TILE_QUARTER_WIDTH = TILE_HALF_WIDTH / 2;
+    public static int TILE_WIDTH = 84, TILE_HEIGHT = TILE_WIDTH / 2, TILE_HALF_HEIGHT = TILE_HEIGHT / 2, TILE_HALF_WIDTH = TILE_WIDTH / 2, TILE_QUARTER_HEIGHT = TILE_HALF_HEIGHT / 2, TILE_QUARTER_WIDTH = TILE_HALF_WIDTH / 2;
 
+    public static final int MIN_TILE_WIDTH = 34;
     /**
      * <h2>The smallest permittable width for tiles.</h2>
      * Tile quads rendering smaller than this cause rendering issues.
@@ -53,7 +55,8 @@ public abstract class Renderer {
      */
     @Deprecated
     public static void reCalcTile(){
-        TILE_WIDTH = 64 + Debug.debugValue;
+        TILE_WIDTH = Math.max(84 + Debug.debugValue, MIN_TILE_WIDTH);
+        TILE_WIDTH = Utility.roundToNearestMultiple(TILE_WIDTH, 2);
         TILE_HEIGHT = TILE_WIDTH / 2;
         TILE_HALF_HEIGHT = TILE_HEIGHT / 2;
         TILE_HALF_WIDTH = TILE_WIDTH / 2;
@@ -85,6 +88,15 @@ public abstract class Renderer {
      * @see Window#addRenderer(Renderer)
      */
     private float StackPosition = 0f;
+
+    /**
+     * <h2>Should the window be re-renered?</h2>
+     */
+    public static boolean frameDirty = true;
+
+    public static void shouldRerender() {
+        frameDirty = true;
+    }
 
     /**
      * <h2>Has the graphics library been configured ready for use?</h2>
@@ -327,13 +339,21 @@ public abstract class Renderer {
         StackPosition++;
     }
 
+    public void preRender(){
+        shouldRerender();
+        doPreRender();
+    }
     /**
      * <h2>Overridable method to perform initalisation code before a renderer renders the first frame</h2>
      */
-    public void preRender() {};
+    public void doPreRender() { };
+
+    public void renderFrame(){
+        doRender();
+    }
 
     /**
      * <h2>This renderer should now render to the frame buffer</h2>
      */
-    public abstract void renderFrame();
+    public abstract void doRender();
 }

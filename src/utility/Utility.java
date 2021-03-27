@@ -80,6 +80,10 @@ public final class Utility {
     public static boolean checkIn2DBounds(int x, int y, Object[][] arr) {
         return (y < 0|| x < 0 || x >= arr.length || y >= arr[0].length);
     }
+
+    public static int roundToNearestMultiple(float value, float multiple){
+        return (int) (multiple*(Math.round(value/multiple)));
+    }
     // I tried to implement above by catching an out of bounds exception, but for some reason it wasn't catching it so i resorted to calculating it which is probably slower but oh well
     //#endregion static
 }

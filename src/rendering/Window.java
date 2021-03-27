@@ -2,15 +2,14 @@ package rendering;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL40;
-import org.lwjgl.opengl.GL40.*;
 import org.lwjgl.system.MemoryStack;
+import utility.Debug;
 import utility.main;
 
+import java.awt.*;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -19,8 +18,11 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
+import static rendering.Renderer.TILE_WIDTH;
+import static rendering.WorldRenderer.*;
+
 /**
- * <h1>The utility.main game window</h1>
+ * <h1>The main game window</h1>
  * <br>
  * <p>
  * A headless window which displays a provided renderer.
@@ -113,36 +115,6 @@ public class Window {
         // presses.
         glfwSetWindowFocusCallback(window, (o,x) -> {});
 
-        // TODO figure out a nice way to specify key callbacks, outside of the window creation.
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, (w, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(window, true);                                                           // We will detect this in the rendering loop
-            }
-            //TODO proper scale vars
-            else if (key == GLFW_KEY_KP_SUBTRACT && action == GLFW_PRESS) {
-                utility.Debug.debugValue-=4;
-                Renderer.reCalcTile();
-            }
-            else if (key == GLFW_KEY_KP_ADD && action == GLFW_PRESS) {
-                utility.Debug.debugValue+=4;
-                Renderer.reCalcTile();
-            }
-            else if (key == GLFW_KEY_F5 && action == GLFW_PRESS)
-                WorldRenderer.world.regenerate();
-            else if (key == GLFW_KEY_W && action == GLFW_PRESS)
-                WorldRenderer.world.yoff += 2;
-            else if (key == GLFW_KEY_S && action == GLFW_PRESS)
-                WorldRenderer.world.yoff -= 2;
-            else if (key == GLFW_KEY_D && action == GLFW_PRESS)
-                WorldRenderer.world.xoff++;
-            else if (key == GLFW_KEY_A && action == GLFW_PRESS)
-                WorldRenderer.world.xoff--;
-            else if (key == GLFW_KEY_F6 && action == GLFW_PRESS)
-                WorldRenderer.world.swapInterp();
-        });
-
-
         // Pull some kind of memory bullshittery to get opengl to write the size of the window
         // into a buffered variable in an artificial thread frame
         // No, I don't know how this works.
@@ -179,8 +151,8 @@ public class Window {
      */
     private void setCorrectRenderSize() {
         final GLFWVidMode vmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-        height = vmode.height();
         width = vmode.width();
+        height = vmode.height();
         glfwSetWindowMonitor(window, glfwGetPrimaryMonitor(), 0, 0, width, height, vmode.refreshRate());
     }
 
@@ -214,11 +186,14 @@ public class Window {
         // Run the rendering loop until the user has attempted to close
         // the window or has pressed the ESCAPE key.
         while ( !glfwWindowShouldClose(window) ) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                                                   // clear the framebuffer
+            if (Renderer.frameDirty) {
+                glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);                          // clear the framebuffer
+                RenderStack.forEach(Renderer::renderFrame);                                                                 // Invoke all renderers to render to the frame buffer.
+                glfwSwapBuffers(window);                                                                                    // swap the buffer, displaying the buffer we just drew to.
+                Renderer.frameDirty = false;
+            }
 
-            RenderStack.forEach(Renderer::renderFrame);                                                                 // Invoke all renderers to render to the frame buffer.
 
-            glfwSwapBuffers(window);                                                                                    // swap the buffer, displaying the buffer we just drew to.
 
             glfwPollEvents();                                                                                           // Poll the window for events
         }
@@ -262,14 +237,14 @@ public class Window {
      *  Where everytime a new renderer is added, all existing renderers get shifted up,
      *  and the newest is added at the bottom; closest to the camera, and on top of all
      *  existing camera.
-     * @throws java.util.ConcurrentModificationException if called from within {@link Renderer#preInit()} or {@link Renderer#renderFrame()},
+     * @throws java.util.ConcurrentModificationException if called from within {@link Renderer#preInit()} or {@link Renderer#doRender()},
      *         because they operate within the {@link Window#RenderStack}'s foreach operator.
      */
     public synchronized void addRenderer(Renderer r){
         RenderStack.forEach(Renderer::NextStackPosition);
         r.setStackPosition(0f);
         RenderStack.add(r);
-        r.preRender();
+        r.doPreRender();
     }
 
     /**

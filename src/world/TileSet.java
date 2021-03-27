@@ -1,11 +1,10 @@
-package tiles;
+package world;
 
 import rendering.Renderer;
 import utility.main;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -141,7 +140,7 @@ public class TileSet {
         sheetRows = tileImages.length / sheetColumns;
 
         // Fetch 'tiles' dictionary as a hashmap
-        Tiles = (HashMap<String, String>) TilesetData.get("tiles");
+        Tiles = (HashMap<String, String>) TilesetData.get("world");
 
         // Store all tiles
         int tileIndex = 0;

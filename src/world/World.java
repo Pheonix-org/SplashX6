@@ -1,4 +1,4 @@
-package tiles;
+package world;
 
 import utility.statsignore.FastNoiseLite;
 import utility.Utility;
@@ -70,7 +70,7 @@ public final class World {
      * <br>
      * Used to change the area of the map being displayed on screen.
      */
-    public static int xoff = 0, yoff = 0;
+    public int xoff = 0, yoff = 0;
 
     /**
      * <h2>The worlds tiles prior to interpolation</h2>
@@ -99,7 +99,7 @@ public final class World {
      * @param h Width of the new world to generate. Must be positive
      */
     public World(int w, int h){
-        generateWorld(w,h);
+       generateWorld(w,h);
     }
     //#endregion constructors
 
@@ -265,6 +265,22 @@ public final class World {
         Tile[][] buffer = interpolatedTiles;
         interpolatedTiles = worldTiles;
         worldTiles = buffer;
+    }
+
+    public void offLeft(){
+        if (xoff > 0) xoff -= 1;
+    }
+
+    public void offRight(){
+        if (xoff < width()) xoff += 1;
+    }
+
+    public void offDown(){
+        if (yoff > 1) yoff -= 2;
+    }
+
+    public void offUp(){
+        if (yoff < height() - 1) yoff += 2;
     }
 
     /**
