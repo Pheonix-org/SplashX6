@@ -8,6 +8,9 @@
 
 # Roadmap
 
+- [x] Error screen on reported fatal
+- [ ] Uncaught exception handler
+
 - [x] Open GL initalisation
 - [x] Baked UI assets
 - [x] Ready to use tilesets
