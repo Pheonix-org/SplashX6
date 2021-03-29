@@ -1,17 +1,10 @@
 package rendering;
 
-import tiles.TileSet;
-import utility.Debug;
+import world.Tile;
+import world.World;
 import utility.main;
-import xmlwise.XmlParseException;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.awt.*;
 
 import static org.lwjgl.glfw.GLFW.glfwSwapBuffers;
 
@@ -32,82 +25,76 @@ public class WorldRenderer extends Renderer {
     //#endregion constants
 
     //#region fields
+
+    //TODO move this stuff to a game hypervisor
+    public static World world;
+
+    public static int subXOff = 0;
+    public static int subYOff = 0;
+
+
     //#endregion fields
 
     //#region constructors
     //#endregion constructors
 
     //#region operations
-    final String sheetchars = "padgst";
-    private char randomchar(){
-        return sheetchars.charAt(Debug.random.nextInt(sheetchars.length()));
+
+    public void setWorld(World world) {
+        this.world = world;
     }
 
-    private int genRandomTile(){
-        int id = -1;
-        while (id == -1) {
-            String s = randomchar() + "." + randomchar() + "_" + randomchar() + "_" + randomchar() + "_" + randomchar();
-            id = TileSet.FindTileTexture(s);
-        }
-        return id;
-    }
 
     @Override
-    public void renderFrame() {
-        int tex = genRandomTile();
-        int cols = (main.window.getWidth() / TILE_WIDTH);
-        int rows = ((main.window.getHeight() / TILE_HEIGHT) * 2) ;
-        for (int y = rows; y >= 0; y--) {
-            for (int x = cols; x >= 0; x--) {
-                //renderQuad(Debug.debugValue, TILE_WIDTH * (x % cols) + + (((x / cols) % 2 != 0) ? 0 : (TILE_WIDTH / 2)), (TILE_HEIGHT / 2) * y);
-                renderQuad(tex, x * TILE_WIDTH + ((y % 2 == 0) ? TILE_WIDTH / 2 : 0), y * (TILE_HEIGHT / 2));
-            }
-        }
+    public void doRender() {
+        if (world == null) return;  // Don't render if there's no world to render.
 
-        synchronized (this){
-            try {
-                wait(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+        glTileBlendMode();
+
+        final Rectangle viewport = new Rectangle(1-subXOff-(TILE_WIDTH*2), subYOff - (TILE_HEIGHT * 2), main.window.getWidth() + (TILE_WIDTH * 4),main.window.getHeight() + (TILE_WIDTH * 2));
+
+        int columns = (int) (viewport.getWidth() / TILE_WIDTH); // TODO floor these doubles?
+        int rows    = (int) (viewport.getHeight() / TILE_HALF_HEIGHT);
+
+        Point drawLoc = new Point(viewport.x + TILE_QUARTER_WIDTH, viewport.y);
+
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < columns; x++) { // TODO doesn't care if world is smaller than is displayable, will still itterate over more rows than exist.
+                Tile tile = world.getTile(x,y);
+                if (tile == null || tile.cachedID == -1)
+                    continue; // This shouldn't be hit, it's just for safety. It would indicate a problem with the map data. TODO how should we handle this?
+                renderQuad(tile.cachedID, drawLoc.x, drawLoc.y, TILE_WIDTH + 2, TILE_HEIGHT + 2); // Adding two pixels to the width and height removes black lines between tiles.
+                drawLoc.x += TILE_WIDTH;
             }
+            drawLoc.y += TILE_HALF_HEIGHT;
+            drawLoc.x = viewport.x;
+
+            if ((y & 1) != 1)
+                drawLoc.x -= TILE_QUARTER_WIDTH;
+            else
+                drawLoc.x += TILE_QUARTER_WIDTH;
         }
     }
 
     // TODO create some kind of startup helper, we shouldn't load stuff on a pre-render
+
     @Override
-    public void preRender() {
-        renderQuad(importTexture("splash.png"), 0,0,0, main.window.getWidth(), main.window.getHeight());
+    public void doPreRender() {
+        renderQuad(importTexture("splash.png"), 0,0, main.window.getWidth(), main.window.getHeight());
         glfwSwapBuffers(main.window.getID());
-
-
-         try {
-             // This is all lambda, good luck reading it - it's all one line of code lol
-             Files.walk(                                                                                                // Walk through filesystem
-                     Paths.get(ClassLoader.getSystemResource("tilesets/")                                         // under the tileset directory
-                             .toURI())
-             )
-                     .filter(Files::isRegularFile)                                                                      // Looking for files (not directories)
-                     .filter(path -> path.toString().endsWith(".tileset"))                                              // That end with .tileset
-
-                     .forEach(v -> {                                                                                    // For every resulting *.tileset file,
-                try {
-                    TileSet.loadTileset(new File(String.valueOf(v)));                                                   // load the tileset
-                } catch (IOException | XmlParseException e) {
-                    // This *.tileset file could not be read
-                    System.err.println("Failed to load tileset file '" + v.getFileName() + "'!");
-                }
-                System.out.println("Loaded tileset " + v.toString());
-
-             });
-             } catch (URISyntaxException | IOException e) {
-                // Resource folder not available.
-                e.printStackTrace();
-                System.err.println("Failed to find or access tileset directory!");
-                System.exit(-1);
-         }
+        // Add audio here
     }
+
     //#endregion operations
 
     //#region static
+    public static int calcRows(){
+        return ((main.window.getHeight() - GAMEVIEW_HEIGHT_REDUCTION) / TILE_HEIGHT) * 2;
+    }
+
+    public static int calcHeight(){
+        return calcRows() * TILE_HEIGHT / 2;
+    }
     //#endregion static
 }

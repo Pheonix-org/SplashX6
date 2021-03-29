@@ -1,11 +1,11 @@
 package utility;
 
-import com.shinkson47.opex.backend.runtime.errormanagement.exceptions.OPEXStartFailure;
-import com.shinkson47.opex.backend.runtime.threading.OPEXGame;
-import com.shinkson47.opex.backend.toolbox.Version;
-import com.shinkson47.opex.frontend.window.prefabs.Splash;
+import input.InputHandler;
+import input.InputMaster;
 import rendering.WorldRenderer;
 import rendering.Window;
+import world.TileSet;
+import world.World;
 
 
 /**
@@ -19,42 +19,42 @@ import rendering.Window;
  * @version 1
  * @since v1
  */
-public class main extends OPEXGame {
+public class main {
     //#region operations
     public static Window window;
+    private static WorldRenderer r = new WorldRenderer();
 
     /**
      * Main entry point. Starts OPEX with this game
      * @param args
      * @throws OPEXStartFailure
      */
-    public static void main(String[] args) throws OPEXStartFailure {
-        Splash.disable();   // You would not believe the amount of problems a simple splash screen is causing -_-
-        new main().run();
-
-        // Skip starting opex for now, it initalises AWT, which uses GLFW. GLFW can't initalise for lwjgl if it's been initialized for awt swing.
-        // I'll need to create an option to prevent starting awt.
-
-        //new OPEX(new utility.main());
+    public static void main(String[] args)  {
+        new Window(r);
     }
 
     /**
-     * OPEX has run the game. Game code starts here.
+     * <h2>Declare a fatal problem. Close the window, tell the user, close the game.</g2>
+     * @param s
      */
-    @Override
-    public void run() {
-        new Window(new WorldRenderer());
+    public static void fatal(String s, Exception e) {
+        System.err.println(s);
+        e.printStackTrace();
+        window.fatal();
     }
 
-    @Override
-    public void stop() {
+    public static void startup() {
+        TileSet.loadAllTilesets();
+        InputMaster.setDefaultInputCallbacks();
+
+        r.setWorld(new World());
 
     }
 
-    @Override
-    public Version version() {
-        return new Version(2021, 3, 20, "A");
+    public static void shutdown() {
+
     }
+
     //#endregion operations
 
     //#region static

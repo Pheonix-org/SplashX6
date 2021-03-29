@@ -3678,7 +3678,7 @@
 											"top": 398,
 											"width": 111,
 											"height": 13,
-											"text": "+main",
+											"text": "+utility.main",
 											"horizontalAlignment": 0
 										}
 									],
@@ -3769,7 +3769,7 @@
 							"top": 280,
 							"width": 107.90869140625,
 							"height": 77,
-							"text": "atm main just makes a new window, with a new WorldRenderer"
+							"text": "atm utility.main just makes a new window, with a new WorldRenderer"
 						}
 					]
 				},
@@ -4851,7 +4851,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF4XMiDWPab8Js="
 							},
-							"name": "main"
+							"name": "utility.main"
 						}
 					]
 				}
