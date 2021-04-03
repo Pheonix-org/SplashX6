@@ -100,7 +100,7 @@ public class Window {
         Renderer.preInit();                                                                                             // Notify of window init. used for first time rendering set-up.
         GLFWErrorCallback.createPrint(System.err).set();                                                                // Error call back stream. Prints errors to system.err
 
-        window = glfwCreateWindow(height, width, title, NULL, NULL);                                                    // Create the window in GLFW memory, and get the ID.
+        window = glfwCreateWindow(width, height, title, NULL, NULL);                                                    // Create the window in GLFW memory, and get the ID.
 
         if ( window == NULL )
             throw new RuntimeException("Failed to create the GLFW window");
@@ -244,10 +244,15 @@ public class Window {
      *         because they operate within the {@link Window#RenderStack}'s foreach operator.
      */
     public synchronized void addRenderer(Renderer r){
-        RenderStack.forEach(Renderer::NextStackPosition);
+        //RenderStack.forEach(Renderer::NextStackPosition);
         r.setStackPosition(0f);
         RenderStack.add(r);
         r.doPreRender();
+    }
+
+    public void stripRenderer(Renderer r){
+        //RenderStack.forEach(Renderer::NextStackPosition);
+        RenderStack.remove(r);
     }
 
     /**

@@ -32,6 +32,7 @@ public class Log {
      */
     public static void New(String s){
         GameLogs.add(s);
+        System.out.println(s);
     }
 
     //#endregion static
