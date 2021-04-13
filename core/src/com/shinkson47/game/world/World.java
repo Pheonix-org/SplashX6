@@ -2,25 +2,17 @@ package com.shinkson47.game.world;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.shinkson47.game.Utility;
-import com.shinkson47.game.rendering.Renderer;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Vector;
 
 import static com.shinkson47.game.Utility.createNoiseGenerator;
 
@@ -38,32 +30,75 @@ import static com.shinkson47.game.Utility.createNoiseGenerator;
  * @since v1
  */
 public final class World {
+
+    /**
+     * <h2>A blank TMX tilemap that contains all of our TSX tilesets</h2>
+     * There's no way to directly load TSX, but GDX can load TMX and we can get the tilesets from
+     * the loaded {@link TiledMap}
+     */
     public static final TiledMap tilesets = new TmxMapLoader().load("tmx/tilesets.tmx");
 
     /**
-     * The world that the game is focusing on. This will be the map rendered and interacted with.
+     * <h2>The world that the game is focusing on. This will be the map rendered and interacted with.</h2>
      */
     public static World focusedWorld;
 
+    /**
+     * <h2>A map of 'tile name' => tile ID'</h2>
+     * Where the name is the "x_x_x_x" structure,
+     * representing what type of tile is shown on each corner of the tile,
+     * starting at north and going clockwise.
+     * <br><br>
+     * The ID is determined by it's position in the TMX load order.
+     * <br>
+     * First tileset starts at 1, each tileset contains 216 tiles. Thus
+     * <blockquote>
+     *     <code>
+     *         ID = tilesetStart + tileIndex
+     *     </code>
+     * </blockquote>
+     *.
+     * <br>
+     * The order of tilesets can be viewed and changed within the "tilesets.tmx" file.
+     * Tilesets can be viewed in thier "tsx" file.
+     * <br><br>
+     * This field fetches it's data from "tmx/tsdata.plist", which defines the map.
+     *
+     * @apiNote The value datatype is int, but the loader will only provide an object. Soz.
+     */
     public static Map<String, Object> tilesetMap;
 
+    // Anonymous static constructor that loads the tsdata.plist file.
     static {
         try {
             tilesetMap = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
         } catch (XmlParseException ignored) { }
     }
 
+
+    /**
+     * <h2>Creates a new world, and stores it in {@link World#focusedWorld}</h2>
+     * @return
+     * @apiNote Has no regard for any existing world. It will be overwritten.
+     */
     public static World create(){
         focusedWorld = new World();
         return focusedWorld;
     }
 
+    /**
+     * <h2>Disposes world resources</h2>
+     */
     public static void dispose() {
         tilesets.dispose();
     }
 
 
     //#region constants
+    /**
+     * <h2>The size of tiles in pixels</h2>
+     */
+    public static final int TILE_WIDTH = 64, TILE_HEIGHT = 64;
 
     /**
      * <h2>Defines sea level</h2>
@@ -81,7 +116,6 @@ public final class World {
     //#endregion constants
 
     //#region fields
-
     /**
      * <h2>Perlin used for landmass</h2>
      * Used to determine what parts of the map should be water,
@@ -123,14 +157,7 @@ public final class World {
      * <h2>The worlds tiles prior to interpolation</h2>
      * @apiNote Note well : raw x and y are inverted. <c>worldTile[y][x]</c>
      */
-    private Tile[][] worldTiles = new Tile[][]{
-        {new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s")},
-        {new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("s_s_s_s"),new Tile("s_s_s_s")},
-        {new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("s_s_s_s")},
-        {new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("s_s_s_s"),new Tile("s_s_s_s")},
-        {new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("s_s_s_s")},
-        {new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s")}
-    };
+    private Tile[][] worldTiles;
 
     /**
      * <h2>The tile of this world after interpolation</h2>
@@ -149,24 +176,19 @@ public final class World {
 
     //#region constructors
     /**
-     * <h2>Creates a new random 200x200 world</h2>
+     * <h2>Creates a new random 600x600 world</h2>
      */
-    public World() {
-        this(600,600);
-    }
+    public World() { this(600,600); }
 
     /**
      * <h2>Creates a new random WxH world</h2>
      * @param w Width of the new world to generate. Must be positive.
      * @param h Width of the new world to generate. Must be positive
      */
-    public World(int w, int h){
-       generateWorld(w,h);
-    }
+    public World(int w, int h) { generateWorld(w,h); }
     //#endregion constructors
 
     //#region operations
-
     /**
      * <h2>Replaces and content in this world with a newly generated one</h2>
      * @param w Width of the new world to generate. Must be positive.
@@ -199,25 +221,8 @@ public final class World {
         // Generate civilisations & barbarians
         //genPopulation();
 
-        //TODO
-        genLayers();
-    }
-
-    private void genLayers() {
-        addTileSets(map);
-        for (int y = 0; y < worldTiles.length; y++)
-            for (int x = 0; x < worldTiles[0].length; x++) {
-                TiledMapTileLayer.Cell c = new TiledMapTileLayer.Cell();
-                c.setTile(map.getTileSets().getTile((Integer) tilesetMap.get(worldTiles[y][x].tileName)));
-                UnLerpedTileLayer.setCell(x,(UnLerpedTileLayer.getHeight() - 1) - y,c);
-
-
-                TiledMapTileLayer.Cell c1 = new TiledMapTileLayer.Cell();
-                c1.setTile(map.getTileSets().getTile((Integer) tilesetMap.get(interpolatedTiles[y][x].tileName)));
-                LerpedTileLayer.setCell(x, (LerpedTileLayer.getHeight() - 1) - y,c1);
-            }
-
-        map.getLayers().add(LerpedTileLayer);
+        // Construct all generated world data into a GDX TiledMap.
+        convGDX();
     }
 
     /**
@@ -229,8 +234,8 @@ public final class World {
     private void genPre(int w, int h) {
         map                 = new TiledMap();
         worldTiles          = new Tile[w][h]; //TODO constants for tile size
-        LerpedTileLayer     = new TiledMapTileLayer(w, h, 64, 32);
-        UnLerpedTileLayer   = new TiledMapTileLayer(w, h, 64, 32);
+        LerpedTileLayer     = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
+        UnLerpedTileLayer   = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
         ContinentalHeatmap  = createNoiseGenerator();
         BiomeHeatmap        = createNoiseGenerator();
         HeightHeatmap       = createNoiseGenerator();
@@ -241,7 +246,7 @@ public final class World {
      * Creates water and land mass, where the landmass is modified by {@link World#getBiomeTile(int, int)}
      */
     private void genBase() {
-        for (int y = 0; y < worldTiles.length; y++) {                                                              // For every x, y tile
+        for (int y = 0; y < worldTiles.length; y++) {                                                                   // For every x, y tile
             for (int x = 0; x < worldTiles[0].length; x++) {
 
                 worldTiles[y][x] = new Tile(                                                                            // Set this tile to...
@@ -260,11 +265,11 @@ public final class World {
      * @see Tile#interpolate(Tile, Tile, Tile, Tile)
      */
     private void genInterpolate() {
-        interpolatedTiles = new Tile[height()][width()];                // Temporary buffer. Prevents blending with tiles that we just modified, which caused some funky blending behaviour.
+        interpolatedTiles = new Tile[height()][width()];                // Blending buffer. Prevents blending with tiles that we just modified, which caused some funky blending behaviour.
 
         for (int y = 0; y < worldTiles.length; y++)                     // For every tile,
             for (int x = 0; x < worldTiles[0].length; x++) {
-                interpolatedTiles[y][x] = worldTiles[y][x].interpolate(
+                interpolatedTiles[y][x] = worldTiles[y][x].interpolate( // Interpolate with those around it.
                         getStaggeredTile(x, y-1),
                         getStaggeredTile(x+1, y-1),
                         getStaggeredTile(x+1, y+1),
@@ -279,7 +284,6 @@ public final class World {
      */
     private String getBiomeTile(int x, int y){
         float value = BiomeHeatmap.GetNoise(x,y);
-
         if (value < -0.7)
             return "a_a_a_a";
         if (value > -0.4 && value < -0.1)
@@ -295,6 +299,35 @@ public final class World {
     }
 
     /**
+     * <h2>Constructs the GDX {@link TiledMap} stored in this world's {@link World#map}</h2>
+     * Final step, post generation.
+     */
+    private void convGDX() {
+        // Add all of the loaded tilesets to this map.
+        setTileSets(map);
+
+        for (int y = 0; y < worldTiles.length; y++)
+            for (int x = 0; x < worldTiles[0].length; x++) {
+                createCell(worldTiles[y][x].tileName, x, y, UnLerpedTileLayer);
+                createCell(interpolatedTiles[y][x].tileName, x, y, LerpedTileLayer);
+            }
+
+        map.getLayers().add(LerpedTileLayer);
+    }
+
+    /**
+     * <h2>Sub routine for {@link World#convGDX()}. Constructs cells containing tiles, and adds them to the map layer.</h2>
+     * @param tileName The resource name of the tile to be used.
+     * @param x The mapspace x to place it, within layer.
+     * @param y The mapspace y to place it, within layer.
+     */
+    private void createCell(String tileName, int x, int y, TiledMapTileLayer layer){
+        TiledMapTileLayer.Cell c = new TiledMapTileLayer.Cell();
+        c.setTile(map.getTileSets().getTile((Integer) tilesetMap.get(tileName)));
+        layer.setCell(x,(layer.getHeight() - 1) - y,c);
+    }
+
+    /**
      * <h2>Gets a tile at the raw x,y array position.</h2>
      * @return tile in worldTiles at index x, y.
      * @apiNote Does not acknowledge that rows are staggered when rendered.
@@ -302,11 +335,6 @@ public final class World {
      */
     public Tile getTile(int x, int y) {
         return Utility.checkIn2DBounds(y, x, worldTiles) ? null : worldTiles[y][x];
-    }
-
-    public TiledMap addTileSets(TiledMap map) {
-        tilesets.getTileSets().forEach(o -> map.getTileSets().addTileSet(o));
-        return map;
     }
 
     /**
@@ -335,18 +363,31 @@ public final class World {
     }
 
     /**
+     * <h2>Replaces all tilesets with those stored in {@link World#tilesets}</h2>
+     * @param map The map whose tilesets should be replaced
+     * @return map, after mutating.
+     */
+    public TiledMap setTileSets(TiledMap map) {
+        // Just to be sure, remove any tilesets from map. There's no .Clear, so i have to do this BS.
+        map.getTileSets().forEach(o -> map.getTileSets().removeTileSet(o));
+        // Copy all tilesets over to the map.
+        tilesets.getTileSets().forEach(o -> map.getTileSets().addTileSet(o));
+        return map;
+    }
+
+    /**
      * <h2>Clears the world, and generates a new one.</h2>
      */
-    public void regenerate() {
-        generateWorld(200,200);
-    }
+    public void regenerate() { generateWorld(200,200); }
 
     /**
      * <h2>Swaps {@link World#worldTiles} and {@link World#interpolatedTiles}</h2>
      * where World tiles stores the original world tiles without blending, and interpolated is after tile blending.
      * <br><br>
      * TODO this should modify an access buffer, not these variables. interpolatedtiles should say interpolated, worldtile should stay as world tiles.
+     * @deprecated These bufferes should nolonger be swapped, now that they export to GDX TileMap. Instead, swap GDX TiledMapLayers using {@link World#swapTiledInterp()}
      */
+    @Deprecated
     public void swapInterp(){
         Tile[][] buffer = interpolatedTiles;
         interpolatedTiles = worldTiles;
@@ -368,17 +409,43 @@ public final class World {
         map.getLayers().remove(0);
     }
 
-    public static int ht = 0;
-//    public static Vector3 WorldspaceToMapspace(int x, int y) {
-//        x = x/64;
-//        y = (y/64)/2;
-//        return new Vector3(
-//                x * 2 + y % 2 + y,
-//                x * 2 + y % 2 - y,
-//                0
-//        );
-//    }
 
+
+    public static int hittestResult = 0;
+    // First and most successful, yet still inaccurate cartesian to map co-oord algorithm
+
+    /**
+     * <h2>(Badly) Converts WORLD SPACE co-ordinates to map space co-ordinates</h2>
+     * Look, he's trying his best - alright?
+     * @param x WORLD SPACE x
+     * @param y WORLD SPACE y
+     * @return The tile under x, y
+     */
+    public static Vector3 WorldspaceToMapspace(int x, int y){
+
+        Vector3 mapSpace = new Vector3();
+        if (x < 0) x = -x;
+        if (y < 0) y = -y;
+        y = y*2;
+        int eventilex = (int) Math.floor(x%TILE_WIDTH);
+        int eventiley = (int) Math.floor(y%TILE_HEIGHT);
+
+        hittestResult = hitTest.getRGB(eventilex, eventiley);
+        if (hittestResult != -16777216) {
+            /* On even tile */
+            mapSpace.x = (int) Math.floor((x + TILE_WIDTH) / TILE_WIDTH) - 2;
+            mapSpace.y = (int) (2 * (Math.floor((y + TILE_HEIGHT) / TILE_HEIGHT) - 1));
+        } else {
+            /* On odd tile */
+            mapSpace.x = (int)  Math.floor((x + TILE_WIDTH / 2) / TILE_WIDTH) - 1;
+            mapSpace.y = (int)  (2 * (Math.floor((y + TILE_HEIGHT / 2) / TILE_HEIGHT)) - 1);
+        }
+        mapSpace.add(1,1,0);
+        return mapSpace;
+    }
+
+
+// Attempt 2
 //    public static Vector3 WorldspaceToMapspace(int x, int y) {
 //        // Work out the diagonal i and j coordinates of the point.
 //        // i and j are in a diagonal coordinate system that allows us
@@ -399,29 +466,17 @@ public final class World {
 //        return new Vector3(cellX, cellY, 0);
 //    }
 
+// Attempt 3
+//    public static Vector3 WorldspaceToMapspace(int x, int y) {
+//        x = x/64;
+//        y = (y/64)/2;
+//        return new Vector3(
+//                x * 2 + y % 2 + y,
+//                x * 2 + y % 2 - y,
+//                0
+//        );
+//    }
 
-    public static Vector3 WorldspaceToMapspace(int x, int y){
-
-        Vector3 mapSpace = new Vector3();
-        if (x < 0) x = -x;
-        if (y < 0) y = -y;
-        y = y*2;
-        int eventilex = (int) Math.floor(x%64);
-        int eventiley = (int) Math.floor(y%64);
-
-        ht = hitTest.getRGB(eventilex, eventiley);
-        if (ht != -16777216) {
-            /* On even tile */
-            mapSpace.x = (int) Math.floor((x + 64) / 64) - 2;
-            mapSpace.y = (int) (2 * (Math.floor((y + 64) / 64) - 1));
-        } else {
-            /* On odd tile */
-            mapSpace.x = (int)  Math.floor((x + 64 / 2) / 64) - 1;
-            mapSpace.y = (int)  (2 * (Math.floor((y + 64 / 2) / 64)) - 1);
-        }
-        mapSpace.add(1,1,0);
-        return mapSpace;
-    }
 
 
     /**
@@ -437,10 +492,13 @@ public final class World {
     public int width(){
         return worldTiles[0].length;
     }
-    //#endregion operations
 
-
+    /**
+     * <h2>Gets the GDX {@link TiledMap} of this world.</h2>
+     * @return {@link World#map}
+     */
     public TiledMap getMap() {
         return map;
     }
+    //#endregion operations
     }
