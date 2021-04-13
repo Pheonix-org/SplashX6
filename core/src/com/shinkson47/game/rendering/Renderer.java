@@ -110,10 +110,13 @@ public class Renderer{
         font.draw(batch, "HitTest : " + World.ht, mousex + 20, rendery + 40);
         batch.end();
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT))
-            ((TiledMapTileLayer) World.focusedWorld.getMap().getLayers().get(0)).setCell((int)MapSpace.x, (int)MapSpace.y, null);
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            sr.setColor(0,1,0,1);
+            ((TiledMapTileLayer) World.focusedWorld.getMap().getLayers().get(0)).setCell((int) MapSpace.x, (int) MapSpace.y, null);
+        } else
+            sr.setColor(1,1,1,1);
 
-        sr.setColor(1,1,1,1);
+
         sr.begin(ShapeRenderer.ShapeType.Line);
         sr.line(0,rendery,0,Gdx.graphics.getWidth(),rendery,0);
         sr.line(mousex,0,0,mousex,Gdx.graphics.getHeight(),0);
