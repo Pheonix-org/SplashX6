@@ -1,0 +1,2 @@
+com/shinkson47/game/desktop/DesktopLauncher.java
+ com.shinkson47.game.desktop.DesktopLauncher
