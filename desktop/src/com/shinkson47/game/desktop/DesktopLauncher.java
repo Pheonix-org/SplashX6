@@ -14,6 +14,7 @@ public class DesktopLauncher {
 		Dimension a = Toolkit.getDefaultToolkit().getScreenSize();
 		config.height = a.height;
 		config.width = a.width;
+
 		new LwjglApplication(new game(), config);
 	}
 }
