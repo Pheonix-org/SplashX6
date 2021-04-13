@@ -3,7 +3,6 @@ package com.shinkson47.game.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.shinkson47.game.game;
-import xmlwise.Plist;
 
 import java.awt.*;
 
