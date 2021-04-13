@@ -5,12 +5,22 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.shinkson47.game.Utility;
+import com.shinkson47.game.rendering.Renderer;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Vector;
 
 import static com.shinkson47.game.Utility.createNoiseGenerator;
 
@@ -66,7 +76,7 @@ public final class World {
     /**
      * <h2>The smallest permitted world size</h2>
      */
-    private final int MIN_WORLD_WIDTH = 50, MIN_WORLD_HEIGHT = 50;
+    private final int MIN_WORLD_WIDTH = 6, MIN_WORLD_HEIGHT = 6;
 
     //#endregion constants
 
@@ -113,13 +123,28 @@ public final class World {
      * <h2>The worlds tiles prior to interpolation</h2>
      * @apiNote Note well : raw x and y are inverted. <c>worldTile[y][x]</c>
      */
-    private Tile[][] worldTiles;
+    private Tile[][] worldTiles = new Tile[][]{
+        {new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s")},
+        {new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("s_s_s_s"),new Tile("s_s_s_s")},
+        {new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("s_s_s_s")},
+        {new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("t_t_t_t"),new Tile("s_s_s_s"),new Tile("s_s_s_s")},
+        {new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("t_t_t_t"),new Tile("s_s_s_s")},
+        {new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s"),new Tile("s_s_s_s")}
+    };
 
     /**
      * <h2>The tile of this world after interpolation</h2>
      * @apiNote Note well : raw x and y are inverted. <c>worldTile[y][x]</c>
      */
     public Tile[][] interpolatedTiles;
+
+    public static BufferedImage hitTest;
+    static {
+        try {
+            hitTest = ImageIO.read(Gdx.files.internal("tsdata/hittest.png").read());
+        }
+        catch (IOException e) { }
+    }
     //#endregion fields
 
     //#region constructors
@@ -127,7 +152,7 @@ public final class World {
      * <h2>Creates a new random 200x200 world</h2>
      */
     public World() {
-        this(500,500);
+        this(600,600);
     }
 
     /**
@@ -183,12 +208,13 @@ public final class World {
         for (int y = 0; y < worldTiles.length; y++)
             for (int x = 0; x < worldTiles[0].length; x++) {
                 TiledMapTileLayer.Cell c = new TiledMapTileLayer.Cell();
-                c.setTile(map.getTileSets().getTile((Integer) tilesetMap.get(worldTiles[x][y].tileName)));
-                UnLerpedTileLayer.setCell(x,y,c);
+                c.setTile(map.getTileSets().getTile((Integer) tilesetMap.get(worldTiles[y][x].tileName)));
+                UnLerpedTileLayer.setCell(x,(UnLerpedTileLayer.getHeight() - 1) - y,c);
+
 
                 TiledMapTileLayer.Cell c1 = new TiledMapTileLayer.Cell();
-                c1.setTile(map.getTileSets().getTile((Integer) tilesetMap.get(interpolatedTiles[x][y].tileName)));
-                LerpedTileLayer.setCell(x,y,c1);
+                c1.setTile(map.getTileSets().getTile((Integer) tilesetMap.get(interpolatedTiles[y][x].tileName)));
+                LerpedTileLayer.setCell(x, (LerpedTileLayer.getHeight() - 1) - y,c1);
             }
 
         map.getLayers().add(LerpedTileLayer);
@@ -203,8 +229,8 @@ public final class World {
     private void genPre(int w, int h) {
         map                 = new TiledMap();
         worldTiles          = new Tile[w][h]; //TODO constants for tile size
-        LerpedTileLayer = new TiledMapTileLayer(w, h, 64, 32);
-        UnLerpedTileLayer = new TiledMapTileLayer(w, h, 64, 32);
+        LerpedTileLayer     = new TiledMapTileLayer(w, h, 64, 32);
+        UnLerpedTileLayer   = new TiledMapTileLayer(w, h, 64, 32);
         ContinentalHeatmap  = createNoiseGenerator();
         BiomeHeatmap        = createNoiseGenerator();
         HeightHeatmap       = createNoiseGenerator();
@@ -218,7 +244,7 @@ public final class World {
         for (int y = 0; y < worldTiles.length; y++) {                                                              // For every x, y tile
             for (int x = 0; x < worldTiles[0].length; x++) {
 
-                worldTiles[x][y] = new Tile(                                                                            // Set this tile to...
+                worldTiles[y][x] = new Tile(                                                                            // Set this tile to...
                         (ContinentalHeatmap.GetNoise(x, y) < CONTINENT_THRESHOLD ) ?                                    // Will this tile be a part of a continent?
                                 "s_s_s_s"                                                                               // No, set it to water and move to next tile.
                                 :
@@ -237,12 +263,12 @@ public final class World {
         interpolatedTiles = new Tile[height()][width()];                // Temporary buffer. Prevents blending with tiles that we just modified, which caused some funky blending behaviour.
 
         for (int y = 0; y < worldTiles.length; y++)                     // For every tile,
-            for (int x = 0; x < worldTiles[y].length; x++) {
+            for (int x = 0; x < worldTiles[0].length; x++) {
                 interpolatedTiles[y][x] = worldTiles[y][x].interpolate(
-                        getStaggeredTile(x + 1, y - 1),
-                        getStaggeredTile(x, y - 1),
-                        getStaggeredTile(x, y + 1),
-                        getStaggeredTile(x + 1, y + 1)
+                        getStaggeredTile(x, y-1),
+                        getStaggeredTile(x+1, y-1),
+                        getStaggeredTile(x+1, y+1),
+                        getStaggeredTile(x, y+1)
                 );
             }
     }
@@ -342,6 +368,62 @@ public final class World {
         map.getLayers().remove(0);
     }
 
+    public static int ht = 0;
+//    public static Vector3 WorldspaceToMapspace(int x, int y) {
+//        x = x/64;
+//        y = (y/64)/2;
+//        return new Vector3(
+//                x * 2 + y % 2 + y,
+//                x * 2 + y % 2 - y,
+//                0
+//        );
+//    }
+
+//    public static Vector3 WorldspaceToMapspace(int x, int y) {
+//        // Work out the diagonal i and j coordinates of the point.
+//        // i and j are in a diagonal coordinate system that allows us
+//        // to round them to get the centre of the cell.
+//        float i = Math.round( x - y * 2 );
+//        float j = MathUtils.round( x + y * 2 );
+//
+//        // With the i and j coordinates of the centre of the cell,
+//        // convert these back into the world coordinates of the centre
+//        float centreX = ( i + j ) / 2;
+//        float centreY = ( j - i ) / 4;
+//
+//        // Now convert these centre world coordinates back into the
+//        // cell coordinates
+//        int cellY = (int)MathUtils.round(centreY * -4f);
+//        int cellX = (int)MathUtils.round(centreX - ((cellY % 2) * 0.5f));
+//
+//        return new Vector3(cellX, cellY, 0);
+//    }
+
+
+    public static Vector3 WorldspaceToMapspace(int x, int y){
+
+        Vector3 mapSpace = new Vector3();
+        if (x < 0) x = -x;
+        if (y < 0) y = -y;
+        y = y*2;
+        int eventilex = (int) Math.floor(x%64);
+        int eventiley = (int) Math.floor(y%64);
+
+        ht = hitTest.getRGB(eventilex, eventiley);
+        if (ht != -16777216) {
+            /* On even tile */
+            mapSpace.x = (int) Math.floor((x + 64) / 64) - 2;
+            mapSpace.y = (int) (2 * (Math.floor((y + 64) / 64) - 1));
+        } else {
+            /* On odd tile */
+            mapSpace.x = (int)  Math.floor((x + 64 / 2) / 64) - 1;
+            mapSpace.y = (int)  (2 * (Math.floor((y + 64 / 2) / 64)) - 1);
+        }
+        mapSpace.add(1,1,0);
+        return mapSpace;
+    }
+
+
     /**
      * @return the height, in tiles, of the map
      */
@@ -359,7 +441,6 @@ public final class World {
 
 
     public TiledMap getMap() {
-
         return map;
     }
     }

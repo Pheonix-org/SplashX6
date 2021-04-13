@@ -72,10 +72,10 @@ public class MouseHandler {
     }
 
     public static void Poll() {
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-            Vector3 vector = Renderer.getCam().getCam().unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-            ((TiledMapTileLayer) World.focusedWorld.getMap().getLayers().get(0)).getCell((int)vector.x, (int)vector.y).setTile(null);
-        }
+//        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+//            Vector3 vector = Renderer.getCam().getCam().unproject(World.WorldspaceToMapspace((int) (Gdx.input.getX()-Renderer.getCam().getCam().position.x), (int) (Gdx.input.getY()-Renderer.getCam().getCam().position.y)));
+//            ((TiledMapTileLayer) World.focusedWorld.getMap().getLayers().get(0)).getCell((int)vector.x, (int)vector.y).setTile(null);
+//        }
 
 
         if (DragLogistics.MIDDLE.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.MIDDLE))

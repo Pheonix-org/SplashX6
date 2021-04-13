@@ -103,10 +103,10 @@ public class Tile {
         if (se == null) se = new Tile(ne.tileName);
         if (sw == null) sw = new Tile(nw.tileName);
 
-        String south = nw.east.equals(ne.west)   ? nw.east  : this.north;
-        String west  = ne.south.equals(se.north) ? ne.south : this.east;
-        String north = sw.east.equals(se.west)   ? sw.east  : this.south;
-        String east  = nw.south.equals(sw.north) ? nw.south : this.west;
+        String north = nw.east.equals(ne.west)   ? nw.east  : this.north;
+        String east  = ne.south.equals(se.north) ? ne.south : this.east;
+        String south = sw.east.equals(se.west)   ? sw.east  : this.south;
+        String west  = nw.south.equals(sw.north) ? nw.south : this.west;
 
         //updateCache();
         return new Tile(north, east, south, west);

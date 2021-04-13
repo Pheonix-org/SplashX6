@@ -13,6 +13,7 @@ public class game extends ApplicationAdapter {
 		MouseHandler.create();
 		World.create();
 		Renderer.create();
+		//AudioManager.create();
 	}
 
 	@Override
@@ -20,13 +21,13 @@ public class game extends ApplicationAdapter {
 		KeyHandler.Poll();
 		MouseHandler.Poll();
 		Renderer.render();
+		//AudioManager.Update();
 	}
 	
 	@Override
 	public void dispose () {
 		Renderer.dispose();
 		World.dispose();
+		//AudioManager.dispose();
 	}
-
-
 }
