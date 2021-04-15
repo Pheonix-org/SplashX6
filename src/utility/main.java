@@ -4,6 +4,7 @@ import input.InputHandler;
 import input.InputMaster;
 import rendering.WorldRenderer;
 import rendering.Window;
+import rendering.gui.GUIWindow;
 import world.TileSet;
 import world.World;
 
@@ -46,9 +47,8 @@ public class main {
     public static void startup() {
         TileSet.loadAllTilesets();
         InputMaster.setDefaultInputCallbacks();
-
+        //main.window.addRenderer(new GUIWindow(100, 100, 1100,1100));
         r.setWorld(new World());
-
     }
 
     public static void shutdown() {

@@ -245,7 +245,7 @@ public final class World {
      * @return if on an odd row, tile at raw array position [x - 1][y], if even at [x][y].
      */
     public Tile getStaggeredTile(int x, int y) {
-        return getTile(x + ((y % 2 == 0) ? -1 : 0), y);
+        return getTile(x + (x != 0 ? ((y % 2 == 0) ? -1 : 0) : 0), y);
     }
 
     /**

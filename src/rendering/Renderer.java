@@ -2,6 +2,7 @@ package rendering;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import org.lwjgl.opengl.GL40;
+import org.lwjgl.system.Platform;
 import utility.Debug;
 import utility.Utility;
 import utility.main;
@@ -41,7 +42,7 @@ public abstract class Renderer {
     /**
      * <h2>Size in pixels of the tiles when displayed on screen</h2>
      */
-    public static int TILE_WIDTH = 84, TILE_HEIGHT = TILE_WIDTH / 2, TILE_HALF_HEIGHT = TILE_HEIGHT / 2, TILE_HALF_WIDTH = TILE_WIDTH / 2, TILE_QUARTER_HEIGHT = TILE_HALF_HEIGHT / 2, TILE_QUARTER_WIDTH = TILE_HALF_WIDTH / 2;
+    public static int TILE_WIDTH = 64, TILE_HEIGHT = TILE_WIDTH / 2, TILE_HALF_HEIGHT = TILE_HEIGHT / 2, TILE_HALF_WIDTH = TILE_WIDTH / 2, TILE_QUARTER_HEIGHT = TILE_HALF_HEIGHT / 2, TILE_QUARTER_WIDTH = TILE_HALF_WIDTH / 2;
 
     public static final int MIN_TILE_WIDTH = 34;
     /**
@@ -113,7 +114,14 @@ public abstract class Renderer {
         if ( !glfwInit() )                                                                                               // Initialize GLFW. Most GLFW functions will not work before doing this.
             throw new IllegalStateException("Unable to initialize GLFW");
 
-        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);                                                                       // the window will stay hidden after creation
+        glfwDefaultWindowHints();
+        glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);         // the window will stay hidden after creation
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 
         // TODO this can be used to load rendering preferences / settings
         renderInitalised = true;
@@ -307,7 +315,7 @@ public abstract class Renderer {
      * Ensures that tiles are visible, and don't overdraw each other with thier black background.
      * <br>See OpenGL Blending
      */
-    protected static void glTileBlendMode(){
+    public static void glTileBlendMode(){
         glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
 

@@ -52,6 +52,7 @@ public class WorldRenderer extends Renderer {
 
         glTileBlendMode();
 
+        // TODO we don't need to calculate this on every render, just when the window is resized. Callback?
         final Rectangle viewport = new Rectangle(1-subXOff-(TILE_WIDTH*2), subYOff - (TILE_HEIGHT * 2), main.window.getWidth() + (TILE_WIDTH * 4),main.window.getHeight() + (TILE_WIDTH * 2));
 
         int columns = (int) (viewport.getWidth() / TILE_WIDTH); // TODO floor these doubles?
@@ -61,11 +62,11 @@ public class WorldRenderer extends Renderer {
 
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < columns; x++) { // TODO doesn't care if world is smaller than is displayable, will still itterate over more rows than exist.
+                drawLoc.x += TILE_WIDTH;
                 Tile tile = world.getTile(x,y);
                 if (tile == null || tile.cachedID == -1)
                     continue; // This shouldn't be hit, it's just for safety. It would indicate a problem with the map data. TODO how should we handle this?
                 renderQuad(tile.cachedID, drawLoc.x, drawLoc.y, TILE_WIDTH + 2, TILE_HEIGHT + 2); // Adding two pixels to the width and height removes black lines between tiles.
-                drawLoc.x += TILE_WIDTH;
             }
             drawLoc.y += TILE_HALF_HEIGHT;
             drawLoc.x = viewport.x;
