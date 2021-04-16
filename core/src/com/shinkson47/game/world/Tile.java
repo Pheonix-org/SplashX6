@@ -39,13 +39,22 @@ public class Tile {
         if (TileName.contains(".")) TileName = TileName.substring(TileName.indexOf(".") + 1);
         String[] tileNames = TileName.substring(TileName.indexOf(".") + 1).split("_");
 
-        if (tileNames.length == 1) {String e = tileNames[0]; tileNames = new String[4]; Arrays.fill(tileNames, TileName);}
-        init(tileNames[0], tileNames[1], tileNames[2], tileNames[3]);
+        if (tileNames.length == 1)                             // only one section in name?
+            if (World.tilesetMap.get(TileName) != null)        // If exists in map,
+               init(TileName);                                 // create as single name
+            else {                                              // create multi sector from a single segment
+                tileNames = new String[4];
+                Arrays.fill(tileNames, TileName);
+                init(tileNames[0], tileNames[1], tileNames[2], tileNames[3]);
+            }
+        else                                                  // more than one section, treat as a multi section tile
+            init(tileNames[0], tileNames[1], tileNames[2], tileNames[3]);
     }
 
     public Tile(String _north, String _east, String _south, String _west){
         init(_north, _east, _south, _west);
     }
+
 
     private void init(String _north, String _east, String _south, String _west){
         north = _north;
@@ -55,9 +64,15 @@ public class Tile {
 
         String tileNameT =  _north + "_" + _east + "_" + _south + "_" + _west;
 
-        tileName = tileNameT;
-        cachedID = (int) World.tilesetMap.get(tileName);
+        init(tileNameT);
+//        cachedID = (int) World.tilesetMap.get(tileName);
     }
+
+    // for tiles with a single name segment
+    private void init(String _name){
+        tileName = _name;
+    }
+
     //#endregion constructors
 
     //#region operations
