@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.rendering.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -40,6 +41,22 @@ public class MainMenu extends ScreenAdapter {
     private Stage stage = new Stage();
     Window w = new Window("Main Menu", Assets.SKIN);
 
+    //#region listeners
+    private ClickListener NewGameListener = new ClickListener(){
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            GameHypervisor.NewGame();
+        }
+    };
+
+    private ClickListener ExitListener = new ClickListener(){
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            Gdx.app.exit();
+        }
+    };
+    //#endregion
+
     {
         Table SecretTable = new Table();
         SecretTable.setFillParent(true);
@@ -75,19 +92,11 @@ public class MainMenu extends ScreenAdapter {
                 .padBottom(100)
                 .row();
 
-        Button b = new TextButton("NEW GAME", Assets.SKIN);
-        b.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                GameHypervisor.NewGame();
-            }
-        });
-        w.add(b).colspan(2).row();
-
+        newButton(w,"NEW GAME", NewGameListener);
         w.add(new TextButton("LOAD GAME", Assets.SKIN)).colspan(2).row();
         w.add(new TextButton("OPTIONS", Assets.SKIN)).colspan(2).row();
         w.add(new TextButton("CREDITS", Assets.SKIN)).colspan(2).row();
-        w.add(new TextButton("EXIT", Assets.SKIN)).colspan(2).padBottom(100).row();
+        newButton(w,"EXIT", ExitListener);
 
         // Reszie window to content
         w.pack();
@@ -103,12 +112,17 @@ public class MainMenu extends ScreenAdapter {
         menu.bottom();
         menu.add( about ).fill().padBottom(10);
 
-
-
         stage.addActor(menu);
     }
 
     //#region operations
+
+    public TextButton newButton(Table a, String text, ClickListener listener){
+        TextButton b = new TextButton(text, Assets.SKIN);
+        b.addListener(listener);
+        a.add(b).colspan(2).row();
+        return b;
+    }
 
     @Override
     public void render(float delta) {
@@ -144,4 +158,6 @@ public class MainMenu extends ScreenAdapter {
     }
 
     //#endregion operations
+
+
 }
