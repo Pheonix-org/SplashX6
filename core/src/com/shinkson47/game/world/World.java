@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Random;
 
 import static com.shinkson47.game.Utility.createNoiseGenerator;
 
@@ -98,7 +99,7 @@ public final class World {
     /**
      * <h2>The size of tiles in pixels</h2>
      */
-    public static final int TILE_WIDTH = 64, TILE_HEIGHT = 64;
+    public static final int TILE_WIDTH = 64, TILE_HEIGHT = 32;
 
     /**
      * <h2>Defines sea level</h2>
@@ -106,7 +107,7 @@ public final class World {
      * Any area of the map higher than this value will
      * be treated as land, lower is water.
      */
-    private final float CONTINENT_THRESHOLD = 0f;
+    private final float CONTINENT_THRESHOLD = -0.8f;
 
     /**
      * <h2>The smallest permitted world size</h2>
@@ -148,6 +149,9 @@ public final class World {
      */
     private TiledMapTileLayer LerpedTileLayer;
 
+
+    private TiledMapTileLayer FoliageLayer;
+
     /**
      * <h2>Raw world tiles, prior to interpolation.</h2>
      */
@@ -164,6 +168,9 @@ public final class World {
      * @apiNote Note well : raw x and y are inverted. <c>worldTile[y][x]</c>
      */
     public Tile[][] interpolatedTiles;
+
+
+    public Tile[][] FoliageLayerTiles;
 
     public static BufferedImage hitTest;
     static {
@@ -212,7 +219,9 @@ public final class World {
         // Generate hills, mountains and volcanoes
         //genHeight();
 
-        // Generate wonders, forests, and any other misc world items.
+        genFoliage();
+
+        // Generate wonders, and any other misc world items.
         //genMisc();
 
         // Generate resources
@@ -234,11 +243,14 @@ public final class World {
     private void genPre(int w, int h) {
         map                 = new TiledMap();
         worldTiles          = new Tile[w][h]; //TODO constants for tile size
+        FoliageLayerTiles   = new Tile[w][h]; //TODO constants for tile size
         LerpedTileLayer     = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
         UnLerpedTileLayer   = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
+        FoliageLayer   = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
         ContinentalHeatmap  = createNoiseGenerator();
         BiomeHeatmap        = createNoiseGenerator();
         HeightHeatmap       = createNoiseGenerator();
+        Voronoi.Generate(w,System.nanoTime());
     }
 
     /**
@@ -278,25 +290,54 @@ public final class World {
             }
     }
 
+    Random foliagerng = new Random();
+    private void genFoliage(){
+        for (int y = 0; y < worldTiles.length; y++)
+            for (int x = 0; x < worldTiles[0].length; x++) {
+                Tile t = getTile(x,y);
+                if (t != null && t.tileName.equals("g_g_g_g"))
+                    FoliageLayerTiles[y][x] = new Tile("grasses0" + (foliagerng.nextInt(3) + 1));
+            }
+    }
+
     /**
      * <h2>Determines what base tile should be used at x,y</h2>
      * @return the ground tile which should be according to {@link World#BiomeHeatmap}
      */
     private String getBiomeTile(int x, int y){
-        float value = BiomeHeatmap.GetNoise(x,y);
-        if (value < -0.7)
-            return "a_a_a_a";
-        if (value > -0.4 && value < -0.1)
-            return "d_d_d_d";
-        if (value > -0.1 && value < 0.1)
-            return "g_g_g_g";
-        if (value > 0.1 && value < 0.4f)
-            return "s_s_s_s";
-        if (value > 0.5 && value < 0.7f)
-            return "t_t_t_t";
+//        float value = BiomeHeatmap.GetNoise(x,y);
+//        if (value < -0.7)
+//            return "a_a_a_a";
+//        if (value > -0.4 && value < -0.1)
+//            return "d_d_d_d";
+//        if (value > -0.1 && value < 0.1)
+//            return "p_p_p_p";
+//        if (value > 0.1 && value < 0.4f)
+//            return "s_s_s_s";
+//        if (value > 0.5 && value < 0.7f)
+//            return "t_t_t_t";
+//
+//        return "g_g_g_g";
 
-        return "p_p_p_p";
+        Biome value = Voronoi.eval(x,y);
+        switch (value){
+            case g:
+                return "g_g_g_g";
+            case t:
+                return "t_t_t_t";
+            case a:
+                return "a_a_a_a";
+            case d:
+                return "d_d_d_d";
+            case p:
+                return "p_p_p_p";
+            case s:
+                return "s_s_s_s";
+        }
+        return null;
     }
+
+
 
     /**
      * <h2>Constructs the GDX {@link TiledMap} stored in this world's {@link World#map}</h2>
@@ -310,9 +351,11 @@ public final class World {
             for (int x = 0; x < worldTiles[0].length; x++) {
                 createCell(worldTiles[y][x].tileName, x, y, UnLerpedTileLayer);
                 createCell(interpolatedTiles[y][x].tileName, x, y, LerpedTileLayer);
+                if (FoliageLayerTiles[y][x] != null)
+                    createCell(FoliageLayerTiles[y][x].tileName, x, y, FoliageLayer);
             }
 
-        map.getLayers().add(LerpedTileLayer);
+        placeLayers(LerpedTileLayer);
     }
 
     /**
@@ -402,11 +445,15 @@ public final class World {
      */
     public void swapTiledInterp() {
         if (map.getLayers().get(0) == UnLerpedTileLayer)
-            map.getLayers().add(LerpedTileLayer);
+            placeLayers(LerpedTileLayer);
         else
-            map.getLayers().add(UnLerpedTileLayer);
+            placeLayers(UnLerpedTileLayer);
+    }
 
-        map.getLayers().remove(0);
+    public void placeLayers(TiledMapTileLayer base){
+        map.getLayers().forEach(o -> map.getLayers().remove(o));
+        map.getLayers().add(base);
+        map.getLayers().add(FoliageLayer);
     }
 
 
@@ -426,7 +473,6 @@ public final class World {
         Vector3 mapSpace = new Vector3();
         if (x < 0) x = -x;
         if (y < 0) y = -y;
-        y = y*2;
         int eventilex = (int) Math.floor(x%TILE_WIDTH);
         int eventiley = (int) Math.floor(y%TILE_HEIGHT);
 
