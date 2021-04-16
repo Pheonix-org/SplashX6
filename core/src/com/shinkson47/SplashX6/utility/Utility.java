@@ -5,6 +5,8 @@ import com.shinkson47.SplashX6.world.FastNoiseLite;
 
 import java.util.Random;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 /**
  * <h1>General static utility methods</h1>
  * <br>
@@ -17,12 +19,6 @@ import java.util.Random;
  * @since v1
  */
 public final class Utility {
-    //#region constants
-    /**
-     * <h2>General Random Number Generator</h2>
-     */
-    public static final Random random = new Random();
-    //#endregion constants
 
     //#region static
 

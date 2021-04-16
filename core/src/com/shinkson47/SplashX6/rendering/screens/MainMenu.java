@@ -2,14 +2,25 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.utility.Assets;
+
+import javax.crypto.SecretKey;
+import java.security.SecureRandom;
+import java.util.Random;
+
+import static com.badlogic.gdx.math.MathUtils.random;
 
 
 /**
@@ -30,12 +41,23 @@ public class MainMenu extends ScreenAdapter {
     Window w = new Window("Main Menu", Assets.SKIN);
 
     {
+        Table SecretTable = new Table();
+        SecretTable.setFillParent(true);
+        Button.ButtonStyle style;
+        Button SecretButton = new TextButton("SECRET", Assets.SKIN);
+        SecretButton.addListener(new ClickListener(){
+            private final Random r = new Random();
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.gl.glClearColor(random.nextFloat(),random.nextFloat(),random.nextFloat(),1);
+            }
+        });
+        SecretTable.add(SecretButton);
+        stage.addActor(SecretTable);
         // Set up window to with as glfw environment
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
-
-        // Add lables
+        // Add labels
         w.add(new Label("" +
                 "   _____ ____  __    ___   _____ __  __        _____\n" +
                 "  / ___// __ \\/ /   /   | / ___// / / /  _  __/ ___/\n" +
@@ -50,9 +72,9 @@ public class MainMenu extends ScreenAdapter {
 
         w.add(new Label("**** MAIN MENU ****", Assets.SKIN))
                 .colspan(2)
-                .padTop(100)
                 .padBottom(100)
                 .row();
+
         Button b = new TextButton("NEW GAME", Assets.SKIN);
         b.addListener(new ClickListener(){
             @Override
@@ -61,10 +83,11 @@ public class MainMenu extends ScreenAdapter {
             }
         });
         w.add(b).colspan(2).row();
+
         w.add(new TextButton("LOAD GAME", Assets.SKIN)).colspan(2).row();
         w.add(new TextButton("OPTIONS", Assets.SKIN)).colspan(2).row();
         w.add(new TextButton("CREDITS", Assets.SKIN)).colspan(2).row();
-        w.add(new TextButton("EXIT", Assets.SKIN)).colspan(2).row();
+        w.add(new TextButton("EXIT", Assets.SKIN)).colspan(2).padBottom(100).row();
 
         // Reszie window to content
         w.pack();
@@ -72,6 +95,17 @@ public class MainMenu extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         // add window to scene
         stage.addActor(w);
+
+        Label about = new Label( "BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://SHINKSON47.IN", Assets.SKIN);
+
+        Table menu = new Table( Assets.SKIN );
+        menu.setFillParent(true);
+        menu.bottom();
+        menu.add( about ).fill().padBottom(10);
+
+
+
+        stage.addActor(menu);
     }
 
     //#region operations
