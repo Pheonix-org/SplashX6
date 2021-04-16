@@ -30,3 +30,4 @@ core/build/
 
 
 .DS_Store
+.gradle/

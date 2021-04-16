@@ -1298,5 +1298,36 @@
 	<key>a_a_a_d</key> <integer>1294</integer>
 	<key>a_a_a_t</key> <integer>1295</integer>
 	<key>a_a_a_a</key> <integer>1296</integer>
+
+	<!--Hand written-->
+	<key>bamboo01</key> <integer>1297</integer>
+	<key>bamboo02</key> <integer>1298</integer>
+	<key>bamboo03</key> <integer>1299</integer>
+	<key>bamboo04</key> <integer>1300</integer>
+	<key>bamboo05</key> <integer>1301</integer>
+	<key>bamboo06</key> <integer>1302</integer>
+
+	<key>bigtree01</key> <integer>1302</integer>
+	<key>bigtree02</key> <integer>1303</integer>
+	<key>bigtree03</key> <integer>1304</integer>
+
+	<key>bush01</key> <integer>1305</integer>
+	<key>bush02</key> <integer>1306</integer>
+	<key>bush03</key> <integer>1307</integer>
+	<key>bush04</key> <integer>1308</integer>
+	<key>bush05</key> <integer>1309</integer>
+
+	<key>cactus01</key> <integer>1310</integer>
+	<key>cactus02</key> <integer>1311</integer>
+	<key>cactus03</key> <integer>1312</integer>
+	<key>cactus04</key> <integer>1313</integer>
+
+	<key>grasses01</key> <integer>1314</integer>
+	<key>grasses02</key> <integer>1315</integer>
+	<key>grasses03</key> <integer>1316</integer>
+	<key>grasses04</key> <integer>1317</integer>
+	<key>grasses05</key> <integer>1318</integer>
+
+
 </dict>
 </plist>
