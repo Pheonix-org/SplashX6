@@ -6,7 +6,7 @@
  <tileset firstgid="649" source="tsx/g.tsx"/>
  <tileset firstgid="865" source="tsx/d.tsx"/>
  <tileset firstgid="1081" source="tsx/a.tsx"/>
-<tileset firstgid="1296" source="tsx/foliage.tsx"/>
+<tileset firstgid="1297" source="tsx/foliage.tsx"/>
  <layer id="1" name="Tile Layer 1" width="1" height="1">
   <data encoding="csv">
 433
