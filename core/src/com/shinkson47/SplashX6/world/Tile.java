@@ -41,9 +41,9 @@ public class Tile {
         if (TileName.contains(".")) TileName = TileName.substring(TileName.indexOf(".") + 1);
         String[] tileNames = TileName.substring(TileName.indexOf(".") + 1).split("_");
 
-        if (tileNames.length == 1)                             // only one section in name?
-            if (TILESET_MAP.get(TileName) != null)        // If exists in map,
-               init(TileName);                                 // create as single name
+        if (tileNames.length == 1)                              // only one section in name?
+            if (TILESET_MAP.get(TileName) != null)              // If exists in map,
+               init(TileName);                                  // create as single name
             else {                                              // create multi sector from a single segment
                 tileNames = new String[4];
                 Arrays.fill(tileNames, TileName);
@@ -57,6 +57,10 @@ public class Tile {
         init(_north, _east, _south, _west);
     }
 
+    private void init(String _name){
+        init(_name, _name, _name, _name);
+        tileName = _name;// TODO This is dumb, it's set twice
+    }
 
     private void init(String _north, String _east, String _south, String _west){
         north = _north;
@@ -64,16 +68,12 @@ public class Tile {
         south = _south;
         west  = _west;
 
-        String tileNameT =  _north + "_" + _east + "_" + _south + "_" + _west;
-
-        init(tileNameT);
+        tileName = _north + "_" + _east + "_" + _south + "_" + _west;
 //        cachedID = (int) World.tilesetMap.get(tileName);
     }
 
     // for tiles with a single name segment
-    private void init(String _name){
-        tileName = _name;
-    }
+
 
     //#endregion constructors
 

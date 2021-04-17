@@ -3,7 +3,6 @@ package com.shinkson47.SplashX6;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.utility.Assets;
@@ -20,6 +19,8 @@ import com.shinkson47.SplashX6.world.World;
  */
 public class Client extends Game {
 
+	public static final float r = 0.2588235294f, g = 0.2588235294f, b = 0.9058823529f, a = 1;
+	public static final float hr = 0.6470588235f, hg = 0.6470588235f;
 	public static Game client;
 	Screen currentScreen;
 
@@ -35,7 +36,7 @@ public class Client extends Game {
 		currentScreen = new MainMenu();
 		setScreen(currentScreen);
 
-		Gdx.gl.glClearColor(0.2588235294f, 0.2588235294f, 0.9058823529f, 1 );
+		Gdx.gl.glClearColor(r,g,b,a );
 	}
 
 	/**

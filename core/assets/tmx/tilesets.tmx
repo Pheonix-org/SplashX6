@@ -6,10 +6,11 @@
  <tileset firstgid="649" source="tsx/g.tsx"/>
  <tileset firstgid="865" source="tsx/d.tsx"/>
  <tileset firstgid="1081" source="tsx/a.tsx"/>
-<tileset firstgid="1297" source="tsx/foliage.tsx"/>
+ <tileset firstgid="1297" source="tsx/foliage.tsx"/>
+ <tileset firstgid="1376" source="tsx/oceans.tsx"/>
  <layer id="1" name="Tile Layer 1" width="1" height="1">
   <data encoding="csv">
-433
+1376
 </data>
  </layer>
 </map>

@@ -3,6 +3,8 @@ package com.shinkson47.SplashX6.rendering;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.world.World;
 
 /**
  * <h1></h1>
@@ -44,12 +46,34 @@ public class Camera {
 
         cam.update();
     }
-    public void setTargetPosition(int x, int y){
-        targetPosition.set(x,y,z);
+    public void setTargetPosition(Vector3 vector){
+        float scaledViewportWidthHalfExtent = cam.viewportWidth * cam.zoom * 0.5f;
+        float scaledViewportHeightHalfExtent = cam.viewportHeight * cam.zoom * 0.5f;
+        float minx = scaledViewportWidthHalfExtent;
+        float miny = scaledViewportHeightHalfExtent;
+        float xmax = World.focusedWorld.width() * World.TILE_WIDTH;
+        float ymax = World.focusedWorld.height() * World.TILE_HEIGHT * 0.5f;
+
+        // Horizontal
+        if (vector.x < scaledViewportWidthHalfExtent)
+            vector.x = scaledViewportWidthHalfExtent;
+        else if (vector.x > xmax - scaledViewportWidthHalfExtent)
+            vector.x = xmax - scaledViewportWidthHalfExtent;
+
+        // Vertical
+        if (vector.y < scaledViewportHeightHalfExtent)
+            vector.y = scaledViewportHeightHalfExtent;
+        else if (vector.y > ymax - scaledViewportHeightHalfExtent)
+            vector.y = ymax - scaledViewportHeightHalfExtent;
+
+        vector.x = (vector.x < minx) ? minx : Math.min(vector.x, xmax);
+        vector.y = (vector.y < miny) ? miny : Math.min(vector.y, ymax);
+
+        targetPosition.set(vector);
     }
 
     public void setDeltaPosition(int x, int y){
-        targetPosition.add(x,y,z);
+        setTargetPosition(targetPosition.add(x,y,z));
     }
 
 

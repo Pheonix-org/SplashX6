@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.world;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Utility;
@@ -65,12 +66,12 @@ public final class World {
      * Any area of the map higher than this value will
      * be treated as land, lower is water.
      */
-    private final float CONTINENT_THRESHOLD = -0.8f;
+    private static final float CONTINENT_THRESHOLD = -0f;
 
     /**
      * <h2>The smallest permitted world size</h2>
      */
-    private final int MIN_WORLD_WIDTH = 6, MIN_WORLD_HEIGHT = 6;
+    public static final int MIN_WORLD_WIDTH = 6, MIN_WORLD_HEIGHT = 6, DEFAULT_WIDTH = 500, DEFAULT_HEIGHT = 500, FOLIAGE_QUANTITY_MAX = 10000;
 
     //#endregion constants
 
@@ -97,6 +98,9 @@ public final class World {
      */
     private FastNoiseLite HeightHeatmap;
 
+
+    private FastNoiseLite FoliageNoise;
+
     /**
      * <h2>the main tile map container</h2>
      */
@@ -109,6 +113,7 @@ public final class World {
 
 
     private TiledMapTileLayer FoliageLayer;
+    private static int FOLIAGE_THRESHOLD;
 
     /**
      * <h2>Raw world tiles, prior to interpolation.</h2>
@@ -143,7 +148,7 @@ public final class World {
     /**
      * <h2>Creates a new random 600x600 world</h2>
      */
-    public World() { this(600,600); }
+    public World() { this(DEFAULT_WIDTH,DEFAULT_HEIGHT); }
 
     /**
      * <h2>Creates a new random WxH world</h2>
@@ -200,11 +205,12 @@ public final class World {
      */
     private void genPre(int w, int h) {
         map                 = new TiledMap();
-        worldTiles          = new Tile[w][h]; //TODO constants for tile size
-        FoliageLayerTiles   = new Tile[w][h]; //TODO constants for tile size
+        worldTiles          = new Tile[w][h];
+        FoliageLayerTiles   = new Tile[w][h];
         LerpedTileLayer     = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
         UnLerpedTileLayer   = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
-        FoliageLayer   = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
+        FoliageLayer        = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
+        FoliageNoise        = createNoiseGenerator();
         ContinentalHeatmap  = createNoiseGenerator();
         BiomeHeatmap        = createNoiseGenerator();
         HeightHeatmap       = createNoiseGenerator();
@@ -216,12 +222,13 @@ public final class World {
      * Creates water and land mass, where the landmass is modified by {@link World#getBiomeTile(int, int)}
      */
     private void genBase() {
+        float f;
         for (int y = 0; y < worldTiles.length; y++) {                                                                   // For every x, y tile
             for (int x = 0; x < worldTiles[0].length; x++) {
-
+                f = ContinentalHeatmap.GetNoise(x, y);
                 worldTiles[y][x] = new Tile(                                                                            // Set this tile to...
-                        (ContinentalHeatmap.GetNoise(x, y) < CONTINENT_THRESHOLD ) ?                                    // Will this tile be a part of a continent?
-                                "s_s_s_s"                                                                               // No, set it to water and move to next tile.
+                        (f < CONTINENT_THRESHOLD) ?                                                                     // Will this tile be a part of a continent?
+                                (f < CONTINENT_THRESHOLD - 0.2) ? "o" : "s_s_s_s"                                   // No, set it to water and move to next tile.
                                 :
                                 getBiomeTile(x,y)                                                                       // Yes, set it to appropriate land tile.
                 );
@@ -250,12 +257,22 @@ public final class World {
 
     Random foliagerng = new Random();
     private void genFoliage(){
-        for (int y = 0; y < worldTiles.length; y++)
-            for (int x = 0; x < worldTiles[0].length; x++) {
-                Tile t = getTile(x,y);
-                if (t != null && t.tileName.equals("g_g_g_g"))
-                    FoliageLayerTiles[y][x] = new Tile("grasses0" + (foliagerng.nextInt(3) + 1));
-            }
+//        for (int y = 0; y < worldTiles.length; y++)
+//            for (int x = 0; x < worldTiles[0].length; x++) {
+//                if (FoliageNoise.GetNoise(x,y) > FOLIAGE_THRESHOLD)
+//                    FoliageLayerTiles[y][x] = new Tile(getFoliageTile(getTile(x,y).tileName) + "1" /*(foliagerng.nextInt(3) + 1)*/);
+//            }
+
+        //int quant = MathUtils.random(0,FOLIAGE_QUANTITY_MAX);
+        int x,y;
+        String s;
+        for (int i = 0; i <= FOLIAGE_QUANTITY_MAX; i++){
+            x = MathUtils.random(0,height()-1);
+            y = MathUtils.random(0,width()-1);
+            s = getFoliageTile(worldTiles[y][x].tileName);
+            if (!s.equals(""))
+                FoliageLayerTiles[y][x] = new Tile(s + "1");
+        }
     }
 
     /**
@@ -264,18 +281,16 @@ public final class World {
      */
     private String getBiomeTile(int x, int y){
         float value = BiomeHeatmap.GetNoise(x,y);
-        if (value < -0.7)
-            return "a_a_a_a";
-        if (value > -0.4 && value < -0.1)
+        if (value < -0.8)
             return "d_d_d_d";
-        if (value > -0.1 && value < 0.1)
+        if (value > -0.8 && value < 0.8)
+            return "g_g_g_g";
+        if (value > 0.8 && value < 0.801)
             return "p_p_p_p";
-        if (value > 0.1 && value < 0.4f)
-            return "s_s_s_s";
-        if (value > 0.5 && value < 0.7f)
+        if (value > 0.801 && value < 0.9)
             return "t_t_t_t";
 
-        return "g_g_g_g";
+        return "a_a_a_a";
 
         //Biome value = Voronoi.eval(x,y);
 //        switch (value){
@@ -293,6 +308,23 @@ public final class World {
 //                return "s_s_s_s";
 //        }
 //        return null;
+    }
+
+    private String getFoliageTile(String s){
+        switch (s){
+            case "d_d_d_d":
+                return "cactus0";
+            case "g_g_g_g":
+                return "grasses0";
+            case "p_p_p_p":
+                return "bigtree0";
+            case "t_t_t_t":
+                return "bush0";
+            case "a_a_a_a":
+                return "";
+            default:
+                return "";
+        }
     }
 
 
@@ -379,7 +411,7 @@ public final class World {
     /**
      * <h2>Clears the world, and generates a new one.</h2>
      */
-    public void regenerate() { generateWorld(200,200); }
+    public void regenerate() { generateWorld(DEFAULT_HEIGHT,DEFAULT_WIDTH); }
 
     /**
      * <h2>Swaps {@link World#worldTiles} and {@link World#interpolatedTiles}</h2>

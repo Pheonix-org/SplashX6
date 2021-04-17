@@ -23,14 +23,13 @@ import com.shinkson47.SplashX6.game.GameHypervisor;
  * @since v1
  */
 public class Debug {
-    private static Boolean debug = true;
+    public static Boolean debug = false;
     private static SpriteBatch batch;
     private static Camera camera;
     private static ShapeRenderer sr;
     private static BitmapFont font;
 
     public static void create(){
-        if (!debug) return;
         camera = GameHypervisor.getGameRenderer().getCam();
         batch  = GameHypervisor.getGameRenderer().getBatch();
         sr     = GameHypervisor.getGameRenderer().getSr();

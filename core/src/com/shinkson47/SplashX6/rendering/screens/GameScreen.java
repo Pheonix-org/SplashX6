@@ -2,21 +2,28 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.utility.Assets;
+import com.shinkson47.SplashX6.utility.Debug;
 import com.shinkson47.SplashX6.world.World;
 
 
@@ -63,6 +70,7 @@ public class GameScreen extends ScreenAdapter {
         MouseHandler.create();
         sr = new ShapeRenderer();
         r = new IsometricStaggeredTiledMapRenderer(World.focusedWorld.getMap());
+        r.setView(camera.getCam());
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         createUI();
@@ -72,15 +80,34 @@ public class GameScreen extends ScreenAdapter {
         viewport = new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera.getCam());
         stage = new Stage(viewport);
 
-        Gdx.input.setInputProcessor(stage);
+        MouseHandler.configureGameInput(stage);
 
-        Window w = new Window("", Assets.SKIN);
-        w.add(new Label("Fuck off", Assets.SKIN));
-        w.setResizable(true);
-        w.setMovable(true);
+        Table menu = new Table( Assets.SKIN );
+        //menu.setFillParent(true);
+        menu.setPosition(0,Gdx.graphics.getHeight()-30);
+        menu.setSize(Gdx.graphics.getWidth(),30);
 
-        stage.addActor(w);
-        stage.addActor(new Label("double fuck off", Assets.SKIN));
+
+        Pixmap bgPixmap = new Pixmap(1,1, Pixmap.Format.RGB565);
+        bgPixmap.setColor(Client.hr,Client.hg,Client.a,Client.a);
+        bgPixmap.fill();
+        menu.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap))));
+        menu.top();
+
+        menu.add(new TextButton("Menu Item", Assets.SKIN)).fill().padTop(2).padLeft(2).padRight(2);
+        menu.add(new TextButton("Menu Item", Assets.SKIN)).fill().padTop(2).padLeft(2).padRight(2);
+        menu.add(new TextButton("Menu Item", Assets.SKIN)).fill().padTop(2).padLeft(2).padRight(2);
+
+        TextButton button = new TextButton("MOUSE DEBUG", Assets.SKIN, "toggle");
+        button.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Debug.debug = !Debug.debug;
+            }
+        });
+        menu.add(button).fill().padTop(2).padLeft(2).padRight(2);
+
+        stage.addActor(menu);
     }
     //#endregion construction
 
@@ -94,19 +121,19 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         // Clear last frame,
-
-        r.setView(camera.getCam().combined,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
-        camera.update();
+        r.setView(camera.getCam());
         r.render();
+        camera.update();
 
         stage.act(delta);
         stage.draw();
+        // TODO shouldn't have to do this here
+        Debug.update();
     }
 
     @Override
     public void resize(int width, int height) {
         camera.resize(width, height);
-        //stage.getViewport().update(width, height, true);
     }
     //#endregion rendering operations
 
@@ -115,7 +142,6 @@ public class GameScreen extends ScreenAdapter {
     public Camera getCam() {
         return camera;
     }
-
 
     public ShapeRenderer getSr() {
         return sr;

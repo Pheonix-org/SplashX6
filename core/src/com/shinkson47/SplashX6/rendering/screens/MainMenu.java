@@ -2,23 +2,14 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Button.ButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.utility.Assets;
 
-import javax.crypto.SecretKey;
-import java.security.SecureRandom;
 import java.util.Random;
 
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -37,19 +28,18 @@ import static com.badlogic.gdx.math.MathUtils.random;
  */
 public class MainMenu extends ScreenAdapter {
 
-    private Viewport viewport;
     private Stage stage = new Stage();
     Window w = new Window("Main Menu", Assets.SKIN);
 
     //#region listeners
-    private ClickListener NewGameListener = new ClickListener(){
+    private final ClickListener NewGameListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
             GameHypervisor.NewGame();
         }
     };
 
-    private ClickListener ExitListener = new ClickListener(){
+    private final ClickListener ExitListener = new ClickListener(){
         @Override
         public void clicked(InputEvent event, float x, float y) {
             Gdx.app.exit();
@@ -60,7 +50,6 @@ public class MainMenu extends ScreenAdapter {
     {
         Table SecretTable = new Table();
         SecretTable.setFillParent(true);
-        Button.ButtonStyle style;
         Button SecretButton = new TextButton("SECRET", Assets.SKIN);
         SecretButton.addListener(new ClickListener(){
             private final Random r = new Random();
@@ -98,10 +87,10 @@ public class MainMenu extends ScreenAdapter {
         w.add(new TextButton("CREDITS", Assets.SKIN)).colspan(2).row();
         newButton(w,"EXIT", ExitListener);
 
-        // Reszie window to content
+        // Resize window to content
         w.pack();
         // Set the stage to handle key and mouse input
-        Gdx.input.setInputProcessor(stage);
+        MouseHandler.configureGameInput(stage);
         // add window to scene
         stage.addActor(w);
 
@@ -133,7 +122,6 @@ public class MainMenu extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        viewport = new ExtendViewport(width, height);
         w.setPosition(makeEven(width / 2 - (w.getWidth() / 2)), makeEven(height / 2 - (w.getHeight() / 2)));
         //stage.setViewport(viewport);
     }

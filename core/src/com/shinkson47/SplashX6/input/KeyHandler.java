@@ -27,12 +27,11 @@ public class KeyHandler {
                 client.setScreen(new MainMenu());
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
-            World.create();
-            GameHypervisor.getGameRenderer().create();
+            GameHypervisor.NewGame();
         }
-
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F6))
             World.focusedWorld.swapTiledInterp();
+
     }
 }
