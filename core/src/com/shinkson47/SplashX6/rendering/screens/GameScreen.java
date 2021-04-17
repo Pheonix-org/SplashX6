@@ -67,11 +67,12 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void create(){
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
         MouseHandler.create();
         sr = new ShapeRenderer();
         r = new IsometricStaggeredTiledMapRenderer(World.focusedWorld.getMap());
         r.setView(camera.getCam());
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         createUI();
     }

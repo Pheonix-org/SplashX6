@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.rendering;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -32,13 +33,12 @@ public class Camera {
     }
 
     public Camera() {
-        cam = new OrthographicCamera();
-        cam.near = 10;
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
     public void resize(float width, float height){
         cam = new OrthographicCamera(width,height * (height / width));
-        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
+        AssertInBounds();
     }
 
     public void update() {
@@ -76,8 +76,12 @@ public class Camera {
         setTargetPosition(targetPosition.add(x,y,z));
     }
 
+    public void AssertInBounds(){
+        setTargetPosition(cam.position);
+    }
 
     public void deltaZoom(float delta){
         cam.zoom = MathUtils.clamp(cam.zoom + (delta / 10), 0f, 5f);
+        AssertInBounds();
     }
 }
