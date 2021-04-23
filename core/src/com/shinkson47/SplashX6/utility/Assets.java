@@ -29,15 +29,24 @@ public class Assets {
 
         // Tilesets
         TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
+        SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
 
         // Tileset mapping data
-        Map<String, Object> result = null;
+        // TODO these shouldn't really be ignored
+        Map<String, Object> result;
         try {
             result = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
-        } catch (XmlParseException ignored) { }
-        finally {
-            TILESET_MAP = result;
+        } catch (XmlParseException ignored) {
+            result = null;
         }
+        TILESET_MAP = result;
+
+        try {
+            result = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
+        } catch (XmlParseException ignored) {
+            result = null;
+        }
+        SPRITES_MAP = result;
     }
 
     public static void Dispose(){
@@ -69,7 +78,7 @@ public class Assets {
      * There's no way to directly load TSX, but GDX can load TMX and we can get the tilesets from
      * the loaded {@link TiledMap}
      */
-    public static final TiledMap TILESETS;
+    public static final TiledMap TILESETS, SPRITES;
 
     /**
      * <h2>A map of 'tile name' => tile ID'</h2>
@@ -94,7 +103,7 @@ public class Assets {
      *
      * @apiNote The value datatype is int, but the loader will only provide an object. Soz.
      */
-    public static final Map<String, Object> TILESET_MAP;
+    public static final Map<String, Object> TILESET_MAP, SPRITES_MAP;
     //#endregion World
 
     //#region audio
