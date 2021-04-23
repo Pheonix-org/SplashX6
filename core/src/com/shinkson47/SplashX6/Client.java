@@ -60,7 +60,7 @@ public class Client extends Game {
 	 */
 	@Override
 	public void dispose () {
-		GameHypervisor.getGameRenderer().dispose();
+		GameHypervisor.dispose();
 		World.dispose();
 		//AudioManager.dispose();
 		Debug.dispose();
