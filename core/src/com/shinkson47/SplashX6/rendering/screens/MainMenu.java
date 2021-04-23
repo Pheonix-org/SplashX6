@@ -2,15 +2,17 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
+import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.utility.Assets;
+import com.shinkson47.SplashX6.utility.Utility;
 
-import java.util.Random;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -29,89 +31,79 @@ import static com.badlogic.gdx.math.MathUtils.random;
 public class MainMenu extends ScreenAdapter {
 
     private Stage stage = new Stage();
-    Window w = new Window("Main Menu", Assets.SKIN);
+
 
     //#region listeners
-    private final ClickListener NewGameListener = new ClickListener(){
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            GameHypervisor.NewGame();
-        }
-    };
 
-    private final ClickListener ExitListener = new ClickListener(){
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            Gdx.app.exit();
-        }
-    };
+
+    private Window menuWindow;
     //#endregion
 
     {
-        Table SecretTable = new Table();
-        SecretTable.setFillParent(true);
+        menuWindow = new MainMenuWindow();
+
+        // Table that fills the window, contains content under the menu window.
+        Table BaseTable = new Table().center();
+        BaseTable.setFillParent(true);
+
+        // Secret button
         Button SecretButton = new TextButton("SECRET", Assets.SKIN);
-        SecretButton.addListener(new ClickListener(){
-            private final Random r = new Random();
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.gl.glClearColor(random.nextFloat(),random.nextFloat(),random.nextFloat(),1);
-            }
-        });
-        SecretTable.add(SecretButton);
-        stage.addActor(SecretTable);
+        SecretButton.addListener(new StageWindow.LambdaClickListener( o -> Gdx.gl.glClearColor(random.nextFloat(),random.nextFloat(),random.nextFloat(),1)));
+
+        BaseTable.add(SecretButton).center();
+        stage.addActor(BaseTable);
+        BaseTable = new Table().bottom();
+        BaseTable.setFillParent(true);
+        BaseTable.add(new Label( "BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://SHINKSON47.IN", Assets.SKIN))
+                .fill()
+                .padBottom(10);
+
         // Set up window to with as glfw environment
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        // Add labels
-        w.add(new Label("" +
-                "   _____ ____  __    ___   _____ __  __        _____\n" +
-                "  / ___// __ \\/ /   /   | / ___// / / /  _  __/ ___/\n" +
-                "  \\__ \\/ /_/ / /   / /| | \\__ \\/ /_/ /  | |/_/ __ \\ \n" +
-                " ___/ / ____/ /___/ ___ |___/ / __  /  _>  </ /_/ / \n" +
-                "/____/_/   /_____/_/  |_/____/_/ /_/  /_/|_|\\____/  \n" +
-                "                                                    "
-                , Assets.SKIN
-        ))
-                .padBottom(100)
-                .row();
+        stage.addActor(BaseTable);
+        stage.addActor(menuWindow);
 
-        w.add(new Label("**** MAIN MENU ****", Assets.SKIN))
-                .colspan(2)
-                .padBottom(100)
-                .row();
-
-        newButton(w,"NEW GAME", NewGameListener);
-        w.add(new TextButton("LOAD GAME", Assets.SKIN)).colspan(2).row();
-        w.add(new TextButton("OPTIONS", Assets.SKIN)).colspan(2).row();
-        w.add(new TextButton("CREDITS", Assets.SKIN)).colspan(2).row();
-        newButton(w,"EXIT", ExitListener);
-
-        // Resize window to content
-        w.pack();
         // Set the stage to handle key and mouse input
         MouseHandler.configureGameInput(stage);
-        // add window to scene
-        stage.addActor(w);
-
-        Label about = new Label( "BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://SHINKSON47.IN", Assets.SKIN);
-
-        Table menu = new Table( Assets.SKIN );
-        menu.setFillParent(true);
-        menu.bottom();
-        menu.add( about ).fill().padBottom(10);
-
-        stage.addActor(menu);
     }
+
+    /**
+     * The window shown at the main menu that contains option for the user
+     */
+    private class MainMenuWindow extends StageWindow {
+
+        /**
+         * <h2>Constructs the content to be displayed in this window</h2>
+         */
+        @Override
+        protected void constructContent() {
+
+            // Title label
+            add(new Label("" +
+                    "   _____ ____  __    ___   _____ __  __        _____\n" +
+                    "  / ___// __ \\/ /   /   | / ___// / / /  _  __/ ___/\n" +
+                    "  \\__ \\/ /_/ / /   / /| | \\__ \\/ /_/ /  | |/_/ __ \\ \n" +
+                    " ___/ / ____/ /___/ ___ |___/ / __  /  _>  </ /_/ / \n" +
+                    "/____/_/   /_____/_/  |_/____/_/ /_/  /_/|_|\\____/  \n" +
+                    "                                                    "
+                    , Assets.SKIN
+            ))
+                    .padBottom(100)
+                    .row();
+
+            addButton("NEW GAME", o -> GameHypervisor.NewGame());
+            addButton("LOAD GAME", o -> Utility.notImplementedDialog(stage));
+            addButton("OPTIONS", o -> Utility.notImplementedDialog(stage));
+            addButton("CREDITS", o -> Utility.notImplementedDialog(stage));
+            addButton("EXIT",  o -> Gdx.app.exit());
+        }
+    }
+
+
+
 
     //#region operations
-
-    public TextButton newButton(Table a, String text, ClickListener listener){
-        TextButton b = new TextButton(text, Assets.SKIN);
-        b.addListener(listener);
-        a.add(b).colspan(2).row();
-        return b;
-    }
 
     @Override
     public void render(float delta) {
@@ -122,7 +114,7 @@ public class MainMenu extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
-        w.setPosition(makeEven(width / 2 - (w.getWidth() / 2)), makeEven(height / 2 - (w.getHeight() / 2)));
+        menuWindow.setPosition(makeEven(width / 2 - (menuWindow.getWidth() / 2)), makeEven(height / 2 - (menuWindow.getHeight() / 2)));
         //stage.setViewport(viewport);
     }
 
