@@ -1,6 +1,7 @@
 package com.shinkson47.SplashX6.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
@@ -11,10 +12,10 @@ import com.shinkson47.SplashX6.utility.Utility;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
-import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
-import static com.shinkson47.SplashX6.utility.Assets.TILESETS;
+import static com.shinkson47.SplashX6.utility.Assets.*;
 import static com.shinkson47.SplashX6.utility.Utility.createNoiseGenerator;
 
 /**
@@ -112,6 +113,9 @@ public final class World {
     private TiledMapTileLayer LerpedTileLayer;
 
 
+    private ArrayList<GameSprites> sprites = new ArrayList<>();
+    private TiledMapTileLayer SpriteLayer;
+
     private TiledMapTileLayer FoliageLayer;
     private static int FOLIAGE_THRESHOLD;
 
@@ -191,7 +195,7 @@ public final class World {
         //genResources();
 
         // Generate civilisations & barbarians
-        //genPopulation();
+        genPopulation();
 
         // Construct all generated world data into a GDX TiledMap.
         convGDX();
@@ -210,6 +214,7 @@ public final class World {
         LerpedTileLayer     = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
         UnLerpedTileLayer   = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
         FoliageLayer        = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
+        SpriteLayer         = new TiledMapTileLayer(w, h, TILE_WIDTH, TILE_HEIGHT);
         FoliageNoise        = createNoiseGenerator();
         ContinentalHeatmap  = createNoiseGenerator();
         BiomeHeatmap        = createNoiseGenerator();
@@ -274,6 +279,19 @@ public final class World {
                 FoliageLayerTiles[y][x] = new Tile(s + "1");
         }
     }
+
+
+    private void genPopulation() {
+        int x,y;
+        int s;
+        for (int i = 0; i <= FOLIAGE_QUANTITY_MAX; i++){
+            x = MathUtils.random(0,height()-1);
+            y = MathUtils.random(0,width()-1);
+            s = MathUtils.random(0,79);
+            createSprite(x,y, s);
+        }
+    }
+
 
     /**
      * <h2>Determines what base tile should be used at x,y</h2>
@@ -344,7 +362,6 @@ public final class World {
                 if (FoliageLayerTiles[y][x] != null)
                     createCell(FoliageLayerTiles[y][x].tileName, x, y, FoliageLayer);
             }
-
         placeLayers(LerpedTileLayer);
     }
 
@@ -444,6 +461,7 @@ public final class World {
         map.getLayers().forEach(o -> map.getLayers().remove(o));
         map.getLayers().add(base);
         map.getLayers().add(FoliageLayer);
+        map.getLayers().add(SpriteLayer);
     }
 
 
@@ -480,6 +498,11 @@ public final class World {
         return mapSpace;
     }
 
+    public void createSprite(int x, int y/*, String resource*/, int id){
+        TiledMapTileLayer.Cell test = new TiledMapTileLayer.Cell();
+        test.setTile(SPRITES.getTileSets().getTile(id) /*(Integer) SPRITES_MAP.get("unit.knights"))*/);
+        SpriteLayer.setCell(x,y, test);
+    }
 
 // Attempt 2
 //    public static Vector3 WorldspaceToMapspace(int x, int y) {
