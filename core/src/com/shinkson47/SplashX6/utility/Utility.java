@@ -1,6 +1,12 @@
 package com.shinkson47.SplashX6.utility;
 
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.world.FastNoiseLite;
 
 import java.util.Random;
@@ -80,6 +86,23 @@ public final class Utility {
 
     public static int roundToNearestMultiple(float value, float multiple){
         return (int) (multiple*(Math.round(value/multiple)));
+    }
+
+    /**
+     * Creates and shows a fullscreen modal dialog on the specified stage
+     */
+    public static void notImplementedDialog(Stage stage) {
+        Dialog dialog = new Dialog("", Assets.SKIN, "dialog-modal");
+
+        dialog.getTitleTable().reset();
+        Label label = new Label("OOPS!", Assets.SKIN, "title");
+        label.setAlignment(Align.bottom);
+        dialog.getTitleTable().add(label).expand();
+
+        dialog.getContentTable().padTop(30).padBottom(30);
+        dialog.text("There's nothing beautiful here... YET!")
+            .button("OK, I'll come back later!", true)
+            .show(stage);
     }
     // I tried to implement above by catching an out of bounds exception, but for some reason it wasn't catching it so i resorted to calculating it which is probably slower but oh well
     //#endregion static
