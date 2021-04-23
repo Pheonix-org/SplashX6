@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,11 +21,16 @@ import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
+import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Debug;
+import com.shinkson47.SplashX6.utility.Utility;
 import com.shinkson47.SplashX6.world.World;
+
+import static com.shinkson47.SplashX6.rendering.StageWindow.newButton;
 
 
 /**
@@ -49,12 +55,12 @@ public class GameScreen extends ScreenAdapter {
      * <h2>Renderer that renders {@link World#focusedWorld}</h2>
      * renders from perspective of {@link GameScreen#camera}
      */
-    private MapRenderer r;
+    public static MapRenderer r;
 
     private ShapeRenderer sr;
     private BitmapFont font = new BitmapFont();
 
-    private SpriteBatch batch = new SpriteBatch();
+    private SpriteBatch worldBatch = new SpriteBatch();
 
     private Stage stage;
     private Viewport viewport;
@@ -67,19 +73,16 @@ public class GameScreen extends ScreenAdapter {
     }
 
     public void create(){
-        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         MouseHandler.create();
         sr = new ShapeRenderer();
         r = new IsometricStaggeredTiledMapRenderer(World.focusedWorld.getMap());
-        r.setView(camera.getCam());
-
+        //r.setView(camera.getCam());
+        resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         createUI();
     }
 
     private void createUI(){
-        viewport = new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera.getCam());
-        stage = new Stage(viewport);
+        stage = new Stage(new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         MouseHandler.configureGameInput(stage);
 
@@ -95,18 +98,30 @@ public class GameScreen extends ScreenAdapter {
         menu.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap))));
         menu.top();
 
-        menu.add(new TextButton("Menu Item", Assets.SKIN)).fill().padTop(2).padLeft(2).padRight(2);
-        menu.add(new TextButton("Menu Item", Assets.SKIN)).fill().padTop(2).padLeft(2).padRight(2);
-        menu.add(new TextButton("Menu Item", Assets.SKIN)).fill().padTop(2).padLeft(2).padRight(2);
+        // TODO this can be better...
+        menu.add(newButton("END GAME", o -> GameHypervisor.EndGame()))
+                .fill()
+                .padTop(2)
+                .padLeft(2)
+                .padRight(2);
 
-        TextButton button = new TextButton("MOUSE DEBUG", Assets.SKIN, "toggle");
-        button.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Debug.debug = !Debug.debug;
-            }
-        });
-        menu.add(button).fill().padTop(2).padLeft(2).padRight(2);
+        menu.add(newButton("SOMETHING AWESOME", o -> Utility.notImplementedDialog(stage)))
+                .fill()
+                .padTop(2)
+                .padLeft(2)
+                .padRight(2);
+
+        menu.add(newButton("NEW GAME", o -> GameHypervisor.NewGame()))
+                .fill()
+                .padTop(2)
+                .padLeft(2)
+                .padRight(2);
+
+        menu.add(newButton("DEVELOP & DEBUG", o -> Debug.MainDebugWindow.toggleShown()))
+                .fill()
+                .padTop(2)
+                .padLeft(2)
+                .padRight(2);
 
         stage.addActor(menu);
     }
@@ -122,7 +137,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         // Clear last frame,
-        r.setView(camera.getCam());
+        worldBatch.setProjectionMatrix(camera.getCam().combined);
         r.render();
         camera.update();
 
@@ -152,8 +167,20 @@ public class GameScreen extends ScreenAdapter {
         return font;
     }
 
-    public SpriteBatch getBatch() {
-        return batch;
+    public SpriteBatch getWorldBatch() {
+        return worldBatch;
+    }
+
+    public com.badlogic.gdx.graphics.Camera getHUDCam() {
+        return stage.getCamera();
+    }
+
+    public Stage getHUDStage() {
+        return stage;
+    }
+
+    public Batch getHUDBatch() {
+        return stage.getBatch();
     }
     //#engregion
 
