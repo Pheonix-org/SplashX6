@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.game;
 
+import com.shinkson47.SplashX6.rendering.screens.MainMenu;
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
 import com.shinkson47.SplashX6.utility.Debug;
@@ -54,5 +55,13 @@ public class GameHypervisor {
 
     public static GameScreen getGameRenderer() {
         return gameRenderer;
+    }
+
+    public static void dispose() {
+        if (gameRenderer != null) gameRenderer.dispose();
+    }
+
+    public static void EndGame() {
+        client.setScreen(new MainMenu());
     }
 }
