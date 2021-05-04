@@ -1,10 +1,12 @@
 package com.shinkson47.SplashX6.rendering
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import kotlin.math.max
+import kotlin.math.pow
 
 // TODO checklist
 // - make sure this works in place of the old cam
@@ -16,7 +18,7 @@ import kotlin.math.max
  * @since v1
  * @version 2
  */
-class newCamera: PerspectiveCamera() {
+class Camera: PerspectiveCamera() {
 
     // ============================================================
     // region fields
@@ -26,15 +28,6 @@ class newCamera: PerspectiveCamera() {
     // - Enable / disable smooth motion
     // - Smooth zoom
 
-    /**
-     * TODO
-     */
-    private var rotation: Float = 0f
-
-    /**
-     * TODO
-     */
-    private var tilt: Float = 800f
 
     /**
      * TODO
@@ -42,10 +35,45 @@ class newCamera: PerspectiveCamera() {
     private val Z: Int = 1000
 
     /**
+     * TODO
+     */
+    private val ROTATION_LIMIT: Int = 5
+    // TODO move these to companion? They should be effectively static.
+    private val ZOOM_MINIMUM: Float = 10f
+    private val ZOOM_MAXIMUM: Float = 28f
+    var zoomSpeed: Float = 0.1f;
+    var zoomMultiplier: Float = 8f
+    var dragMultiplier: Float = 10f
+
+    /**
+     * TODO
+     */
+    public var enableMoveTilt: Boolean = true
+
+    /**
+     * TODO
+     */
+    public var enableZoomTilt: Boolean = true
+
+
+    /**
      * # Where we desire the camera be
      */
-    private var targetPosition: Vector3 = Vector3()
-        set(value) {
+    val desiredPosition: lerpDesire<Vector3> = lerpDesire(position);
+
+    /**
+     * TODO
+     */
+    val desiredRotation: lerpDesire<Float> = lerpDesire(0f)
+
+    /**
+     * TODO
+     */
+    val desiredTilt: lerpDesire<Float> = lerpDesire(27f, zoomSpeed)
+
+    val desiredZoom: lerpDesire<Float> = lerpDesire(ZOOM_MINIMUM, zoomSpeed)
+
+    fun setDesiredPosition(position: Vector3){
             //        float scaledViewportWidthHalfExtent = cam.viewportWidth * cam.fieldOfView * 0.5f;
             //        float scaledViewportHeightHalfExtent = cam.viewportHeight * cam.fieldOfView * 0.5f;
             //        float minx = scaledViewportWidthHalfExtent;
@@ -69,16 +97,8 @@ class newCamera: PerspectiveCamera() {
             //        vector.y = (vector.y < miny) ? miny : Math.min(vector.y, ymax);
 
             // Instead of creating a new instance, re-use this one. Probably a touch faster.
-            targetPosition.set(value);
+            desiredPosition.set(position);
         }
-
-
-    /**
-     * # Where we desire the camera to be *this frame*
-     */
-    private var frameTargetPosition: Vector3 = Vector3()
-
-    private var frameStep: Float = 0f
 
 
     // ============================================================
@@ -91,31 +111,34 @@ class newCamera: PerspectiveCamera() {
 
 
     /**
-     * # Main update routine
+     * # Update and render routine
      */
     override fun update() {
-        updateFrameDesires()
         updateMove()
         updateTilt()
-        // updateTilt()
-        super.update();
+        updateRotation()
+        updateZoom()
+
+        super.update() // render
     }
 
-    fun setDeltaPosition(x: Float, y: Float) = targetPosition.add(x,y,0f);
 
-    fun AssertInBounds() { targetPosition = position }
+
+
+    fun setDeltaPosition(x: Float, y: Float) = desiredPosition.desired.add((x/desiredZoom.get().pow(2))*dragMultiplier,(y/desiredZoom.get().pow(2))*dragMultiplier,0f);
+
+    // TODO
+    fun AssertInBounds() {  }
 
     fun deltaZoom(delta: Float) {
         // TODO store max min elsewhere
-        fieldOfView = MathUtils.clamp(fieldOfView + delta, 10f, 28f)
-
-        if (enableZoomTilt) tilt = MathUtils.clamp(tilt + delta * 27.7f, 800f, 1000f)
+        desiredZoom.set(MathUtils.clamp(fieldOfView + (delta * zoomMultiplier), 10f, 28f))
+        desiredTilt.set(desiredZoom.desired.pow(2))
 
         AssertInBounds()
-        setTilt()
     }
 
-    private fun setTilt() = lookAt(position.x, position.y + tilt, 0f)
+    private fun updateTilt() {if (enableZoomTilt) lookAt(position.x, position.y + desiredTilt.next(), 0f)}
 
     // ============================================================
     // endregion functions
@@ -123,17 +146,30 @@ class newCamera: PerspectiveCamera() {
     // ============================================================
 
     private fun updateFrameDesires() {
-        // Get desired position, and calculate the position for this frame.
-        frameTargetPosition = targetPosition;
-
-        // TODO honestly not sure how this isn't completely broken...
-        frameTargetPosition.rotate(position, -rotation)
 
         // Calculate the size of movement to be taken this frame
-        frameStep = (position.x + position.y - (frameTargetPosition.x + frameTargetPosition.y)) / 2500
+        desiredPosition.alpha = (desiredPosition.desired.x + desiredPosition.desired.y - (desiredPosition.desired.x + desiredPosition.desired.y)) / 2500
 
         // Normalise to positive
-        frameStep = max(frameStep, -frameStep)
+        desiredPosition.alpha = max(desiredPosition.alpha , -desiredPosition.alpha)
+    }
+
+    private fun updateRotation() {
+        if (enableMoveTilt) {
+            val rotStep = desiredPosition.alpha * 4
+
+            if (desiredPosition.desired.x > position.x && desiredRotation.desired < ROTATION_LIMIT) {
+                rotate(rotStep, 0f, 0f, 1f)
+                desiredRotation.desired += rotStep
+            } else if (desiredPosition.desired.x < position.x && desiredRotation.desired > -ROTATION_LIMIT) {
+                rotate(-rotStep, 0f, 0f, 1f)
+                desiredRotation.desired -= rotStep
+            }
+        }
+    }
+
+    private fun updateZoom() {
+        fieldOfView = desiredZoom.next()
     }
 
     /**
@@ -141,26 +177,16 @@ class newCamera: PerspectiveCamera() {
      */
     private fun updateMove(){
         // TODO these two lines shouldn't happen every frame, they're pretty heavy
+
+        // (badly) Change viewport to match field of view
         GameScreen.r.setView(combined,position.x - viewportWidth * 0.5f,position.y,  viewportWidth + fieldOfView, viewportHeight * fieldOfView)
-        position.lerp(frameTargetPosition, frameStep)
+
+        // Move towards desired position
+        position.set(desiredPosition.next());
     }
 
-    /**
-     * TODO
-     */
-    private fun updateTilt() {
-        if (enableMoveTilt) {
-            val rotStep = frameStep * 4
 
-            if (frameTargetPosition.x > position.x && rotation < ROTATION_LIMIT) {
-                rotate(rotStep, 0f, 0f, 1f)
-                rotation += rotStep
-            } else if (frameTargetPosition.x < position.x && rotation > -ROTATION_LIMIT) {
-                rotate(-rotStep, 0f, 0f, 1f)
-                rotation -= rotStep
-            }
-        }
-    }
+
 
 
 
@@ -169,31 +195,6 @@ class newCamera: PerspectiveCamera() {
     // region companion
     // ============================================================
 
-
-    /**
-     * # TODO
-     */
-    companion object {
-
-            /**
-             * TODO
-             */
-            private val ROTATION_LIMIT: Int = 5
-
-            /**
-             * TODO
-             */
-            private var enableMoveTilt: Boolean = false
-
-            /**
-             * TODO
-             */
-            private var enableZoomTilt: Boolean = false
-
-        init {
-            TODO()
-        }
-    }
 
     /**
      * # A value which moves closer to the desired value by [alpha]
@@ -234,6 +235,11 @@ class newCamera: PerspectiveCamera() {
         fun get(): type = present
 
         /**
+         * Sets [desired]
+         */
+        fun set(value: type) {desired = value}
+
+        /**
          * Ensures that [type] is a supported type: Vector3 or Float
          */
         init {
@@ -244,12 +250,31 @@ class newCamera: PerspectiveCamera() {
         }
     }
 
+    fun resize(width: Float, height: Float) {
+    //        cam = new OrthographicCamera(width,height * (height / width));
+        super.viewportHeight = Gdx.graphics.height.toFloat()
+        super.viewportWidth = Gdx.graphics.width.toFloat()
+        position.set(100f, 100f, Z.toFloat())
+
+        // This can be in init
+        far = 100f
+        near = 0f
+
+        AssertInBounds()
+        updateTilt()
+
+        update()
+    }
+
     // ============================================================
     // endregion companion
     // region initalisation    
     // ============================================================
 
     init {
+        position.z = 100f
+        deltaZoom(1f);
+        AssertInBounds();
         //resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 

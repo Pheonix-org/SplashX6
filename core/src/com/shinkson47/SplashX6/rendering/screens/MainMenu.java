@@ -94,7 +94,7 @@ public class MainMenu extends ScreenAdapter {
 
             addButton("NEW GAME", o -> GameHypervisor.NewGame());
             addButton("LOAD GAME", o -> Utility.notImplementedDialog(stage));
-            addButton("OPTIONS", o -> Utility.notImplementedDialog(stage));
+            addButton("OPTIONS", o -> stage.addActor(new OptionsScreen()));
             addButton("CREDITS", o -> Utility.notImplementedDialog(stage));
             addButton("EXIT",  o -> Gdx.app.exit());
         }

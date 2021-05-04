@@ -33,9 +33,9 @@ public class oldCamera {
         return cam;
     }
 
-    public Camera() {
-        //resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
+//    public Camera() {
+//        //resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//    }
 
     public void resize(float width, float height){
 //        cam = new OrthographicCamera(width,height * (height / width));

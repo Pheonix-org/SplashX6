@@ -21,7 +21,22 @@ import static com.shinkson47.SplashX6.Client.client;
  */
 public class GameHypervisor {
 
+    //========================================================================
+    //#region fields
+    //========================================================================
+
+
+    /**
+     * <h2>The screen being used to display the game</h2>
+     */
     private static GameScreen gameRenderer;
+
+
+    //========================================================================
+    //#endregion fields
+    //#region construction
+    //========================================================================
+
 
     /**
      * <h2>Initiates the creation of a new game</h2>
@@ -36,6 +51,7 @@ public class GameHypervisor {
 
     /**
      * <h2>Actually creates a new game</h2>
+     * called by the world creation screen after it has rendered the "creating world" message to the user.
      */
     public static void doNewGameCallback(){
         // Create a new random world. This will be stored in World#focusedWorld automatically.
@@ -51,6 +67,8 @@ public class GameHypervisor {
 
         // Set the client to display the new game window
         client.setScreen(gameRenderer);
+
+        Debug.create();
     }
 
     public static GameScreen getGameRenderer() {

@@ -26,9 +26,11 @@ public class KeyHandler {
         if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
                 client.setScreen(new MainMenu());
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F5))
             GameHypervisor.NewGame();
-        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F11))
+                client.toggleFS();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F6))
             World.focusedWorld.swapTiledInterp();

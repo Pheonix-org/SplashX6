@@ -21,7 +21,8 @@ public class Client extends Game {
 
 	public static final float r = 0.2588235294f, g = 0.2588235294f, b = 0.9058823529f, a = 1;
 	public static final float hr = 0.6470588235f, hg = 0.6470588235f;
-	public static Game client;
+	public static Client client;
+	public static boolean isFullscreen;
 	Screen currentScreen;
 
 	/**
@@ -30,10 +31,12 @@ public class Client extends Game {
 	@Override
 	public void create () {
 		client = this;
+		isFullscreen = Gdx.graphics.isFullscreen();
 		Assets.Create();
 		MouseHandler.create();
 
 		currentScreen = new MainMenu();
+
 		setScreen(currentScreen);
 
 		Gdx.gl.glClearColor(r,g,b,a );
@@ -73,5 +76,13 @@ public class Client extends Game {
 	public void setScreen(Screen screen) {
 		super.setScreen(screen);
 		currentScreen = screen;
+	}
+
+	public static void toggleFS() {
+		if (isFullscreen)
+			Gdx.graphics.setWindowedMode(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		else
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		isFullscreen = !isFullscreen;
 	}
 }
