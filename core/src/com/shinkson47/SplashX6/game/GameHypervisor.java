@@ -31,6 +31,10 @@ public class GameHypervisor {
      */
     private static GameScreen gameRenderer;
 
+    private static World world;
+
+    private static boolean inGame = false;
+
 
     //========================================================================
     //#endregion fields
@@ -46,6 +50,7 @@ public class GameHypervisor {
      * un-responsive and unable to render.
      */
     public static void NewGame(){
+        inGame = false;
         client.setScreen(new WorldCreation());
     }
 
@@ -55,7 +60,7 @@ public class GameHypervisor {
      */
     public static void doNewGameCallback(){
         // Create a new random world. This will be stored in World#focusedWorld automatically.
-        World.create();
+        world = World.create();
 
         // Create a new game screen, which will load in World#focusedWorld
         // It will also configure input for the game window.
@@ -69,6 +74,7 @@ public class GameHypervisor {
         client.setScreen(gameRenderer);
 
         Debug.create();
+        inGame = true;
     }
 
     public static GameScreen getGameRenderer() {
@@ -81,5 +87,11 @@ public class GameHypervisor {
 
     public static void EndGame() {
         client.setScreen(new MainMenu());
+    }
+
+    public static boolean inGame() { return inGame; }
+
+    public static World getWorld() {
+        return world;
     }
 }

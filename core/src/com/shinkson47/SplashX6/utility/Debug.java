@@ -11,6 +11,9 @@ import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
 import com.shinkson47.SplashX6.world.World;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <h1>Random playground for test / development scripture</h1>
  * <br>
@@ -32,6 +35,10 @@ public class Debug {
 
     public static DebugWindow MainDebugWindow;
     public static GameScreen gameRenderer;
+    private static final List<String> Dumps = new ArrayList<>();
+    private static boolean debugMode = false;
+
+    public static boolean enabled() { return debugMode; }
 
     public static void create(){
         gameRenderer = GameHypervisor.getGameRenderer();
@@ -39,9 +46,30 @@ public class Debug {
         gameRenderer.getHUDStage().addActor(MainDebugWindow);
     }
 
+
+
     public static void update(){
         renderMouseInfo();
+        renderDumps();
     }
+
+    private static void renderDumps() {
+        if (!GameHypervisor.inGame()) return;
+
+        gameRenderer.getHUDBatch().begin();
+        int i = 1;
+        for (String s : Dumps) {
+            gameRenderer.getFont().draw(gameRenderer.getHUDBatch(), s, 20f, i * 20f);
+            i++;
+        }
+        gameRenderer.getHUDBatch().end();
+        Dumps.clear();
+    }
+
+    public static synchronized void dump(String s){
+        Dumps.add(s);
+    }
+
 
     public static void dispose(){
         if (!MouseInfo) return;
@@ -58,6 +86,7 @@ public class Debug {
          */
         @Override
         protected void constructContent() {
+            addButton("Toggle General Debug", o -> debugMode = !debugMode);
 
             seperate("World");
             addButton("Toggle Tile interpolation", o -> World.focusedWorld.swapTiledInterp());
@@ -66,8 +95,8 @@ public class Debug {
                 addButton("Toggle layer " + i, o -> t.setVisible(!t.isVisible()));
                 i++;
             }
-
             seperate("Camera");
+
             addButton("Experimental : Toggle Camera Pan Tilt", o -> GameHypervisor.getGameRenderer().getCam().setEnableMoveTilt(!GameHypervisor.getGameRenderer().getCam().getEnableMoveTilt()));
             addButton("Experimental : Toggle Camera Zoom Tilt", o -> GameHypervisor.getGameRenderer().getCam().setEnableZoomTilt(!GameHypervisor.getGameRenderer().getCam().getEnableZoomTilt()));
             addButton("Rotate camera +", o -> GameHypervisor.getGameRenderer().getCam().getCam().rotate(10,0,0,1));
