@@ -1,15 +1,10 @@
 package com.shinkson47.SplashX6.rendering;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
-import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
-import com.shinkson47.SplashX6.world.World;
-import org.w3c.dom.Node;
 
 /**
  * <h1></h1>
@@ -22,7 +17,7 @@ import org.w3c.dom.Node;
  * @version 1
  * @since v1
  */
-public class Camera {
+public class oldCamera {
     // TODO CONFIGURABLE
     // - Zoom sensitivity
     // - Enable / disable smooth motion
@@ -61,6 +56,8 @@ public class Camera {
         float step = ((cam.position.x + cam.position.y) - (targetPosition.x + targetPosition.y)) / 2500;
         step = Math.max(step, -step);
 
+        // TODO these two lines shouldn't happen every frame, they're pretty heavy
+        GameScreen.r.setView(cam.combined, cam.position.x - cam.viewportWidth * 0.5f , cam.position.y, cam.viewportWidth + cam.fieldOfView, cam.viewportHeight * cam.fieldOfView);
         cam.position.lerp(targetPosition, step);
 
         if (enableMoveTilt){
@@ -74,9 +71,6 @@ public class Camera {
             }
         }
 
-
-        // TODO this should not happen every frame, it's pretty heavy
-        GameScreen.r.setView(cam.combined, cam.position.x - cam.viewportWidth * 0.5f , cam.position.y, cam.viewportWidth + cam.fieldOfView, cam.viewportHeight * cam.fieldOfView);
         cam.update();
     }
     public void setTargetPosition(Vector3 vector){
