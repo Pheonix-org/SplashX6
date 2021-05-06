@@ -10,7 +10,9 @@ import com.shinkson47.SplashX6.game.GameHypervisorKt;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
 import com.shinkson47.SplashX6.world.World;
+import jdk.vm.ci.meta.ExceptionHandler;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,6 @@ public class Debug {
      * Debug feature switches
      */
     public static boolean MouseInfo;
-
 
     public static DebugWindow MainDebugWindow;
     public static GameScreen gameRenderer;

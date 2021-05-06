@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.utility.Assets;
@@ -41,12 +42,14 @@ public abstract class StageWindow extends Window {
      * Simply just a foreground colored label
      */
     public static final Label.LabelStyle seperatorStyle;
+    public static final Drawable lightBG;
     static {
         seperatorStyle = new Label.LabelStyle(new Label("", Assets.SKIN).getStyle());
         Pixmap labelColor = new Pixmap(200, 200, Pixmap.Format.RGB888);
         labelColor.setColor(Client.hr,Client.hg,Client.b,Client.a);
         labelColor.fill();
-        seperatorStyle.background = new Image(new Texture(labelColor)).getDrawable();
+        lightBG = new Image(new Texture(labelColor)).getDrawable();
+        seperatorStyle.background = lightBG;
    }
 
     public StageWindow() {
@@ -101,9 +104,6 @@ public abstract class StageWindow extends Window {
         // If there's no title, do nothing
         if (title.equals("")) return;
 
-        // Ensure we're on a new row. If we're already on an empty row this does nothing.
-        row();
-
         // Create the label
         Label label = new Label(title.toUpperCase(), Assets.SKIN);
         label.setAlignment(Align.bottom);
@@ -112,19 +112,11 @@ public abstract class StageWindow extends Window {
         // Format differently for dialog windows
         if (!windowStyle.equals("dialog") && !windowStyle.equals("dialog-modal")){
             label.setText("**** " + label.getText() + " ****");
-            getTitleTable().padTop(50);
+            getTitleTable().padTop(100);
         }
 
-        // Use a table to manipulate placement in row
-        Table t = new Table();
-        t.add(label);
-        t.top().padBottom(20);
-
-
-        span(add(t));
-
-        // Move to next row. Nothing else should be in the title row.
-        row();
+        getTitleTable().add(label).row();
+        row().padTop(50);
     }
 
 
@@ -177,34 +169,31 @@ public abstract class StageWindow extends Window {
         return add(actors).row();
     }
 
-    protected Cell tabs(Cell contentCell, List<Table> tables, List<String> name) {
+    protected Table tabs(Cell contentCell, List<Table> tables, List<String> name) {
         assert (tables.size() == name.size());
 
-        // Make sure we're on a new row
-        hsep().bottom();
-        Cell currRow = expandfill(row());
+        Table tabs = new Table();
 
         // for every tab table, add a button for it.
         int i = 0;
         for (Table t : tables) {
-            expandfill(add(tab(contentCell, t, name.get(i))).maxHeight(50).minHeight(50));
+            expandfill(
+                    tabs.add(
+                            tab(contentCell, t, name.get(i)
+                            )
+                    ).bottom()
+            ).maxHeight(50).minHeight(50);
             i++;
         }
 
-        currRow.colspan(i + 1);
-        currRow.maxHeight(30).top();
+        getTitleTable().add(tabs);
 
         expandfill(contentCell);
-
-        // move to next row
-        row();
-
-        hsep().top();
-
-        span(contentCell);
-        updateColSpans(i);
+        contentCell.setActor(tables.get(0));
+//        span(contentCell);
+//        updateColSpans(i);
         // return the row of buttons, not the new row.
-        return currRow;
+        return tabs;
     }
 
     /**
@@ -259,11 +248,16 @@ public abstract class StageWindow extends Window {
      * @return
      */
     protected Cell hsep(){
+        return hsep(this);
+    }
+
+    protected Cell hsep (Table t) {
         row();
-        Cell c = span(add(new Label("", seperatorStyle))).colspan(lastSpan).height(3).bottom();
+        Cell c = span(t.add(new Label("", seperatorStyle))).colspan(lastSpan).height(3).bottom();
         row();
         return c;
     }
+
 
     /**
      * Adds a new cell to the table with the specified actor.

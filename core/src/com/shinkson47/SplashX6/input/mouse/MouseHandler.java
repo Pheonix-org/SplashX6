@@ -4,7 +4,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.shinkson47.SplashX6.game.GameHypervisorKt;
 
-import java.awt.*;
 
 /**
  * <h1>Main mouse handling scripts</h1>

@@ -31,22 +31,22 @@ class Camera: PerspectiveCamera() {
         /**
          * # Constant height of the camera over the world plane.
          */
-        private val Z: Int = 1000
+        private const val Z: Int = 1000
 
         /**
          * # Max degrees of rotation that the camara may turn when being dragged.
          */
-        private val ROTATION_LIMIT: Int = 5
+        private const val ROTATION_LIMIT: Int = 5
 
         /**
          * # The smallest possible pov angle in degrees
          */
-        private val ZOOM_MINIMUM: Float = 10f
+        private const val ZOOM_MINIMUM: Float = 10f
 
         /**
          * # The largest possible pov angle in degrees
          */
-        private val ZOOM_MAXIMUM: Float = 28f
+        private const val ZOOM_MAXIMUM: Float = 28f
     }
 
     /**

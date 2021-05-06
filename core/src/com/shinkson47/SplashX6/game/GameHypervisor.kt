@@ -10,7 +10,7 @@
 
 package com.shinkson47.SplashX6.game;
 
-import com.shinkson47.SplashX6.Client.client
+import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
@@ -61,7 +61,7 @@ var inGame:Boolean = false; private set
  */
 fun NewGame() {
     if (inGame) EndGame()
-    client.setScreen(WorldCreation());
+    client?.setScreen(WorldCreation());
 }
 
 /**
@@ -80,7 +80,7 @@ fun doNewGameCallback() {
 
 
     // Set the client to display the new game window
-    client.setScreen(gameRenderer);
+    client?.setScreen(gameRenderer);
 
     // TODO This couldn't be done before a world is created, but is only temporary.
     // STOPSHIP: 17/04/2021 this is dumb and shouldn't stay
@@ -148,7 +148,7 @@ fun dispose()
 fun EndGame()
 {
     dispose()
-    client.setScreen(MainMenu());
+    client?.setScreen(MainMenu());
 }
 
 
@@ -171,6 +171,7 @@ fun ValidateHypervisorCall(requireLoaded: Boolean) {
             if (requireLoaded) "Hypervisor API called, but Hypervisor has no game loaded!" else "Hypervisor pre-init API called, but a game as been loaded!"
         )
 }
+
 
 //========================================================================
 //#endregion misc

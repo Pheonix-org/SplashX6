@@ -26,13 +26,16 @@ public class OptionsScreen extends StageWindow {
     //#endregion constants
     //=====================================================================
 
-    private static final Table GAME_OPTION_WINDOW , GRAPHICS_OPTION_WINDOW, SOUND_OPTION_WINDOW = null;
+    private static final Table GAME_OPTION_WINDOW, GRAPHICS_OPTION_WINDOW, SOUND_OPTION_WINDOW;
     static {
         GAME_OPTION_WINDOW = new Table();
-        GAME_OPTION_WINDOW.add(new Label("Hello", Assets.SKIN));
+        GAME_OPTION_WINDOW.add(new Label("Game options will be built here", Assets.SKIN));
 
         GRAPHICS_OPTION_WINDOW = new Table();
-        GRAPHICS_OPTION_WINDOW.add(new Label("There", Assets.SKIN));
+        GRAPHICS_OPTION_WINDOW.add(new Label("Graphics options will be built here", Assets.SKIN));
+
+        SOUND_OPTION_WINDOW = new Table();
+        SOUND_OPTION_WINDOW.add(new Label("Sound options will be built here", Assets.SKIN));
     }
 
     private static Cell contentCell = null;
@@ -65,18 +68,18 @@ public class OptionsScreen extends StageWindow {
 
                 List.of(
                     GAME_OPTION_WINDOW,
-                    GAME_OPTION_WINDOW,
-                    GAME_OPTION_WINDOW,
+                    SOUND_OPTION_WINDOW,
                     GRAPHICS_OPTION_WINDOW
                 ),
 
                 List.of(
                      "Game",
-                     "Game",
-                     "Game",
-                     "Game",
+                     "Sound",
                      "Graphics"
                 )
         );
+
+        setFillParent(true);
+        setDebug(true);
     }
 }
