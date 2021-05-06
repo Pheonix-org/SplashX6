@@ -40,19 +40,34 @@ public class MouseHandler {
      * <h2>Permenant input scripts using {@link Gdx#input}</h2>
      */
     public static void Poll() {
-
+        // TODO gotta a be a way to abstract this garbage...
+            if (!GameHypervisorKt.getInGame()) return;
             // If releasing, notify drag logistics that it's been released
-            if (DragLogistics.MIDDLE.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.MIDDLE))
-                DragLogistics.MIDDLE.up();
+            if (DragLogistics.LEFT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                DragLogistics.LEFT.up();
+                GameHypervisorKt.getGameRenderer().getCam().AssertInBounds();
+            }
 
             // If pressing, notify drag logistics that it's been pressed
-            if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE))
-                DragLogistics.MIDDLE.down();
-
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
+                DragLogistics.LEFT.down();
 
             // If down, then update camera's target with the mouse's movement
-            if (DragLogistics.MIDDLE.isDown())
-                GameHypervisorKt.getGameRenderer().getCam().setDeltaPosition(DragLogistics.MIDDLE.x(), DragLogistics.MIDDLE.y());
+            if (DragLogistics.LEFT.isDown())
+                GameHypervisorKt.getGameRenderer().getCam().deltaPosition(DragLogistics.LEFT.x(), DragLogistics.LEFT.y());
+
+        // If releasing, notify drag logistics that it's been released
+        if (DragLogistics.RIGHT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
+            DragLogistics.RIGHT.up();
+
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT))
+            DragLogistics.RIGHT.down();
+
+            if (DragLogistics.RIGHT.isDown()) {
+                DragLogistics.RIGHT.x();
+                GameHypervisorKt.getGameRenderer().getCam().deltaTilt(DragLogistics.RIGHT.y());
+            }
+
 
     }
 
@@ -91,9 +106,7 @@ public class MouseHandler {
          */
         @Override
         public boolean keyDown(int keycode) {
-
                 return false;
-
         }
 
         /**

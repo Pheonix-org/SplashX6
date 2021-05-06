@@ -47,6 +47,9 @@ class Camera: PerspectiveCamera() {
          * # The largest possible pov angle in degrees
          */
         private const val ZOOM_MAXIMUM: Float = 28f
+
+        private const val TILT_MINIMUM          : Float = 36f
+        private const val TILT_MAXIMUM          : Float = 60f
     }
 
     /**
@@ -128,16 +131,19 @@ class Camera: PerspectiveCamera() {
     /**
      * # Moves [desiredPosition] by delta [x] and [y]
      */
-    fun setDeltaPosition(x: Float, y: Float) = desiredPosition.desired.add((x/desiredZoom.get())*dragMultiplier,(y/desiredZoom.get())*dragMultiplier,0f);
+    fun deltaPosition(x: Float, y: Float) = desiredPosition.desired.add((x/desiredZoom.get())*dragMultiplier,(y/desiredZoom.get())*dragMultiplier,0f);
 
     /**
      * # Changes [desiredZoom] by [delta].
      */
     fun deltaZoom(delta: Float) {
         desiredZoom.set(MathUtils.clamp(fieldOfView + (delta * zoomMultiplier), ZOOM_MINIMUM, ZOOM_MAXIMUM))
-        desiredTilt.set(MathUtils.clamp(MathUtils.lerp(36f, 60f, 1/(((fieldOfView-ZOOM_MINIMUM)/(ZOOM_MAXIMUM - ZOOM_MINIMUM))) * tiltMultiplier), 36f, 60f))
+        desiredTilt.set(MathUtils.clamp(MathUtils.lerp(TILT_MINIMUM, TILT_MAXIMUM, 1/(((fieldOfView-ZOOM_MINIMUM)/(ZOOM_MAXIMUM - ZOOM_MINIMUM))) * tiltMultiplier), TILT_MINIMUM, TILT_MAXIMUM))
+    }
 
-        AssertInBounds()
+    fun deltaTilt(delta: Float) {
+        Debug.dump("Tilt Delta : $delta")
+        desiredTilt.set(MathUtils.clamp(desiredTilt.get() + delta, TILT_MINIMUM, TILT_MAXIMUM))
     }
 
     /**
@@ -152,41 +158,19 @@ class Camera: PerspectiveCamera() {
      * Moves the camera if it needs to in order to make sure viewport is not out of the world.
      *
      * Use to camera from showing areas out of the world.
+     *
+     * TODO i kinda gave up with this. Now just makes sure that center is in bounds.
      */
-    // TODO
-    private fun AssertInBounds() {
-        val scaledViewportWidthHalfExtent: Float = viewportWidth * fieldOfView * 0.5f
-        val scaledViewportHeightHalfExtent: Float = viewportHeight * fieldOfView * 0.5f
-        val xmax: Float = (World.focusedWorld.width() * World.TILE_WIDTH).toFloat()
-        val ymax: Float = World.focusedWorld.height() * World.TILE_HEIGHT * 0.5f
+    fun AssertInBounds() {
+        val worldBottom: Float = -yFromAngle(desiredTilt.get()) - World.TILE_HEIGHT
+        val worldRight : Int = World.focusedWorld.width() * World.TILE_WIDTH
+        val worldTop : Int = World.focusedWorld.height() * World.TILE_HEIGHT / 2
 
-        // Horizontal
+        if (desiredPosition.get().x < 0) desiredPosition.desired.x = 0f
+        else if (desiredPosition.get().x > worldRight) desiredPosition.desired.x = worldRight.toFloat()
 
-        // Horizontal
-        if (desiredPosition.desired.x < scaledViewportWidthHalfExtent)
-            desiredPosition.desired.x = scaledViewportWidthHalfExtent
-        else if (desiredPosition.desired.x > xmax - scaledViewportWidthHalfExtent)
-            desiredPosition.desired.x = xmax - scaledViewportWidthHalfExtent
-
-        // Vertical
-
-        // Vertical
-        if (desiredPosition.desired.y < scaledViewportHeightHalfExtent)
-            desiredPosition.desired.y = scaledViewportHeightHalfExtent
-        else if (desiredPosition.desired.y > ymax - scaledViewportHeightHalfExtent)
-            desiredPosition.desired.y = ymax - scaledViewportHeightHalfExtent
-
-        desiredPosition.desired.x =
-            if (desiredPosition.desired.x < scaledViewportWidthHalfExtent)
-                scaledViewportWidthHalfExtent
-            else
-                Math.min(desiredPosition.desired.x, xmax)
-
-        desiredPosition.desired.y =
-            if (desiredPosition.desired.y < scaledViewportHeightHalfExtent)
-                scaledViewportHeightHalfExtent
-            else
-                Math.min(desiredPosition.desired.y, ymax)
+        if (desiredPosition.get().y < worldBottom) desiredPosition.desired.y = worldBottom
+        else if (desiredPosition.get().y > worldTop) desiredPosition.desired.y = worldTop.toFloat()
     }
 
     /**

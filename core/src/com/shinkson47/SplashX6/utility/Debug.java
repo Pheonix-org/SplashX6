@@ -68,6 +68,7 @@ public class Debug {
     }
 
     public static synchronized void dump(String s){
+        if (!debugMode) return;
         Dumps.add(s);
     }
 
