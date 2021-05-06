@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.GameHypervisorKt;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Debug;
 import com.shinkson47.SplashX6.input.KeyHandler;
@@ -63,7 +63,7 @@ public class Client extends Game {
 	 */
 	@Override
 	public void dispose () {
-		GameHypervisor.dispose();
+		GameHypervisorKt.dispose();
 		World.dispose();
 		//AudioManager.dispose();
 		Debug.dispose();

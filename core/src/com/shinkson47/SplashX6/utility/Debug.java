@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector3;
-import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.GameHypervisorKt;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
 import com.shinkson47.SplashX6.world.World;
@@ -41,7 +41,7 @@ public class Debug {
     public static boolean enabled() { return debugMode; }
 
     public static void create(){
-        gameRenderer = GameHypervisor.getGameRenderer();
+        gameRenderer = GameHypervisorKt.getGameRenderer();
         MainDebugWindow = new DebugWindow();
         gameRenderer.getHUDStage().addActor(MainDebugWindow);
     }
@@ -54,7 +54,7 @@ public class Debug {
     }
 
     private static void renderDumps() {
-        if (!GameHypervisor.inGame()) return;
+        if (!GameHypervisorKt.getInGame()) return;
 
         gameRenderer.getHUDBatch().begin();
         int i = 1;
@@ -97,10 +97,10 @@ public class Debug {
             }
             seperate("Camera");
 
-            addButton("Experimental : Toggle Camera Pan Tilt", o -> GameHypervisor.getGameRenderer().getCam().setEnableMoveTilt(!GameHypervisor.getGameRenderer().getCam().getEnableMoveTilt()));
-            addButton("Experimental : Toggle Camera Zoom Tilt", o -> GameHypervisor.getGameRenderer().getCam().setEnableZoomTilt(!GameHypervisor.getGameRenderer().getCam().getEnableZoomTilt()));
-            addButton("Rotate camera +", o -> GameHypervisor.getGameRenderer().getCam().getCam().rotate(10,0,0,1));
-            addButton("Rotate camera -", o -> GameHypervisor.getGameRenderer().getCam().getCam().rotate(-10,0,0,1));
+            addButton("Experimental : Toggle Camera Pan Tilt", o -> GameHypervisorKt.getGameRenderer().getCam().setEnableMoveTilt(!GameHypervisorKt.getGameRenderer().getCam().getEnableMoveTilt()));
+            addButton("Experimental : Toggle Camera Zoom Tilt", o -> GameHypervisorKt.getGameRenderer().getCam().setEnableZoomTilt(!GameHypervisorKt.getGameRenderer().getCam().getEnableZoomTilt()));
+            addButton("Rotate camera +", o -> GameHypervisorKt.getGameRenderer().getCam().getCam().rotate(10,0,0,1));
+            addButton("Rotate camera -", o -> GameHypervisorKt.getGameRenderer().getCam().getCam().rotate(-10,0,0,1));
 
             seperate("Cursor");
             addButton("Toggle Cursor Info", o -> MouseInfo = !MouseInfo);
@@ -119,7 +119,7 @@ public class Debug {
         int mousey = Gdx.input.getY();
         int rendery = Gdx.graphics.getHeight() - mousey;
 
-        Vector3 WorldSpace = GameHypervisor.getGameRenderer().getCam().getCam().unproject(new Vector3(mousex, mousey,0));
+        Vector3 WorldSpace = GameHypervisorKt.getGameRenderer().getCam().getCam().unproject(new Vector3(mousex, mousey,0));
         Vector3 MapSpace = World.WorldspaceToMapspace((int)WorldSpace.x, (int)WorldSpace.y);
 
         gameRenderer.getHUDBatch().begin();

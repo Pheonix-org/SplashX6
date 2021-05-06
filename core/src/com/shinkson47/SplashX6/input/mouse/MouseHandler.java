@@ -2,7 +2,7 @@ package com.shinkson47.SplashX6.input.mouse;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.GameHypervisorKt;
 
 import java.awt.*;
 
@@ -53,7 +53,7 @@ public class MouseHandler {
 
             // If down, then update camera's target with the mouse's movement
             if (DragLogistics.MIDDLE.isDown())
-                GameHypervisor.getGameRenderer().getCam().setDeltaPosition(DragLogistics.MIDDLE.x(), DragLogistics.MIDDLE.y());
+                GameHypervisorKt.getGameRenderer().getCam().setDeltaPosition(DragLogistics.MIDDLE.x(), DragLogistics.MIDDLE.y());
 
     }
 
@@ -102,7 +102,7 @@ public class MouseHandler {
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
-            GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
+            GameHypervisorKt.getGameRenderer().getCam().deltaZoom(amountY);
             return true;
         }
     };

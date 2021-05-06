@@ -2,12 +2,9 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
-import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.GameHypervisorKt;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.utility.Assets;
@@ -92,7 +89,7 @@ public class MainMenu extends ScreenAdapter {
                     .padBottom(100)
                     .row();
 
-            addButton("NEW GAME", o -> GameHypervisor.NewGame());
+            addButton("NEW GAME", o -> GameHypervisorKt.NewGame());
             addButton("LOAD GAME", o -> Utility.notImplementedDialog(stage));
             addButton("OPTIONS", o -> stage.addActor(new OptionsScreen()));
             addButton("CREDITS", o -> Utility.notImplementedDialog(stage));
