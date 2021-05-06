@@ -80,6 +80,5 @@ public class OptionsScreen extends StageWindow {
         );
 
         setFillParent(true);
-        setDebug(true);
     }
 }
