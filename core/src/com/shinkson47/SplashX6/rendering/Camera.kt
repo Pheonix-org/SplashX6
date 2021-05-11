@@ -50,6 +50,8 @@ class Camera: PerspectiveCamera() {
 
         private const val TILT_MINIMUM          : Float = 36f
         private const val TILT_MAXIMUM          : Float = 60f
+
+        var FRUSTRUM_WIDTH_MOD = 0f;
     }
 
     /**
@@ -218,7 +220,9 @@ class Camera: PerspectiveCamera() {
         // TODO these two lines shouldn't happen every frame, they're pretty heavy
 
         // (badly) Change viewport to match field of view
-        GameScreen.r.setView(combined,position.x - viewportWidth * 0.5f,position.y,  viewportWidth + fieldOfView, viewportHeight * fieldOfView)
+        // this can't really be improved, the staggared isometric renderer does not support a perspective camera, or it's culling frustum.
+        // TODO As a work-around we could add a user adjustable varable to the width
+        GameScreen.r.setView(combined,position.x - ((viewportWidth + FRUSTRUM_WIDTH_MOD) * 0.5f),position.y,  viewportWidth + fieldOfView + FRUSTRUM_WIDTH_MOD, viewportHeight * fieldOfView)
 
         // Move towards desired position
         position.set(desiredPosition.next());

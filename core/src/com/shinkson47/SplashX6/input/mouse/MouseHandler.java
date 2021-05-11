@@ -2,7 +2,8 @@ package com.shinkson47.SplashX6.input.mouse;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.shinkson47.SplashX6.game.GameHypervisorKt;
+import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.GameHypervisor;
 
 
 /**
@@ -41,11 +42,11 @@ public class MouseHandler {
      */
     public static void Poll() {
         // TODO gotta a be a way to abstract this garbage...
-            if (!GameHypervisorKt.getInGame()) return;
+            if (!GameHypervisor.getInGame()) return;
             // If releasing, notify drag logistics that it's been released
             if (DragLogistics.LEFT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 DragLogistics.LEFT.up();
-                GameHypervisorKt.getGameRenderer().getCam().AssertInBounds();
+                GameHypervisor.getGameRenderer().getCam().AssertInBounds();
             }
 
             // If pressing, notify drag logistics that it's been pressed
@@ -54,7 +55,7 @@ public class MouseHandler {
 
             // If down, then update camera's target with the mouse's movement
             if (DragLogistics.LEFT.isDown())
-                GameHypervisorKt.getGameRenderer().getCam().deltaPosition(DragLogistics.LEFT.x(), DragLogistics.LEFT.y());
+                GameHypervisor.getGameRenderer().getCam().deltaPosition(DragLogistics.LEFT.x(), DragLogistics.LEFT.y());
 
         // If releasing, notify drag logistics that it's been released
         if (DragLogistics.RIGHT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
@@ -65,7 +66,7 @@ public class MouseHandler {
 
             if (DragLogistics.RIGHT.isDown()) {
                 DragLogistics.RIGHT.x();
-                GameHypervisorKt.getGameRenderer().getCam().deltaTilt(DragLogistics.RIGHT.y());
+                GameHypervisor.getGameRenderer().getCam().deltaTilt(DragLogistics.RIGHT.y());
             }
 
 
@@ -114,7 +115,7 @@ public class MouseHandler {
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
-            GameHypervisorKt.getGameRenderer().getCam().deltaZoom(amountY);
+            GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
             return true;
         }
     };

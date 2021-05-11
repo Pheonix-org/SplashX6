@@ -1,6 +1,5 @@
 package com.shinkson47.SplashX6.rendering.screens
 
-import com.shinkson47.SplashX6.game.NewGame
 import com.badlogic.gdx.ScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
@@ -10,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.local
@@ -27,6 +27,7 @@ import com.shinkson47.SplashX6.utility.Utility.local
  * @since v1
  */
 class MainMenu : ScreenAdapter() {
+
     private val stage = Stage()
 
     //#region listeners
@@ -44,21 +45,22 @@ class MainMenu : ScreenAdapter() {
             // Title label
             add(
                 Label(
-                    """   _____ ____  __    ___   _____ __  __        _____
+"""
+   _____ ____  __    ___   _____ __  __        _____
   / ___// __ \/ /   /   | / ___// / / /  _  __/ ___/
   \__ \/ /_/ / /   / /| | \__ \/ /_/ /  | |/_/ __ \ 
  ___/ / ____/ /___/ ___ |___/ / __  /  _>  </ /_/ / 
 /____/_/   /_____/_/  |_/____/_/ /_/  /_/|_|\____/  
-                                                    """, Assets.SKIN
+""", Assets.SKIN
                 )
             )
                 .padBottom(100f)
                 .row()
-            addButton(local("playGame")) { o: InputEvent? -> NewGame() }
-            addButton(local("loadGame")) { o: InputEvent? -> Utility.notImplementedDialog(stage) }
-            addButton(local("preferences")) { o: InputEvent? -> stage.addActor(OptionsScreen()) }
-            addButton(local("credits")) { o: InputEvent? -> Utility.notImplementedDialog(stage) }
-            addButton(local("exitGame")) { o: InputEvent? -> Gdx.app.exit() }
+            addButton(local("playGame")) { NewGame() }
+            addButton(local("loadGame")) { Utility.notImplementedDialog(stage) }
+            addButton(local("preferences")) { stage.addActor(OptionsScreen()) }
+            addButton(local("credits")) { Utility.notImplementedDialog(stage) }
+            addButton(local("exitGame")) { Gdx.app.exit() }
         }
     }
 

@@ -17,7 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.shinkson47.SplashX6.Client;
-import com.shinkson47.SplashX6.game.GameHypervisorKt;
+import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.utility.Assets;
@@ -118,9 +118,9 @@ public class GameScreen extends ScreenAdapter {
 
         // Add buttons
         //TODO Menu bar abstraction?
-        applyMenuStyling(menu.add(button("END GAME", o -> GameHypervisorKt.EndGame())));
-        applyMenuStyling(menu.add(button("SOMETHING AWESOME", o -> Utility.notImplementedDialog(stage))));
-        applyMenuStyling(menu.add(button("NEW GAME", o -> GameHypervisorKt.NewGame())));
+        applyMenuStyling(menu.add(button("END GAME", o -> GameHypervisor.EndGame())));
+        applyMenuStyling(menu.add(button("NEW GAME", o -> GameHypervisor.NewGame())));
+        applyMenuStyling(menu.add(button("OPTIONS", o -> stage.addActor(new OptionsScreen()))));
         applyMenuStyling(menu.add(button("DEVELOP & DEBUG", o -> Debug.MainDebugWindow.toggleShown())));
 
         // Add to stage

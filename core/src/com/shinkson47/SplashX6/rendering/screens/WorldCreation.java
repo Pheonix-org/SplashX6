@@ -6,7 +6,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.shinkson47.SplashX6.game.GameHypervisorKt;
+import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.world.World;
 
@@ -45,7 +45,7 @@ public class WorldCreation extends ScreenAdapter {
         // Render once, then on the second frame callback to the game hypervisor to create the game.
         // We have to perform a full render and return to put a loading screen up.
         if (hasRendered)
-            GameHypervisorKt.doNewGameCallback();
+            GameHypervisor.doNewGameCallback();
 
         stage.act();
         stage.draw();

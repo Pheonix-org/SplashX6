@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
-import com.shinkson47.SplashX6.game.NewGame
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.world.World
 
