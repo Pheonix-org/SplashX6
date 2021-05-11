@@ -12,6 +12,7 @@ import com.shinkson47.SplashX6.world.FastNoiseLite;
 import java.util.Random;
 
 import static com.badlogic.gdx.math.MathUtils.random;
+import static com.shinkson47.SplashX6.utility.Assets.LANG;
 
 /**
  * <h1>General static utility methods</h1>
@@ -103,6 +104,10 @@ public final class Utility {
         dialog.text("There's nothing beautiful here... YET!")
             .button("OK, I'll come back later!", true)
             .show(stage);
+    }
+
+    public static String local(String key) {
+        return LANG.get(key);
     }
     // I tried to implement above by catching an out of bounds exception, but for some reason it wasn't catching it so i resorted to calculating it which is probably slower but oh well
     //#endregion static

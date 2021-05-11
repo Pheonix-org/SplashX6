@@ -4,9 +4,7 @@ import com.shinkson47.SplashX6.game.NewGame
 import com.badlogic.gdx.ScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.rendering.screens.OptionsScreen
 import com.badlogic.gdx.Gdx
-import com.shinkson47.SplashX6.rendering.screens.MainMenu.MainMenuWindow
 import com.shinkson47.SplashX6.rendering.StageWindow.LambdaClickListener
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
@@ -14,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
  * <h1></h1>
@@ -55,11 +54,11 @@ class MainMenu : ScreenAdapter() {
             )
                 .padBottom(100f)
                 .row()
-            addButton("NEW GAME") { o: InputEvent? -> NewGame() }
-            addButton("LOAD GAME") { o: InputEvent? -> Utility.notImplementedDialog(stage) }
-            addButton("OPTIONS") { o: InputEvent? -> stage.addActor(OptionsScreen()) }
-            addButton("CREDITS") { o: InputEvent? -> Utility.notImplementedDialog(stage) }
-            addButton("EXIT") { o: InputEvent? -> Gdx.app.exit() }
+            addButton(local("playGame")) { o: InputEvent? -> NewGame() }
+            addButton(local("loadGame")) { o: InputEvent? -> Utility.notImplementedDialog(stage) }
+            addButton(local("preferences")) { o: InputEvent? -> stage.addActor(OptionsScreen()) }
+            addButton(local("credits")) { o: InputEvent? -> Utility.notImplementedDialog(stage) }
+            addButton(local("exitGame")) { o: InputEvent? -> Gdx.app.exit() }
         }
     }
 

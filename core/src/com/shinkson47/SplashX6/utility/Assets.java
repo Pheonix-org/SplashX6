@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.I18NBundle;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -48,6 +50,8 @@ public class Assets {
         }
         SPRITES_MAP = result;
     }
+
+    public static final I18NBundle LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale("fr", "", ""));
 
     public static void Dispose(){
         TILESETS.dispose();
