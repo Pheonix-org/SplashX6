@@ -56,7 +56,7 @@ class MainMenu : ScreenAdapter() {
             )
                 .padBottom(100f)
                 .row()
-            addButton(local("playGame")) { NewGame() }
+            addButton(local("newGame")) { NewGame() }
             addButton(local("loadGame")) { Utility.notImplementedDialog(stage) }
             addButton(local("preferences")) { stage.addActor(OptionsScreen()) }
             addButton(local("credits")) { Utility.notImplementedDialog(stage) }

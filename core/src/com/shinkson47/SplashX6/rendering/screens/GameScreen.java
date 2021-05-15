@@ -27,6 +27,7 @@ import com.shinkson47.SplashX6.world.World;
 
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
+import static com.shinkson47.SplashX6.utility.Assets.LANG;
 
 
 /**
@@ -116,12 +117,19 @@ public class GameScreen extends ScreenAdapter {
         bgPixmap.fill();
         menu.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap))));
 
+
         // Add buttons
         //TODO Menu bar abstraction?
-        applyMenuStyling(menu.add(button("END GAME", o -> GameHypervisor.EndGame())));
-        applyMenuStyling(menu.add(button("NEW GAME", o -> GameHypervisor.NewGame())));
-        applyMenuStyling(menu.add(button("OPTIONS", o -> stage.addActor(new OptionsScreen()))));
-        applyMenuStyling(menu.add(button("DEVELOP & DEBUG", o -> Debug.MainDebugWindow.toggleShown())));
+        applyMenuStyling(menu.add(button(local("endGame"), o -> GameHypervisor.EndGame())));
+        applyMenuStyling(menu.add(button(local("newGame"), o -> GameHypervisor.NewGame())));
+        applyMenuStyling(menu.add(button(local("preferences"), o -> stage.addActor(new OptionsScreen()))));
+        applyMenuStyling(menu.add(button(local("dev"), o -> Debug.MainDebugWindow.toggleShown())));
+
+        // Previous code - kept in case of error
+//        applyMenuStyling(menu.add(button("END GAME", o -> GameHypervisor.EndGame())));
+//        applyMenuStyling(menu.add(button("NEW GAME", o -> GameHypervisor.NewGame())));
+//        applyMenuStyling(menu.add(button("OPTIONS", o -> stage.addActor(new OptionsScreen()))));
+//        applyMenuStyling(menu.add(button("DEVELOP & DEBUG", o -> Debug.MainDebugWindow.toggleShown())));
 
         // Add to stage
         stage.addActor(menu);
@@ -173,6 +181,11 @@ public class GameScreen extends ScreenAdapter {
     //#endregion rendering operations
     //#region get/set & misc
     //========================================================================
+
+    // Temporary method for development. Duplicated method from the Utility.java class.
+    public static String local(String key) {
+        return LANG.get(key);
+    }
 
     /**
      * <h2>Returns the camera wrapper</h2>
