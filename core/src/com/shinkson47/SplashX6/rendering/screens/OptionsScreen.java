@@ -121,16 +121,13 @@ public class OptionsScreen extends StageWindow {
 
         ADVANCED_OPTION_TAB = new Table();
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();
-        
+
         ADVANCED_OPTION_TAB.add(button("Invalid API call (crash)", o ->
                 validateCall(REQ_GAME_LOADING, THROW("Test api exception.")))).row();
 
-        ADVANCED_OPTION_TAB.add(button("Invalid API call (warn. Then crash.)", o ->
-                validateCall(REQ_GAME_LOADING,  WARN("Test api exception.", this)))).row();
-
-        ADVANCED_OPTION_TAB.add(button("Invalid API call (ignore)", o -> {
+        ADVANCED_OPTION_TAB.add(button("Invalid API call (warn and ignore)", o -> {
             if (
-                    invalidCall(REQ_GAME_LOADING, THROW("This will be ignored. You won't see this exception."))
+                    invalidCall(REQ_GAME_LOADING, WARN("You can't do that.", this))
             ) return;
         })).row();
 

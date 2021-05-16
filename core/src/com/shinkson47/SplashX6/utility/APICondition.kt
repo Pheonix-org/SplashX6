@@ -38,6 +38,11 @@ class APICondition @JvmOverloads constructor() {
                 validateCall(requiredState, onIllegalState)
             } catch (ignored: APIException) {
                 Gdx.app.log("API Validation warning", "An API call failed to meet call condition, but the exception will be ignored.")
+                try {
+                    onIllegalState.run()
+                } catch (ignored: APIException) {
+                    return true
+                }
                 return true
             }
             return false;
@@ -94,7 +99,7 @@ class APICondition @JvmOverloads constructor() {
         fun WARN(message: String, caller: Actor): Runnable = _WARN_USER(message, caller)
         class _WARN_USER(val message: String, val caller: Actor) : Runnable {
             override fun run() {
-                StageWindow.dialog(caller, "Invalid operation!", "$message", "Whoops, OK!", "") { THROW(message).run() }
+                StageWindow.dialog(caller, "Invalid operation!", "$message", "Whoops, OK!", "", null)
             }
         }
 
