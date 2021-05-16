@@ -14,15 +14,22 @@ import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
+import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_GAME_LOADING
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
+import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
+import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
+import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.world.World
 
 class GameHypervisor {
     companion object {
 
-//========================================================================
-//#region fields
-//========================================================================
+        //========================================================================
+        //#region fields
+        //========================================================================
 
         /**
          * ## The screen being used to display the game
@@ -30,7 +37,7 @@ class GameHypervisor {
         @JvmStatic
         var gameRenderer: GameScreen? = null; private set
 
-// TODO move focusses world to here
+        // TODO move focusses world to here
         /**
          * # The current game world
          */
@@ -45,10 +52,10 @@ class GameHypervisor {
         var inGame: Boolean = false; private set
 
 
-//========================================================================
-//#endregion fields
-//#region construction
-//========================================================================
+        //========================================================================
+        //#endregion fields
+        //#region construction
+        //========================================================================
 
 
         /**
@@ -71,7 +78,7 @@ class GameHypervisor {
          */
         @JvmStatic
         fun doNewGameCallback() {
-            ValidateHypervisorCall(false)
+            validateCall(REQ_GAME_LOADING, THROW("Tried to load a game whilst not loading."))
 
             // Create a new random world. This will be stored in World#focusedWorld automatically.
             world = World.create();
@@ -92,37 +99,39 @@ class GameHypervisor {
         }
 
 
-//========================================================================
-//#endregion construction
-//#region saving API
-//========================================================================
+        //========================================================================
+        //#endregion construction
+        //#region saving API
+        //========================================================================
 
         @JvmStatic
         fun quickload() {
-            ValidateHypervisorCall(true)
-            TODO()
+            validateCall(REQ_IN_GAME, THROW("Can only quickload in game. This should not be possible."))
+
         }
         @JvmStatic
         fun load() {
-            ValidateHypervisorCall(true)
-            TODO()
+            validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
+
         }
         @JvmStatic
         fun quicksave() {
-            ValidateHypervisorCall(true)
-            TODO()
+            if (
+                invalidCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("quicksave a game", "no game is loaded")))
+            ) return;
+
+
         }
         @JvmStatic
         fun save() {
-            ValidateHypervisorCall(true)
-            TODO()
+            validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("save a game", "no game is loaded")))
         }
 
 
-//========================================================================
-//#endregion saving
-//#region breakdown
-//========================================================================
+        //========================================================================
+        //#endregion saving
+        //#region breakdown
+        //========================================================================
 
 
         /**
@@ -147,28 +156,8 @@ class GameHypervisor {
         }
 
 
-//========================================================================
-//#endregion breakdown
-//#region misc
-//========================================================================
-
-
-        /**
-         * # Disallows calls which depend on state of game load when hypervisor is not in the expected state.
-         * set [requireLoaded] true if the call requires that a game is loaded. Set false if
-         * it requires that no game is loaded. If no state dependancy on call, then don't validate.
-         */
-        @JvmStatic
-        fun ValidateHypervisorCall(requireLoaded: Boolean) {
-            if (requireLoaded && !inGame || !requireLoaded && inGame)   // If load required but not loaded OR require not loaded but is loaded then
-                throw IllegalAccessException(                           // Throw illegal access.
-                    if (requireLoaded) "Hypervisor API called, but Hypervisor has no game loaded!" else "Hypervisor pre-init API called, but a game as been loaded!"
-                )
-        }
-
-
-//========================================================================
-//#endregion misc
-//========================================================================
+    //========================================================================
+    //#endregion breakdown
+    //========================================================================
     }
 }

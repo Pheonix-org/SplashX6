@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -182,18 +183,29 @@ public abstract class StageWindow extends Window {
      * @param negative The text shown in the negative button. If empty, no button is added.
      * @param acceptHandler The handler which handles the button press. If null, no handler is added.
      */
-    protected void dialog(String title, String text, String positive, String negative, ChangeListener acceptHandler) {
-        // Construct dialog
-        Dialog dialog = new Dialog("", Assets.SKIN, "dialog-modal");
+    protected void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
+        dialog(this, title, text, positive, negative, resultHandler);
+    }
+
+    public static void dialog(Actor actor, String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
+        if (actor.getStage() == null) throw new NullPointerException("Tried to show a dialog, but the caller was not on a stage.");
+
+        // Construct dialog, that gives the result to the handler
+        Dialog dialog = new Dialog("", Assets.SKIN, "dialog-modal") {
+            protected void result(Object object){
+                if (resultHandler != null)
+                    resultHandler.accept((boolean) object);
+            }
+        };
 
         // Clear the canvas to create a custom title
-//        dialog.getTitleTable().reset();
+        //        dialog.getTitleTable().reset();
 
         // TODO use util for title
         // Format and add title.
-//        Label lblTitle = new Label(title, Assets.SKIN, "title");
-//        lblTitle.setAlignment(Align.bottom);
-//        dialog.getTitleTable().add(lblTitle).expand();
+        //        Label lblTitle = new Label(title, Assets.SKIN, "title");
+        //        lblTitle.setAlignment(Align.bottom);
+        //        dialog.getTitleTable().add(lblTitle).expand();
         placeTitle(dialog, "dialog-modal", title);
 
         // Format and add content.
@@ -210,10 +222,7 @@ public abstract class StageWindow extends Window {
         if (!negative.equals(""))
             dialog.button(positive, false);
 
-        if (acceptHandler != null)
-            dialog.addListener(acceptHandler);
-
-        dialog.show(getStage());
+        dialog.show(actor.getStage());
     }
     //#region dialog
 

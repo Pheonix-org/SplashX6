@@ -11,6 +11,8 @@ import com.shinkson47.SplashX6.utility.Assets;
 
 import java.util.List;
 
+import static com.shinkson47.SplashX6.utility.APICondition.*;
+
 /**
  * <h1></h1>
  * <br>
@@ -118,8 +120,21 @@ public class OptionsScreen extends StageWindow {
         SOUND_OPTION_TAB.add(new Label("Sound options will be built here", Assets.SKIN));
 
         ADVANCED_OPTION_TAB = new Table();
-
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();
+        
+        ADVANCED_OPTION_TAB.add(button("Invalid API call (crash)", o ->
+                validateCall(REQ_GAME_LOADING, THROW("Test api exception.")))).row();
+
+        ADVANCED_OPTION_TAB.add(button("Invalid API call (warn. Then crash.)", o ->
+                validateCall(REQ_GAME_LOADING,  WARN("Test api exception.", this)))).row();
+
+        ADVANCED_OPTION_TAB.add(button("Invalid API call (ignore)", o -> {
+            if (
+                    invalidCall(REQ_GAME_LOADING, THROW("This will be ignored. You won't see this exception."))
+            ) return;
+        })).row();
+
+
         constructContent();
     }
 
