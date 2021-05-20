@@ -1,10 +1,12 @@
 package com.shinkson47.SplashX6.game.world;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Utility;
 
@@ -112,7 +114,7 @@ public final class World {
     private TiledMapTileLayer LerpedTileLayer;
 
 
-    private ArrayList<GameSprites> sprites = new ArrayList<>();
+    public ArrayList<Sprite> sprites = new ArrayList<>();
     private TiledMapTileLayer SpriteLayer;
 
     private TiledMapTileLayer FoliageLayer;
@@ -498,21 +500,27 @@ public final class World {
     }
 
     // TODO this is not tested.
-    public static Vector3 isoToCartesian(int x, int y) {
+    public static Vector3 isoToCartesian(final int x, final int y) {
         // TODO devision is overhead - but is float > int conversion more efficient?
-        y = (y * TILE_HEIGHT) / 2;
-        x = x * TILE_WIDTH;
+        int _y = (y * TILE_HEIGHT) / 2;
+        int _x = x * TILE_WIDTH;
 
-        if (y % 2 == 0)
-            x -= TILE_WIDTH * 0.5f;
+        if (y % 2 != 0)
+            _x -= TILE_WIDTH * 0.5f;
 
-        return new Vector3(x, y, 0);
+        return new Vector3(_x + (TILE_WIDTH * 0.5f), _y + (TILE_WIDTH * 0.25f), 0);
     }
-    // TODO cartesian conversion was removed _-_
 
     public void createSprite(int x, int y/*, String resource*/, int id){
+//        sprites.add(
+//                new Unit()
+//        );
 
+        Vector3 pos = isoToCartesian(x,y);
+        Sprite s = unitSprites.createSprite("tile001");
+        s.setPosition(pos.x,pos.y);
 
+        sprites.add(s);
 
 //        TiledMapTileLayer.Cell test = new TiledMapTileLayer.Cell();
 //        test.setTile(SPRITES.getTileSets().getTile(id) /*(Integer) SPRITES_MAP.get("unit.knights"))*/);
