@@ -25,10 +25,10 @@ import java.util.Map;
 public class Assets {
 
     public static void Create(){}
+
     static{
         SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
-
-
+        
         // Tilesets
         TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
         SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");

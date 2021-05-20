@@ -36,6 +36,19 @@ public final class Utility {
     }
 
     /**
+     * <h2>Asserts that the value passed is at a minimum bound or above</h2>
+     * @param value The value to check
+     * @param min The minimum permitable value of <code>value</code>
+     * @return if value > min then value, else min
+     * @deprecated turn out there's an api call for this, {@link Math#max}
+     * @see Math#max(int, int)
+     */
+    @Deprecated
+    public static int boundMin(int value, int min){
+        return (value > min) ? value : min;
+    }
+
+    /**
      * <h2>Linear interpolation</h2>
      * Returns a value between a and b, determined by f.
      * <br><br>
@@ -58,18 +71,6 @@ public final class Utility {
         return a + f * (b - a);
     }
 
-    /**
-     * <h2>Asserts that the value passed is at a minimum bound or above</h2>
-     * @param value The value to check
-     * @param min The minimum permitable value of <code>value</code>
-     * @return if value > min then value, else min
-     * @deprecated turn out there's an api call for this, {@link Math#max}
-     * @see Math#max(int, int)
-     */
-    @Deprecated
-    public static int boundMin(int value, int min){
-        return (value > min) ? value : min;
-    }
 
     /**
      * <h2>Determines if X and Y are within bounds of a 2d array</h2>
