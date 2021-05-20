@@ -185,6 +185,8 @@ class Camera: PerspectiveCamera() {
      */
     private fun yFromAngle(angle: Float): Float = (Z / tan(angle * PI / 180) + desiredPosition.get().y.toDouble()).toFloat()
 
+    fun lookingAtY(): Int = yFromAngle(desiredTilt.get()).toInt()
+
 
     /**
      * # Update and render routine

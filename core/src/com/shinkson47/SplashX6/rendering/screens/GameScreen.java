@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -91,6 +92,8 @@ public class GameScreen extends ScreenAdapter {
 
         //r.setView(camera.getCam());
 
+
+
         // Configure UI
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         createUI();
@@ -148,6 +151,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta) {
         // Clear last frame
+        // TODO setting matrix on every frame???
         worldBatch.setProjectionMatrix(camera.getCam().combined);
 
         // Render the world
@@ -155,6 +159,12 @@ public class GameScreen extends ScreenAdapter {
 
         // Update the camera (Movement, zoom, renders what it sees)
         camera.update();
+
+        worldBatch.begin();
+        World.focusedWorld.sprites.forEach(
+                sprite -> sprite.draw(worldBatch)
+        );
+        worldBatch.end();
 
         // Update the UI (listen for inputs, etc)
         stage.act(delta);
@@ -238,5 +248,12 @@ public class GameScreen extends ScreenAdapter {
     public Batch getHUDBatch() {
         return stage.getBatch();
     }
+
+    // STOPSHIP: 20/05/2021 basically this shouldn't be in production
+    public Vector3 getSelectedTile() {
+        Vector3 v = camera.getDesiredPosition().get();
+        return World.WorldspaceToMapspace((int) v.x, (int) v.y);
+    }
+
     //#engregion
 }
