@@ -6,7 +6,7 @@ import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
-import com.shinkson47.SplashX6.world.World
+import com.shinkson47.SplashX6.game.world.World
 
 /**
  * @author [Jordan T. Gray on 12/04/2021](https://www.shinkson47.in)

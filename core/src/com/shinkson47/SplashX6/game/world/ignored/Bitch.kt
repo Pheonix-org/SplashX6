@@ -4,7 +4,7 @@
  */
 // Package is the top level declaration
 // JVM requires to know what package this script is in.
-package com.shinkson47.SplashX6.world.ignored
+package com.shinkson47.SplashX6.game.world.ignored
 
 
 /**

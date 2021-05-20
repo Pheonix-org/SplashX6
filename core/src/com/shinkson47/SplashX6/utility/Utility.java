@@ -1,15 +1,11 @@
 package com.shinkson47.SplashX6.utility;
 
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import com.shinkson47.SplashX6.world.FastNoiseLite;
-
-import java.util.Random;
+import com.shinkson47.SplashX6.game.world.FastNoiseLite;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;

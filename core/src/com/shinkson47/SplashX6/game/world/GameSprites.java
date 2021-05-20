@@ -1,4 +1,4 @@
-package com.shinkson47.SplashX6.world;
+package com.shinkson47.SplashX6.game.world;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 

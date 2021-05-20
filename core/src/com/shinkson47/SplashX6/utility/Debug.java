@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
-import com.shinkson47.SplashX6.world.World;
+import com.shinkson47.SplashX6.game.world.World;
 
 import java.util.ArrayList;
 import java.util.List;

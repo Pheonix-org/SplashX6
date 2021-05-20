@@ -9,7 +9,7 @@ import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.utility.Debug
-import com.shinkson47.SplashX6.world.World
+import com.shinkson47.SplashX6.game.world.World
 
 /**
  * # The main game

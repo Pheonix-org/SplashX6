@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.utility.Assets;
-import com.shinkson47.SplashX6.world.World;
+import com.shinkson47.SplashX6.game.world.World;
 
 /**
  * <h1></h1>

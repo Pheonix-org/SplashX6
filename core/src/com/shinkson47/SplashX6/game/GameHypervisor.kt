@@ -11,6 +11,7 @@
 package com.shinkson47.SplashX6.game;
 
 import com.shinkson47.SplashX6.Client.Companion.client
+import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
@@ -22,7 +23,7 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
-import com.shinkson47.SplashX6.world.World
+import com.shinkson47.SplashX6.game.world.World
 
 class GameHypervisor {
     companion object {
@@ -37,12 +38,16 @@ class GameHypervisor {
         @JvmStatic
         var gameRenderer: GameScreen? = null; private set
 
-        // TODO move focusses world to here
+
+        // TODO move focused world to here
         /**
          * # The current game world
          */
         @JvmStatic
         var world: World? = null; private set
+
+        @JvmStatic
+        var units: ArrayList<Unit> = ArrayList()
 
         /**
          * # Are we in a game? i.e is a game currently loaded and playable?
@@ -125,6 +130,10 @@ class GameHypervisor {
         @JvmStatic
         fun save() {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("save a game", "no game is loaded")))
+        }
+
+        fun spawn(x: Int, y: Int, idk: Any?) {
+
         }
 
 

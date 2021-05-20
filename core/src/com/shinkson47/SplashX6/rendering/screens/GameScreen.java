@@ -22,8 +22,7 @@ import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Debug;
-import com.shinkson47.SplashX6.utility.Utility;
-import com.shinkson47.SplashX6.world.World;
+import com.shinkson47.SplashX6.game.world.World;
 
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
