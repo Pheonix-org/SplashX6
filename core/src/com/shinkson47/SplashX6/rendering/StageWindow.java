@@ -303,7 +303,7 @@ public abstract class StageWindow extends Window {
      * @param e Function of the button
      * @return the button created
      */
-    public static TextButton button(String text, Consumer e) {
+    public static TextButton button(String text, Consumer<?> e) {
         TextButton b = new TextButton(text, Assets.SKIN);
         onClick(b, e);
         return b;

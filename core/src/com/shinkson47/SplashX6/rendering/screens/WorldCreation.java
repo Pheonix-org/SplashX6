@@ -40,6 +40,7 @@ public class WorldCreation extends ScreenAdapter {
 
 
     private boolean hasRendered = false;
+
     @Override
     public void render(float delta) {
         // Render once, then on the second frame callback to the game hypervisor to create the game.

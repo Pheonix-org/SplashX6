@@ -1,14 +1,13 @@
 package com.shinkson47.SplashX6.rendering.screens.gameutils
 
-import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.shinkson47.SplashX6.utility.Assets
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.utility.Assets
 import java.util.function.Consumer
 
 /**
@@ -19,57 +18,54 @@ import java.util.function.Consumer
  */
 class units : StageWindow("Units") {
 
+    private val list: List<Unit> = List(Assets.SKIN)
 
-    // ============================================================
-    // region fields
-    // ============================================================
-
-
-    // ============================================================
-    // endregion fields
-    // region functions  
-    // ============================================================
-
-
-    // ============================================================
-    // endregion functions
-    // region companion    
-    // ============================================================
-
-    /**
-     * # TODO
-     */
-    companion object {
-        init {
-
-        }
-    }
-
-    // ============================================================
-    // endregion companion
-    // region initalisation    
-    // ============================================================
-
-    init {
-
-    }
+    init { constructContent() }
 
     /**
      * <h2>Constructs the content to be displayed in this window</h2>
      */
     override fun constructContent() {
-        val l: List<Unit> = List(Assets.SKIN)
+        if (FIRST_CONSTRUCTION) return;
 
-        // TODO i hate everything about this...
+        // Buttons
+        // TODO localise
+        // TODO lots of repeating code here
+        add(button("Move unit to cursor") { t -> GameHypervisor.unit_setDestination(); refresh() }).row()
+        add(button("View destination") { t -> GameHypervisor.unit_viewDestination(); refresh() }).row()
+        add(button("disband") { t -> GameHypervisor.unit_disband(); refresh() }).row()
+
+        list.addListener(
+            LambdaClickListener {
+                GameHypervisor.unit_select(list.selected)
+                refreshSelected()
+            }
+        )
+
+        val sp = ScrollPane(list, skin);
+        add(sp).fillX()
+        getCell(sp).height(200f)
+
+        refresh()
+        pack()
+    }
+
+    private fun refresh() {
+        refreshSelected()
+        refreshList()
+    }
+
+    private fun refreshSelected() {
+
+    }
+
+    private fun refreshList() {
         val arr : Array<Unit> = Array();
         GameData.units.forEach( Consumer { x -> arr.add(x) })
 
-        l.setItems(arr)
-        add(ScrollPane(l, skin)).fill()
-
-        l.addListener(
-            LambdaClickListener{ GameHypervisor.selectUnit(l.selected) }
-        )
+        list.setItems(arr)
+        list.selected = null
+        list.selectedIndex = -1
     }
 
     // ============================================================

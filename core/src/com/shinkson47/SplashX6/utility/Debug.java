@@ -160,7 +160,7 @@ public class Debug {
         gameRenderer.getSr().setProjectionMatrix(gameRenderer.getCam().combined);
 
         // selector
-        Vector3 v = gameRenderer.getSelectedTile();
+        Vector3 v = GameHypervisor.getSelectedTile();
         v = World.isoToCartesian((int)v.x, (int)v.y);
         gameRenderer.getSr().circle((int)v.x, gameRenderer.getCam().lookingAtY(), 10);
 

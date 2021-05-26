@@ -18,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
@@ -95,7 +96,7 @@ public class GameScreen extends ScreenAdapter {
         // Create objects
         sr = new ShapeRenderer();
         r = new IsometricStaggeredTiledMapRenderer(GameData.INSTANCE.getWorld().getMap());
-        stage = new Stage(new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        stage = new Stage(new ScreenViewport());
 
         //r.setView(camera.getCam());
 
@@ -165,11 +166,26 @@ public class GameScreen extends ScreenAdapter {
         sr.setProjectionMatrix(camera.combined);
 
         Unit u = GameData.INSTANCE.getSelectedUnit();
+
+        sr.begin(ShapeRenderer.ShapeType.Line);
         if (u != null) {
-            sr.begin(ShapeRenderer.ShapeType.Line);
             sr.circle(u.getX() + TILE_HALF_WIDTH, u.getY() + TILE_HALF_HEIGHT, TILE_HALF_HEIGHT);
-            sr.end();
         }
+
+        sr.setProjectionMatrix(getHUDBatch().getProjectionMatrix());
+        sr.circle(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f, 5);
+
+        sr.setProjectionMatrix(camera.combined);
+        // TODO shorten by mutating in function
+        Vector3 v = GameHypervisor.getSelectedTile();
+        v = World.isoToCartesian((int)v.x, (int)v.y);
+
+        sr.circle((int) v.x, camera.lookingAtY(), 10);
+
+        // Cache x and y
+
+
+        sr.end();
 
         worldBatch.begin();
         GameData.INSTANCE.getUnits().forEach(
@@ -271,12 +287,6 @@ public class GameScreen extends ScreenAdapter {
      */
     public Batch getHUDBatch() {
         return stage.getBatch();
-    }
-
-    // STOPSHIP: 20/05/2021 basically this shouldn't be in production
-    public Vector3 getSelectedTile() {
-        Vector3 v = camera.getDesiredPosition().get();
-        return World.WorldspaceToMapspace((int) v.x, (int) v.y);
     }
 
     //#engregion

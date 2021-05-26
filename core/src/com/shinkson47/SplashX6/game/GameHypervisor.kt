@@ -10,8 +10,10 @@
 
 package com.shinkson47.SplashX6.game;
 
+import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.game.units.Unit
+import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
@@ -142,20 +144,68 @@ class GameHypervisor {
             GameData.units.add(s)
         }
 
+
+        //========================================================================
+        //#endregion saving
+        //#region units
+        //========================================================================
+
+        // TODO api predicate for requiring a unit is selected.
+
+        /**
+         * # Selects a unit for focus of manipulation
+         * Other unit calls will use this selected unit.
+         */
         @JvmStatic
-        fun selectUnit(unit: Unit) {
+        fun unit_select(unit: Unit) {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("Select a unit", "no game is loaded")))
 
             if (!GameData.units.contains(unit))
                 throw IllegalArgumentException("Tried to select a unit that does not exist in the game data!")
 
             GameData.selectedUnit = unit
-            gameRenderer!!.cam.goTo(unit.x, unit.y)
+            unit_view();
+        }
+
+        /**
+         * # Sets the destination of the selected unit to the cursor
+         * in tile space.
+         */
+        fun unit_setDestination() {
+            // TODO Doesn't seem to set the correct location
+            with(GameData.selectedUnit!!) {
+                val dest: Vector3 = getSelectedTile()
+                destX = dest.x.toInt()
+                destY = dest.y.toInt()
+            }
+        }
+
+        /**
+         * # Focusses the camera on the selected units destination.
+         */
+        fun unit_viewDestination() {
+            moveCameraToTile(GameData.selectedUnit!!.destX, GameData.selectedUnit!!.destY)
+        }
+
+
+        /**
+         * # focuesses the camera on the selected unit
+         */
+        fun unit_view(){
+            moveCameraTo(GameData.selectedUnit!!.x, GameData.selectedUnit!!.y)
+        }
+
+        /**
+         * # Destroys the selected unit
+         * Giving the user some resources in return.
+         */
+        fun unit_disband() {
+            GameData.units.remove(GameData.selectedUnit)
         }
 
 
         //========================================================================
-        //#endregion saving
+        //#endregion units
         //#region breakdown
         //========================================================================
 
@@ -184,6 +234,24 @@ class GameHypervisor {
 
     //========================================================================
     //#endregion breakdown
+    //#region misc
     //========================================================================
+
+        @JvmStatic
+        fun moveCameraTo(x: Float, y: Float) {
+            gameRenderer!!.cam.goTo(x, y)
+        }
+
+        @JvmStatic
+        fun moveCameraToTile(x: Int, y: Int) {
+            val cartesian: Vector3 = World.isoToCartesian(x,y)
+            moveCameraTo(cartesian.x, cartesian.y)
+        }
+
+        @JvmStatic
+        fun getSelectedTile(): Vector3 {
+            val v: Vector3 = gameRenderer!!.cam.desiredPosition.get()
+            return World.WorldspaceToMapspace(v.x.toInt(), v.y.toInt())
+        }
     }
 }

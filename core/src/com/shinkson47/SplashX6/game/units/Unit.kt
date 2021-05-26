@@ -23,6 +23,17 @@ class Unit(spriteName: String, pos: Vector3) : Sprite(unitSprites.createSprite(s
      */
     var isoVec : Vector3 = pos
 
+    /**
+     * # The unit's destination
+     * Marks where the unit is travelling to.
+     */
+    var destX : Int = 0
+    var destY : Int = 0
+
+
+
+
+
     @Deprecated("see [setPosition]")
     override fun setX(x: Float) {
         super.setX(x)
