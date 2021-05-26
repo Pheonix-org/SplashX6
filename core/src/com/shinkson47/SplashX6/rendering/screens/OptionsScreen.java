@@ -1,15 +1,14 @@
 package com.shinkson47.SplashX6.rendering.screens;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.utility.Assets;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.shinkson47.SplashX6.utility.APICondition.*;
 
@@ -130,6 +129,7 @@ public class OptionsScreen extends StageWindow {
                     invalidCall(REQ_GAME_LOADING, WARN("You can't do that.", this))
             ) return;
         })).row();
+
 
 
         constructContent();

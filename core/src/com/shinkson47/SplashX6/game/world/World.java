@@ -1,11 +1,11 @@
 package com.shinkson47.SplashX6.game.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Utility;
@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 import static com.shinkson47.SplashX6.utility.Assets.*;
 import static com.shinkson47.SplashX6.utility.Utility.createNoiseGenerator;
@@ -35,18 +36,12 @@ import static com.shinkson47.SplashX6.utility.Utility.createNoiseGenerator;
 public final class World {
 
     /**
-     * <h2>The world that the game is focusing on. This will be the map rendered and interacted with.</h2>
-     */
-    public static com.shinkson47.SplashX6.game.world.World focusedWorld;
-
-    /**
      * <h2>Creates a new world, and stores it in {@link com.shinkson47.SplashX6.game.world.ignored.World#focusedWorld}</h2>
      * @return
      * @apiNote Has no regard for any existing world. It will be overwritten.
      */
     public static com.shinkson47.SplashX6.game.world.World create(){
-        focusedWorld = new com.shinkson47.SplashX6.game.world.World();
-        return focusedWorld;
+        return new com.shinkson47.SplashX6.game.world.World();
     }
 
     /**
@@ -60,7 +55,7 @@ public final class World {
     /**
      * <h2>The size of tiles in pixels</h2>
      */
-    public static final int TILE_WIDTH = 64, TILE_HEIGHT = 32;
+    public static final int TILE_WIDTH = 64, TILE_HEIGHT = 32, TILE_HALF_HEIGHT = TILE_HEIGHT / 2, TILE_HALF_WIDTH = TILE_WIDTH / 2;
 
     /**
      * <h2>Defines sea level</h2>
@@ -73,7 +68,12 @@ public final class World {
     /**
      * <h2>The smallest permitted world size</h2>
      */
-    public static final int MIN_WORLD_WIDTH = 6, MIN_WORLD_HEIGHT = 6, DEFAULT_WIDTH = 500, DEFAULT_HEIGHT = 500, FOLIAGE_QUANTITY_MAX = 10000;
+    public static final int MIN_WORLD_WIDTH = 6,
+            MIN_WORLD_HEIGHT = 6,
+            DEFAULT_WIDTH = 500,
+            DEFAULT_HEIGHT = 500,
+            FOLIAGE_QUANTITY_MAX = 10000,
+            UNIT_COUNT = 5;
 
     //#endregion constants
 
@@ -113,8 +113,7 @@ public final class World {
      */
     private TiledMapTileLayer LerpedTileLayer;
 
-
-    public ArrayList<Sprite> sprites = new ArrayList<>();
+    // TODO can this be removed now that units are not a map layer?
     private TiledMapTileLayer SpriteLayer;
 
     private TiledMapTileLayer FoliageLayer;
@@ -196,7 +195,7 @@ public final class World {
         //genResources();
 
         // Generate civilisations & barbarians
-        genPopulation();
+        //genPopulation();
 
         // Construct all generated world data into a GDX TiledMap.
         convGDX();
@@ -282,16 +281,20 @@ public final class World {
     }
 
 
-    private void genPopulation() {
-        int x,y;
-        int s;
-        for (int i = 0; i <= FOLIAGE_QUANTITY_MAX; i++){
-            x = MathUtils.random(0,height()-1);
-            y = MathUtils.random(0,width()-1);
-            s = MathUtils.random(0,79);
-            createSprite(x,y, s);
-        }
+    /**
+     * Generates a list of random units.
+     * @return
+     */
+    public void genPopulation() {
+        for (int i = 0; i <= UNIT_COUNT; i++)
+            GameHypervisor.spawn(
+                    MathUtils.random(0, height()-1), // X
+                    MathUtils.random(0, width()-1),  // Y
+                    MathUtils.random(0,79)
+            );
     }
+
+
 
 
     /**
@@ -505,27 +508,13 @@ public final class World {
         int _y = (y * TILE_HEIGHT) / 2;
         int _x = x * TILE_WIDTH;
 
-        if (y % 2 != 0)
-            _x -= TILE_WIDTH * 0.5f;
+        if (y % 2 == 0)
+            _x += TILE_WIDTH * 0.5f;
 
-        return new Vector3(_x + (TILE_WIDTH * 0.5f), _y + (TILE_WIDTH * 0.25f), 0);
+        return new Vector3(_x, _y + (TILE_WIDTH * 0.25f), 0);
     }
 
-    public void createSprite(int x, int y/*, String resource*/, int id){
-//        sprites.add(
-//                new Unit()
-//        );
 
-        Vector3 pos = isoToCartesian(x,y);
-        Sprite s = unitSprites.createSprite("tile001");
-        s.setPosition(pos.x,pos.y);
-
-        sprites.add(s);
-
-//        TiledMapTileLayer.Cell test = new TiledMapTileLayer.Cell();
-//        test.setTile(SPRITES.getTileSets().getTile(id) /*(Integer) SPRITES_MAP.get("unit.knights"))*/);
-//        SpriteLayer.setCell(x,y, test);
-    }
 
 
 

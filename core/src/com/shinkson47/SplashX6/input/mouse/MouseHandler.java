@@ -47,7 +47,6 @@ public class MouseHandler {
             // If releasing, notify drag logistics that it's been released
             if (DragLogistics.LEFT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 DragLogistics.LEFT.up();
-                GameHypervisor.getGameRenderer().getCam().AssertInBounds();
             }
 
             // If pressing, notify drag logistics that it's been pressed
@@ -116,6 +115,7 @@ public class MouseHandler {
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
+            // TODO this crashes on anywhere that isn't the game.
             GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
             return true;
         }

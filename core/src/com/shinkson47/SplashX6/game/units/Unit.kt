@@ -3,6 +3,8 @@ package com.shinkson47.SplashX6.game.units
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.game.world.World.*
+import com.shinkson47.SplashX6.utility.Assets.unitSprites
 
 /**
  * # A user playable unit.
@@ -10,35 +12,28 @@ import com.shinkson47.SplashX6.game.world.World
  * @since v1
  * @version 1
  */
-class Unit : Sprite() {
+class Unit(spriteName: String, pos: Vector3) : Sprite(unitSprites.createSprite(spriteName)) {
+    constructor(spriteName: String, _x: Int, _y: Int) : this(spriteName, Vector3(_x.toFloat(), _y.toFloat(), 0f))
 
 
-    // ============================================================
-    // region fields
-    // ============================================================
+    var spriteName: String = spriteName;
 
     /**
-     * # The location of the
+     * # The location of the unit
      */
-    var isoX: Int = 0
-        private set
-
-    var isoY: Int = 0
-        private set
-
-
-    // ============================================================
-    // endregion fields
-    // region functions  
-    // ============================================================
+    var isoVec : Vector3 = pos
 
     @Deprecated("see [setPosition]")
     override fun setX(x: Float) {
-        super.setX(x);
+        super.setX(x)
     }
     @Deprecated("see [setPosition]")
     override fun setY(y: Float) {
-        super.setX(y);
+        super.setY(y)
+    }
+
+    init {
+        setLocation(pos)
     }
 
     /**
@@ -49,13 +44,17 @@ class Unit : Sprite() {
      *
      * For a delta translation, see [deltaPosition]
      */
-    fun setPosition(x: Int, y: Int): Vector3 {
-        isoX = x; isoY = y;
+    fun setLocation(_pos : Vector3): Vector3 = setLocation(_pos.x, _pos.y)
+    fun setLocation(x: Float, y: Float) : Vector3 {
+        isoVec.set(x,y,0f)
 
-        val pos: Vector3 = World.isoToCartesian(x, y);
+        val pos: Vector3 = World.isoToCartesian(x.toInt(), y.toInt());
 
-        setX(pos.x)
-        setY(pos.y)
+        // TODO don't have to do this calculation every time
+        // META : Compensate for the origin, so that the sprite is in the center of the cell.
+        // Changing the sprite origin had no effect
+        setX(pos.x - TILE_HALF_WIDTH)
+        setY(pos.y - TILE_HALF_HEIGHT)
         return pos
     }
 
@@ -63,37 +62,14 @@ class Unit : Sprite() {
      * # Moves this sprite by a x, and y, iso tiles.
      */
     fun deltaPosition(deltaX: Int, deltaY: Int): Vector3 {
-        isoX += deltaX
-        isoY += deltaY
-        return setPosition(isoX, isoY)
+        isoVec.x += deltaX
+        isoVec.x += deltaY
+        return setLocation(isoVec)
     }
 
-    // ============================================================
-    // endregion functions
-    // region companion    
-    // ============================================================
-
-    /**
-     * # TODO
-     */
-    companion object {
-        init {
-
-        }
+    override fun toString(): String {
+        return "$spriteName (X${isoVec.x}, Y${isoVec.y})"
     }
-
-    // ============================================================
-    // endregion companion
-    // region initalisation    
-    // ============================================================
-
-    init {
-
-    }
-
-    // ============================================================
-    // endregion initalisation    
-    // ============================================================
 
 
 }

@@ -12,19 +12,25 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
+import com.shinkson47.SplashX6.rendering.screens.gameutils.units;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Debug;
 import com.shinkson47.SplashX6.game.world.World;
 
+import static com.shinkson47.SplashX6.game.world.World.TILE_HALF_HEIGHT;
+import static com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;
@@ -49,7 +55,7 @@ public class GameScreen extends ScreenAdapter {
     private Camera camera = new Camera();
 
     /**
-     * <h2>Renderer that renders {@link World#focusedWorld}</h2>
+     * <h2>Renderer that renders {@link GameData#world}</h2>
      * renders from perspective of {@link GameScreen#camera}
      */
     public static MapRenderer r;
@@ -87,7 +93,7 @@ public class GameScreen extends ScreenAdapter {
 
         // Create objects
         sr = new ShapeRenderer();
-        r = new IsometricStaggeredTiledMapRenderer(World.focusedWorld.getMap());
+        r = new IsometricStaggeredTiledMapRenderer(GameData.INSTANCE.getWorld().getMap());
         stage = new Stage(new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         //r.setView(camera.getCam());
@@ -123,6 +129,7 @@ public class GameScreen extends ScreenAdapter {
         // Add buttons
         //TODO Menu bar abstraction?
         applyMenuStyling(menu.add(button(local("endGame"), o -> GameHypervisor.EndGame())));
+        applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
         applyMenuStyling(menu.add(button(local("newGame"), o -> GameHypervisor.NewGame())));
         applyMenuStyling(menu.add(button(local("preferences"), o -> stage.addActor(new OptionsScreen()))));
         applyMenuStyling(menu.add(button(local("dev"), o -> Debug.MainDebugWindow.toggleShown())));
@@ -160,17 +167,37 @@ public class GameScreen extends ScreenAdapter {
         // Update the camera (Movement, zoom, renders what it sees)
         camera.update();
 
+        sr.setProjectionMatrix(camera.combined);
+
+        Unit u = GameData.INSTANCE.getSelectedUnit();
+        if (u != null) {
+            sr.begin(ShapeRenderer.ShapeType.Line);
+            sr.circle(u.getX() + TILE_HALF_WIDTH, u.getY() + TILE_HALF_HEIGHT, TILE_HALF_HEIGHT);
+            sr.end();
+        }
+
         worldBatch.begin();
-        World.focusedWorld.sprites.forEach(
-                sprite -> sprite.draw(worldBatch)
+        GameData.INSTANCE.getUnits().forEach(
+                sprite -> {
+                    if (Debug.enabled()) {
+                        sr.begin(ShapeRenderer.ShapeType.Filled);
+                        sr.rect(sprite.getBoundingRectangle().x,sprite.getBoundingRectangle().y,sprite.getBoundingRectangle().width,sprite.getBoundingRectangle().height);
+                        sr.end();
+                    }
+
+
+                    sprite.draw(worldBatch);
+                }
         );
         worldBatch.end();
+
 
         // Update the UI (listen for inputs, etc)
         stage.act(delta);
 
         // Draw the UI
         stage.draw();
+
 
         Debug.update(); // TODO shouldn't have to do this here
     }
@@ -190,6 +217,8 @@ public class GameScreen extends ScreenAdapter {
     //#endregion rendering operations
     //#region get/set & misc
     //========================================================================
+
+
 
     // Temporary method for development. Duplicated method from the Utility.java class.
     public static String local(String key) {

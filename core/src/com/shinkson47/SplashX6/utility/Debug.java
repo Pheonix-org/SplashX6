@@ -1,11 +1,13 @@
 package com.shinkson47.SplashX6.utility;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector3;
+import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.StageWindow;
@@ -92,9 +94,9 @@ public class Debug {
             addButton("Toggle General Debug", o -> debugMode = !debugMode);
 
             seperate("World");
-            addButton("Toggle Tile interpolation", o -> World.focusedWorld.swapTiledInterp());
+            addButton("Toggle Tile interpolation", o -> GameData.INSTANCE.getWorld().swapTiledInterp());
             int i = 0;
-            for(MapLayer t : World.focusedWorld.getMap().getLayers()){
+            for(MapLayer t : GameData.INSTANCE.getWorld().getMap().getLayers()){
                 addButton("Toggle layer " + i, o -> t.setVisible(!t.isVisible()));
                 i++;
             }
@@ -132,7 +134,7 @@ public class Debug {
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             gameRenderer.getSr().setColor(0,1,0,1);
-            ((TiledMapTileLayer) World.focusedWorld.getMap().getLayers().get(0)).setCell((int) MapSpace.x, (int) MapSpace.y, null);
+            ((TiledMapTileLayer) GameData.INSTANCE.getWorld().getMap().getLayers().get(0)).setCell((int) MapSpace.x, (int) MapSpace.y, null);
         } else
             gameRenderer.getSr().setColor(1,1,1,1);
 

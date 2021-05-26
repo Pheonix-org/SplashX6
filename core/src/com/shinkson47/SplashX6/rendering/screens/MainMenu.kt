@@ -1,16 +1,15 @@
 package com.shinkson47.SplashX6.rendering.screens
 
 import com.badlogic.gdx.ScreenAdapter
-import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.badlogic.gdx.Gdx
-import com.shinkson47.SplashX6.rendering.StageWindow.LambdaClickListener
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
+import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.local
 
@@ -105,7 +104,7 @@ class MainMenu : ScreenAdapter() {
 
         // Secret button
         val SecretButton: Button = TextButton("SECRET", Assets.SKIN)
-        SecretButton.addListener(LambdaClickListener { o: InputEvent? ->
+        SecretButton.addListener(StageWindow.LambdaClickListener { o: InputEvent? ->
             Gdx.gl.glClearColor(
                 MathUtils.random.nextFloat(),
                 MathUtils.random.nextFloat(),

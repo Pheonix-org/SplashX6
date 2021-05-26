@@ -5,10 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.StageWindow.LambdaClickListener
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
-import java.util.function.Consumer
 import java.util.function.Predicate
 
 /**

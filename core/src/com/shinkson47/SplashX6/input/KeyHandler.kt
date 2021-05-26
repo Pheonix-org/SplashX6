@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.game.world.World
@@ -19,6 +20,6 @@ object KeyHandler {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) client?.screen = MainMenu()
         if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) NewGame()
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) Client.toggleFS()
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F6)) World.focusedWorld.swapTiledInterp()
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F6)) GameData.world?.swapTiledInterp()
     }
 }

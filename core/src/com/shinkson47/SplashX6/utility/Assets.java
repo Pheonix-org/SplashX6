@@ -1,6 +1,7 @@
 package com.shinkson47.SplashX6.utility;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -27,6 +28,8 @@ public class Assets {
     public static void Create(){}
 
     static{
+        unitSprites = new TextureAtlas("sprite/sprite.txt");
+
         SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
         
         // Tilesets
@@ -83,6 +86,8 @@ public class Assets {
      * the loaded {@link TiledMap}
      */
     public static final TiledMap TILESETS, SPRITES;
+
+    public static final TextureAtlas unitSprites;
 
     /**
      * <h2>A map of 'tile name' => tile ID'</h2>

@@ -4,11 +4,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.lerpDesire
 import com.shinkson47.SplashX6.game.world.World
 import kotlin.math.PI
+import kotlin.math.absoluteValue
 import kotlin.math.tan
 
 // TODO checklist
@@ -91,7 +93,7 @@ class Camera: PerspectiveCamera() {
     /**
      * # Allows the camera to look along the y axis as zoom changes
      */
-    var enableMoveTilt: Boolean = true
+    var enableMoveTilt: Boolean = false
 
     /**
      * # Allows the camera to subtly rotate as it moves
@@ -127,8 +129,18 @@ class Camera: PerspectiveCamera() {
 
     /**
      * # Sets the position that the camera is desired to be.
+     * ignores z.
      */
-    fun setDesiredPosition(position: Vector3){ desiredPosition.set(position); }
+    fun setDesiredPosition(x : Float, y : Float) {
+        desiredPosition.set(Vector3(x, y, Z.toFloat()))
+        desiredPosition.desired.y -= distanceFromY().absoluteValue
+    }
+
+    /**
+     * # Short alias of [setDesiredPosition]
+     */
+    fun goTo(position: Vector3) { setDesiredPosition(position.x, position.y) }
+    fun goTo(x : Float, y: Float) { setDesiredPosition(x, y) }
 
     /**
      * # Moves [desiredPosition] by delta [x] and [y]
@@ -164,15 +176,15 @@ class Camera: PerspectiveCamera() {
      * TODO i kinda gave up with this. Now just makes sure that center is in bounds.
      */
     fun AssertInBounds() {
-        val worldBottom: Float = -yFromAngle(desiredTilt.get()) - World.TILE_HEIGHT
-        val worldRight : Int = World.focusedWorld.width() * World.TILE_WIDTH
-        val worldTop : Int = World.focusedWorld.height() * World.TILE_HEIGHT / 2
+        val worldBottom: Float = -yFromAngle(desiredTilt.desired) - World.TILE_HEIGHT
+        val worldRight : Int =   GameData.world!!.width() * World.TILE_WIDTH
+        val worldTop : Int =     GameData.world!!.height() * World.TILE_HEIGHT / 2
 
-        if (desiredPosition.get().x < 0) desiredPosition.desired.x = 0f
-        else if (desiredPosition.get().x > worldRight) desiredPosition.desired.x = worldRight.toFloat()
+        if (desiredPosition.desired.x < 0) desiredPosition.desired.x = 0f
+        else if (desiredPosition.desired.x > worldRight) desiredPosition.desired.x = worldRight.toFloat()
 
-        if (desiredPosition.get().y < worldBottom) desiredPosition.desired.y = worldBottom
-        else if (desiredPosition.get().y > worldTop) desiredPosition.desired.y = worldTop.toFloat()
+        if (desiredPosition.desired.y < worldBottom) desiredPosition.desired.y = worldBottom
+        else if (desiredPosition.desired.y > worldTop) desiredPosition.desired.y = worldTop.toFloat()
     }
 
     /**
@@ -183,9 +195,12 @@ class Camera: PerspectiveCamera() {
      *
      * Better explained my [stack overflow research question](https://stackoverflow.com/questions/67386475/how-can-i-calculate-the-point-a-camera-is-looking-at-using-its-rotation?noredirect=1#67386712)
      */
-    private fun yFromAngle(angle: Float): Float = (Z / tan(angle * PI / 180) + desiredPosition.get().y.toDouble()).toFloat()
+    private fun yFromAngle(angle: Float, y: Double): Float = (Z / tan(angle * PI / 180) + y).toFloat()
+    private fun yFromAngle(angle: Float): Float = yFromAngle(angle, desiredPosition.get().y.toDouble())
 
     fun lookingAtY(): Int = yFromAngle(desiredTilt.get()).toInt()
+
+    fun distanceFromY() : Int = (yFromAngle(desiredTilt.desired, desiredPosition.desired.y.toDouble()).toInt() - desiredPosition.desired.y.toInt())
 
 
     /**
@@ -227,13 +242,18 @@ class Camera: PerspectiveCamera() {
         GameScreen.r.setView(combined,position.x - ((viewportWidth + FRUSTRUM_WIDTH_MOD) * 0.5f),position.y,  viewportWidth + fieldOfView + FRUSTRUM_WIDTH_MOD, viewportHeight * fieldOfView)
 
         // Move towards desired position
-        position.set(desiredPosition.next());
+        desiredPosition.next();
     }
 
     /**
      * # Moves the current angle of tile towards the [desiredTilt].
      */
-    private fun updateTilt() {if (enableZoomTilt) lookAt(position.x, yFromAngle(desiredTilt.next()), 0f)}
+    private fun updateTilt() {
+        val y : Float = yFromAngle(desiredTilt.next())
+        if (enableZoomTilt) lookAt(position.x, y, 0f)
+        Debug.dump("Looking at Y :" + y.toString())
+        Debug.dump("Up : " + up.toString())
+    }
 
     /**
      * # Moves the current angle of rotation towards the [desiredRotation].
