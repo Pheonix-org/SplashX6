@@ -23,7 +23,8 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
-import com.shinkson47.SplashX6.game.world.World
+import java.lang.Exception
+import kotlin.IllegalArgumentException
 
 class GameHypervisor {
     companion object {
@@ -37,17 +38,6 @@ class GameHypervisor {
          */
         @JvmStatic
         var gameRenderer: GameScreen? = null; private set
-
-
-        // TODO move focused world to here
-        /**
-         * # The current game world
-         */
-        @JvmStatic
-        var world: World? = null; private set
-
-        @JvmStatic
-        var units: ArrayList<Unit> = ArrayList()
 
         /**
          * # Are we in a game? i.e is a game currently loaded and playable?
@@ -85,23 +75,24 @@ class GameHypervisor {
         fun doNewGameCallback() {
             validateCall(REQ_GAME_LOADING, THROW("Tried to load a game whilst not loading."))
 
-            // Create a new random world. This will be stored in World#focusedWorld automatically.
-            world = World.create();
-
-            // Create a new game screen, which will load in World#focusedWorld
-            // It will also configure input for the game window.
-            gameRenderer = GameScreen();
+            // create game data
+            GameData.new()
 
 
-            // Set the client to display the new game window
-            client?.setScreen(gameRenderer);
+            // Create a new game screen and store a reference locally, then have the client display the screen.
+            // Do this only after all loading is complete, as untill this happens the loading screen
+            // is being displayed.
+            gameRenderer = GameScreen()
+            client?.setScreen(gameRenderer)
+
 
             // TODO This couldn't be done before a world is created, but is only temporary.
             // STOPSHIP: 17/04/2021 this is dumb and shouldn't stay
-            Debug.create();
+            Debug.create()
 
-            inGame = true;
+            inGame = true
         }
+
 
 
         //========================================================================
@@ -132,8 +123,34 @@ class GameHypervisor {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("save a game", "no game is loaded")))
         }
 
-        fun spawn(x: Int, y: Int, idk: Any?) {
+        @JvmStatic
+        fun spawn(x: Int, y: Int, id: Int?) {
+            // TODO check this
+            // TODO are null checks still needed?
+            // STOPSHIP: 20/05/2021 this is fucking garbage my g.
 
+            var s: Unit? = null
+
+            try {
+                s = Unit("tile" + String.format("%03d", id), x, y)
+            } catch (ignore: Exception) {
+                return;
+            }
+
+            assert (s != null)
+
+            GameData.units.add(s)
+        }
+
+        @JvmStatic
+        fun selectUnit(unit: Unit) {
+            validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("Select a unit", "no game is loaded")))
+
+            if (!GameData.units.contains(unit))
+                throw IllegalArgumentException("Tried to select a unit that does not exist in the game data!")
+
+            GameData.selectedUnit = unit
+            gameRenderer!!.cam.goTo(unit.x, unit.y)
         }
 
 
@@ -152,7 +169,7 @@ class GameHypervisor {
             inGame = false;
             gameRenderer?.dispose()
             gameRenderer = null
-            world = null
+            GameData.clear()
         }
 
         /**

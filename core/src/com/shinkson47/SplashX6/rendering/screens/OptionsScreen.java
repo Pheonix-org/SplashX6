@@ -12,6 +12,7 @@ import com.shinkson47.SplashX6.utility.Languages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.shinkson47.SplashX6.utility.APICondition.*;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;
@@ -168,6 +169,7 @@ public class OptionsScreen extends StageWindow {
                     invalidCall(REQ_GAME_LOADING, WARN("You can't do that.", this))
             ) return;
         })).row();
+
 
 
         constructContent();

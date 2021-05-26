@@ -1,18 +1,22 @@
 package com.shinkson47.SplashX6.utility;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector3;
+import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
 import com.shinkson47.SplashX6.game.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
  * <h1>Random playground for test / development scripture</h1>
@@ -48,6 +52,7 @@ public class Debug {
 
 
     public static void update(){
+        renderDots();
         renderMouseInfo();
         renderDumps();
     }
@@ -89,9 +94,9 @@ public class Debug {
             addButton("Toggle General Debug", o -> debugMode = !debugMode);
 
             seperate("World");
-            addButton("Toggle Tile interpolation", o -> World.focusedWorld.swapTiledInterp());
+            addButton("Toggle Tile interpolation", o -> GameData.INSTANCE.getWorld().swapTiledInterp());
             int i = 0;
-            for(MapLayer t : World.focusedWorld.getMap().getLayers()){
+            for(MapLayer t : GameData.INSTANCE.getWorld().getMap().getLayers()){
                 addButton("Toggle layer " + i, o -> t.setVisible(!t.isVisible()));
                 i++;
             }
@@ -129,7 +134,7 @@ public class Debug {
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             gameRenderer.getSr().setColor(0,1,0,1);
-            ((TiledMapTileLayer) World.focusedWorld.getMap().getLayers().get(0)).setCell((int) MapSpace.x, (int) MapSpace.y, null);
+            ((TiledMapTileLayer) GameData.INSTANCE.getWorld().getMap().getLayers().get(0)).setCell((int) MapSpace.x, (int) MapSpace.y, null);
         } else
             gameRenderer.getSr().setColor(1,1,1,1);
 
@@ -141,6 +146,36 @@ public class Debug {
 
         gameRenderer.getSr().begin(ShapeRenderer.ShapeType.Filled);
         gameRenderer.getSr().circle(mousex, rendery, 5);
+        gameRenderer.getSr().end();
+    }
+
+    private static void renderDots() {
+        if (!debugMode) return;
+
+        gameRenderer.getSr().begin(ShapeRenderer.ShapeType.Line);
+
+        gameRenderer.getSr().setProjectionMatrix(gameRenderer.getHUDBatch().getProjectionMatrix());
+        gameRenderer.getSr().circle(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f, 5);
+
+        gameRenderer.getSr().setProjectionMatrix(gameRenderer.getCam().combined);
+
+        // selector
+        Vector3 v = gameRenderer.getSelectedTile();
+        v = World.isoToCartesian((int)v.x, (int)v.y);
+        gameRenderer.getSr().circle((int)v.x, gameRenderer.getCam().lookingAtY(), 10);
+
+
+        gameRenderer.getSr().end();
+
+        gameRenderer.getSr().begin(ShapeRenderer.ShapeType.Filled);
+        // Grid
+        for (int x = 0; x <= 10; x ++)
+            for (int y = 0; y <= 10; y ++) {
+                Vector3 vector = World.isoToCartesian(x,y);
+                gameRenderer.getSr().circle(vector.x, vector.y, 10);
+            }
+
+
         gameRenderer.getSr().end();
     }
 }
