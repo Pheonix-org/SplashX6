@@ -130,6 +130,10 @@ public class OptionsScreen extends StageWindow {
         languageList.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                if (invalidCall(REQ_MAIN_MENU, WARN(MSG_TRIED_EXCEPT("Change language", "Language can only be changed in the main menu"), languageList))) {
+                    return;
+                }
+
                 dialog("Confirm language", "Change to " + languageList.getSelected(), "Yes", "No",
                         e -> {
                             Gdx.app.log("you've clicked", e.toString());
