@@ -75,10 +75,12 @@ public class Assets {
 
     public static final I18NBundle loadLanguage(Languages lang) {
         LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale(lang.toString()));
+        I18NBundle.setExceptionOnMissingKey(false);
         Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
         //#
         return LANG;
     }
+
 
     public static void Dispose() {
         TILESETS.dispose();
