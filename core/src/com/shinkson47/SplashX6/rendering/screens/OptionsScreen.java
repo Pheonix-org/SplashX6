@@ -128,23 +128,39 @@ public class OptionsScreen extends StageWindow {
         languageList.setSelected(currentLanguage);
 
         languageList.addListener(new ChangeListener() {
+            Boolean ignoreChanged = false;
+
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (invalidCall(REQ_MAIN_MENU, WARN(MSG_TRIED_EXCEPT("Change language", "Language can only be changed in the main menu"), languageList))) {
+                if (ignoreChanged) {
+                    ignoreChanged = false;
                     return;
                 }
+
+                if (languageList.getSelected().equals(currentLanguage))
+                    return;
+
+                if (invalidCall(REQ_MAIN_MENU, WARN("Language can only be changed in the main menu", languageList))) {
+                    resetDefault();
+                    return;
+                }
+
 
                 dialog("Confirm language", "Change to " + languageList.getSelected(), "Yes", "No",
                         e -> {
                             Gdx.app.log("you've clicked", e.toString());
                     if (e) {
-                        //TODO API Condition here... inside loadLanguage
                         loadLanguage(Languages.values()[languageList.getSelectedIndex()]);
                     } else {
                         //TODO this triggers the changed event
-                        languageList.setSelected(currentLanguage);
+                        resetDefault();
                     }
                 });
+            }
+
+            private void resetDefault() {
+                ignoreChanged = true;
+                languageList.setSelected(currentLanguage);
             }
         });
 
