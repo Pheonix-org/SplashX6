@@ -36,11 +36,6 @@ class APICondition @JvmOverloads constructor() {
                 validateCall(requiredState, onIllegalState)
             } catch (ignored: APIException) {
                 Gdx.app.log("API Validation warning", "An API call failed to meet call condition, but the exception will be ignored.")
-                try {
-                    onIllegalState.run()
-                } catch (ignored: APIException) {
-                    return true
-                }
                 return true
             }
             return false;
