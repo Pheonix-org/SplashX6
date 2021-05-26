@@ -5,11 +5,16 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.rendering.screens.MainMenu;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
+
+import static com.shinkson47.SplashX6.utility.Languages.en;
 
 /**
  * <h1></h1>
@@ -24,8 +29,10 @@ import java.util.Map;
  */
 public class Assets {
 
-    public static void Create(){}
-    static{
+    public static void Create() {
+    }
+
+    static {
         SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
 
 
@@ -51,14 +58,30 @@ public class Assets {
         SPRITES_MAP = result;
     }
 
-    public static final I18NBundle LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale("fr", "", ""));
+    public static I18NBundle LANG;
 
-    public static void Dispose(){
-        TILESETS.dispose();
+    public static ArrayList<Locale> languages = new ArrayList<>();
+
+
+    static {
+        for (Languages lang : Languages.values())
+            languages.add(new Locale(lang.toString()));
     }
 
+    static {
+        loadLanguage(en);
+    }
 
+    public static final I18NBundle loadLanguage(Languages lang) {
+        LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale(lang.toString()));
+        Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
+        //#
+        return LANG;
+    }
 
+    public static void Dispose() {
+        TILESETS.dispose();
+    }
 
 
 

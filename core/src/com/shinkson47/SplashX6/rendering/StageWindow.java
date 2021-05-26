@@ -220,7 +220,7 @@ public abstract class StageWindow extends Window {
         else dialog.button("OK!");
 
         if (!negative.equals(""))
-            dialog.button(positive, false);
+            dialog.button(negative, false);
 
         dialog.show(actor.getStage());
     }
