@@ -98,6 +98,7 @@ class APICondition @JvmOverloads constructor() {
         class _WARN_USER(val message: String, val caller: Actor) : Runnable {
             override fun run() {
                 StageWindow.dialog(caller, "Invalid operation!", "$message", "Whoops, OK!", "", null)
+                _THROW(message).run()
             }
         }
 
