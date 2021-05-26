@@ -1,13 +1,21 @@
 package com.shinkson47.SplashX6.utility;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.I18NBundle;
+import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.rendering.screens.MainMenu;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Map;
+
+import static com.shinkson47.SplashX6.utility.Languages.en;
 
 /**
  * <h1></h1>
@@ -23,10 +31,12 @@ import java.util.Map;
 public class Assets {
 
     public static void Create(){}
+
     static{
+        unitSprites = new TextureAtlas("sprite/sprite.txt");
+
         SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
-
-
+        
         // Tilesets
         TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
         SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
@@ -49,12 +59,30 @@ public class Assets {
         SPRITES_MAP = result;
     }
 
-    public static void Dispose(){
-        TILESETS.dispose();
+    public static I18NBundle LANG;
+
+    public static ArrayList<Locale> languages = new ArrayList<>();
+
+
+    static {
+        for (Languages lang : Languages.values())
+            languages.add(new Locale(lang.toString()));
     }
 
+    static {
+        loadLanguage(en);
+    }
 
+    public static final I18NBundle loadLanguage(Languages lang) {
+        LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale(lang.toString()));
+        Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
+        //#
+        return LANG;
+    }
 
+    public static void Dispose() {
+        TILESETS.dispose();
+    }
 
 
 
@@ -79,6 +107,8 @@ public class Assets {
      * the loaded {@link TiledMap}
      */
     public static final TiledMap TILESETS, SPRITES;
+
+    public static final TextureAtlas unitSprites;
 
     /**
      * <h2>A map of 'tile name' => tile ID'</h2>

@@ -1,17 +1,14 @@
 package com.shinkson47.SplashX6.utility;
 
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import com.shinkson47.SplashX6.world.FastNoiseLite;
-
-import java.util.Random;
+import com.shinkson47.SplashX6.game.world.FastNoiseLite;
 
 import static com.badlogic.gdx.math.MathUtils.random;
+import static com.shinkson47.SplashX6.utility.Assets.LANG;
 
 /**
  * <h1>General static utility methods</h1>
@@ -39,6 +36,19 @@ public final class Utility {
     }
 
     /**
+     * <h2>Asserts that the value passed is at a minimum bound or above</h2>
+     * @param value The value to check
+     * @param min The minimum permitable value of <code>value</code>
+     * @return if value > min then value, else min
+     * @deprecated turn out there's an api call for this, {@link Math#max}
+     * @see Math#max(int, int)
+     */
+    @Deprecated
+    public static int boundMin(int value, int min){
+        return (value > min) ? value : min;
+    }
+
+    /**
      * <h2>Linear interpolation</h2>
      * Returns a value between a and b, determined by f.
      * <br><br>
@@ -61,18 +71,6 @@ public final class Utility {
         return a + f * (b - a);
     }
 
-    /**
-     * <h2>Asserts that the value passed is at a minimum bound or above</h2>
-     * @param value The value to check
-     * @param min The minimum permitable value of <code>value</code>
-     * @return if value > min then value, else min
-     * @deprecated turn out there's an api call for this, {@link Math#max}
-     * @see Math#max(int, int)
-     */
-    @Deprecated
-    public static int boundMin(int value, int min){
-        return (value > min) ? value : min;
-    }
 
     /**
      * <h2>Determines if X and Y are within bounds of a 2d array</h2>
@@ -103,6 +101,10 @@ public final class Utility {
         dialog.text("There's nothing beautiful here... YET!")
             .button("OK, I'll come back later!", true)
             .show(stage);
+    }
+
+    public static String local(String key) {
+        return LANG.get(key);
     }
     // I tried to implement above by catching an out of bounds exception, but for some reason it wasn't catching it so i resorted to calculating it which is probably slower but oh well
     //#endregion static

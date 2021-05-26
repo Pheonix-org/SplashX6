@@ -1,4 +1,4 @@
-package com.shinkson47.SplashX6.world;
+package com.shinkson47.SplashX6.game.world;
 
 import java.util.Arrays;
 
@@ -19,6 +19,7 @@ public class Tile {
     public String tileName;
     public String tileSetName;
     public int cachedID;
+    public boolean isBase = true;
 
     // 4 strings that reperesent the quadrants of the tile, N/E/S/W
     public String north;
@@ -38,7 +39,12 @@ public class Tile {
 //    }
 
     public Tile(String TileName){
-        if (TileName.contains(".")) TileName = TileName.substring(TileName.indexOf(".") + 1);
+        if (TileName.contains(".")) {
+            this.tileName = TileName.substring(0, TileName.indexOf(".") + 1);
+            TileName = TileName.substring(TileName.indexOf(".") + 1);
+            isBase = false;
+        }
+
         String[] tileNames = TileName.substring(TileName.indexOf(".") + 1).split("_");
 
         if (tileNames.length == 1)                              // only one section in name?
@@ -68,7 +74,7 @@ public class Tile {
         south = _south;
         west  = _west;
 
-        tileName = _north + "_" + _east + "_" + _south + "_" + _west;
+        tileName = ((!isBase) ? tileName : "") + _north + "_" + _east + "_" + _south + "_" + _west;
 //        cachedID = (int) World.tilesetMap.get(tileName);
     }
 
@@ -113,6 +119,7 @@ public class Tile {
      * <h2>Returns a tile that represent this one after being blended with provided tiles</h2>
      */
     public Tile interpolate(Tile nw, Tile ne, Tile se, Tile sw) {
+        if (!isBase || nw != null && !nw.isBase || ne != null && !ne.isBase || se != null && !se.isBase || sw != null && !sw.isBase) return this;
         // Good luck reading this garbage lol
 
         if (nw == null) nw = new Tile((sw == null) ? west : sw.tileName);
@@ -133,6 +140,14 @@ public class Tile {
 //        south = se.west.equals(south)   ? sw.east.equals(south) ?    south : se.west : sw.east;
 //        west  = sw.north.equals(west)   ? nw.south.equals(west) ?    west  : sw.north: nw.south;
 
+    }
+
+    public Tile interpolateHill(Tile nw, Tile ne, Tile se, Tile sw) {
+        String _nw = (nw == null) ? "0" : "1";
+        String _ne  = (ne == null) ? "0" : "1";
+        String _sw = (sw == null) ? "0" : "1";
+        String _se  = (se == null) ? "0" : "1";
+        return new Tile("hills." + _ne + "_" + _se + "_" + _sw + "_" + _nw);
     }
     //#endregion static
 }

@@ -1,11 +1,12 @@
-package com.shinkson47.SplashX6.world;
+package com.shinkson47.SplashX6.game.world;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Utility;
 
@@ -14,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Vector;
 
 import static com.shinkson47.SplashX6.utility.Assets.*;
 import static com.shinkson47.SplashX6.utility.Utility.createNoiseGenerator;
@@ -34,18 +36,12 @@ import static com.shinkson47.SplashX6.utility.Utility.createNoiseGenerator;
 public final class World {
 
     /**
-     * <h2>The world that the game is focusing on. This will be the map rendered and interacted with.</h2>
-     */
-    public static World focusedWorld;
-
-    /**
-     * <h2>Creates a new world, and stores it in {@link World#focusedWorld}</h2>
+     * <h2>Creates a new world, and stores it in {@link com.shinkson47.SplashX6.game.world.ignored.World#focusedWorld}</h2>
      * @return
      * @apiNote Has no regard for any existing world. It will be overwritten.
      */
-    public static World create(){
-        focusedWorld = new World();
-        return focusedWorld;
+    public static com.shinkson47.SplashX6.game.world.World create(){
+        return new com.shinkson47.SplashX6.game.world.World();
     }
 
     /**
@@ -59,7 +55,7 @@ public final class World {
     /**
      * <h2>The size of tiles in pixels</h2>
      */
-    public static final int TILE_WIDTH = 64, TILE_HEIGHT = 32;
+    public static final int TILE_WIDTH = 64, TILE_HEIGHT = 32, TILE_HALF_HEIGHT = TILE_HEIGHT / 2, TILE_HALF_WIDTH = TILE_WIDTH / 2;
 
     /**
      * <h2>Defines sea level</h2>
@@ -72,7 +68,12 @@ public final class World {
     /**
      * <h2>The smallest permitted world size</h2>
      */
-    public static final int MIN_WORLD_WIDTH = 6, MIN_WORLD_HEIGHT = 6, DEFAULT_WIDTH = 500, DEFAULT_HEIGHT = 500, FOLIAGE_QUANTITY_MAX = 10000;
+    public static final int MIN_WORLD_WIDTH = 6,
+            MIN_WORLD_HEIGHT = 6,
+            DEFAULT_WIDTH = 500,
+            DEFAULT_HEIGHT = 500,
+            FOLIAGE_QUANTITY_MAX = 10000,
+            UNIT_COUNT = 5;
 
     //#endregion constants
 
@@ -81,7 +82,7 @@ public final class World {
      * <h2>Perlin used for landmass</h2>
      * Used to determine what parts of the map should be water,
      * or land.
-     * @see World#CONTINENT_THRESHOLD for altering the ratio of land to water.
+     * @see com.shinkson47.SplashX6.game.world.ignored.World#CONTINENT_THRESHOLD for altering the ratio of land to water.
      */
     private FastNoiseLite ContinentalHeatmap;
 
@@ -112,8 +113,7 @@ public final class World {
      */
     private TiledMapTileLayer LerpedTileLayer;
 
-
-    private ArrayList<GameSprites> sprites = new ArrayList<>();
+    // TODO can this be removed now that units are not a map layer?
     private TiledMapTileLayer SpriteLayer;
 
     private TiledMapTileLayer FoliageLayer;
@@ -195,7 +195,7 @@ public final class World {
         //genResources();
 
         // Generate civilisations & barbarians
-        genPopulation();
+        //genPopulation();
 
         // Construct all generated world data into a GDX TiledMap.
         convGDX();
@@ -224,7 +224,7 @@ public final class World {
 
     /**
      * <h2>Generates the base of the world's tiles</h2>
-     * Creates water and land mass, where the landmass is modified by {@link World#getBiomeTile(int, int)}
+     * Creates water and land mass, where the landmass is modified by {@link com.shinkson47.SplashX6.game.world.ignored.World#getBiomeTile(int, int)}
      */
     private void genBase() {
         float f;
@@ -243,7 +243,7 @@ public final class World {
 
     /**
      * <h2>Blends tile boundaries within the world</h2>
-     * Interpolates the tiles in {@link World#worldTiles} using {@link Tile#interpolate(Tile, Tile, Tile, Tile)}
+     * Interpolates the tiles in {@link com.shinkson47.SplashX6.game.world.ignored.World#worldTiles} using {@link Tile#interpolate(Tile, Tile, Tile, Tile)}
      * @see Tile#interpolate(Tile, Tile, Tile, Tile)
      */
     private void genInterpolate() {
@@ -281,21 +281,25 @@ public final class World {
     }
 
 
-    private void genPopulation() {
-        int x,y;
-        int s;
-        for (int i = 0; i <= FOLIAGE_QUANTITY_MAX; i++){
-            x = MathUtils.random(0,height()-1);
-            y = MathUtils.random(0,width()-1);
-            s = MathUtils.random(0,79);
-            createSprite(x,y, s);
-        }
+    /**
+     * Generates a list of random units.
+     * @return
+     */
+    public void genPopulation() {
+        for (int i = 0; i <= UNIT_COUNT; i++)
+            GameHypervisor.spawn(
+                    MathUtils.random(0, height()-1), // X
+                    MathUtils.random(0, width()-1),  // Y
+                    MathUtils.random(0,79)
+            );
     }
+
+
 
 
     /**
      * <h2>Determines what base tile should be used at x,y</h2>
-     * @return the ground tile which should be according to {@link World#BiomeHeatmap}
+     * @return the ground tile which should be according to {@link com.shinkson47.SplashX6.game.world.ignored.World#BiomeHeatmap}
      */
     private String getBiomeTile(int x, int y){
         float value = BiomeHeatmap.GetNoise(x,y);
@@ -348,7 +352,7 @@ public final class World {
 
 
     /**
-     * <h2>Constructs the GDX {@link TiledMap} stored in this world's {@link World#map}</h2>
+     * <h2>Constructs the GDX {@link TiledMap} stored in this world's {@link com.shinkson47.SplashX6.game.world.ignored.World#map}</h2>
      * Final step, post generation.
      */
     private void convGDX() {
@@ -366,7 +370,7 @@ public final class World {
     }
 
     /**
-     * <h2>Sub routine for {@link World#convGDX()}. Constructs cells containing tiles, and adds them to the map layer.</h2>
+     * <h2>Sub routine for {@link com.shinkson47.SplashX6.game.world.ignored.World#convGDX()}. Constructs cells containing tiles, and adds them to the map layer.</h2>
      * @param tileName The resource name of the tile to be used.
      * @param x The mapspace x to place it, within layer.
      * @param y The mapspace y to place it, within layer.
@@ -381,7 +385,7 @@ public final class World {
      * <h2>Gets a tile at the raw x,y array position.</h2>
      * @return tile in worldTiles at index x, y.
      * @apiNote Does not acknowledge that rows are staggered when rendered.
-     * @see World#getStaggeredTile(int, int) to account for row stagger, or for getting tiles relative to another
+     * @see com.shinkson47.SplashX6.game.world.ignored.World#getStaggeredTile(int, int) to account for row stagger, or for getting tiles relative to another
      */
     public Tile getTile(int x, int y) {
         return Utility.checkIn2DBounds(y, x, worldTiles) ? null : worldTiles[y][x];
@@ -431,11 +435,11 @@ public final class World {
     public void regenerate() { generateWorld(DEFAULT_HEIGHT,DEFAULT_WIDTH); }
 
     /**
-     * <h2>Swaps {@link World#worldTiles} and {@link World#interpolatedTiles}</h2>
+     * <h2>Swaps {@link com.shinkson47.SplashX6.game.world.ignored.World#worldTiles} and {@link com.shinkson47.SplashX6.game.world.ignored.World#interpolatedTiles}</h2>
      * where World tiles stores the original world tiles without blending, and interpolated is after tile blending.
      * <br><br>
      * TODO this should modify an access buffer, not these variables. interpolatedtiles should say interpolated, worldtile should stay as world tiles.
-     * @deprecated These bufferes should nolonger be swapped, now that they export to GDX TileMap. Instead, swap GDX TiledMapLayers using {@link World#swapTiledInterp()}
+     * @deprecated These bufferes should nolonger be swapped, now that they export to GDX TileMap. Instead, swap GDX TiledMapLayers using {@link com.shinkson47.SplashX6.game.world.ignored.World#swapTiledInterp()}
      */
     @Deprecated
     public void swapInterp(){
@@ -445,7 +449,7 @@ public final class World {
     }
 
     /**
-     * <h2>Swaps the layer in {@link World#map} between {@link World#LerpedTileLayer} and {@link World#UnLerpedTileLayer}</h2>
+     * <h2>Swaps the layer in {@link com.shinkson47.SplashX6.game.world.ignored.World#map} between {@link com.shinkson47.SplashX6.game.world.ignored.World#LerpedTileLayer} and {@link com.shinkson47.SplashX6.game.world.ignored.World#UnLerpedTileLayer}</h2>
      * where World tiles stores the original world tiles without blending, and interpolated is after tile blending.
      * <br><br>
      * TODO this should modify an access buffer, not these variables. interpolatedtiles should say interpolated, worldtile should stay as world tiles.
@@ -498,43 +502,19 @@ public final class World {
         return mapSpace;
     }
 
-    public void createSprite(int x, int y/*, String resource*/, int id){
-        TiledMapTileLayer.Cell test = new TiledMapTileLayer.Cell();
-        test.setTile(SPRITES.getTileSets().getTile(id) /*(Integer) SPRITES_MAP.get("unit.knights"))*/);
-        SpriteLayer.setCell(x,y, test);
+    // TODO this is not tested.
+    public static Vector3 isoToCartesian(final int x, final int y) {
+        // TODO devision is overhead - but is float > int conversion more efficient?
+        int _y = (y * TILE_HEIGHT) / 2;
+        int _x = x * TILE_WIDTH;
+
+        if (y % 2 == 0)
+            _x += TILE_WIDTH * 0.5f;
+
+        return new Vector3(_x, _y + (TILE_WIDTH * 0.25f), 0);
     }
 
-// Attempt 2
-//    public static Vector3 WorldspaceToMapspace(int x, int y) {
-//        // Work out the diagonal i and j coordinates of the point.
-//        // i and j are in a diagonal coordinate system that allows us
-//        // to round them to get the centre of the cell.
-//        float i = Math.round( x - y * 2 );
-//        float j = MathUtils.round( x + y * 2 );
-//
-//        // With the i and j coordinates of the centre of the cell,
-//        // convert these back into the world coordinates of the centre
-//        float centreX = ( i + j ) / 2;
-//        float centreY = ( j - i ) / 4;
-//
-//        // Now convert these centre world coordinates back into the
-//        // cell coordinates
-//        int cellY = (int)MathUtils.round(centreY * -4f);
-//        int cellX = (int)MathUtils.round(centreX - ((cellY % 2) * 0.5f));
-//
-//        return new Vector3(cellX, cellY, 0);
-//    }
 
-// Attempt 3
-//    public static Vector3 WorldspaceToMapspace(int x, int y) {
-//        x = x/64;
-//        y = (y/64)/2;
-//        return new Vector3(
-//                x * 2 + y % 2 + y,
-//                x * 2 + y % 2 - y,
-//                0
-//        );
-//    }
 
 
 
@@ -554,7 +534,7 @@ public final class World {
 
     /**
      * <h2>Gets the GDX {@link TiledMap} of this world.</h2>
-     * @return {@link World#map}
+     * @return {@link com.shinkson47.SplashX6.game.world.ignored.World#map}
      */
     public TiledMap getMap() {
         return map;

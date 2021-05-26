@@ -1,4 +1,4 @@
-package com.shinkson47.SplashX6.world;
+package com.shinkson47.SplashX6.game.world;
 
 /**
  * <h1></h1>

@@ -1,10 +1,11 @@
 package com.shinkson47.SplashX6.input.mouse;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.shinkson47.SplashX6.game.GameHypervisor;
-
-import java.awt.*;
 
 /**
  * <h1>Main mouse handling scripts</h1>
@@ -41,19 +42,33 @@ public class MouseHandler {
      * <h2>Permenant input scripts using {@link Gdx#input}</h2>
      */
     public static void Poll() {
-
+        // TODO gotta a be a way to abstract this garbage...
+            if (!GameHypervisor.getInGame()) return;
             // If releasing, notify drag logistics that it's been released
-            if (DragLogistics.MIDDLE.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.MIDDLE))
-                DragLogistics.MIDDLE.up();
+            if (DragLogistics.LEFT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                DragLogistics.LEFT.up();
+            }
 
             // If pressing, notify drag logistics that it's been pressed
-            if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE))
-                DragLogistics.MIDDLE.down();
-
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
+                DragLogistics.LEFT.down();
 
             // If down, then update camera's target with the mouse's movement
-            if (DragLogistics.MIDDLE.isDown())
-                GameHypervisor.getGameRenderer().getCam().setDeltaPosition(DragLogistics.MIDDLE.x(), DragLogistics.MIDDLE.y());
+            if (DragLogistics.LEFT.isDown())
+                GameHypervisor.getGameRenderer().getCam().deltaPosition(DragLogistics.LEFT.x(), DragLogistics.LEFT.y());
+
+        // If releasing, notify drag logistics that it's been released
+        if (DragLogistics.RIGHT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
+            DragLogistics.RIGHT.up();
+
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT))
+            DragLogistics.RIGHT.down();
+
+            if (DragLogistics.RIGHT.isDown()) {
+                DragLogistics.RIGHT.x();
+                GameHypervisor.getGameRenderer().getCam().deltaTilt(DragLogistics.RIGHT.y());
+            }
+
 
     }
 
@@ -92,9 +107,7 @@ public class MouseHandler {
          */
         @Override
         public boolean keyDown(int keycode) {
-
                 return false;
-
         }
 
         /**
@@ -102,6 +115,7 @@ public class MouseHandler {
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
+            // TODO this crashes on anywhere that isn't the game.
             GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
             return true;
         }
