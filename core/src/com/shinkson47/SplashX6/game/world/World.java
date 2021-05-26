@@ -73,7 +73,7 @@ public final class World {
             DEFAULT_WIDTH = 500,
             DEFAULT_HEIGHT = 500,
             FOLIAGE_QUANTITY_MAX = 10000,
-            UNIT_COUNT = 5;
+            UNIT_COUNT = 200;
 
     //#endregion constants
 

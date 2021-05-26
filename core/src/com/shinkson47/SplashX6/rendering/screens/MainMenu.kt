@@ -7,6 +7,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.utils.viewport.ExtendViewport
+import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.utils.viewport.Viewport
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.StageWindow
@@ -27,10 +30,11 @@ import com.shinkson47.SplashX6.utility.Utility.local
  */
 class MainMenu : ScreenAdapter() {
 
-    private val stage = Stage()
+    private val stage = Stage(ScreenViewport())
 
     //#region listeners
     private var menuWindow: Window? = null
+    private var BaseTable = Table().center()
 
     /**
      * The window shown at the main menu that contains option for the user
@@ -71,6 +75,7 @@ class MainMenu : ScreenAdapter() {
 
     override fun resize(width: Int, height: Int) {
         super.resize(width, height)
+        stage.viewport.update(width, height)
         menuWindow!!.setPosition(
             makeEven(width / 2 - menuWindow!!.width / 2).toFloat(),
             makeEven(height / 2 - menuWindow!!.height / 2).toFloat()
@@ -97,9 +102,6 @@ class MainMenu : ScreenAdapter() {
     //#endregion
     init {
         menuWindow = MainMenuWindow()
-
-        // Table that fills the window, contains content under the menu window.
-        var BaseTable = Table().center()
         BaseTable.setFillParent(true)
 
         // Secret button
