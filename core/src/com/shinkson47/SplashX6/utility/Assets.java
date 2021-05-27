@@ -1,6 +1,7 @@
 package com.shinkson47.SplashX6.utility;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -139,6 +140,9 @@ public class Assets {
     //#endregion World
 
     //#region audio
+
+    public static final Sound MUSIC_MAIN_MENU = Gdx.audio.newSound(Gdx.files.internal("sounds/MainMenu/night_theme_2.wav"));
+    public static final Sound SFX_GUI = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/e_turn_bell-9743.ogg"));
 
     //#endregion audio
 

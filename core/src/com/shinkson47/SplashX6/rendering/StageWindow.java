@@ -10,12 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
-import com.shinkson47.SplashX6.game.audio.AudioController;
+import com.shinkson47.SplashX6.game.AudioController;
 import com.shinkson47.SplashX6.utility.Assets;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
+import static com.shinkson47.SplashX6.game.AudioController.GUI_SOUND;
 
 /**
  * <h1>A LibGDX Window with some extended functionality </h1>
@@ -347,20 +349,19 @@ public abstract class StageWindow extends Window {
     protected TextButton addButton(String Text, Consumer<InputEvent> e) {
         TextButton b = button(Text, e);
         add(b).fill().row();
-
-        // TODO - DEVELOPMENT
-        /*
-         * Im not sure if you like this here, but it eliminates the need (so far) to create a new class to extend,
-         * or add a listener to every button. Let me know.
-         */
-        b.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                AudioController.playButttonSound();
-            }
-        });
+        clickSound(b);
         return b;
+    }
 
+    /**
+     * Adds a click listener that plays a sound when clicked.
+     * @see AudioController#GUI_SOUND
+     * @param actor
+     * @return
+     */
+    private Actor clickSound(Actor actor) {
+        actor.addListener(GUI_SOUND);
+        return actor;
     }
 
     /**
