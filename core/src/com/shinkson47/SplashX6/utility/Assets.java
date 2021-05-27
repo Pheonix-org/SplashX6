@@ -77,7 +77,7 @@ public class Assets {
     public static final I18NBundle loadLanguage(Languages lang) {
         LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale(lang.toString()));
         I18NBundle.setExceptionOnMissingKey(false);
-        Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
+
         //#
         return LANG;
     }
@@ -140,9 +140,8 @@ public class Assets {
     //#endregion World
 
     //#region audio
-
     public static final Sound MUSIC_MAIN_MENU = Gdx.audio.newSound(Gdx.files.internal("sounds/MainMenu/night_theme_2.wav"));
-    public static final Sound SFX_GUI = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/e_turn_bell-9743.ogg"));
+    public static final Sound SFX_GUI = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/click33.wav"));
 
     //#endregion audio
 

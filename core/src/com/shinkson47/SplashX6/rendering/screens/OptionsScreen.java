@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.game.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.StageWindow;
@@ -14,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.shinkson47.SplashX6.utility.APICondition.*;
-import static com.shinkson47.SplashX6.utility.Assets.LANG;
-import static com.shinkson47.SplashX6.utility.Assets.loadLanguage;
+import static com.shinkson47.SplashX6.utility.Assets.*;
 
 /**
  * <h1></h1>
@@ -144,12 +145,12 @@ public class OptionsScreen extends StageWindow {
                     return;
                 }
 
-
                 dialog("Confirm language", "Change to " + languageList.getSelected(), "Yes", "No",
                         e -> {
                             Gdx.app.log("you've clicked", e.toString());
                     if (e) {
                         loadLanguage(Languages.values()[languageList.getSelectedIndex()]);
+                        Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
                     } else {
                         //TODO this triggers the changed event
                         resetDefault();
@@ -161,22 +162,49 @@ public class OptionsScreen extends StageWindow {
                 ignoreChanged = true;
                 languageList.setSelected(currentLanguage);
             }
+
+            //Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
+        });
+
+        // SLIDER FOR MUSIC VOLUME CONTROL // TODO - FIX SLIDER VALUE ISSUE
+        Slider musicSlider = new Slider(0.0f, 1f, 0.10f, false, Assets.SKIN);
+        musicSlider.setValue(0.25f);
+
+        musicSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                AudioController.setMusicVolume(musicSlider.getValue());
+                musicSlider.setValue(musicSlider.getValue()); // TODO - REDUNDANT?
+            }
+        });
+
+        // SLIDER FOR GAME VOLUME CONTROL // TODO - FIX SLIDER VALUE ISSUE
+        Slider gameSlider = new Slider(0.0f, 1f, 0.10f, false, Assets.SKIN);
+        gameSlider.setValue(0.25f);
+
+        gameSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                AudioController.setGameVolume(gameSlider.getValue());
+                gameSlider.setValue(gameSlider.getValue()); // TODO - REDUNDANT?
+            }
         });
 
         //language.setMaxListCount(3);
         GAME_OPTION_TAB = new Table();
-        //GAME_OPTION_TAB.add(new Label("Game options will be built here", Assets.SKIN)).row();
         GAME_OPTION_TAB.add(new Label("Select a Language:", Assets.SKIN)).padRight(20).left();
         GAME_OPTION_TAB.add(languageList);
-
-        //GAME_OPTION_TAB.setDebug(true);
 
         GRAPHICS_OPTION_TAB = new Table();
         GRAPHICS_OPTION_TAB.add(new Label("Graphics options will be built here", Assets.SKIN));
 
         SOUND_OPTION_TAB = new Table();
-        SOUND_OPTION_TAB.add(new Label("Sound options will be built here", Assets.SKIN));
+        SOUND_OPTION_TAB.add(new Label("Music Volume: ", Assets.SKIN));
+
         // TODO - SLIDER FOR VOLUME CONTROL
+        SOUND_OPTION_TAB.add(musicSlider).row();
+        SOUND_OPTION_TAB.add(new Label("Game Volume: ", SKIN)).padTop(20.0f);
+        SOUND_OPTION_TAB.add(gameSlider).padTop(20.0f);
 
         ADVANCED_OPTION_TAB = new Table();
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();
