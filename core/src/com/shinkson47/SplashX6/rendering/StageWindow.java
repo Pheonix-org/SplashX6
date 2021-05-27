@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.game.audio.AudioController;
 import com.shinkson47.SplashX6.utility.Assets;
 
 import java.util.ArrayList;
@@ -30,61 +31,57 @@ public abstract class StageWindow extends Window {
     //=====================================================================
 
     /**
-     * Last known number of columns in this window
+     * <h2>A style used on lables to create a horizontal line.</h2>
+     * Simply just a foreground colored label
      */
-    private int lastSpan = 1000;
+    public static final Label.LabelStyle seperatorStyle;
+    /**
+     * Light colored drawable background. Used in custom labels and whatnot that
+     * are used as seperators.
+     * <p>
+     * Is the same color as the Client 'hr', 'hg', 'b', 'a'
+     */
+    public static final Drawable lightBG;
+
+    static {
+        seperatorStyle = new Label.LabelStyle(new Label("", Assets.SKIN).getStyle());
+        Pixmap labelColor = new Pixmap(200, 200, Pixmap.Format.RGB888);
+        labelColor.setColor(Client.hr, Client.hg, Client.b, Client.a);
+        labelColor.fill();
+        lightBG = new Image(new Texture(labelColor)).getDrawable();
+        seperatorStyle.background = lightBG;
+    }
 
     /**
      * Cells in this window that should span the entire window's width
      * (all columns)
      */
     private final ArrayList<Cell> spannedCells = new ArrayList<>();
-
     /**
      * # State var, implementations can use to ignore first [constructContent]
      * Since [constructContent] occours in the super constructor, forward references
      * are possible and annoying.
-     *
+     * <p>
      * Instead, you can have the [constructContent] ignore the super, and invoke it yourself.
-     *
+     * <p>
      * ```
      * public someWindow() {
-     *     super();
-     *     constructContent();
+     * super();
+     * constructContent();
      * }
      *
-     * @Override
-     * protected constructContent() {
-     *     if (FIRST_CONSTRUCTION) return;
-     *     ...
+     * @Override protected constructContent() {
+     * if (FIRST_CONSTRUCTION) return;
+     * ...
      * }
      * ```
      */
     // TODO kotlin style docs
     protected boolean FIRST_CONSTRUCTION = true;
-
     /**
-     * <h2>A style used on lables to create a horizontal line.</h2>
-     * Simply just a foreground colored label
+     * Last known number of columns in this window
      */
-    public static final Label.LabelStyle seperatorStyle;
-
-    /**
-     * Light colored drawable background. Used in custom labels and whatnot that
-     * are used as seperators.
-     *
-     * Is the same color as the Client 'hr', 'hg', 'b', 'a'
-     */
-    public static final Drawable lightBG;
-    static {
-        seperatorStyle = new Label.LabelStyle(new Label("", Assets.SKIN).getStyle());
-        Pixmap labelColor = new Pixmap(200, 200, Pixmap.Format.RGB888);
-        labelColor.setColor(Client.hr,Client.hg,Client.b,Client.a);
-        labelColor.fill();
-        lightBG = new Image(new Texture(labelColor)).getDrawable();
-        seperatorStyle.background = lightBG;
-    }
-
+    private int lastSpan = 1000;
 
 
     //=====================================================================
@@ -139,58 +136,14 @@ public abstract class StageWindow extends Window {
 
     // TODO change all strings to keys fetches
     //#region dialog
-    /**
-     * Shows a modal dialog on the same stage as this window.
-     *
-     * @param title The title of the dialog window
-     * @param text The body content of the dialog
-     */
-    protected void dialog(String title, String text) {
-        dialog(title, text, "");
-    }
-
-    /**
-     * Shows a modal dialog on the same stage as this window with a button that returns true.
-     *
-     * @param title The title of the dialog window
-     * @param text The body content of the dialog
-     * @param positive The text shown in the positive button. If empty, shows "OK!"
-     */
-    protected void dialog(String title, String text, String positive) {
-        dialog(title, text, positive, "");
-    }
-
-    /**
-     * Shows a modal dialog on the same stage as this window with a button that returns true, and another that returns false.
-     *
-     * @param title The title of the dialog window
-     * @param text The body content of the dialog
-     * @param positive The text shown in the positive button. If empty, shows "OK!"
-     * @param negative The text shown in the negative button. If empty, no button is added.
-     */
-    protected void dialog(String title, String text, String positive, String negative) {
-        dialog(title, text, positive, negative, null);
-    }
-
-    /**
-     * Shows a modal dialog on the same stage as this window with a button that returns true, and another that returns false.
-     *
-     * @param title The title of the dialog window
-     * @param text The body content of the dialog
-     * @param positive The text shown in the positive button. If empty, shows "OK!"
-     * @param negative The text shown in the negative button. If empty, no button is added.
-     * @param acceptHandler The handler which handles the button press. If null, no handler is added.
-     */
-    protected void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
-        dialog(this, title, text, positive, negative, resultHandler);
-    }
 
     public static void dialog(Actor actor, String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
-        if (actor.getStage() == null) throw new NullPointerException("Tried to show a dialog, but the caller was not on a stage.");
+        if (actor.getStage() == null)
+            throw new NullPointerException("Tried to show a dialog, but the caller was not on a stage.");
 
         // Construct dialog, that gives the result to the handler
         Dialog dialog = new Dialog("", Assets.SKIN, "dialog-modal") {
-            protected void result(Object object){
+            protected void result(Object object) {
                 if (resultHandler != null)
                     resultHandler.accept((boolean) object);
             }
@@ -214,7 +167,7 @@ public abstract class StageWindow extends Window {
 
         if (!positive.equals(""))
             dialog.button(positive, true);
-        // TODO Localise
+            // TODO Localise
         else dialog.button("OK!");
 
         if (!negative.equals(""))
@@ -222,24 +175,12 @@ public abstract class StageWindow extends Window {
 
         dialog.show(actor.getStage());
     }
-    //#region dialog
-
-    // TODO close region
-    //#region window
-
-    /**
-     * <h2>Places a label on this window to act as the window title.</h2>
-     * @param windowStyle The style of the window, determines the placement and style of heading used.
-     * @param title The title text
-     */
-    private void placeTitle(String windowStyle, String title) {
-        placeTitle(this, windowStyle, title);
-    }
 
     /**
      * <h2>Places a label on the provided window to act as the window title.</h2>
+     *
      * @param windowStyle The style of the window, determines the placement and style of heading used.
-     * @param title The title text
+     * @param title       The title text
      */
     private static void placeTitle(Window w, String windowStyle, String title) {
         // If there's no title, do nothing
@@ -281,26 +222,11 @@ public abstract class StageWindow extends Window {
         );
     }
 
-
-    /**
-     * <h2>Creates and adds a button which fills the row</h2>
-     * Used in most places, ideal for lists of buttons.
-     *
-     * Once the button is added, automatically moves to the next row.
-     * @param Text Text contained in the button
-     * @param e Function of the button
-     * @return the button created
-     */
-    protected TextButton addButton(String Text, Consumer<InputEvent> e){
-        TextButton b = button(Text, e);
-        add(b).fill().row();
-        return b;
-    }
-
     /**
      * <h2>Creates a button with a listener</h2>
+     *
      * @param text Text contained in the button
-     * @param e Function of the button
+     * @param e    Function of the button
      * @return the button created
      */
     public static TextButton button(String text, Consumer<?> e) {
@@ -311,29 +237,135 @@ public abstract class StageWindow extends Window {
 
     /**
      * <h2>Creates and a button that shows a table in a cell when clicked.</h2>
+     *
      * @param contentCell The cell to display the content
-     * @param content The content of the tab
-     * @param name The text to be displayed in the button
+     * @param content     The content of the tab
+     * @param name        The text to be displayed in the button
      * @return the button
      */
-    protected static TextButton tab(Cell contentCell, Table content, String name){
-        return button(name, e -> {contentCell.setActor(content); contentCell.fill().expand().center(); });
+    protected static TextButton tab(Cell contentCell, Table content, String name) {
+        return button(name, e -> {
+            contentCell.setActor(content);
+            contentCell.fill().expand().center();
+        });
     }
-
 
     /**
      * <h2>Attaches a consumer to an actor via a {@link LambdaClickListener}</h2>
-     * @param actor The actor
+     *
+     * @param actor    The actor
      * @param consumer The action
      * @return The actor
      */
-    protected static Actor onClick(Actor actor, Consumer consumer){
+    protected static Actor onClick(Actor actor, Consumer consumer) {
         actor.addListener(new LambdaClickListener(consumer));
         return actor;
+    }
+    //#region dialog
+
+    // TODO close region
+    //#region window
+
+    /**
+     * <h2>Applies padding and fill to cells used in a menu style table</h2>
+     * Used in-game on buttons at the top of the screen.
+     */
+    public static Cell applyMenuStyling(Cell actor) {
+        return actor.fill()
+                .center()
+                .padTop(2)
+                .padLeft(15)
+                .padRight(15);
+    }
+
+    /**
+     * Shows a modal dialog on the same stage as this window.
+     *
+     * @param title The title of the dialog window
+     * @param text  The body content of the dialog
+     */
+    protected void dialog(String title, String text) {
+        dialog(title, text, "");
+    }
+
+    /**
+     * Shows a modal dialog on the same stage as this window with a button that returns true.
+     *
+     * @param title    The title of the dialog window
+     * @param text     The body content of the dialog
+     * @param positive The text shown in the positive button. If empty, shows "OK!"
+     */
+    protected void dialog(String title, String text, String positive) {
+        dialog(title, text, positive, "");
+    }
+
+    /**
+     * Shows a modal dialog on the same stage as this window with a button that returns true, and another that returns false.
+     *
+     * @param title    The title of the dialog window
+     * @param text     The body content of the dialog
+     * @param positive The text shown in the positive button. If empty, shows "OK!"
+     * @param negative The text shown in the negative button. If empty, no button is added.
+     */
+    protected void dialog(String title, String text, String positive, String negative) {
+        dialog(title, text, positive, negative, null);
+    }
+
+    /**
+     * Shows a modal dialog on the same stage as this window with a button that returns true, and another that returns false.
+     *
+     * @param title         The title of the dialog window
+     * @param text          The body content of the dialog
+     * @param positive      The text shown in the positive button. If empty, shows "OK!"
+     * @param negative      The text shown in the negative button. If empty, no button is added.
+     * @param acceptHandler The handler which handles the button press. If null, no handler is added.
+     */
+    protected void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
+        dialog(this, title, text, positive, negative, resultHandler);
+    }
+
+    /**
+     * <h2>Places a label on this window to act as the window title.</h2>
+     *
+     * @param windowStyle The style of the window, determines the placement and style of heading used.
+     * @param title       The title text
+     */
+    private void placeTitle(String windowStyle, String title) {
+        placeTitle(this, windowStyle, title);
+    }
+
+    /**
+     * <h2>Creates and adds a button which fills the row</h2>
+     * Used in most places, ideal for lists of buttons.
+     * <p>
+     * Once the button is added, automatically moves to the next row.
+     *
+     * @param Text Text contained in the button
+     * @param e    Function of the button
+     * @return the button created
+     */
+    protected TextButton addButton(String Text, Consumer<InputEvent> e) {
+        TextButton b = button(Text, e);
+        add(b).fill().row();
+
+        // TODO - DEVELOPMENT
+        /*
+         * Im not sure if you like this here, but it eliminates the need (so far) to create a new class to extend,
+         * or add a listener to every button. Let me know.
+         */
+        b.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                AudioController.playButttonSound();
+            }
+        });
+        return b;
+
     }
 
     /**
      * <h2>Adds a new row containing the provided actors</h2>
+     *
      * @param actors The actors to be in this row.
      */
     protected Cell row(Actor... actors) {
@@ -343,9 +375,10 @@ public abstract class StageWindow extends Window {
 
     /**
      * <h2>Adds a collection of tabs to this window</h2>
+     *
      * @param contentCell The cell that will display the currently selected tab.
-     * @param tables Tables of content for each tab.
-     * @param name The name of each tab. This will be displayed in the tab's button.
+     * @param tables      Tables of content for each tab.
+     * @param name        The name of each tab. This will be displayed in the tab's button.
      * @return The table containing all of the tab buttons.
      */
     protected Table tabs(Cell contentCell, List<Table> tables, List<String> name) {
@@ -379,7 +412,7 @@ public abstract class StageWindow extends Window {
     /**
      * <h2>Performs {@link Cell#fill()} and {@link Cell#expand()} on the actor</h2>
      */
-    protected <T extends Cell> T expandfill(T actor){
+    protected <T extends Cell> T expandfill(T actor) {
         actor.fill().expand();
         return actor;
     }
@@ -414,24 +447,23 @@ public abstract class StageWindow extends Window {
 
     /**
      * <h2>Adds a horizontal seperation line</h2>
+     *
      * @return The cell containing the horizontal seporator.
      */
-    protected Cell hsep(){
+    protected Cell hsep() {
         row();
         Cell c = span(add(new Label("", seperatorStyle))).colspan(lastSpan).height(3).bottom();
         row();
         return c;
     }
 
-
     /**
      * Adds a new item to the current row.
-     *
+     * <p>
      * See super.
      *
-     * @apiNote Override updates items which span entire window to account for newly created columns.
-     *
      * @param actor
+     * @apiNote Override updates items which span entire window to account for newly created columns.
      */
     @Override
     public final <T extends Actor> Cell<T> add(T actor) {
@@ -442,12 +474,11 @@ public abstract class StageWindow extends Window {
 
     /**
      * Adds multiple items to the current row.
-     *
+     * <p>
      * See super.
      *
-     * @apiNote Override updates items which span entire window to account for newly created columns.
-     *
      * @param actors
+     * @apiNote Override updates items which span entire window to account for newly created columns.
      */
     @Override
     public final Table add(Actor... actors) {
@@ -468,12 +499,13 @@ public abstract class StageWindow extends Window {
 
     /**
      * Modifies the provided cell to span all columns of the window table.
-     *
+     * <p>
      * If more columns are added, this cell well have it's colspan updated to cover it.
+     *
      * @param c The cell that should span the entire width of the window
      * @return the cell
      */
-    protected Cell span(Cell c){
+    protected Cell span(Cell c) {
         spannedCells.add(c);
         expandfill(c).center();
         c.colspan(lastSpan);
@@ -483,34 +515,23 @@ public abstract class StageWindow extends Window {
     /**
      * Updates all cells which should span all columns with the current number of columns.
      */
-    private void updateColSpans(){
+    private void updateColSpans() {
         updateColSpans(getColumns());
     }
 
     /**
      * Updates all cells which should span all columns with the provided number of columns.
+     *
      * @param columns
      */
-    private void updateColSpans(int columns){
+    private void updateColSpans(int columns) {
         if (columns <= lastSpan) return;
 
         lastSpan = columns;
 
-        for(Cell c : spannedCells)
+        for (Cell c : spannedCells)
             c.colspan(lastSpan);
 
-    }
-
-    /**
-     * <h2>Applies padding and fill to cells used in a menu style table</h2>
-     * Used in-game on buttons at the top of the screen.
-     */
-    public static Cell applyMenuStyling(Cell actor) {
-        return actor.fill()
-                .center()
-                .padTop(2)
-                .padLeft(15)
-                .padRight(15);
     }
 
     /**
@@ -531,7 +552,7 @@ public abstract class StageWindow extends Window {
     public static class LambdaClickListener extends ClickListener {
         private Consumer c;
 
-        public LambdaClickListener(Consumer<InputEvent> consumer){
+        public LambdaClickListener(Consumer<InputEvent> consumer) {
             c = consumer;
         }
 

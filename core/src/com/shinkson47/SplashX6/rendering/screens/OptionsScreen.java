@@ -176,6 +176,7 @@ public class OptionsScreen extends StageWindow {
 
         SOUND_OPTION_TAB = new Table();
         SOUND_OPTION_TAB.add(new Label("Sound options will be built here", Assets.SKIN));
+        // TODO - SLIDER FOR VOLUME CONTROL
 
         ADVANCED_OPTION_TAB = new Table();
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();

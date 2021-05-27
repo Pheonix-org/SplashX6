@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.badlogic.gdx.utils.viewport.Viewport
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
+import com.shinkson47.SplashX6.game.audio.AudioController
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Utility
@@ -129,5 +130,11 @@ class MainMenu : ScreenAdapter() {
 
         // Set the stage to handle key and mouse input
         MouseHandler.configureGameInput(stage)
+
+        // TODO - HERE FOR DEVELOPMENT
+        /*
+         * Next thing to do here is make the music stop once the user has left the main menu
+         */
+        AudioController.playMainMenu();
     }
 }
