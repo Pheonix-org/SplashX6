@@ -162,31 +162,29 @@ public class OptionsScreen extends StageWindow {
                 ignoreChanged = true;
                 languageList.setSelected(currentLanguage);
             }
-
-            //Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
         });
 
         // SLIDER FOR MUSIC VOLUME CONTROL // TODO - FIX SLIDER VALUE ISSUE
-        Slider musicSlider = new Slider(0.0f, 1f, 0.10f, false, Assets.SKIN);
-        musicSlider.setValue(0.25f);
+        Slider musicSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
+        musicSlider.setValue(0.2f); // TODO - CHANGE THIS TO DYNAMICALLY SET THE VALUE
 
         musicSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                AudioController.playButtonSound();
                 AudioController.setMusicVolume(musicSlider.getValue());
-                musicSlider.setValue(musicSlider.getValue()); // TODO - REDUNDANT?
             }
         });
 
         // SLIDER FOR GAME VOLUME CONTROL // TODO - FIX SLIDER VALUE ISSUE
-        Slider gameSlider = new Slider(0.0f, 1f, 0.10f, false, Assets.SKIN);
-        gameSlider.setValue(0.25f);
+        Slider gameSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
+        gameSlider.setValue(0.2f); // TODO - CHANGE THIS TO DYNAMICALLY SET THE VALUE
 
         gameSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                AudioController.setGameVolume(gameSlider.getValue());
-                gameSlider.setValue(gameSlider.getValue()); // TODO - REDUNDANT?
+                AudioController.playButtonSound();
+                AudioController.setSFXVolume(gameSlider.getValue());
             }
         });
 
@@ -200,10 +198,8 @@ public class OptionsScreen extends StageWindow {
 
         SOUND_OPTION_TAB = new Table();
         SOUND_OPTION_TAB.add(new Label("Music Volume: ", Assets.SKIN));
-
-        // TODO - SLIDER FOR VOLUME CONTROL
         SOUND_OPTION_TAB.add(musicSlider).row();
-        SOUND_OPTION_TAB.add(new Label("Game Volume: ", SKIN)).padTop(20.0f);
+        SOUND_OPTION_TAB.add(new Label("Game Volume: ", Assets.SKIN)).padTop(20.0f);
         SOUND_OPTION_TAB.add(gameSlider).padTop(20.0f);
 
         ADVANCED_OPTION_TAB = new Table();
@@ -217,8 +213,6 @@ public class OptionsScreen extends StageWindow {
                     invalidCall(REQ_GAME_LOADING, WARN("You can't do that.", this))
             ) return;
         })).row();
-
-
 
         constructContent();
     }

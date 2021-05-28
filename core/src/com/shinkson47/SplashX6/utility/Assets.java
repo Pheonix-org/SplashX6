@@ -141,7 +141,7 @@ public class Assets {
 
     //#region audio
     public static final Sound MUSIC_MAIN_MENU = Gdx.audio.newSound(Gdx.files.internal("sounds/MainMenu/night_theme_2.wav"));
-    public static final Sound SFX_GUI = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/click33.wav"));
+    public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/click33.wav"));
 
     //#endregion audio
 

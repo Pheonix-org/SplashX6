@@ -1,46 +1,70 @@
 package com.shinkson47.SplashX6.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.shinkson47.SplashX6.rendering.StageWindow;
+import static com.shinkson47.SplashX6.utility.Assets.*;
 
-import static com.shinkson47.SplashX6.utility.Assets.MUSIC_MAIN_MENU;
-import static com.shinkson47.SplashX6.utility.Assets.SFX_GUI;
-
-// TODO Javadocs
 // TODO abstract play / stop logic
-// TODO stop all
-// TODO store and edit volume floats
+
+/*
+ * TODO - EVERYTHING HERE
+ * --- Make the options screen save the slider value, and not reset the slider once the options screen is closed
+ * --- Rectify audio fields play issue
+ * --- Implement unused methods
+ */
 public class AudioController {
     // Fields
-    public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> AudioController.playButttonSound());
-    private static long menuAudio = MUSIC_MAIN_MENU.play();
-    private static long buttonAudio = SFX_GUI.play();
+    public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> AudioController.playButtonSound());
+    private static float musicVolume = 0.2f; // DEFAULT VOLUME
+    private static float buttonVolume = 1.0f; // DEFAULT VOLUME
+
+    /*
+     * TODO - FURTHER DEVELOPMENT HERE
+     * These fields play the sounds upon start up, including the button sound (although a button has not been clicked)
+     *
+     * These fields arent called anywhere but still play the sounds. Bad implementation?
+     */
+    private static long menuAudio = MUSIC_MAIN_MENU.play(musicVolume);
+    private static long buttonAudio = SFX_BUTTON.play(buttonVolume);
 
     // Methods
     /**
-     * <h2>An audible alert that is played when a button is clicked</h2>
-     */
-    public static synchronized void playButttonSound() {
-        SFX_GUI.play(0.25f);
-    }
-
-    /**
-     * <h2>Audible sound (music) for the this application's main menu</h2>
+     * Audible sound (music) for the this application's main menu.
      */
     public static synchronized void playMainMenu() {
-        MUSIC_MAIN_MENU.play(0.25f);
-        MUSIC_MAIN_MENU.loop(0.25f);
+        MUSIC_MAIN_MENU.play(0.2f);
+        MUSIC_MAIN_MENU.loop(0.2f);
     }
 
-    // TODO - CURRENTLY NOT IMPLEMENTED
     /**
-     * <h2>Mutes the volume of ALL audio</h2>
+     * An audible alert that is played when a button is clicked.
      */
-    public static synchronized void muteAllAudio() {
+    public static synchronized void playButtonSound() {
+        SFX_BUTTON.play(buttonVolume);
+    }
+
+    /**
+     * Mutes the volume of ALL audio.
+     */
+    public static synchronized void muteAllAudio() { // TODO - CURRENTLY NOT IMPLEMENTED
         MUSIC_MAIN_MENU.setVolume(menuAudio, 0.0f);
-        SFX_GUI.setVolume(buttonAudio, 0.0f);
+        SFX_BUTTON.setVolume(buttonAudio, 0.0f);
+    }
+
+    /**
+     * Pauses all music in this application.
+     */
+    public static synchronized void stopMusic() { // TODO - CURRENTLY NOT IMPLEMENTED
+        MUSIC_MAIN_MENU.pause();
+        // TODO - IN_GAME_MUSIC
+    }
+
+    /**
+     * Resumes all music in this application.
+     */
+    public static synchronized void resumeMusic() { // TODO - CURRENTLY NOT IMPLEMENTED
+        MUSIC_MAIN_MENU.resume();
+        // TODO - IN_GAME_MUSIC
     }
 
     /**
@@ -51,7 +75,11 @@ public class AudioController {
         MUSIC_MAIN_MENU.setVolume(menuAudio, volume);
     }
 
-    public static synchronized void setGameVolume(float volume) {
-        SFX_GUI.setVolume(buttonAudio, volume);
+    /**
+     *
+     * @param volume
+     */
+    public static synchronized void setSFXVolume(float volume) {
+        SFX_BUTTON.setVolume(buttonAudio, volume);
     }
 }
