@@ -31,6 +31,8 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
  */
 public class OptionsScreen extends StageWindow {
 
+    // TODO - TEST
+    //private Slider musicSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
     //=====================================================================
     //#region constants
     //#endregion constants
@@ -119,8 +121,6 @@ public class OptionsScreen extends StageWindow {
         ArrayList<String> languagesString = new ArrayList<>();
         Assets.languages.forEach(n -> languagesString.add(n.getDisplayName()));
 
-        //TODO Make default language the currently one selected
-
         String currentLanguage = LANG.getLocale().getDisplayName();
 
         SelectBox<String> languageList = new SelectBox<String>(Assets.SKIN);
@@ -164,9 +164,9 @@ public class OptionsScreen extends StageWindow {
             }
         });
 
-        // SLIDER FOR MUSIC VOLUME CONTROL // TODO - FIX SLIDER VALUE ISSUE
+        // SLIDER FOR MUSIC VOLUME CONTROL
         Slider musicSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
-        musicSlider.setValue(0.2f); // TODO - CHANGE THIS TO DYNAMICALLY SET THE VALUE
+        musicSlider.setValue(AudioController.getMusicVolume());
 
         musicSlider.addListener(new ChangeListener() {
             @Override
@@ -176,9 +176,9 @@ public class OptionsScreen extends StageWindow {
             }
         });
 
-        // SLIDER FOR GAME VOLUME CONTROL // TODO - FIX SLIDER VALUE ISSUE
+        // SLIDER FOR GAME VOLUME CONTROL
         Slider gameSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
-        gameSlider.setValue(0.2f); // TODO - CHANGE THIS TO DYNAMICALLY SET THE VALUE
+        gameSlider.setValue(AudioController.getSFXVolume());
 
         gameSlider.addListener(new ChangeListener() {
             @Override
@@ -187,6 +187,12 @@ public class OptionsScreen extends StageWindow {
                 AudioController.setSFXVolume(gameSlider.getValue());
             }
         });
+
+//        // TODO - Implement locale for different languages
+//        Button mute = new Button("Mute") {
+//            AudioController.playButtonSound();
+//
+//        };
 
         //language.setMaxListCount(3);
         GAME_OPTION_TAB = new Table();
@@ -199,8 +205,10 @@ public class OptionsScreen extends StageWindow {
         SOUND_OPTION_TAB = new Table();
         SOUND_OPTION_TAB.add(new Label("Music Volume: ", Assets.SKIN));
         SOUND_OPTION_TAB.add(musicSlider).row();
-        SOUND_OPTION_TAB.add(new Label("Game Volume: ", Assets.SKIN)).padTop(20.0f);
-        SOUND_OPTION_TAB.add(gameSlider).padTop(20.0f);
+        SOUND_OPTION_TAB.add(new Label("SFX Volume: ", Assets.SKIN)).padTop(20.0f);
+        SOUND_OPTION_TAB.add(gameSlider).padTop(20.0f).row();
+        SOUND_OPTION_TAB.add(button("Mute", o -> AudioController.muteAudio())).padTop(20.0f);
+        SOUND_OPTION_TAB.add(button("Un-Mute", o -> AudioController.unmuteAudio())).padTop(20.0f);
 
         ADVANCED_OPTION_TAB = new Table();
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();
@@ -245,6 +253,4 @@ public class OptionsScreen extends StageWindow {
         setSize(700, 500);
         //setFillParent(true);
     }
-
-
 }

@@ -8,15 +8,15 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
 
 /*
  * TODO - EVERYTHING HERE
- * --- Make the options screen save the slider value, and not reset the slider once the options screen is closed
  * --- Rectify audio fields play issue
- * --- Implement unused methods
+ * --- Implement unused methods?
+ * --- Tidy Class + Javadoc
  */
 public class AudioController {
     // Fields
     public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> AudioController.playButtonSound());
     private static float musicVolume = 0.2f; // DEFAULT VOLUME
-    private static float buttonVolume = 1.0f; // DEFAULT VOLUME
+    private static float buttonVolume = 0.8f; // DEFAULT VOLUME
 
     /*
      * TODO - FURTHER DEVELOPMENT HERE
@@ -31,9 +31,9 @@ public class AudioController {
     /**
      * Audible sound (music) for the this application's main menu.
      */
-    public static synchronized void playMainMenu() {
-        MUSIC_MAIN_MENU.play(0.2f);
-        MUSIC_MAIN_MENU.loop(0.2f);
+    public static synchronized void playMainMenu() { // TODO - CURRENTLY UNUSED???
+        MUSIC_MAIN_MENU.play(musicVolume);
+        MUSIC_MAIN_MENU.loop(musicVolume);
     }
 
     /**
@@ -44,13 +44,60 @@ public class AudioController {
     }
 
     /**
-     * Mutes the volume of ALL audio.
+     * Mutes the volume of ALL audio in this application.
      */
-    public static synchronized void muteAllAudio() { // TODO - CURRENTLY NOT IMPLEMENTED
+    public static synchronized void muteAudio() { // TODO - CURRENTLY NOT IMPLEMENTED
         MUSIC_MAIN_MENU.setVolume(menuAudio, 0.0f);
         SFX_BUTTON.setVolume(buttonAudio, 0.0f);
     }
 
+    /**
+     * Un-Mutes the volume of ALL audio in this application.
+     */
+    public static synchronized void unmuteAudio() { // TODO - CURRENTLY NOT IMPLEMENTED
+        MUSIC_MAIN_MENU.setVolume(menuAudio,musicVolume);
+        SFX_BUTTON.setVolume(buttonAudio, buttonVolume);
+    }
+
+    /**
+     * Returns a float value, indicating the current volume of all music.
+     *
+     * @return The music's volume.
+     */
+    public static synchronized float getMusicVolume() {
+        return musicVolume;
+    }
+
+    /**
+     * Sets the volume of this applications music.
+     *
+     * @param volume Float value to set the music volume.
+     */
+    public static synchronized void setMusicVolume(float volume) {
+        musicVolume = volume;
+        MUSIC_MAIN_MENU.setVolume(menuAudio, musicVolume);
+    }
+
+    /**
+     * Returns a float value, indicating the current volume of all sound effects.
+     *
+     * @return The sound effect's volume.
+     */
+    public static synchronized float getSFXVolume() {
+        return buttonVolume;
+    }
+
+    /**
+     * Sets the volume of this applications sound effect's.
+     *
+     * @param volume Float value to set the sound effect volume.
+     */
+    public static synchronized void setSFXVolume(float volume) {
+        buttonVolume = volume;
+        SFX_BUTTON.setVolume(buttonAudio, buttonVolume);
+    }
+
+    // TODO - CURRENTLY UNIMPLEMENTED METHODS, MAY NOT USE
     /**
      * Pauses all music in this application.
      */
@@ -65,21 +112,5 @@ public class AudioController {
     public static synchronized void resumeMusic() { // TODO - CURRENTLY NOT IMPLEMENTED
         MUSIC_MAIN_MENU.resume();
         // TODO - IN_GAME_MUSIC
-    }
-
-    /**
-     *
-     * @param volume
-     */
-    public static synchronized void setMusicVolume(float volume) {
-        MUSIC_MAIN_MENU.setVolume(menuAudio, volume);
-    }
-
-    /**
-     *
-     * @param volume
-     */
-    public static synchronized void setSFXVolume(float volume) {
-        SFX_BUTTON.setVolume(buttonAudio, volume);
     }
 }
