@@ -1,8 +1,10 @@
 package com.shinkson47.SplashX6.game;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.shinkson47.SplashX6.rendering.StageWindow;
+import org.jetbrains.annotations.NotNull;
+
 import static com.shinkson47.SplashX6.utility.Assets.*;
 
 // TODO abstract play / stop logic
@@ -14,9 +16,6 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
  * --- Tidy Class + Javadoc
  */
 public class AudioController {
-    public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> AudioController.playButtonSound());
-    private static float musicVolume = 0.2f; // DEFAULT VOLUME
-    private static float buttonVolume = 0.8f; // DEFAULT VOLUME
 
 
     // ==================================================
@@ -24,28 +23,27 @@ public class AudioController {
     // ==================================================
 
     /**
-     * Audible sound (music) for the this application's main menu.
+     * <h2>The current volume levels</h2>
      */
-    public static synchronized void playMainMenu() { // TODO - CURRENTLY UNUSED???
-        MUSIC_MAIN_MENU.play(musicVolume);
-        MUSIC_MAIN_MENU.loop(musicVolume);
-    }
+    private static float
+            musicVolume = 0.2f,
+            buttonVolume = 0.8f; // DEFAULT VOLUME
 
     /**
-     * An audible alert that is played when a button is clicked.
+     * <h2>Determines if audio should be played, or not.</h2>
      */
-    public static synchronized void playButtonSound() {
-        SFX_BUTTON.play(buttonVolume);
-    }
+    private static boolean isMuted = false;
 
     /**
-     * Mutes the volume of ALL audio in this application.
+     * <h2>Listener placed on GUI elements to play a sound when interacted with.</h2>
      */
-    public static synchronized void muteAudio() { // TODO - CURRENTLY NOT IMPLEMENTED
-        Gdx.audio.newSound()
-        MUSIC_MAIN_MENU.setVolume(menuAudio, 0.0f);
-        SFX_BUTTON.setVolume(buttonAudio, 0.0f);
+    public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> {if (!isMuted) AudioController.playButtonSound();});
 
+    /**
+     * <h2>Pointer to the music resource that we are currently playing.</h2>
+     * Should never be null.
+     */
+    private static Music nowPlaying = MUSIC_MAIN_MENU;
 
 
     // ==================================================
@@ -54,24 +52,35 @@ public class AudioController {
     // ==================================================
 
 
+    /**
+     * Stops now playing and prevents more music from being played.
+     */
+    public static synchronized void muteAudio() {
+        stopMusic();
+        isMuted = true;
     }
 
     /**
      * Un-Mutes the volume of ALL audio in this application.
      */
-    public static synchronized void unmuteAudio() { // TODO - CURRENTLY NOT IMPLEMENTED
-        MUSIC_MAIN_MENU.setVolume(menuAudio,musicVolume);
-        SFX_BUTTON.setVolume(buttonAudio, buttonVolume);
+    public static synchronized void unmuteAudio() {
+        isMuted = false;
+        resumeMusic();
     }
+
+    /**
+     * @return pointer to the music resource that's currently being played.
+     */
+    public static Music getNowPlaying() { return nowPlaying; }
+
+
 
     /**
      * Returns a float value, indicating the current volume of all music.
      *
      * @return The music's volume.
      */
-    public static synchronized float getMusicVolume() {
-        return musicVolume;
-    }
+    public static synchronized float getMusicVolume() { return musicVolume; }
 
     /**
      * Sets the volume of this applications music.
@@ -80,17 +89,22 @@ public class AudioController {
      */
     public static synchronized void setMusicVolume(float volume) {
         musicVolume = volume;
-        MUSIC_MAIN_MENU.setVolume(menuAudio, musicVolume);
+        assertNowPlayingVolume();
     }
+
+    /**
+     * Makes sure that now playing is at the current volume.
+     */
+    private static void assertNowPlayingVolume(){ nowPlaying.setVolume(musicVolume); }
+
+
 
     /**
      * Returns a float value, indicating the current volume of all sound effects.
      *
      * @return The sound effect's volume.
      */
-    public static synchronized float getSFXVolume() {
-        return buttonVolume;
-    }
+    public static synchronized float getSFXVolume() { return buttonVolume; }
 
     /**
      * Sets the volume of this applications sound effect's.
@@ -99,7 +113,7 @@ public class AudioController {
      */
     public static synchronized void setSFXVolume(float volume) {
         buttonVolume = volume;
-        SFX_BUTTON.setVolume(buttonAudio, buttonVolume);
+    }
 
 
     // ==================================================
@@ -109,6 +123,20 @@ public class AudioController {
 
 
 
+    // TODO - CURRENTLY UNUSED???
+    /**
+     * Audible sound (music) for the this application's main menu.
+     */
+    public static synchronized void playMainMenu() {
+        playOnLoop(MUSIC_MAIN_MENU);
+    }
+
+    /**
+     * Plays a new instance of {@link com.shinkson47.SplashX6.utility.Assets#SFX_BUTTON} at {@link AudioController#buttonVolume}
+     * @return the ID of the new clip.
+     */
+    public static synchronized long playButtonSound() {
+        return SFX_BUTTON.play(buttonVolume);
     }
 
 
@@ -120,7 +148,14 @@ public class AudioController {
 
 
     /**
-     * Pauses all music in this application.
+     * Stops now playing.
+     */
+    public static synchronized void stopMusic() { nowPlaying.stop(); }
+
+    /**
+     * Plays now playing.
+     */
+    public static synchronized void resumeMusic() { if (!isMuted) nowPlaying.play(); }
 
 
     // ==================================================
@@ -129,17 +164,32 @@ public class AudioController {
     // ==================================================
 
 
+    /**
+     * <h2> Plays the provided music on repeat.</h2>
+     * If muted, has no effect.
+     * @param m The music to loop
+     * @return m
      */
-    public static synchronized void stopMusic() { // TODO - CURRENTLY NOT IMPLEMENTED
-        MUSIC_MAIN_MENU.pause();
-        // TODO - IN_GAME_MUSIC
+    private static Music playOnLoop(Music m) {
+        if (!isMuted) {
+            m.setLooping(true);
+            play(m);
+        }
+        return m;
     }
 
+
     /**
-     * Resumes all music in this application.
+     * <h2>Actually plays some music.</h2>
+     * Stops nowPlaying, plays m at current volume, and sets nowPlaying to m
+     * @param m The music to play.
+     * @return nowPlaying pointer.
      */
-    public static synchronized void resumeMusic() { // TODO - CURRENTLY NOT IMPLEMENTED
-        MUSIC_MAIN_MENU.resume();
-        // TODO - IN_GAME_MUSIC
+    private static Music play(@NotNull Music m){
+        stopMusic();                // Stop now playing
+        nowPlaying = m;             // Swap to new music
+        assertNowPlayingVolume();   // Make sure new music is at right volume
+        resumeMusic();              // The play it.
+        return nowPlaying;
     }
 }

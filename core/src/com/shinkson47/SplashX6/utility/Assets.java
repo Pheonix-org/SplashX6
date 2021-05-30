@@ -1,6 +1,7 @@
 package com.shinkson47.SplashX6.utility;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -140,7 +141,7 @@ public class Assets {
     //#endregion World
 
     //#region audio
-    public static final Sound MUSIC_MAIN_MENU = Gdx.audio.newSound(Gdx.files.internal("sounds/MainMenu/night_theme_2.wav"));
+    public static final Music MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("sounds/MainMenu/night_theme_2.wav"));
     public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/click33.wav"));
 
     //#endregion audio
