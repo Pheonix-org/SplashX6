@@ -68,6 +68,13 @@ public class AudioController {
         resumeMusic();
     }
 
+    public static void setMute(boolean mute) {
+        if (mute)
+            muteAudio();
+        else
+            unmuteAudio();
+    }
+
     /**
      * @return pointer to the music resource that's currently being played.
      */
@@ -139,9 +146,10 @@ public class AudioController {
 
     /**
      * Plays a new instance of {@link com.shinkson47.SplashX6.utility.Assets#SFX_BUTTON} at {@link AudioController#buttonVolume}
-     * @return the ID of the new clip.
+     * @return the ID of the new clip. If muted, returns -1 with no effect.
      */
     public static synchronized long playButtonSound() {
+        if (isMuted) return -1;
         return SFX_BUTTON.play(buttonVolume);
     }
 

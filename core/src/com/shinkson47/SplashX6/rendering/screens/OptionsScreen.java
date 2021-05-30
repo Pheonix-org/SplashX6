@@ -2,6 +2,7 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.shinkson47.SplashX6.Client;
@@ -14,6 +15,7 @@ import com.shinkson47.SplashX6.utility.Languages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.shinkson47.SplashX6.utility.APICondition.*;
 import static com.shinkson47.SplashX6.utility.Assets.*;
@@ -208,14 +210,18 @@ public class OptionsScreen extends StageWindow {
         SOUND_OPTION_TAB.add(musicSlider).row();
 
         SOUND_OPTION_TAB.add(new Label("SFX Volume: ", Assets.SKIN)).padTop(20f);
-        SOUND_OPTION_TAB.add(gameSlider).padTop(20f).padBottom(20f).row();
+        SOUND_OPTION_TAB.add(gameSlider).padTop(20f).row();
 
-        SOUND_OPTION_TAB.add(button("Mute", o -> AudioController.muteAudio()));
-        SOUND_OPTION_TAB.add(button("Un-Mute", o -> AudioController.unmuteAudio()));
+
+        final CheckBox mute = new CheckBox(" Mute", SKIN);
+        mute.addListener(new LambdaClickListener(inputEvent -> {
+            AudioController.setMute(mute.isChecked());
+        }));
+        SOUND_OPTION_TAB.add(mute).colspan(2).center().padTop(20f);
 
         ADVANCED_OPTION_TAB = new Table();
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();
-        
+
         constructContent();
     }
 
