@@ -98,8 +98,8 @@ public final class Utility {
         dialog.getTitleTable().add(label).expand();
 
         dialog.getContentTable().padTop(30).padBottom(30);
-        dialog.text("There's nothing beautiful here... YET!")
-            .button("OK, I'll come back later!", true)
+        dialog.text(local("notImplemented"))
+            .button(local("OK"), true)
             .show(stage);
     }
 

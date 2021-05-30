@@ -2,9 +2,12 @@ package com.shinkson47.SplashX6.game.units
 
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Vector3
+import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.units.UnitAction.Companion.ALWAYS_AVAILABLE
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.game.world.World.*
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
+import java.util.function.Predicate
 
 /**
  * # A user playable unit.
@@ -31,6 +34,9 @@ class Unit(spriteName: String, pos: Vector3) : Sprite(unitSprites.createSprite(s
     var destY : Int = 0
 
 
+    val actions: Array<UnitAction> = arrayOf(
+        UnitAction("Retire", ALWAYS_AVAILABLE, { GameHypervisor.EndGame(); true; })
+    )
 
 
 

@@ -58,11 +58,11 @@ class MainMenu : ScreenAdapter() {
             )
                 .padBottom(100f)
                 .row()
-            addButton(local("newGame")) { NewGame() }
-            addButton(local("loadGame")) { Utility.notImplementedDialog(stage) }
-            addButton(local("preferences")) { stage.addActor(OptionsScreen()) }
-            addButton(local("credits")) { Utility.notImplementedDialog(stage) }
-            addButton(local("exitGame")) { Gdx.app.exit() }
+            addButton("newGame") { NewGame() }
+            addButton("loadGame") { Utility.notImplementedDialog(stage) }
+            addButton("preferences") { stage.addActor(OptionsScreen()) }
+            addButton("credits") { Utility.notImplementedDialog(stage) }
+            addButton("exitGame") { Gdx.app.exit() }
         }
     }
 
@@ -117,7 +117,7 @@ class MainMenu : ScreenAdapter() {
         stage.addActor(BaseTable)
         BaseTable = Table().bottom()
         BaseTable.setFillParent(true)
-        BaseTable.add(Label("BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://SHINKSON47.IN", Assets.SKIN))
+        BaseTable.add(Label("BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://shinkson47.in/SplashX6/index.html", Assets.SKIN))
             .fill()
             .padBottom(10f)
 

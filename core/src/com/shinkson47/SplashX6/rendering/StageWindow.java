@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import static com.shinkson47.SplashX6.game.AudioController.GUI_SOUND;
+import static com.shinkson47.SplashX6.utility.Utility.local;
 
 /**
  * <h1>A LibGDX Window with some extended functionality </h1>
@@ -137,7 +138,6 @@ public abstract class StageWindow extends Window {
     //=====================================================================
 
     // TODO change all strings to keys fetches
-    //#region dialog
 
     public static void dialog(Actor actor, String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
         if (actor.getStage() == null)
@@ -206,7 +206,7 @@ public abstract class StageWindow extends Window {
 
             // Add a close button at top border
             w.getTitleTable()
-                    .add(button("CLOSE", o -> w.setVisible(false)))
+                    .add(button("close", o -> w.setVisible(false)))
                     .padTop(-35)
                     .row();
 
@@ -227,14 +227,20 @@ public abstract class StageWindow extends Window {
     /**
      * <h2>Creates a button with a listener</h2>
      *
-     * @param text Text contained in the button
+     * @param key key of local text to put in button
      * @param e    Function of the button
      * @return the button created
      */
-    public static TextButton button(String text, Consumer<?> e) {
-        TextButton b = new TextButton(text, Assets.SKIN);
+    public static TextButton button(String key, Consumer<?> e) {
+        TextButton b = new TextButton(local(key), Assets.SKIN);
         onClick(b, e);
         return b;
+    }
+
+    protected Label label(String key){
+        Label l = new Label(local(key), Assets.SKIN);
+        add(l).row();
+        return l;
     }
 
     /**
@@ -263,10 +269,8 @@ public abstract class StageWindow extends Window {
         actor.addListener(new LambdaClickListener(consumer));
         return actor;
     }
-    //#region dialog
 
     // TODO close region
-    //#region window
 
     /**
      * <h2>Applies padding and fill to cells used in a menu style table</h2>
@@ -320,7 +324,7 @@ public abstract class StageWindow extends Window {
      * @param text          The body content of the dialog
      * @param positive      The text shown in the positive button. If empty, shows "OK!"
      * @param negative      The text shown in the negative button. If empty, no button is added.
-     * @param acceptHandler The handler which handles the button press. If null, no handler is added.
+     * @param resultHandler The handler which handles the button press. If null, no handler is added.
      */
     protected void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
         dialog(this, title, text, positive, negative, resultHandler);
@@ -428,9 +432,9 @@ public abstract class StageWindow extends Window {
     /**
      * <h2>Adds a label and a horizontal line with a good ammount of space above and below to seperate content in a column</h2>
      */
-    protected StageWindow seperate(String s) {
+    protected StageWindow seperate(String key) {
         // Create a label that will be the header
-        Label l = new Label(s, Assets.SKIN);
+        Label l = new Label(local(key), Assets.SKIN);
 
         // Make it 20% bigger
         l.setFontScale(1.2f);
@@ -456,6 +460,28 @@ public abstract class StageWindow extends Window {
         Cell c = span(add(new Label("", seperatorStyle))).colspan(lastSpan).height(3).bottom();
         row();
         return c;
+    }
+
+    /**
+     * Adds a tooltip to the last actor added to this window.
+     * <br/>
+     * Call directly after an add, and it <i>should</i> figure out the actor.
+     * @param key key to local text to display
+     * @return
+     */
+    public final Actor tooltip(String key){
+        return tooltip(getCells().get(getCells().size-1).getActor(), local(key));
+    }
+
+    /**
+     * Adds a tooltip the the actor
+     * @param t The actor
+     * @param s The message
+     * @return t
+     */
+    public static final Actor tooltip(Actor t, String s){
+        t.addListener(new TextTooltip(s, Assets.SKIN));
+        return t;
     }
 
     /**

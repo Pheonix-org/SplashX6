@@ -130,11 +130,11 @@ public class GameScreen extends ScreenAdapter {
 
         // Add buttons
         //TODO Menu bar abstraction?
-        applyMenuStyling(menu.add(button(local("endGame"), o -> GameHypervisor.EndGame())));
+        applyMenuStyling(menu.add(button("endGame", o -> GameHypervisor.EndGame())));
         applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
-        applyMenuStyling(menu.add(button(local("newGame"), o -> GameHypervisor.NewGame())));
-        applyMenuStyling(menu.add(button(local("preferences"), o -> stage.addActor(new OptionsScreen()))));
-        applyMenuStyling(menu.add(button(local("dev"), o -> Debug.MainDebugWindow.toggleShown())));
+        applyMenuStyling(menu.add(button("newGame", o -> GameHypervisor.NewGame())));
+        applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsScreen()))));
+        applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
 
         // Add to stage
         stage.addActor(menu);

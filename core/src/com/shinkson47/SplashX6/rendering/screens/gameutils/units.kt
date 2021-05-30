@@ -1,14 +1,16 @@
 package com.shinkson47.SplashX6.rendering.screens.gameutils
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.Unit
+import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
-import java.util.function.Consumer
+import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
  * # TODO
@@ -18,7 +20,8 @@ import java.util.function.Consumer
  */
 class units : StageWindow("Units") {
 
-    private val list: List<Unit> = List(Assets.SKIN)
+    private val units: List<Unit> = List(Assets.SKIN)
+    private val actions: List<UnitAction> = List(Assets.SKIN)
 
     init { constructContent() }
 
@@ -26,25 +29,58 @@ class units : StageWindow("Units") {
      * <h2>Constructs the content to be displayed in this window</h2>
      */
     override fun constructContent() {
-        if (FIRST_CONSTRUCTION) return;
+        if (FIRST_CONSTRUCTION) return
+        setPosition(0f, Gdx.graphics.height.toFloat())
 
+        // Units pane
+        seperate("waiting")
+        tooltip("ttWaiting")
+
+        units.addListener(
+            LambdaClickListener {
+                GameHypervisor.unit_select(units.selected)
+                refreshSelected()
+           })
+
+        val sp = ScrollPane(units, skin);
+        add(sp).fillX()
+        tooltip("ttWaiting")
+        getCell(sp).height(200f)
+        row()
+
+        seperate("busy")
+        tooltip("ttBusy")
+
+        label("notImplemented")
+        tooltip("ttBusy")
+
+        // seperate, label, button, tooltop
+
+        seperate("manage")
+        tooltip("ttManage")
         // Buttons
         // TODO localise
         // TODO lots of repeating code here
-        add(button("Move unit to cursor") { t -> GameHypervisor.unit_setDestination(); refresh() }).row()
-        add(button("View destination") { t -> GameHypervisor.unit_viewDestination(); refresh() }).row()
-        add(button("disband") { t -> GameHypervisor.unit_disband(); refresh() }).row()
+        add(button("moveUnitToCursor") { t -> GameHypervisor.unit_setDestination(); refresh() }).row()
+        tooltip("ttMoveUnitToCursor")
 
-        list.addListener(
+        add(button("viewDestination") { t -> GameHypervisor.unit_viewDestination(); refresh() }).row()
+        tooltip("ttViewDestination")
+
+        add(button("disband") { t -> GameHypervisor.unit_disband(); refresh() }).row()
+        tooltip("ttDisband")
+
+        seperate("actions")
+        tooltip("ttActions")
+        add(actions)
+        tooltip("ttActions")
+
+
+        actions.addListener(
             LambdaClickListener {
-                GameHypervisor.unit_select(list.selected)
-                refreshSelected()
+                GameData.selectedUnit?.let { it1 -> actions.selected.onAction.test(it1) }
             }
         )
-
-        val sp = ScrollPane(list, skin);
-        add(sp).fillX()
-        getCell(sp).height(200f)
 
         refresh()
         pack()
@@ -52,20 +88,32 @@ class units : StageWindow("Units") {
 
     private fun refresh() {
         refreshSelected()
-        refreshList()
+        refreshUnits()
     }
 
     private fun refreshSelected() {
-
+        refreshActions()
+        pack()
     }
 
-    private fun refreshList() {
+    private fun refreshUnits() {
         val arr : Array<Unit> = Array();
-        GameData.units.forEach( Consumer { x -> arr.add(x) })
+        GameData.units.forEach { arr.add(it) }
 
-        list.setItems(arr)
-        list.selected = null
-        list.selectedIndex = -1
+        units.setItems(arr)
+        units.selected = null
+        units.selectedIndex = -1
+    }
+
+    private fun refreshActions() {
+        val arr : Array<UnitAction> = Array();
+        GameData.selectedUnit?.actions?.forEach { arr.add(it) } // TODO copy of above. abstract.
+        // TODO use gdx array in units to avoid this on every refresh.
+
+        actions.setItems(arr)
+        actions.selected = null
+        actions.selectedIndex = -1
+
     }
 
     // ============================================================
