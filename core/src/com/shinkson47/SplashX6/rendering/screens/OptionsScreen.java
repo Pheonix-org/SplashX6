@@ -203,25 +203,19 @@ public class OptionsScreen extends StageWindow {
         GRAPHICS_OPTION_TAB.add(new Label("Graphics options will be built here", Assets.SKIN));
 
         SOUND_OPTION_TAB = new Table();
+
         SOUND_OPTION_TAB.add(new Label("Music Volume: ", Assets.SKIN));
         SOUND_OPTION_TAB.add(musicSlider).row();
-        SOUND_OPTION_TAB.add(new Label("SFX Volume: ", Assets.SKIN)).padTop(20.0f);
-        SOUND_OPTION_TAB.add(gameSlider).padTop(20.0f).row();
-        SOUND_OPTION_TAB.add(button("Mute", o -> AudioController.muteAudio())).padTop(20.0f);
-        SOUND_OPTION_TAB.add(button("Un-Mute", o -> AudioController.unmuteAudio())).padTop(20.0f);
+
+        SOUND_OPTION_TAB.add(new Label("SFX Volume: ", Assets.SKIN)).padTop(20f);
+        SOUND_OPTION_TAB.add(gameSlider).padTop(20f).padBottom(20f).row();
+
+        SOUND_OPTION_TAB.add(button("Mute", o -> AudioController.muteAudio()));
+        SOUND_OPTION_TAB.add(button("Un-Mute", o -> AudioController.unmuteAudio()));
 
         ADVANCED_OPTION_TAB = new Table();
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();
-
-        ADVANCED_OPTION_TAB.add(button("Invalid API call (crash)", o ->
-                validateCall(REQ_GAME_LOADING, THROW("Test api exception.")))).row();
-
-        ADVANCED_OPTION_TAB.add(button("Invalid API call (warn and ignore)", o -> {
-            if (
-                    invalidCall(REQ_GAME_LOADING, WARN("You can't do that.", this))
-            ) return;
-        })).row();
-
+        
         constructContent();
     }
 
