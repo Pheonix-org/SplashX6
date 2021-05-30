@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import static com.shinkson47.SplashX6.utility.Assets.*;
@@ -17,15 +18,6 @@ public class AudioController {
     public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> AudioController.playButtonSound());
     private static float musicVolume = 0.2f; // DEFAULT VOLUME
     private static float buttonVolume = 0.8f; // DEFAULT VOLUME
-
-    /*
-     * TODO - FURTHER DEVELOPMENT HERE
-     * These fields play the sounds upon start up, including the button sound (although a button has not been clicked)
-     *
-     * These fields arent called anywhere but still play the sounds. Bad implementation?
-     */
-    private static long menuAudio = MUSIC_MAIN_MENU.play(musicVolume);
-    private static long buttonAudio = SFX_BUTTON.play(buttonVolume);
 
     // Methods
     /**
@@ -47,6 +39,7 @@ public class AudioController {
      * Mutes the volume of ALL audio in this application.
      */
     public static synchronized void muteAudio() { // TODO - CURRENTLY NOT IMPLEMENTED
+        Gdx.audio.newSound()
         MUSIC_MAIN_MENU.setVolume(menuAudio, 0.0f);
         SFX_BUTTON.setVolume(buttonAudio, 0.0f);
     }
