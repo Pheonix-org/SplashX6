@@ -32,7 +32,7 @@ public class AudioController {
      * <h2>The current volume levels</h2>
      */
     private static float
-            musicVolume = 0.2f,
+            musicVolume  = 0.2f,
             buttonVolume = 0.8f; // DEFAULT VOLUME
 
     /**
@@ -44,7 +44,7 @@ public class AudioController {
      * <h2>Listener placed on GUI elements to play a sound when interacted with.</h2>
      */
     public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> {
-        if (!isMuted) AudioController.playButtonSound();
+        AudioController.playButtonSound();
     });
 
     /**
@@ -55,7 +55,7 @@ public class AudioController {
 
 
     // ==================================================
-    //#region Fields
+    //#endregion Fields
     //#region Volume API
     // ==================================================
 
@@ -64,7 +64,7 @@ public class AudioController {
      * Stops now playing and prevents more music from being played.
      */
     public static synchronized void muteAudio() {
-        stopMusic();
+        pauseMusic();
         isMuted = true;
     }
 
@@ -81,13 +81,6 @@ public class AudioController {
             muteAudio();
         else
             unmuteAudio();
-    }
-
-    /**
-     * @return pointer to the music resource that's currently being played.
-     */
-    public static Music getNowPlaying() {
-        return nowPlaying;
     }
 
 
@@ -138,7 +131,7 @@ public class AudioController {
 
 
     // ==================================================
-    //#region Volume API
+    //#endregion Volume API
     //#region Audio triggers api
     // ==================================================
 
@@ -169,20 +162,26 @@ public class AudioController {
 
 
     // ==================================================
-    //#region Volume API
+    //#endregion Audio triggers api
     //#region Music controls
     // ==================================================
 
-
     /**
-     * Stops now playing.
+     * Performs {@link Music#stop()} on now playing
      */
     public static synchronized void stopMusic() {
+        nowPlaying.stop();
+    }
+
+    /**
+     * Performs {@link Music#pause()} ()} on now playing
+     */
+    public static synchronized void pauseMusic() {
         nowPlaying.pause();
     }
 
     /**
-     * Plays now playing.
+     * Performs {@link Music#play()} ()} on now playing
      */
     public static synchronized void resumeMusic() {
         if (!isMuted) nowPlaying.play();
@@ -190,7 +189,7 @@ public class AudioController {
 
 
     // ==================================================
-    //#region Music controls
+    //#endregion Music controls
     //#region Music utilities
     // ==================================================
 
@@ -219,10 +218,26 @@ public class AudioController {
      * @return nowPlaying pointer.
      */
     private static Music play(@NotNull Music m) {
-        stopMusic();                // Stop now playing
+        pauseMusic();                // Stop now playing
         nowPlaying = m;             // Swap to new music
         assertNowPlayingVolume();   // Make sure new music is at right volume
         resumeMusic();              // The play it.
+        return nowPlaying;
+    }
+
+
+
+    // ==================================================
+    //#endregion Music utilities
+    //#region other
+    // ==================================================
+
+
+
+    /**
+     * @return pointer to the music resource that's currently being played.
+     */
+    public static Music getNowPlaying() {
         return nowPlaying;
     }
 }

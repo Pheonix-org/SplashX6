@@ -139,6 +139,7 @@ public class Debug {
             gameRenderer.getSr().setColor(1,1,1,1);
 
 
+        gameRenderer.getSr().setProjectionMatrix(gameRenderer.getHUDBatch().getProjectionMatrix());
         gameRenderer.getSr().begin(ShapeRenderer.ShapeType.Line);
         gameRenderer.getSr().line(0,rendery,0,Gdx.graphics.getWidth(),rendery,0);
         gameRenderer.getSr().line(mousex,0,0,mousex,Gdx.graphics.getHeight(),0);
