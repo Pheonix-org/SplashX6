@@ -131,6 +131,12 @@ public class AudioController {
         playOnLoop(MUSIC_MAIN_MENU);
     }
 
+    public static void playGame() {
+        // TODO play a different track for in-game.
+        // This would also stop the main menu track, but the play methods handle that for you by
+        // stopping nowPlaying.
+    }
+
     /**
      * Plays a new instance of {@link com.shinkson47.SplashX6.utility.Assets#SFX_BUTTON} at {@link AudioController#buttonVolume}
      * @return the ID of the new clip.

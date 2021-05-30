@@ -128,12 +128,6 @@ class MainMenu : ScreenAdapter() {
 
         // Set the stage to handle key and mouse input
         MouseHandler.configureGameInput(stage)
-
-        // TODO - HERE FOR DEVELOPMENT
-        /*
-         * Next thing to do here is make the music stop once the user has left the main menu
-         */
-
-        //AudioController.playMainMenu();
+        AudioController.playMainMenu();
     }
 }

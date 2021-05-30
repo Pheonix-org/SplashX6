@@ -87,6 +87,7 @@ class GameHypervisor {
             gameRenderer = GameScreen()
             client?.setScreen(gameRenderer)
 
+            AudioController.playGame();
 
             // TODO This couldn't be done before a world is created, but is only temporary.
             // STOPSHIP: 17/04/2021 this is dumb and shouldn't stay
