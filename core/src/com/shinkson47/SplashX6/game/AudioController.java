@@ -14,12 +14,15 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
  * --- Tidy Class + Javadoc
  */
 public class AudioController {
-    // Fields
     public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> AudioController.playButtonSound());
     private static float musicVolume = 0.2f; // DEFAULT VOLUME
     private static float buttonVolume = 0.8f; // DEFAULT VOLUME
 
-    // Methods
+
+    // ==================================================
+    //#region Fields
+    // ==================================================
+
     /**
      * Audible sound (music) for the this application's main menu.
      */
@@ -42,6 +45,15 @@ public class AudioController {
         Gdx.audio.newSound()
         MUSIC_MAIN_MENU.setVolume(menuAudio, 0.0f);
         SFX_BUTTON.setVolume(buttonAudio, 0.0f);
+
+
+
+    // ==================================================
+    //#region Fields
+    //#region Volume API
+    // ==================================================
+
+
     }
 
     /**
@@ -88,11 +100,35 @@ public class AudioController {
     public static synchronized void setSFXVolume(float volume) {
         buttonVolume = volume;
         SFX_BUTTON.setVolume(buttonAudio, buttonVolume);
+
+
+    // ==================================================
+    //#region Volume API
+    //#region Audio triggers api
+    // ==================================================
+
+
+
     }
 
-    // TODO - CURRENTLY UNIMPLEMENTED METHODS, MAY NOT USE
+
+
+    // ==================================================
+    //#region Volume API
+    //#region Music controls
+    // ==================================================
+
+
     /**
      * Pauses all music in this application.
+
+
+    // ==================================================
+    //#region Music controls
+    //#region Music utilities
+    // ==================================================
+
+
      */
     public static synchronized void stopMusic() { // TODO - CURRENTLY NOT IMPLEMENTED
         MUSIC_MAIN_MENU.pause();
