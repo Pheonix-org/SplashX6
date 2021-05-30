@@ -15,6 +15,12 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
  * --- Implement unused methods?
  * --- Tidy Class + Javadoc
  */
+
+/**
+ * <h2>Audio Controller</h2>
+ *
+ * @author Dylan Brand, Jordan Gray
+ */
 public class AudioController {
 
 
@@ -37,7 +43,9 @@ public class AudioController {
     /**
      * <h2>Listener placed on GUI elements to play a sound when interacted with.</h2>
      */
-    public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> {if (!isMuted) AudioController.playButtonSound();});
+    public final static ClickListener GUI_SOUND = new StageWindow.LambdaClickListener(o -> {
+        if (!isMuted) AudioController.playButtonSound();
+    });
 
     /**
      * <h2>Pointer to the music resource that we are currently playing.</h2>
@@ -71,8 +79,9 @@ public class AudioController {
     /**
      * @return pointer to the music resource that's currently being played.
      */
-    public static Music getNowPlaying() { return nowPlaying; }
-
+    public static Music getNowPlaying() {
+        return nowPlaying;
+    }
 
 
     /**
@@ -80,7 +89,9 @@ public class AudioController {
      *
      * @return The music's volume.
      */
-    public static synchronized float getMusicVolume() { return musicVolume; }
+    public static synchronized float getMusicVolume() {
+        return musicVolume;
+    }
 
     /**
      * Sets the volume of this applications music.
@@ -95,8 +106,9 @@ public class AudioController {
     /**
      * Makes sure that now playing is at the current volume.
      */
-    private static void assertNowPlayingVolume(){ nowPlaying.setVolume(musicVolume); }
-
+    private static void assertNowPlayingVolume() {
+        nowPlaying.setVolume(musicVolume);
+    }
 
 
     /**
@@ -104,7 +116,9 @@ public class AudioController {
      *
      * @return The sound effect's volume.
      */
-    public static synchronized float getSFXVolume() { return buttonVolume; }
+    public static synchronized float getSFXVolume() {
+        return buttonVolume;
+    }
 
     /**
      * Sets the volume of this applications sound effect's.
@@ -122,8 +136,8 @@ public class AudioController {
     // ==================================================
 
 
-
     // TODO - CURRENTLY UNUSED???
+
     /**
      * Audible sound (music) for the this application's main menu.
      */
@@ -139,12 +153,12 @@ public class AudioController {
 
     /**
      * Plays a new instance of {@link com.shinkson47.SplashX6.utility.Assets#SFX_BUTTON} at {@link AudioController#buttonVolume}
+     *
      * @return the ID of the new clip.
      */
     public static synchronized long playButtonSound() {
         return SFX_BUTTON.play(buttonVolume);
     }
-
 
 
     // ==================================================
@@ -156,12 +170,16 @@ public class AudioController {
     /**
      * Stops now playing.
      */
-    public static synchronized void stopMusic() { nowPlaying.stop(); }
+    public static synchronized void stopMusic() {
+        nowPlaying.pause();
+    }
 
     /**
      * Plays now playing.
      */
-    public static synchronized void resumeMusic() { if (!isMuted) nowPlaying.play(); }
+    public static synchronized void resumeMusic() {
+        if (!isMuted) nowPlaying.play();
+    }
 
 
     // ==================================================
@@ -173,6 +191,7 @@ public class AudioController {
     /**
      * <h2> Plays the provided music on repeat.</h2>
      * If muted, has no effect.
+     *
      * @param m The music to loop
      * @return m
      */
@@ -188,10 +207,11 @@ public class AudioController {
     /**
      * <h2>Actually plays some music.</h2>
      * Stops nowPlaying, plays m at current volume, and sets nowPlaying to m
+     *
      * @param m The music to play.
      * @return nowPlaying pointer.
      */
-    private static Music play(@NotNull Music m){
+    private static Music play(@NotNull Music m) {
         stopMusic();                // Stop now playing
         nowPlaying = m;             // Swap to new music
         assertNowPlayingVolume();   // Make sure new music is at right volume
