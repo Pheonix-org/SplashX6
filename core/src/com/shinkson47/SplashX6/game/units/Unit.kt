@@ -2,12 +2,12 @@ package com.shinkson47.SplashX6.game.units
 
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Vector3
+import com.shinkson47.SplashX6.game.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.UnitAction.Companion.ALWAYS_AVAILABLE
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.game.world.World.*
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
-import java.util.function.Predicate
 
 /**
  * # A user playable unit.
@@ -35,8 +35,15 @@ class Unit(spriteName: String, pos: Vector3) : Sprite(unitSprites.createSprite(s
 
 
     val actions: Array<UnitAction> = arrayOf(
-        UnitAction("Retire", ALWAYS_AVAILABLE, { GameHypervisor.EndGame(); true; })
+        UnitAction("Retire", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask {GameHypervisor.EndGame()} ; true; }),
+        UnitAction("Ping", ALWAYS_AVAILABLE, { AudioController.playButtonSound(); true; }),
+        UnitAction("Give birth", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask { GameHypervisor.spawn(isoVec.x.toInt() + 1, isoVec.y.toInt(), spriteName) } ; true; })
     )
+
+    /**
+     * # [UnitAction] performed on every turn.
+     */
+    var onTurnAction: UnitAction? = null
 
 
 
@@ -84,8 +91,19 @@ class Unit(spriteName: String, pos: Vector3) : Sprite(unitSprites.createSprite(s
         return setLocation(isoVec)
     }
 
+    /**
+     * # Performs this unit's [onTurnAction], if there is one.
+     */
+    fun onTurn(){
+        onTurnAction?.run(this)
+    }
+
     override fun toString(): String {
         return "$spriteName (X${isoVec.x}, Y${isoVec.y})"
+    }
+
+    fun cancelAction() {
+        onTurnAction = null
     }
 
 

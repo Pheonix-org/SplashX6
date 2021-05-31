@@ -286,11 +286,12 @@ public final class World {
      * @return
      */
     public void genPopulation() {
-        for (int i = 0; i <= UNIT_COUNT; i++)
+//        for (int i = 0; i <= UNIT_COUNT; i++)
             GameHypervisor.spawn(
                     MathUtils.random(0, height()-1), // X
                     MathUtils.random(0, width()-1),  // Y
-                    MathUtils.random(0,79)
+                    "settler"
+//                    MathUtils.random(0,79)
             );
     }
 

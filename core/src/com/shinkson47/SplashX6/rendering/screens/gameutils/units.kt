@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.rendering.screens.gameutils
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -18,7 +19,7 @@ import com.shinkson47.SplashX6.utility.Utility.local
  * @since v1
  * @version 1
  */
-class units : StageWindow("Units") {
+class units : StageWindow("Units"), Runnable {
 
     private val units: List<Unit> = List(Assets.SKIN)
     private val actions: List<UnitAction> = List(Assets.SKIN)
@@ -30,6 +31,9 @@ class units : StageWindow("Units") {
      */
     override fun constructContent() {
         if (FIRST_CONSTRUCTION) return
+        units.selection.required = false
+        actions.selection.required = false
+
         setPosition(0f, Gdx.graphics.height.toFloat())
 
         // Units pane
@@ -67,6 +71,9 @@ class units : StageWindow("Units") {
         add(button("viewDestination") { t -> GameHypervisor.unit_viewDestination(); refresh() }).row()
         tooltip("ttViewDestination")
 
+        add(button("cancleAction") { t -> GameHypervisor.unit_selected()?.cancelAction(); refresh() }).row()
+        tooltip("ttCancleAction")
+
         add(button("disband") { t -> GameHypervisor.unit_disband(); refresh() }).row()
         tooltip("ttDisband")
 
@@ -78,7 +85,7 @@ class units : StageWindow("Units") {
 
         actions.addListener(
             LambdaClickListener {
-                GameData.selectedUnit?.let { it1 -> actions.selected.onAction.test(it1) }
+                GameData.selectedUnit?.let { it1 -> GameHypervisor.unit_selected()?.onTurnAction = actions.selected }
             }
         )
 
@@ -101,24 +108,41 @@ class units : StageWindow("Units") {
         GameData.units.forEach { arr.add(it) }
 
         units.setItems(arr)
-        units.selected = null
-        units.selectedIndex = -1
+        units.selected = GameHypervisor.unit_selected()
     }
 
     private fun refreshActions() {
         val arr : Array<UnitAction> = Array();
-        GameData.selectedUnit?.actions?.forEach { arr.add(it) } // TODO copy of above. abstract.
+        GameHypervisor.unit_selected()?.actions?.forEach { arr.add(it) } // TODO copy of above. abstract.
         // TODO use gdx array in units to avoid this on every refresh.
 
         actions.setItems(arr)
-        actions.selected = null
-        actions.selectedIndex = -1
 
+        actions.selected = GameHypervisor.unit_selected()?.onTurnAction
+
+        }
+
+
+
+    // ============================================================
+    // endregion initalisation
+    //#region turn hook
+    // ============================================================
+
+    init {
+        GameHypervisor.turn_hook(this)
     }
 
-    // ============================================================
-    // endregion initalisation    
-    // ============================================================
+    override fun onClose() {
+        GameHypervisor.turn_unhook(this)
+    }
+
+    /**
+     * Refresh performed on every new turn.
+     */
+    override fun run() {
+        refresh()
+    }
 
 
 }

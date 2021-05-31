@@ -289,7 +289,6 @@ class Camera: PerspectiveCamera() {
     //        cam = new OrthographicCamera(width,height * (height / width));
         super.viewportHeight = Gdx.graphics.height.toFloat()
         super.viewportWidth = Gdx.graphics.width.toFloat()
-        position.set(100f, 100f, Z.toFloat())
 
         // This can be in init
         far = 100f

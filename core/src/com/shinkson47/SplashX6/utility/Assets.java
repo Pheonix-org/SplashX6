@@ -35,7 +35,7 @@ public class Assets {
     public static void Create(){}
 
     static{
-        unitSprites = new TextureAtlas("sprite/sprite.txt");
+        unitSprites = new TextureAtlas("sprites/units.txt");
 
         SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
         

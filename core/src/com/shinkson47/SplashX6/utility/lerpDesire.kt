@@ -28,10 +28,14 @@ class lerpDesire<type> @JvmOverloads constructor (_present: type, _desired: type
      */
     var alpha: Float = _alpha
 
+    fun next(): type {
+        return next(alpha)
+    }
+
     /**
      * Moves [present] towards [desired] by [alpha] and returns.
      */
-    fun next(): type {
+    fun next(alpha: Float): type {
         when (present) {
             is Vector3 -> (present as Vector3).lerp(desired as Vector3, alpha);
             is Float   ->  present = MathUtils.lerp(present as Float, desired as Float, alpha) as type

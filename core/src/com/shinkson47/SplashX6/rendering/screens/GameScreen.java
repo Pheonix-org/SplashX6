@@ -12,12 +12,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameData;
@@ -35,7 +32,6 @@ import static com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;
-import static com.shinkson47.SplashX6.utility.Utility.local;
 
 
 /**
@@ -129,12 +125,13 @@ public class GameScreen extends ScreenAdapter {
 
 
         // Add buttons
-        //TODO Menu bar abstraction?
+        //TODO Menu bar abstraction? lots of repetition here.
         applyMenuStyling(menu.add(button("endGame", o -> GameHypervisor.EndGame())));
         applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
         applyMenuStyling(menu.add(button("newGame", o -> GameHypervisor.NewGame())));
         applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsScreen()))));
         applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
+        applyMenuStyling(menu.add(button("endTurn", o -> GameHypervisor.turn_end())));
 
         // Add to stage
         stage.addActor(menu);

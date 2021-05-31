@@ -206,10 +206,9 @@ public abstract class StageWindow extends Window {
 
             // Add a close button at top border
             w.getTitleTable()
-                    .add(button("close", o -> w.setVisible(false)))
+                    .add(button("close", o -> { w.clear(); w.getStage().getActors().removeValue(w, true); }))
                     .padTop(-35)
                     .row();
-
         }
 
         // Add the label
@@ -565,6 +564,17 @@ public abstract class StageWindow extends Window {
      * <h2>Constructs the content to be displayed in this window</h2>
      */
     protected abstract void constructContent();
+
+    /**
+     * Since window had no dispose, this is called instead on close to trigger onClose
+     */
+    @Override
+    public final void clear() {
+        onClose();
+        super.clear();
+    }
+
+    protected void onClose() {}
 
     public void toggleShown() {
         setVisible(!isVisible());

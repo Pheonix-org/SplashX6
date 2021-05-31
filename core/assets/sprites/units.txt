@@ -1,4 +1,4 @@
-sprites.png
+units.png
 size: 128, 1296
 format: RGBA8888
 filter: Linear,Linear
