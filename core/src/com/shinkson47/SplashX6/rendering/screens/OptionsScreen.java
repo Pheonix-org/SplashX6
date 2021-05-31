@@ -2,8 +2,11 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.game.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.StageWindow;
@@ -12,10 +15,10 @@ import com.shinkson47.SplashX6.utility.Languages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.shinkson47.SplashX6.utility.APICondition.*;
-import static com.shinkson47.SplashX6.utility.Assets.LANG;
-import static com.shinkson47.SplashX6.utility.Assets.loadLanguage;
+import static com.shinkson47.SplashX6.utility.Assets.*;
 
 /**
  * <h1></h1>
@@ -30,6 +33,8 @@ import static com.shinkson47.SplashX6.utility.Assets.loadLanguage;
  */
 public class OptionsScreen extends StageWindow {
 
+    // TODO - TEST
+    //private Slider musicSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
     //=====================================================================
     //#region constants
     //#endregion constants
@@ -118,8 +123,6 @@ public class OptionsScreen extends StageWindow {
         ArrayList<String> languagesString = new ArrayList<>();
         Assets.languages.forEach(n -> languagesString.add(n.getDisplayName()));
 
-        //TODO Make default language the currently one selected
-
         String currentLanguage = LANG.getLocale().getDisplayName();
 
         SelectBox<String> languageList = new SelectBox<String>(Assets.SKIN);
@@ -144,12 +147,12 @@ public class OptionsScreen extends StageWindow {
                     return;
                 }
 
-
                 dialog("Confirm language", "Change to " + languageList.getSelected(), "Yes", "No",
                         e -> {
                             Gdx.app.log("you've clicked", e.toString());
                     if (e) {
                         loadLanguage(Languages.values()[languageList.getSelectedIndex()]);
+                        Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
                     } else {
                         //TODO this triggers the changed event
                         resetDefault();
@@ -163,33 +166,61 @@ public class OptionsScreen extends StageWindow {
             }
         });
 
+        // SLIDER FOR MUSIC VOLUME CONTROL
+        Slider musicSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
+        musicSlider.setValue(AudioController.getMusicVolume());
+
+        musicSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                AudioController.playButtonSound();
+                AudioController.setMusicVolume(musicSlider.getValue());
+            }
+        });
+
+        // SLIDER FOR GAME VOLUME CONTROL
+        Slider gameSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
+        gameSlider.setValue(AudioController.getSFXVolume());
+
+        gameSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                AudioController.playButtonSound();
+                AudioController.setSFXVolume(gameSlider.getValue());
+            }
+        });
+
+//        // TODO - Implement locale for different languages
+//        Button mute = new Button("Mute") {
+//            AudioController.playButtonSound();
+//
+//        };
+
         //language.setMaxListCount(3);
         GAME_OPTION_TAB = new Table();
-        //GAME_OPTION_TAB.add(new Label("Game options will be built here", Assets.SKIN)).row();
         GAME_OPTION_TAB.add(new Label("Select a Language:", Assets.SKIN)).padRight(20).left();
         GAME_OPTION_TAB.add(languageList);
-
-        //GAME_OPTION_TAB.setDebug(true);
 
         GRAPHICS_OPTION_TAB = new Table();
         GRAPHICS_OPTION_TAB.add(new Label("Graphics options will be built here", Assets.SKIN));
 
         SOUND_OPTION_TAB = new Table();
-        SOUND_OPTION_TAB.add(new Label("Sound options will be built here", Assets.SKIN));
+
+        SOUND_OPTION_TAB.add(new Label("Music Volume: ", Assets.SKIN));
+        SOUND_OPTION_TAB.add(musicSlider).row();
+
+        SOUND_OPTION_TAB.add(new Label("SFX Volume: ", Assets.SKIN)).padTop(20f);
+        SOUND_OPTION_TAB.add(gameSlider).padTop(20f).row();
+
+
+        final CheckBox mute = new CheckBox(" Mute", SKIN);
+        mute.addListener(new LambdaClickListener(inputEvent -> {
+            AudioController.setMute(mute.isChecked());
+        }));
+        SOUND_OPTION_TAB.add(mute).colspan(2).center().padTop(20f);
 
         ADVANCED_OPTION_TAB = new Table();
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();
-
-        ADVANCED_OPTION_TAB.add(button("Invalid API call (crash)", o ->
-                validateCall(REQ_GAME_LOADING, THROW("Test api exception.")))).row();
-
-        ADVANCED_OPTION_TAB.add(button("Invalid API call (warn and ignore)", o -> {
-            if (
-                    invalidCall(REQ_GAME_LOADING, WARN("You can't do that.", this))
-            ) return;
-        })).row();
-
-
 
         constructContent();
     }
@@ -222,6 +253,4 @@ public class OptionsScreen extends StageWindow {
         setSize(700, 500);
         //setFillParent(true);
     }
-
-
 }
