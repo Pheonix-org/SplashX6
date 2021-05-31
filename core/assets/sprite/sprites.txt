@@ -1,373 +1,373 @@
-sprite.png
+sprites.png
 size: 128, 1296
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-tile000
+aegiscruiser
   rotate: false
   xy: 0, 0
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile001
+alpinetroop
   rotate: false
   xy: 64, 0
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile002
+archers
   rotate: false
   xy: 0, 48
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile003
+artillery
   rotate: false
   xy: 64, 48
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile004
+awacs
   rotate: false
   xy: 0, 96
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile005
+battleship
   rotate: false
   xy: 64, 96
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile006
+bomber
   rotate: false
   xy: 0, 144
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile007
+cannon
   rotate: false
   xy: 64, 144
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile008
+caravan
   rotate: false
   xy: 0, 192
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile009
+caravel
   rotate: false
   xy: 64, 192
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile010
+carrier
   rotate: false
   xy: 0, 240
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile011
+catapult
   rotate: false
   xy: 64, 240
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile012
+cavalry
   rotate: false
   xy: 0, 288
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile013
+chariot
   rotate: false
   xy: 64, 288
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile014
+cruiser
   rotate: false
   xy: 0, 336
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile015
+crusaders
   rotate: false
   xy: 64, 336
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile016
+destroyer
   rotate: false
   xy: 0, 384
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile017
+diplomat
   rotate: false
   xy: 64, 384
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile018
+dragoon
   rotate: false
   xy: 0, 432
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile019
+elepants
   rotate: false
   xy: 64, 432
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile020
+engineers
   rotate: false
   xy: 0, 480
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile021
+explorer
   rotate: false
   xy: 64, 480
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile022
+fanatics
   rotate: false
   xy: 0, 528
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile023
+fighter
   rotate: false
   xy: 64, 528
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile024
+freight
   rotate: false
   xy: 0, 576
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile025
+frigate
   rotate: false
   xy: 64, 576
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile026
+galleon
   rotate: false
   xy: 0, 624
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile027
+helicopter
   rotate: false
   xy: 64, 624
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile028
+horsemen
   rotate: false
   xy: 0, 672
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile029
+howitzer
   rotate: false
   xy: 64, 672
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile030
+ironclad
   rotate: false
   xy: 0, 720
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile031
+knights
   rotate: false
   xy: 64, 720
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile032
+legion
   rotate: false
   xy: 0, 768
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile033
+marines
   rotate: false
   xy: 64, 768
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile034
+mechinfantry
   rotate: false
   xy: 0, 816
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile035
+missile
   rotate: false
   xy: 64, 816
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile036
+musketeers
   rotate: false
   xy: 0, 864
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile037
+nuke
   rotate: false
   xy: 64, 864
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile040
+paratrooper
   rotate: false
   xy: 0, 912
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile041
+partisan
   rotate: false
   xy: 64, 912
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile042
+phalanx
   rotate: false
   xy: 0, 960
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile043
+pikemen
   rotate: false
   xy: 64, 960
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile044
+riflemen
   rotate: false
   xy: 0, 1008
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile045
+settler
   rotate: false
   xy: 64, 1008
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile046
+spy
   rotate: false
   xy: 0, 1056
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile047
+stealthbomber
   rotate: false
   xy: 64, 1056
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile048
+stealthfighter
   rotate: false
   xy: 0, 1104
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile049
+submarine
   rotate: false
   xy: 64, 1104
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile050
+tank
   rotate: false
   xy: 0, 1152
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile051
+transport
   rotate: false
   xy: 64, 1152
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile052
+trireme
   rotate: false
   xy: 0, 1200
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile053
+warrior
   rotate: false
   xy: 64, 1200
   size: 64, 48
   orig: 64, 48
   offset: 0, 0
   index: -1
-tile054
+worker
   rotate: false
   xy: 0, 1248
   size: 64, 48
