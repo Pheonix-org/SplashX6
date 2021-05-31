@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
+import com.shinkson47.SplashX6.game.AudioController
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Utility
@@ -27,10 +29,11 @@ import com.shinkson47.SplashX6.utility.Utility.local
  */
 class MainMenu : ScreenAdapter() {
 
-    private val stage = Stage()
+    private val stage = Stage(ScreenViewport())
 
     //#region listeners
     private var menuWindow: Window? = null
+    private var BaseTable = Table().center()
 
     /**
      * The window shown at the main menu that contains option for the user
@@ -55,11 +58,11 @@ class MainMenu : ScreenAdapter() {
             )
                 .padBottom(100f)
                 .row()
-            addButton(local("newGame")) { NewGame() }
-            addButton(local("loadGame")) { Utility.notImplementedDialog(stage) }
-            addButton(local("preferences")) { stage.addActor(OptionsScreen()) }
-            addButton(local("credits")) { Utility.notImplementedDialog(stage) }
-            addButton(local("exitGame")) { Gdx.app.exit() }
+            addButton("newGame") { NewGame() }
+            addButton("loadGame") { Utility.notImplementedDialog(stage) }
+            addButton("preferences") { stage.addActor(OptionsScreen()) }
+            addButton("credits") { Utility.notImplementedDialog(stage) }
+            addButton("exitGame") { Gdx.app.exit() }
         }
     }
 
@@ -71,6 +74,7 @@ class MainMenu : ScreenAdapter() {
 
     override fun resize(width: Int, height: Int) {
         super.resize(width, height)
+        stage.viewport.update(width, height)
         menuWindow!!.setPosition(
             makeEven(width / 2 - menuWindow!!.width / 2).toFloat(),
             makeEven(height / 2 - menuWindow!!.height / 2).toFloat()
@@ -97,9 +101,6 @@ class MainMenu : ScreenAdapter() {
     //#endregion
     init {
         menuWindow = MainMenuWindow()
-
-        // Table that fills the window, contains content under the menu window.
-        var BaseTable = Table().center()
         BaseTable.setFillParent(true)
 
         // Secret button
@@ -116,7 +117,7 @@ class MainMenu : ScreenAdapter() {
         stage.addActor(BaseTable)
         BaseTable = Table().bottom()
         BaseTable.setFillParent(true)
-        BaseTable.add(Label("BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://SHINKSON47.IN", Assets.SKIN))
+        BaseTable.add(Label("BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://shinkson47.in/SplashX6/index.html", Assets.SKIN))
             .fill()
             .padBottom(10f)
 
@@ -127,5 +128,6 @@ class MainMenu : ScreenAdapter() {
 
         // Set the stage to handle key and mouse input
         MouseHandler.configureGameInput(stage)
+        AudioController.playMainMenu();
     }
 }

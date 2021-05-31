@@ -12,12 +12,10 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
@@ -34,7 +32,6 @@ import static com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;
-import static com.shinkson47.SplashX6.utility.Utility.local;
 
 
 /**
@@ -95,7 +92,7 @@ public class GameScreen extends ScreenAdapter {
         // Create objects
         sr = new ShapeRenderer();
         r = new IsometricStaggeredTiledMapRenderer(GameData.INSTANCE.getWorld().getMap());
-        stage = new Stage(new ScalingViewport(Scaling.stretch, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        stage = new Stage(new ScreenViewport());
 
         //r.setView(camera.getCam());
 
@@ -128,12 +125,13 @@ public class GameScreen extends ScreenAdapter {
 
 
         // Add buttons
-        //TODO Menu bar abstraction?
-        applyMenuStyling(menu.add(button(local("endGame"), o -> GameHypervisor.EndGame())));
+        //TODO Menu bar abstraction? lots of repetition here.
+        applyMenuStyling(menu.add(button("endGame", o -> GameHypervisor.EndGame())));
         applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
-        applyMenuStyling(menu.add(button(local("newGame"), o -> GameHypervisor.NewGame())));
-        applyMenuStyling(menu.add(button(local("preferences"), o -> stage.addActor(new OptionsScreen()))));
-        applyMenuStyling(menu.add(button(local("dev"), o -> Debug.MainDebugWindow.toggleShown())));
+        applyMenuStyling(menu.add(button("newGame", o -> GameHypervisor.NewGame())));
+        applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsScreen()))));
+        applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
+        applyMenuStyling(menu.add(button("endTurn", o -> GameHypervisor.turn_end())));
 
         // Add to stage
         stage.addActor(menu);
@@ -165,11 +163,26 @@ public class GameScreen extends ScreenAdapter {
         sr.setProjectionMatrix(camera.combined);
 
         Unit u = GameData.INSTANCE.getSelectedUnit();
+
+        sr.begin(ShapeRenderer.ShapeType.Line);
         if (u != null) {
-            sr.begin(ShapeRenderer.ShapeType.Line);
             sr.circle(u.getX() + TILE_HALF_WIDTH, u.getY() + TILE_HALF_HEIGHT, TILE_HALF_HEIGHT);
-            sr.end();
         }
+
+        sr.setProjectionMatrix(getHUDBatch().getProjectionMatrix());
+        sr.circle(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f, 5);
+
+        sr.setProjectionMatrix(camera.combined);
+        // TODO shorten by mutating in function
+        Vector3 v = GameHypervisor.getSelectedTile();
+        v = World.isoToCartesian((int)v.x, (int)v.y);
+
+        sr.circle((int) v.x, camera.lookingAtY(), 10);
+
+        // Cache x and y
+
+
+        sr.end();
 
         worldBatch.begin();
         GameData.INSTANCE.getUnits().forEach(
@@ -271,12 +284,6 @@ public class GameScreen extends ScreenAdapter {
      */
     public Batch getHUDBatch() {
         return stage.getBatch();
-    }
-
-    // STOPSHIP: 20/05/2021 basically this shouldn't be in production
-    public Vector3 getSelectedTile() {
-        Vector3 v = camera.getDesiredPosition().get();
-        return World.WorldspaceToMapspace((int) v.x, (int) v.y);
     }
 
     //#engregion

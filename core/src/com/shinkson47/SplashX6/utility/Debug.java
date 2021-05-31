@@ -139,6 +139,7 @@ public class Debug {
             gameRenderer.getSr().setColor(1,1,1,1);
 
 
+        gameRenderer.getSr().setProjectionMatrix(gameRenderer.getHUDBatch().getProjectionMatrix());
         gameRenderer.getSr().begin(ShapeRenderer.ShapeType.Line);
         gameRenderer.getSr().line(0,rendery,0,Gdx.graphics.getWidth(),rendery,0);
         gameRenderer.getSr().line(mousex,0,0,mousex,Gdx.graphics.getHeight(),0);
@@ -160,7 +161,7 @@ public class Debug {
         gameRenderer.getSr().setProjectionMatrix(gameRenderer.getCam().combined);
 
         // selector
-        Vector3 v = gameRenderer.getSelectedTile();
+        Vector3 v = GameHypervisor.getSelectedTile();
         v = World.isoToCartesian((int)v.x, (int)v.y);
         gameRenderer.getSr().circle((int)v.x, gameRenderer.getCam().lookingAtY(), 10);
 

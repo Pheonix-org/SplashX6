@@ -1,6 +1,8 @@
 package com.shinkson47.SplashX6.utility;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -33,7 +35,7 @@ public class Assets {
     public static void Create(){}
 
     static{
-        unitSprites = new TextureAtlas("sprite/sprite.txt");
+        unitSprites = new TextureAtlas("sprites/units.txt");
 
         SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
         
@@ -75,10 +77,12 @@ public class Assets {
 
     public static final I18NBundle loadLanguage(Languages lang) {
         LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale(lang.toString()));
-        Client.client.setScreen(new MainMenu()); // TODO - TEMPORARY FOR DEVELOPMENT
+        I18NBundle.setExceptionOnMissingKey(false);
+
         //#
         return LANG;
     }
+
 
     public static void Dispose() {
         TILESETS.dispose();
@@ -137,6 +141,8 @@ public class Assets {
     //#endregion World
 
     //#region audio
+    public static final Music MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("sounds/MainMenu/night_theme_2.wav"));
+    public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/click33.wav"));
 
     //#endregion audio
 
