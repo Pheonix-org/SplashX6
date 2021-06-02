@@ -1,0 +1,145 @@
+cities.png
+size: 64, 960
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+asian
+  rotate: false
+  xy: 0, 0
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 0
+asian_0_wall
+  rotate: false
+  xy: 0, 48
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+asian
+  rotate: false
+  xy: 0, 96
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 4
+asian_4_wall
+  rotate: false
+  xy: 0, 144
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+asian
+  rotate: false
+  xy: 0, 192
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 8
+asian_8_wall
+  rotate: false
+  xy: 0, 240
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+asian
+  rotate: false
+  xy: 0, 288
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 12
+asian_12_wall
+  rotate: false
+  xy: 0, 336
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+asian
+  rotate: false
+  xy: 0, 384
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 16
+asian_16_wall
+  rotate: false
+  xy: 0, 432
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+tropical
+  rotate: false
+  xy: 0, 480
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 0
+tropical_0_wall
+  rotate: false
+  xy: 0, 528
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+tropical
+  rotate: false
+  xy: 0, 576
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 4
+tropical_4_wall
+  rotate: false
+  xy: 0, 624
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+tropical
+  rotate: false
+  xy: 0, 672
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 8
+tropical_8_wall
+  rotate: false
+  xy: 0, 720
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+tropical
+  rotate: false
+  xy: 0, 768
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 12
+tropical_12_wall
+  rotate: false
+  xy: 0, 816
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
+tropical
+  rotate: false
+  xy: 0, 864
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: 16
+tropical_16_wall
+  rotate: false
+  xy: 0, 912
+  size: 64, 48
+  orig: 64, 48
+  offset: 0, 0
+  index: -1
