@@ -119,10 +119,10 @@ public class OptionsScreen extends StageWindow {
     //=====================================================================
 
     public OptionsScreen() {
-        super("OPTIONS");
+        super("PREFERENCES");
 
         ArrayList<String> languagesString = new ArrayList<>();
-        Assets.languages.forEach(n -> languagesString.add(n.getDisplayName()));
+        Assets.languages.forEach(n -> languagesString.add(n.getDisplayName(LANG.getLocale())));
 
         String currentLanguage = LANG.getLocale().getDisplayName();
 
@@ -199,26 +199,27 @@ public class OptionsScreen extends StageWindow {
 
         //language.setMaxListCount(3);
         GAME_OPTION_TAB = new Table();
-        GAME_OPTION_TAB.add(new Label("Select a Language:", Assets.SKIN)).padRight(20).left();
-        GAME_OPTION_TAB.add(languageList);
+        label("selectLanguage", GAME_OPTION_TAB);
+                //.padRight(20).left();
+        GAME_OPTION_TAB.add(languageList).padTop(20f);
 
         GRAPHICS_OPTION_TAB = new Table();
         GRAPHICS_OPTION_TAB.add(new Label("Graphics options will be built here", Assets.SKIN));
 
         SOUND_OPTION_TAB = new Table();
 
-        SOUND_OPTION_TAB.add(new Label("Music Volume: ", Assets.SKIN));
-        SOUND_OPTION_TAB.add(musicSlider).row();
+        label("musicVolume", SOUND_OPTION_TAB);
+        SOUND_OPTION_TAB.add(musicSlider).padTop(20f).row();
 
-        SOUND_OPTION_TAB.add(new Label("SFX Volume: ", Assets.SKIN)).padTop(20f);
+        label("sfxVolume", SOUND_OPTION_TAB);
         SOUND_OPTION_TAB.add(gameSlider).padTop(20f).row();
 
-
-        final CheckBox mute = new CheckBox(" Mute", SKIN);
-        mute.addListener(new LambdaClickListener(inputEvent -> {
-            AudioController.setMute(mute.isChecked());
+        CheckBox c = checkBox("mute", SOUND_OPTION_TAB);
+        c.addListener(new LambdaClickListener(inputEvent -> {
+            AudioController.setMute(c.isChecked());
         }));
-        SOUND_OPTION_TAB.add(mute).colspan(2).center().padTop(20f);
+        SOUND_OPTION_TAB.add(c).colspan(2).center();
+        //.padTop(20f);
 
         ADVANCED_OPTION_TAB = new Table();
         ADVANCED_OPTION_TAB.add(button("Calibrate Culling Frustrum", o -> frustCallib.toggleShown())).row();
@@ -245,10 +246,10 @@ public class OptionsScreen extends StageWindow {
                 ),
 
                 List.of(
-                     "Game",
-                     "Sound",
-                     "Graphics",
-                     "Advanced"
+                     "game",
+                     "sound",
+                     "graphics",
+                     "advanced"
                 )
         );
         setSize(700, 500);
