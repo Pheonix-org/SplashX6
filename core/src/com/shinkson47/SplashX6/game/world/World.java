@@ -286,13 +286,7 @@ public final class World {
      * @return
      */
     public void genPopulation() {
-//        for (int i = 0; i <= UNIT_COUNT; i++)
-            GameHypervisor.spawn(
-                    MathUtils.random(0, height()-1), // X
-                    MathUtils.random(0, width()-1),  // Y
-                    "settler"
-//                    MathUtils.random(0,79)
-            );
+            GameHypervisor.spawn(randomPointOnLand(),"settler");
     }
 
 
@@ -380,6 +374,10 @@ public final class World {
         TiledMapTileLayer.Cell c = new TiledMapTileLayer.Cell();
         c.setTile(map.getTileSets().getTile((Integer) TILESET_MAP.get(tileName)));
         layer.setCell(x,(layer.getHeight() - 1) - y,c);
+    }
+
+    public Tile getTile(Vector3 vec) {
+        return getTile((int) vec.x, (int) vec.y);
     }
 
     /**
@@ -481,7 +479,7 @@ public final class World {
      * @param y WORLD SPACE y
      * @return The tile under x, y
      */
-    public static Vector3 WorldspaceToMapspace(int x, int y){
+    public static Vector3 cartesianToIso(int x, int y){
 
         Vector3 mapSpace = new Vector3();
         if (x < 0) x = -x;
@@ -515,7 +513,19 @@ public final class World {
         return new Vector3(_x, _y + (TILE_WIDTH * 0.25f), 0);
     }
 
+    public Vector3 randomPoint() {
+        return new Vector3(MathUtils.random(0, width()-1), MathUtils.random(0, height()-1), 0f);
+    }
 
+    public Vector3 randomPointOnLand() {
+        Vector3 vec;
+        Tile t;
+        while (true) {
+            vec = randomPoint();
+            t = getTile(vec);
+            if (t.isLand()) return vec;
+        }
+    }
 
 
 

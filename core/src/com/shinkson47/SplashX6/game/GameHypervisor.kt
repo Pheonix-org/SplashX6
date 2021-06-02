@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.game.world.World.TILE_HALF_HEIGHT
+import com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
@@ -171,6 +173,15 @@ class GameHypervisor {
          * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
          */
         @JvmStatic
+        fun spawn(pos: Vector3, spriteName: String) {
+            spawn(pos.x.toInt(), pos.y.toInt(), spriteName)
+        }
+
+        /**
+         * # Spawns a [unit] with the sprite of [spriteName] on iso co-oord [x],[y]
+         * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
+         */
+        @JvmStatic
         fun spawn(x: Int, y: Int, spriteName: String) {
             // TODO check this
             // TODO are null checks still needed?
@@ -240,7 +251,7 @@ class GameHypervisor {
          * # focuesses the camera on the selected unit
          */
         fun unit_view(){
-            camera_moveTo(GameData.selectedUnit!!.x, GameData.selectedUnit!!.y)
+            camera_focusOn(GameData.selectedUnit!!.x + TILE_HALF_WIDTH, GameData.selectedUnit!!.y + TILE_HALF_HEIGHT)
         }
 
         /**
@@ -319,25 +330,25 @@ class GameHypervisor {
          * # Focusses the camera on the provided unit.
          */
         @JvmStatic
-        fun camera_moveTo(unit: Unit) = camera_moveTo(unit.x, unit.y)
+        fun camera_focusOn(unit: Unit) = camera_focusOn(unit.x, unit.y)
 
         /**
          * # Focusses the camera on a cartesian x, y
          */
         @JvmStatic
-        fun camera_moveTo(pos: Vector3) = camera_moveTo(pos.x, pos.y)
+        fun camera_focusOn(pos: Vector3) = camera_focusOn(pos.x, pos.y)
 
         /**
          * # Focusses the camera on a cartesian x, y
          */
         @JvmStatic
-        fun camera_moveTo(x: Float, y: Float) = gameRenderer!!.cam.goTo(x, y)
+        fun camera_focusOn(x: Float, y: Float) = gameRenderer!!.cam.goTo(x, y)
 
 
         @JvmStatic
         fun camera_moveToTile(x: Int, y: Int) {
             with (World.isoToCartesian(x,y)) {
-                camera_moveTo(this.x, this.y)
+                camera_focusOn(this.x, this.y)
             }
         }
 
@@ -388,8 +399,11 @@ class GameHypervisor {
 
         @JvmStatic
         fun getSelectedTile(): Vector3 {
-            val v: Vector3 = gameRenderer!!.cam.desiredPosition.get()
-            return World.WorldspaceToMapspace(v.x.toInt(), v.y.toInt())
+            with (gameRenderer!!.cam) {
+                val v: Vector3 = desiredPosition.get().cpy()
+                v.y = lookingAtY().toFloat()
+                return World.cartesianToIso(v.x.toInt(), v.y.toInt())
+            }
         }
     }
 }

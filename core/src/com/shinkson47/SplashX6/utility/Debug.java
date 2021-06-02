@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.utility;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -109,6 +110,8 @@ public class Debug {
 
             seperate("Cursor");
             addButton("Toggle Cursor Info", o -> MouseInfo = !MouseInfo);
+
+            addButton("Unit test", o -> { TestScript.INSTANCE.run(); dialog("Test script complete", "Check terminal for results."); });
         }
     }
 
@@ -122,19 +125,13 @@ public class Debug {
         int mousey = Gdx.input.getY();
         int rendery = Gdx.graphics.getHeight() - mousey;
 
-        Vector3 WorldSpace = GameHypervisor.getGameRenderer().getCam().getCam().unproject(new Vector3(mousex, mousey,0));
-        Vector3 MapSpace = World.WorldspaceToMapspace((int)WorldSpace.x, (int)WorldSpace.y);
 
         gameRenderer.getHUDBatch().begin();
         gameRenderer.getFont().draw(gameRenderer.getHUDBatch(), "Mouse Raw : x:" + mousex + ", y:" + mousey, mousex + 20, rendery - 20);
-        gameRenderer.getFont().draw(gameRenderer.getHUDBatch(), "WorldSpace : " + WorldSpace, mousex + 20, rendery);
-        gameRenderer.getFont().draw(gameRenderer.getHUDBatch(), "MapSpace : " + MapSpace, mousex + 20, rendery + 20);
-        gameRenderer.getFont().draw(gameRenderer.getHUDBatch(), "HitTest : " + World.hittestResult, mousex + 20, rendery + 40);
         gameRenderer.getHUDBatch().end();
 
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             gameRenderer.getSr().setColor(0,1,0,1);
-            ((TiledMapTileLayer) GameData.INSTANCE.getWorld().getMap().getLayers().get(0)).setCell((int) MapSpace.x, (int) MapSpace.y, null);
         } else
             gameRenderer.getSr().setColor(1,1,1,1);
 
@@ -155,16 +152,25 @@ public class Debug {
 
         gameRenderer.getSr().begin(ShapeRenderer.ShapeType.Line);
 
+
+
+
+
+        // selector
+        //Vector3 v = GameHypervisor.getSelectedTile();
+        //v = World.isoToCartesian((int)v.x, (int)v.y);
+
+        // screen center white dot.
+        gameRenderer.getSr().setColor(Color.WHITE);
         gameRenderer.getSr().setProjectionMatrix(gameRenderer.getHUDBatch().getProjectionMatrix());
         gameRenderer.getSr().circle(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f, 5);
 
+        // purple dot where the camera's looking. should match above white dot
+        gameRenderer.getSr().setColor(Color.PURPLE);
         gameRenderer.getSr().setProjectionMatrix(gameRenderer.getCam().combined);
+        Vector3 v = new Vector3(gameRenderer.getCam().position.x, gameRenderer.getCam().lookingAtY(), 0);
 
-        // selector
-        Vector3 v = GameHypervisor.getSelectedTile();
-        v = World.isoToCartesian((int)v.x, (int)v.y);
-        gameRenderer.getSr().circle((int)v.x, gameRenderer.getCam().lookingAtY(), 10);
-
+        gameRenderer.getSr().circle((int)v.x, (int)v.y, 6);
 
         gameRenderer.getSr().end();
 
@@ -175,8 +181,6 @@ public class Debug {
                 Vector3 vector = World.isoToCartesian(x,y);
                 gameRenderer.getSr().circle(vector.x, vector.y, 10);
             }
-
-
         gameRenderer.getSr().end();
     }
 }

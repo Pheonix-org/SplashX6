@@ -176,8 +176,7 @@ public class GameScreen extends ScreenAdapter {
         // TODO shorten by mutating in function
         Vector3 v = GameHypervisor.getSelectedTile();
         v = World.isoToCartesian((int)v.x, (int)v.y);
-
-        sr.circle((int) v.x, camera.lookingAtY(), 10);
+        sr.circle((int) v.x, v.y, 10);
 
         // Cache x and y
 

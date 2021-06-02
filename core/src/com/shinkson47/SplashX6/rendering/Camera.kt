@@ -195,8 +195,8 @@ class Camera: PerspectiveCamera() {
      *
      * Better explained my [stack overflow research question](https://stackoverflow.com/questions/67386475/how-can-i-calculate-the-point-a-camera-is-looking-at-using-its-rotation?noredirect=1#67386712)
      */
-    private fun yFromAngle(angle: Float, y: Double): Float = (Z / tan(angle * PI / 180) + y).toFloat()
-    private fun yFromAngle(angle: Float): Float = yFromAngle(angle, desiredPosition.get().y.toDouble())
+    fun yFromAngle(angle: Float, y: Double): Float = (Z / tan(angle * PI / 180) + y).toFloat()
+    fun yFromAngle(angle: Float): Float = yFromAngle(angle, desiredPosition.get().y.toDouble())
 
     fun lookingAtY(): Int = yFromAngle(desiredTilt.get()).toInt()
 

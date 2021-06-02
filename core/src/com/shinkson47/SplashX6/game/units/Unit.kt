@@ -35,6 +35,7 @@ class Unit(spriteName: String, pos: Vector3) : Sprite(unitSprites.createSprite(s
 
 
     val actions: Array<UnitAction> = arrayOf(
+        UnitAction("Teleport to destination", ALWAYS_AVAILABLE, { setLocation(destX, destY); true; }),
         UnitAction("Retire", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask {GameHypervisor.EndGame()} ; true; }),
         UnitAction("Ping", ALWAYS_AVAILABLE, { AudioController.playButtonSound(); true; }),
         UnitAction("Give birth", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask { GameHypervisor.spawn(isoVec.x.toInt() + 1, isoVec.y.toInt(), spriteName) } ; true; })
@@ -47,14 +48,14 @@ class Unit(spriteName: String, pos: Vector3) : Sprite(unitSprites.createSprite(s
 
 
 
-    @Deprecated("see [setPosition]")
-    override fun setX(x: Float) {
-        super.setX(x)
-    }
-    @Deprecated("see [setPosition]")
-    override fun setY(y: Float) {
-        super.setY(y)
-    }
+    @Deprecated("see [setLocation]")
+    override fun setX(x: Float) = super.setX(x)
+
+    @Deprecated("see [setLocation]")
+    override fun setY(y: Float) = super.setY(y)
+
+    @Deprecated("see [setLocation]")
+    override fun setPosition(x: Float, y: Float) = super.setPosition(x, y)
 
     init {
         setLocation(pos)
@@ -69,10 +70,14 @@ class Unit(spriteName: String, pos: Vector3) : Sprite(unitSprites.createSprite(s
      * For a delta translation, see [deltaPosition]
      */
     fun setLocation(_pos : Vector3): Vector3 = setLocation(_pos.x, _pos.y)
-    fun setLocation(x: Float, y: Float) : Vector3 {
-        isoVec.set(x,y,0f)
 
-        val pos: Vector3 = World.isoToCartesian(x.toInt(), y.toInt());
+    @Deprecated("This call shouldn't use floats. See sister method.")
+    fun setLocation(x: Float, y: Float) : Vector3 = setLocation(x.toInt(), y.toInt())
+
+    fun setLocation(x: Int, y: Int) : Vector3 {
+        isoVec.set(x.toFloat(),y.toFloat(),0f)
+
+        val pos: Vector3 = isoToCartesian(x.toInt(), y.toInt())
 
         // TODO don't have to do this calculation every time
         // META : Compensate for the origin, so that the sprite is in the center of the cell.
