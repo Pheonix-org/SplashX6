@@ -12,6 +12,8 @@ package com.shinkson47.SplashX6.game;
 
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client.Companion.client
+import com.shinkson47.SplashX6.game.cities.City
+import com.shinkson47.SplashX6.game.cities.CityTypes
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.World
@@ -261,6 +263,7 @@ class GameHypervisor {
          */
         fun unit_disband() {
             GameData.units.remove(GameData.selectedUnit)
+            GameData.selectedUnit = null
         }
 
         fun unit_selected() : Unit? = GameData.selectedUnit
@@ -413,8 +416,23 @@ class GameHypervisor {
             client?.setScreen(MainMenu());
         }
 
-        fun settle(x: Float, y: Float) {
-            TODO()
+        /**
+         * # Creates a size 0 settlement at [x],[y] in style matching the player's [civType]
+         * Does so using data from provided unit. Assumes unit is a settler.
+         * Unit is disbanded after.
+         */
+        fun settle(it : Unit) {
+            settle(it.isoVec.cpy(), GameData.civType)
+
+            unit_select(it)
+            unit_disband()
+        }
+
+        /**
+         * # Creates a size 0 settlement at [x],[y] with the provided style.
+         */
+        fun settle(pos: Vector3, type : CityTypes) {
+            GameData.cities.add(City(pos, type))
         }
 
 

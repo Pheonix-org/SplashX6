@@ -36,7 +36,7 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
 
     val SPAWN    =  UnitAction("Give birth", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask { GameHypervisor.spawn(it.isoVec.x.toInt() + 1, it.isoVec.y.toInt(), it.Class) } ; true; })
 
-    val SETTLE   =  UnitAction("Settle", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask { GameHypervisor.settle(it.isoVec.x, it.isoVec.y) }})
+    val SETTLE   =  UnitAction("Settle", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask { GameHypervisor.settle(it) }})
 
 
 

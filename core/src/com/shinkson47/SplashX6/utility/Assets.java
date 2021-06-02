@@ -36,6 +36,7 @@ public class Assets {
 
     static{
         unitSprites = new TextureAtlas("sprites/units.txt");
+        citySprites = new TextureAtlas("sprites/cities.txt");
 
         SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
         
@@ -110,9 +111,13 @@ public class Assets {
      * There's no way to directly load TSX, but GDX can load TMX and we can get the tilesets from
      * the loaded {@link TiledMap}
      */
-    public static final TiledMap TILESETS, SPRITES;
+    public static final TiledMap
+            TILESETS,
+            SPRITES;
 
-    public static final TextureAtlas unitSprites;
+    public static final TextureAtlas
+            unitSprites,
+            citySprites;
 
     /**
      * <h2>A map of 'tile name' => tile ID'</h2>

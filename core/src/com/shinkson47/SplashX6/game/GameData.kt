@@ -1,6 +1,8 @@
 package com.shinkson47.SplashX6.game
 
 
+import com.shinkson47.SplashX6.game.cities.City
+import com.shinkson47.SplashX6.game.cities.CityTypes
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.World
 import java.io.Serializable
@@ -19,11 +21,22 @@ object GameData : Serializable {
      */
     var world : World? = null
 
-    /**
-     * # List of all
-     */
-    val units : ArrayList<Unit> = ArrayList()
+    var civType: CityTypes = CityTypes.asian
 
+    /**
+     * # List of all units in the world.
+     */
+    // TODO where to put units from other players, or tell them apart??
+    val units  : ArrayList<Unit> = ArrayList()
+
+    /**
+     * # List of all cities in the world.
+     */
+    val cities : ArrayList<City> = ArrayList()
+
+    /**
+     * # The unit that the hypervisor is currently operating on.
+     */
     var selectedUnit : Unit? = null
 
 
@@ -32,10 +45,10 @@ object GameData : Serializable {
      * Does not prompt or question the call, just clears all data.
      */
     fun clear() {
-
         world = null
         units.clear()
-
+        cities.clear()
+        selectedUnit = null
     }
 
     /**

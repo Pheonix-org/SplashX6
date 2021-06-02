@@ -185,6 +185,11 @@ public class GameScreen extends ScreenAdapter {
 
 
         worldBatch.begin();
+        // Render cities
+        GameData.INSTANCE.getCities().forEach(
+                city -> city.draw(worldBatch)
+        );
+
         GameData.INSTANCE.getUnits().forEach(
                 sprite -> {
                     // META : This draws a gl rect over the true area where sprites are rendered, so you can see where the sprites boundaries are.
@@ -196,6 +201,8 @@ public class GameScreen extends ScreenAdapter {
                     sprite.draw(worldBatch);
                 }
         );
+
+
 
         // META : Draw FPS as 10x, 10y in the world
         //font.draw(worldBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), 10, 10);

@@ -1,7 +1,7 @@
 cities.png
 size: 64, 960
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Nearest
 repeat: none
 asian
   rotate: false
