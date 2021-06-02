@@ -237,11 +237,15 @@ public abstract class StageWindow extends Window {
     }
 
     protected Label label(String key){
-        Label l = new Label(local(key), Assets.SKIN);
-        add(l).row();
-        return l;
+        return label(key, this);
     }
 
+    public static Label label(String key, Table t){
+        Label l = new Label(local(key), Assets.SKIN);
+        t.add(l).row();
+        return l;
+    }
+    
     /**
      * <h2>Creates and a button that shows a table in a cell when clicked.</h2>
      *
