@@ -29,8 +29,7 @@ import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Debug;
 import com.shinkson47.SplashX6.game.world.World;
 
-import static com.shinkson47.SplashX6.game.world.World.TILE_HALF_HEIGHT;
-import static com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH;
+import static com.shinkson47.SplashX6.game.world.World.*;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;
@@ -174,15 +173,13 @@ public class GameScreen extends ScreenAdapter {
             sr.circle(u.getX() + TILE_HALF_WIDTH, u.getY() + TILE_HALF_HEIGHT, TILE_HALF_HEIGHT);
         }
 
-        // draw a circle where the camera is looking, If pressing space.
-        if (Gdx.input.isButtonJustPressed(Input.Keys.SPACE)) {
-            Vector3 v = GameHypervisor.camera_focusingOn();
-            sr.circle((int) v.x, v.y, 10);
+        Vector3 v = GameHypervisor.camera_focusingOnTile();
+        v = isoToCartesian((int)v.x, (int)v.y);
+        sr.circle((int) v.x, v.y, 10);
 
-            // Draw another in the center of the screen.
-            sr.setProjectionMatrix(getHUDBatch().getProjectionMatrix());
-            sr.circle(centerx, centery, 5);
-        }
+        // Draw another in the center of the screen.
+        sr.setProjectionMatrix(getHUDBatch().getProjectionMatrix());
+        sr.circle(centerx, centery, 5);
 
         sr.end();
 

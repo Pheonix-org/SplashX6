@@ -53,6 +53,11 @@ class Camera: PerspectiveCamera() {
         private const val TILT_MINIMUM          : Float = 36f
         private const val TILT_MAXIMUM          : Float = 60f
 
+        var MOVEMENT_SPEED : Int = 10
+        var BOOSTED_SPEED  : Int = 30
+        var TRUE_SPEED     : Int = MOVEMENT_SPEED
+
+
         var FRUSTRUM_WIDTH_MOD = -500f
         var cachedFrustrumStartX = 0f
         var cachedFrustrumWidth = 0f;
@@ -300,6 +305,31 @@ class Camera: PerspectiveCamera() {
         cachedFrustrumStartX = ((viewportWidth + FRUSTRUM_WIDTH_MOD) * 0.5f)
         cachedFrustrumWidth = viewportWidth + fieldOfView + FRUSTRUM_WIDTH_MOD
     }
+
+    fun boost(b: Boolean) {
+        if (b)
+            TRUE_SPEED = BOOSTED_SPEED
+        else
+            TRUE_SPEED = MOVEMENT_SPEED
+    }
+
+    fun up() {
+        desiredPosition.desired.y += TRUE_SPEED
+    }
+
+    fun down(){
+        desiredPosition.desired.y -= TRUE_SPEED
+    }
+
+    fun left(){
+        desiredPosition.desired.x -= TRUE_SPEED
+    }
+
+    fun right() {
+        desiredPosition.desired.x += TRUE_SPEED
+    }
+
+
 
     // ============================================================
     // endregion companion

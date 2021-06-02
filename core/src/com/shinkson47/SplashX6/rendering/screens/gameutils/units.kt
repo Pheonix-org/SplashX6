@@ -1,6 +1,5 @@
 package com.shinkson47.SplashX6.rendering.screens.gameutils
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -11,7 +10,6 @@ import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
  * # TODO
@@ -21,8 +19,21 @@ import com.shinkson47.SplashX6.utility.Utility.local
  */
 class units : StageWindow("Units"), Runnable {
 
-    private val units: List<Unit> = List(Assets.SKIN)
+    private val waiting: List<Unit> = List(Assets.SKIN)
+    private val busy: List<Unit> = List(Assets.SKIN)
+
     private val actions: List<UnitAction> = List(Assets.SKIN)
+
+    /**
+     * A click listener for a list of units, that selects the unit clicked within the game engine.
+     */
+    private class SELECT_LISTENER(val parent: units, val list: List<Unit>) : LambdaClickListener({
+        list.selected?.let { // Only if an item is selected,
+            GameHypervisor.unit_select(it)
+            parent.refreshSelected()
+        }
+    })
+
 
     init { constructContent() }
 
@@ -31,32 +42,23 @@ class units : StageWindow("Units"), Runnable {
      */
     override fun constructContent() {
         if (FIRST_CONSTRUCTION) return
-        units.selection.required = false
+        waiting.selection.required = false
         actions.selection.required = false
+        busy.selection.required    = false
 
         setPosition(0f, Gdx.graphics.height.toFloat())
 
-        // Units pane
+        // Unit panes
         seperate("waiting")
         tooltip("ttWaiting")
+        addList(waiting, "ttWaiting")
 
-        units.addListener(
-            LambdaClickListener {
-                GameHypervisor.unit_select(units.selected)
-                refreshSelected()
-           })
-
-        val sp = ScrollPane(units, skin);
-        add(sp).fillX()
-        tooltip("ttWaiting")
-        getCell(sp).height(200f)
-        row()
+        waiting.addListener(SELECT_LISTENER(this, waiting))
+        busy.addListener(SELECT_LISTENER(this, busy))
 
         seperate("busy")
         tooltip("ttBusy")
-
-        label("notImplemented")
-        tooltip("ttBusy")
+        addList(busy, "ttBusy")
 
         // seperate, label, button, tooltop
 
@@ -85,12 +87,26 @@ class units : StageWindow("Units"), Runnable {
 
         actions.addListener(
             LambdaClickListener {
-                GameData.selectedUnit?.let { it1 -> GameHypervisor.unit_selected()?.onTurnAction = actions.selected }
+                GameData.selectedUnit?.let {
+                        it1 -> GameHypervisor.unit_selected()?.onTurnAction = actions.selected
+                        refresh()
+                }
             }
         )
 
         refresh()
         pack()
+    }
+
+    /**
+     * # Adds a list in a scrollable pane of a fixed height
+     */
+    private fun addList(list: List<Unit>, tooltipKey: String) {
+        val sp = ScrollPane(list, skin)
+        add(sp).fillX()
+        tooltip(tooltipKey)
+        getCell(sp).height(200f)
+        row()
     }
 
     private fun refresh() {
@@ -104,11 +120,24 @@ class units : StageWindow("Units"), Runnable {
     }
 
     private fun refreshUnits() {
-        val arr : Array<Unit> = Array();
-        GameData.units.forEach { arr.add(it) }
+        val _waiting : Array<Unit> = Array()
+        val _busy : Array<Unit> = Array()
 
-        units.setItems(arr)
-        units.selected = GameHypervisor.unit_selected()
+
+        GameData.units.forEach {            // Go through all units,
+            if (it.onTurnAction == null)    // and add them to the
+                _waiting.add(it)            // Right list.
+            else
+                _busy.add(it)
+        }
+
+        populate(waiting, _waiting)
+        populate(busy   , _busy   )
+    }
+
+    private fun populate(list: List<Unit>, array: Array<Unit>){
+        list.setItems(array)
+        list.selected = GameHypervisor.unit_selected()
     }
 
     private fun refreshActions() {

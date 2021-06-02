@@ -1,11 +1,13 @@
 package com.shinkson47.SplashX6.input.keys
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.game.world.World
@@ -21,9 +23,23 @@ object KeyHandler {
 
     // TODO dynamic bindings (Key id > consumer kinda deal)
     fun Poll() {
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) client?.screen = MainMenu()
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F5)) NewGame()
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) Client.toggleFS()
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F6)) GameData.world?.swapTiledInterp()
+        with (Gdx.input) {
+            if (isKeyPressed(Input.Keys.ESCAPE)) client?.screen = MainMenu()
+            if (isKeyJustPressed(Input.Keys.F5)) NewGame()
+            if (isKeyJustPressed(Input.Keys.F11)) Client.toggleFS()
+            if (isKeyJustPressed(Input.Keys.F6)) GameData.world?.swapTiledInterp()
+
+            if (! GameHypervisor.inGame) return // after here requires in game
+            with (GameHypervisor.gameRenderer?.cam!!) {
+
+                boost(isKeyPressed(Input.Keys.SHIFT_LEFT))
+
+                if (isKeyPressed(Input.Keys.W)) up()
+                if (isKeyPressed(Input.Keys.S)) down()
+                if (isKeyPressed(Input.Keys.D)) right()
+                if (isKeyPressed(Input.Keys.A)) left()
+            }
+        }
+
     }
 }

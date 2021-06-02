@@ -41,23 +41,4 @@ class UnitAction(_displayName: String, _isAvailable: Predicate<Unit>, _onAction:
     }
 
 
-    companion object {
-
-
-        // ==========================================
-        //region    ACTIONS
-        // ==========================================
-
-        // ==========================================
-        //endregion ACTIONS
-        //region    AVAILABILITY TESTS
-        // ==========================================
-        val ALWAYS_AVAILABLE = Predicate<Unit> { true }
-
-
-
-        // ==========================================
-        //endregion AVAILABILITY TESTS
-        // ==========================================
-    }
 }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
+import com.shinkson47.SplashX6.game.units.UnitClass;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Utility;
 
@@ -286,7 +287,7 @@ public final class World {
      * @return
      */
     public void genPopulation() {
-            GameHypervisor.spawn(randomPointOnLand(),"settler");
+            GameHypervisor.spawn(randomPointOnLand(), UnitClass.settler);
     }
 
 

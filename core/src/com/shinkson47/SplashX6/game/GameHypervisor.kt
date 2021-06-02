@@ -13,6 +13,7 @@ package com.shinkson47.SplashX6.game;
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.game.units.Unit
+import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.game.world.World.TILE_HALF_HEIGHT
 import com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH
@@ -173,7 +174,7 @@ class GameHypervisor {
          * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
          */
         @JvmStatic
-        fun spawn(pos: Vector3, spriteName: String) {
+        fun spawn(pos: Vector3, spriteName: UnitClass) {
             spawn(pos.x.toInt(), pos.y.toInt(), spriteName)
         }
 
@@ -182,7 +183,7 @@ class GameHypervisor {
          * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
          */
         @JvmStatic
-        fun spawn(x: Int, y: Int, spriteName: String) {
+        fun spawn(x: Int, y: Int, spriteName: UnitClass) {
             // TODO check this
             // TODO are null checks still needed?
             // STOPSHIP: 20/05/2021 this is fucking garbage my g.
@@ -311,7 +312,7 @@ class GameHypervisor {
         private fun doEndTurn_Units(){
             // META : If you get a concurrent modification exception here, then
             // an onTurnAction has modified the GameData units list.
-            GameData.units.forEach {it.onTurn()}
+            GameData.units.forEach {it.doTurn()}
         }
 
         private fun doEndTurn_Async(){
@@ -361,10 +362,8 @@ class GameHypervisor {
          */
         @JvmStatic
         fun camera_focusingOnTile(): Vector3 {
-            with (gameRenderer!!.cam) {
-                val v = camera_focusingOn()
-                return World.cartesianToIso(v.x.toInt(), v.y.toInt())
-            }
+            val v = camera_focusingOn()
+            return World.cartesianToIso(v.x.toInt(), v.y.toInt())
         }
 
 
@@ -412,6 +411,10 @@ class GameHypervisor {
         fun EndGame() {
             dispose()
             client?.setScreen(MainMenu());
+        }
+
+        fun settle(x: Float, y: Float) {
+            TODO()
         }
 
 
