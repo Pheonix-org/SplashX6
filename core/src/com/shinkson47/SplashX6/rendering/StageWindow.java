@@ -242,10 +242,24 @@ public abstract class StageWindow extends Window {
 
     public static Label label(String key, Table t){
         Label l = new Label(local(key), Assets.SKIN);
-        t.add(l).row();
+        t.add(l).padTop(20f);
+        //.row();
         return l;
     }
-    
+
+    /**
+     * DEVELOPMENT
+     *
+     * add javaadoc if this method stays
+     * @param key
+     * @param t
+     * @return
+     */
+    public static CheckBox checkBox(String key, Table t) {
+        CheckBox c = new CheckBox(local(key), Assets.SKIN);
+        t.add(c).padTop(20f); // DEFAULT SPACING
+        return c;
+    }
     /**
      * <h2>Creates and a button that shows a table in a cell when clicked.</h2>
      *
