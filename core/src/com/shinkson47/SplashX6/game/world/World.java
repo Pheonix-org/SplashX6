@@ -373,7 +373,7 @@ public final class World {
     private void createCell(String tileName, int x, int y, TiledMapTileLayer layer){
         TiledMapTileLayer.Cell c = new TiledMapTileLayer.Cell();
         c.setTile(map.getTileSets().getTile((Integer) TILESET_MAP.get(tileName)));
-        layer.setCell(x,(layer.getHeight() - 1) - y,c);
+        layer.setCell(x, y, c);
     }
 
     public Tile getTile(Vector3 vec) {
@@ -412,7 +412,7 @@ public final class World {
      * @return if on an odd row, tile at raw array position [x - 1][y], if even at [x][y].
      */
     public Tile getStaggeredTile(int x, int y) {
-        return getTile(x + (x != 0 ? ((y % 2 != 0) ? -1 : 0) : 0), y);
+        return getTile(x + (x != 0 ? ((y % 2 == 0) ? -1 : 0) : 0), y);
     }
 
     /**

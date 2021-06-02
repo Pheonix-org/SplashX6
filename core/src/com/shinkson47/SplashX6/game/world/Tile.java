@@ -82,7 +82,7 @@ public class Tile {
     /**
      * <h2>Returns a tile that represent this one after being blended with provided tiles</h2>
      */
-    public Tile interpolate(Tile nw, Tile ne, Tile se, Tile sw) {
+    public Tile interpolate(Tile sw, Tile se, Tile ne, Tile nw) {
         if (!isBase || nw != null && !nw.isBase || ne != null && !ne.isBase || se != null && !se.isBase || sw != null && !sw.isBase) return this;
 
         if (nw == null) nw = new Tile((sw == null) ? west : sw.tileName);
