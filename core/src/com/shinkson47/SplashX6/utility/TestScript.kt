@@ -1,6 +1,5 @@
 package com.shinkson47.SplashX6.utility
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
@@ -140,7 +139,7 @@ object TestScript : Runnable {
 
             // Move the unit to where the camera is looking.
             GameHypervisor.unit_setDestination()
-            val pos: Vector3 = GameHypervisor.getSelectedTile()
+            val pos: Vector3 = GameHypervisor.camera_focusingOnTile()
 
             // is the selected tile the one we expect?
             testBetween("Selected 0x", pos.x.toInt(), 0)

@@ -1,7 +1,9 @@
 package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -32,6 +34,7 @@ import static com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;
+import static com.shinkson47.SplashX6.utility.Assets.SKIN;
 
 
 /**
@@ -77,6 +80,12 @@ public class GameScreen extends ScreenAdapter {
      * <h2>The container for all HUD GUI</h2>
      */
     private Stage stage;
+
+    /**
+     * x and y screenspace co-ords for the center of the screen
+     */
+    private Float centerx = Gdx.graphics.getWidth() * 0.5f, centery = Gdx.graphics.getHeight() * 0.5f;
+
 
 
 
@@ -150,52 +159,49 @@ public class GameScreen extends ScreenAdapter {
      */
     @Override
     public void render(float delta) {
-        // Clear last frame
-        // TODO setting matrix on every frame???
-        worldBatch.setProjectionMatrix(camera.getCam().combined);
-
         // Render the world
         r.render();
 
         // Update the camera (Movement, zoom, renders what it sees)
         camera.update();
-
+        worldBatch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
 
+        // Get selected unit, and draw a circle under it.
         Unit u = GameData.INSTANCE.getSelectedUnit();
-
         sr.begin(ShapeRenderer.ShapeType.Line);
         if (u != null) {
             sr.circle(u.getX() + TILE_HALF_WIDTH, u.getY() + TILE_HALF_HEIGHT, TILE_HALF_HEIGHT);
         }
 
-        sr.setProjectionMatrix(getHUDBatch().getProjectionMatrix());
-        sr.circle(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f, 5);
+        // draw a circle where the camera is looking, If pressing space.
+        if (Gdx.input.isButtonJustPressed(Input.Keys.SPACE)) {
+            Vector3 v = GameHypervisor.camera_focusingOn();
+            sr.circle((int) v.x, v.y, 10);
 
-        sr.setProjectionMatrix(camera.combined);
-        // TODO shorten by mutating in function
-        Vector3 v = GameHypervisor.getSelectedTile();
-        v = World.isoToCartesian((int)v.x, (int)v.y);
-        sr.circle((int) v.x, v.y, 10);
-
-        // Cache x and y
-
+            // Draw another in the center of the screen.
+            sr.setProjectionMatrix(getHUDBatch().getProjectionMatrix());
+            sr.circle(centerx, centery, 5);
+        }
 
         sr.end();
+
 
         worldBatch.begin();
         GameData.INSTANCE.getUnits().forEach(
                 sprite -> {
-                    if (Debug.enabled()) {
-                        sr.begin(ShapeRenderer.ShapeType.Filled);
-                        sr.rect(sprite.getBoundingRectangle().x,sprite.getBoundingRectangle().y,sprite.getBoundingRectangle().width,sprite.getBoundingRectangle().height);
-                        sr.end();
-                    }
-
-
+                    // META : This draws a gl rect over the true area where sprites are rendered, so you can see where the sprites boundaries are.
+//                    if (Debug.enabled()) {
+//                        sr.begin(ShapeRenderer.ShapeType.Filled);
+//                        sr.rect(sprite.getBoundingRectangle().x,sprite.getBoundingRectangle().y,sprite.getBoundingRectangle().width,sprite.getBoundingRectangle().height);
+//                        sr.end();
+//                    }
                     sprite.draw(worldBatch);
                 }
         );
+
+        // META : Draw FPS as 10x, 10y in the world
+        //font.draw(worldBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), 10, 10);
         worldBatch.end();
 
 
@@ -205,8 +211,7 @@ public class GameScreen extends ScreenAdapter {
         // Draw the UI
         stage.draw();
 
-
-        Debug.update(); // TODO shouldn't have to do this here
+        Debug.update();
     }
 
     /**
@@ -224,13 +229,6 @@ public class GameScreen extends ScreenAdapter {
     //#endregion rendering operations
     //#region get/set & misc
     //========================================================================
-
-
-
-    // Temporary method for development. Duplicated method from the Utility.java class.
-    public static String local(String key) {
-        return LANG.get(key);
-    }
 
     /**
      * <h2>Returns the camera wrapper</h2>

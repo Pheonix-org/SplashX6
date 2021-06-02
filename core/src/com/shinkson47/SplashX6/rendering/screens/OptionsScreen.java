@@ -96,6 +96,7 @@ public class OptionsScreen extends StageWindow {
             final Slider slider = new Slider(-2500f, 2500f, 0.1f, false, Assets.SKIN);
             slider.addListener(event -> {l.setText(slider.getValue() + "");
                 Camera.Companion.setFRUSTRUM_WIDTH_MOD(slider.getValue());
+                GameHypervisor.getGameRenderer().getCam().cacheFrustumValues();
                 return true;
             });
             add(slider).growX().row();

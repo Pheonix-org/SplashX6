@@ -1,23 +1,19 @@
 package com.shinkson47.SplashX6.utility;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
-import com.shinkson47.SplashX6.rendering.Camera;
+import com.shinkson47.SplashX6.game.world.World;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
-import com.shinkson47.SplashX6.game.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * <h1>Random playground for test / development scripture</h1>
@@ -31,12 +27,6 @@ import java.util.Vector;
  * @since v1
  */
 public class Debug {
-
-    /**
-     * Debug feature switches
-     */
-    public static boolean MouseInfo;
-
     public static DebugWindow MainDebugWindow;
     public static GameScreen gameRenderer;
     private static final List<String> Dumps = new ArrayList<>();
@@ -52,15 +42,14 @@ public class Debug {
 
 
 
-    public static void update(){
+    public synchronized static void update(){
+        if (!debugMode) return;
         renderDots();
         renderMouseInfo();
         renderDumps();
     }
 
     private static void renderDumps() {
-        if (!GameHypervisor.getInGame()) return;
-
         gameRenderer.getHUDBatch().begin();
         int i = 1;
         for (String s : Dumps) {
@@ -78,7 +67,7 @@ public class Debug {
 
 
     public static void dispose(){
-        if (!MouseInfo) return;
+
     }
 
     public static class DebugWindow extends StageWindow {
@@ -108,9 +97,6 @@ public class Debug {
             addButton("Rotate camera +", o -> GameHypervisor.getGameRenderer().getCam().getCam().rotate(10,0,0,1));
             addButton("Rotate camera -", o -> GameHypervisor.getGameRenderer().getCam().getCam().rotate(-10,0,0,1));
 
-            seperate("Cursor");
-            addButton("Toggle Cursor Info", o -> MouseInfo = !MouseInfo);
-
             addButton("Unit test", o -> { TestScript.INSTANCE.run(); dialog("Test script complete", "Check terminal for results."); });
         }
     }
@@ -119,8 +105,6 @@ public class Debug {
      * <h2>Renders mouse information to the game screen.</h2>
      */
     private static void renderMouseInfo(){
-        if (!MouseInfo) return;
-
         int mousex = Gdx.input.getX();
         int mousey = Gdx.input.getY();
         int rendery = Gdx.graphics.getHeight() - mousey;
@@ -148,8 +132,6 @@ public class Debug {
     }
 
     private static void renderDots() {
-        if (!debugMode) return;
-
         gameRenderer.getSr().begin(ShapeRenderer.ShapeType.Line);
 
 

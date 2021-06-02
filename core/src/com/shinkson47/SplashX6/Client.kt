@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
-import com.shinkson47.SplashX6.input.KeyHandler
+import com.shinkson47.SplashX6.input.keys.KeyHandler
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.rendering.screens.MainMenu

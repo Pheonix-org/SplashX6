@@ -233,7 +233,7 @@ class GameHypervisor {
         fun unit_setDestination() {
             // TODO Doesn't seem to set the correct location
             with(GameData.selectedUnit!!) {
-                val dest: Vector3 = getSelectedTile()
+                val dest: Vector3 = camera_focusingOnTile()
                 destX = dest.x.toInt()
                 destY = dest.y.toInt()
             }
@@ -344,6 +344,29 @@ class GameHypervisor {
         @JvmStatic
         fun camera_focusOn(x: Float, y: Float) = gameRenderer!!.cam.goTo(x, y)
 
+        /**
+         * # The cartesian location in the world that the camera is looking at.
+         */
+        @JvmStatic
+        fun camera_focusingOn(): Vector3 {
+            with (gameRenderer!!.cam) {
+                val v: Vector3 = desiredPosition.get().cpy()
+                v.y = lookingAtY().toFloat()
+                return v;
+            }
+        }
+
+        /**
+         * # Returns the isometric version of [camera_focusingOn]
+         */
+        @JvmStatic
+        fun camera_focusingOnTile(): Vector3 {
+            with (gameRenderer!!.cam) {
+                val v = camera_focusingOn()
+                return World.cartesianToIso(v.x.toInt(), v.y.toInt())
+            }
+        }
+
 
         @JvmStatic
         fun camera_moveToTile(x: Int, y: Int) {
@@ -397,13 +420,8 @@ class GameHypervisor {
     //#region misc
     //========================================================================
 
-        @JvmStatic
-        fun getSelectedTile(): Vector3 {
-            with (gameRenderer!!.cam) {
-                val v: Vector3 = desiredPosition.get().cpy()
-                v.y = lookingAtY().toFloat()
-                return World.cartesianToIso(v.x.toInt(), v.y.toInt())
-            }
-        }
+
+
+
     }
 }

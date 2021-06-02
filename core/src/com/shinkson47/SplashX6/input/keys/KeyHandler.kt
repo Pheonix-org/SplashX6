@@ -1,7 +1,8 @@
-package com.shinkson47.SplashX6.input
+package com.shinkson47.SplashX6.input.keys
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.InputMultiplexer
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.game.GameData
@@ -15,6 +16,9 @@ import com.shinkson47.SplashX6.game.world.World
  * @since v1
  */
 object KeyHandler {
+
+    private val currentInputListener : InputMultiplexer? = null
+
     // TODO dynamic bindings (Key id > consumer kinda deal)
     fun Poll() {
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) client?.screen = MainMenu()

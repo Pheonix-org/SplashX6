@@ -53,7 +53,9 @@ class Camera: PerspectiveCamera() {
         private const val TILT_MINIMUM          : Float = 36f
         private const val TILT_MAXIMUM          : Float = 60f
 
-        var FRUSTRUM_WIDTH_MOD = 0f;
+        var FRUSTRUM_WIDTH_MOD = -500f
+        var cachedFrustrumStartX = 0f
+        var cachedFrustrumWidth = 0f;
     }
 
     /**
@@ -119,6 +121,8 @@ class Camera: PerspectiveCamera() {
      * # Desired degrees of fov
      */
     val desiredZoom: lerpDesire<Float> = lerpDesire(ZOOM_MINIMUM, zoomSpeed)
+
+
 
 
     // ============================================================
@@ -208,8 +212,8 @@ class Camera: PerspectiveCamera() {
      */
     override fun update() {
         updateMove()
-        updateTilt()
-        updateRotation()
+        if (enableZoomTilt) updateTilt()  // TODO option for top down view by disabling tilt and setting it to 90 degrees.
+        if (enableMoveTilt) updateRotation()
         updateZoom()
 
         if (Debug.enabled()){
@@ -236,10 +240,11 @@ class Camera: PerspectiveCamera() {
     private fun updateMove(){
         // TODO these two lines shouldn't happen every frame, they're pretty heavy
 
+
         // (badly) Change viewport to match field of view
         // this can't really be improved, the staggared isometric renderer does not support a perspective camera, or it's culling frustum.
         // TODO As a work-around we could add a user adjustable varable to the width
-        GameScreen.r.setView(combined,position.x - ((viewportWidth + FRUSTRUM_WIDTH_MOD) * 0.5f),position.y,  viewportWidth + fieldOfView + FRUSTRUM_WIDTH_MOD, viewportHeight * fieldOfView)
+        GameScreen.r.setView(combined,position.x - cachedFrustrumStartX ,position.y,  cachedFrustrumWidth, viewportHeight * fieldOfView)
 
         // Move towards desired position
         desiredPosition.next();
@@ -250,7 +255,7 @@ class Camera: PerspectiveCamera() {
      */
     private fun updateTilt() {
         val y : Float = yFromAngle(desiredTilt.next())
-        if (enableZoomTilt) lookAt(position.x, y, 0f)
+        lookAt(position.x, y, 0f)
         Debug.dump("Looking at Y :" + y.toString())
         Debug.dump("Up : " + up.toString())
     }
@@ -260,16 +265,14 @@ class Camera: PerspectiveCamera() {
      */
     // TODO
     private fun updateRotation() {
-        if (enableMoveTilt) {
-            val rotStep = desiredPosition.alpha * 4
+        val rotStep = desiredPosition.alpha * 4
 
-            if (desiredPosition.desired.x > position.x && desiredRotation.desired < ROTATION_LIMIT) {
-                rotate(rotStep, 0f, 0f, 1f)
-                desiredRotation.desired += rotStep
-            } else if (desiredPosition.desired.x < position.x && desiredRotation.desired > -ROTATION_LIMIT) {
-                rotate(-rotStep, 0f, 0f, 1f)
-                desiredRotation.desired -= rotStep
-            }
+        if (desiredPosition.desired.x > position.x && desiredRotation.desired < ROTATION_LIMIT) {
+            rotate(rotStep, 0f, 0f, 1f)
+            desiredRotation.desired += rotStep
+        } else if (desiredPosition.desired.x < position.x && desiredRotation.desired > -ROTATION_LIMIT) {
+            rotate(-rotStep, 0f, 0f, 1f)
+            desiredRotation.desired -= rotStep
         }
     }
 
@@ -286,18 +289,16 @@ class Camera: PerspectiveCamera() {
     // ============================================================
 
     fun resize(width: Float, height: Float) {
-    //        cam = new OrthographicCamera(width,height * (height / width));
         super.viewportHeight = Gdx.graphics.height.toFloat()
         super.viewportWidth = Gdx.graphics.width.toFloat()
 
-        // This can be in init
-        far = 100f
-        near = 0f
-
+        cacheFrustumValues()
         AssertInBounds()
-        updateTilt()
+    }
 
-        update()
+    fun cacheFrustumValues() {
+        cachedFrustrumStartX = ((viewportWidth + FRUSTRUM_WIDTH_MOD) * 0.5f)
+        cachedFrustrumWidth = viewportWidth + fieldOfView + FRUSTRUM_WIDTH_MOD
     }
 
     // ============================================================
@@ -306,6 +307,8 @@ class Camera: PerspectiveCamera() {
     // ============================================================
 
     init {
+        far = 100f
+        near = 0f
         position.z = 100f
         deltaZoom(1f);
         AssertInBounds();
