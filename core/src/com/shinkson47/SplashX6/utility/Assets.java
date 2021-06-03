@@ -8,8 +8,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.shinkson47.SplashX6.Client;
-import com.shinkson47.SplashX6.rendering.screens.MainMenu;
+//import com.shinkson47.SplashX6.Client;
+//import com.shinkson47.SplashX6.rendering.screens.MainMenu;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 

@@ -17,7 +17,7 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
  */
 
 /**
- * <h2>Audio Controller</h2>
+ * <h1>Audio Controller</h1>
  *
  * @author Dylan Brand, Jordan Gray
  */
@@ -240,4 +240,13 @@ public class AudioController {
     public static Music getNowPlaying() {
         return nowPlaying;
     }
+
+    /**
+     * @return Boolean value, indicating whether the music played is currently muted.
+     */
+    public static boolean isMuted() {
+        return isMuted;
+    }
 }
+
+

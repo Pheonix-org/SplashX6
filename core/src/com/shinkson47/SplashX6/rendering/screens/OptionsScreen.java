@@ -218,6 +218,10 @@ public class OptionsScreen extends StageWindow {
         c.addListener(new LambdaClickListener(inputEvent -> {
             AudioController.setMute(c.isChecked());
         }));
+
+        if (AudioController.isMuted())
+            c.setChecked(true);
+
         SOUND_OPTION_TAB.add(c).colspan(2).center();
         //.padTop(20f);
 
