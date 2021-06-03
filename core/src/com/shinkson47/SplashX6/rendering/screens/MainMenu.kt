@@ -61,7 +61,7 @@ class MainMenu : ScreenAdapter() {
             addButton("newGame") { NewGame() }
             addButton("loadGame") { Utility.notImplementedDialog(stage) }
             addButton("preferences") { stage.addActor(OptionsScreen()) }
-            addButton("credits") { Utility.notImplementedDialog(stage) }
+            addButton("credits") { client!!.screen = CreditsScreen() }
             addButton("exitGame") { Gdx.app.exit() }
         }
     }
