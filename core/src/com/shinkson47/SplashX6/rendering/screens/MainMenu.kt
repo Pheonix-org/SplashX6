@@ -7,11 +7,16 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.compression.lzma.Base
 import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.dmugang.screens.CreditsScreen
+import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.game.AudioController
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.StageWindow.label
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.local
 
@@ -113,13 +118,16 @@ class MainMenu : ScreenAdapter() {
                 1f
             )
         })
-        BaseTable.add(SecretButton).center()
+        BaseTable.add(SecretButton).center().row()
         stage.addActor(BaseTable)
         BaseTable = Table().bottom()
-        BaseTable.setFillParent(true)
-        BaseTable.add(Label("BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://shinkson47.in/SplashX6/index.html", Assets.SKIN))
-            .fill()
-            .padBottom(10f)
+
+        with(BaseTable) {
+            setFillParent(true)
+            label("wipver", this).fillX().align(Align.center).row()
+            label("copr", this).center()
+            padBottom(10f)
+    }
 
         // Set up window to with as glfw environment
         resize(Gdx.graphics.width, Gdx.graphics.height)

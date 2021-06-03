@@ -236,15 +236,14 @@ public abstract class StageWindow extends Window {
         return b;
     }
 
-    protected Label label(String key){
+    protected Cell<Label> label(String key){
         return label(key, this);
     }
 
-    public static Label label(String key, Table t){
+    public static Cell<Label> label(String key, Table t){
         Label l = new Label(local(key), Assets.SKIN);
-        t.add(l).padTop(20f);
-        //.row();
-        return l;
+
+        return t.add(l).padTop(20f);
     }
 
     /**
