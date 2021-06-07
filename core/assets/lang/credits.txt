@@ -14,9 +14,14 @@ Product of students from De Montfort University.
 Produced in LibGDX using IntelliJ.
 Written in Java and Kotlin.
 
-======= Developers =======
+======= DEVELOPERS =======
+
+[ LEAD DEVELOPER ]
+
 Jordan T. Gray
 http://shinkson47.in
+
+[ JUNIOR DEVELOPER ]
 
 Dylan Brand
 
