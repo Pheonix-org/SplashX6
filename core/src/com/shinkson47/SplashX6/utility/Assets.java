@@ -8,8 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
-//import com.shinkson47.SplashX6.Client;
-//import com.shinkson47.SplashX6.rendering.screens.MainMenu;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
 
@@ -35,8 +33,8 @@ public class Assets {
     public static void Create(){}
 
     static{
-        unitSprites = new TextureAtlas("sprites/units.txt");
-        citySprites = new TextureAtlas("sprites/cities.txt");
+        unitSprites = new TextureAtlas("sprites/units.atlas");
+        citySprites = new TextureAtlas("sprites/cities.atlas");
 
         SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
         
