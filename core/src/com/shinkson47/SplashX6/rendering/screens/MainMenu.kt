@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.compression.lzma.Base
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.dmugang.screens.CreditsScreen
 import com.shinkson47.SplashX6.Client.Companion.client
@@ -17,8 +16,8 @@ import com.shinkson47.SplashX6.game.AudioController
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.StageWindow.label
+import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
 import com.shinkson47.SplashX6.utility.Utility
-import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
  * <h1></h1>
@@ -65,7 +64,7 @@ class MainMenu : ScreenAdapter() {
                 .row()
             addButton("newGame") { NewGame() }
             addButton("loadGame") { Utility.notImplementedDialog(stage) }
-            addButton("preferences") { stage.addActor(OptionsScreen()) }
+            addButton("preferences") { stage.addActor(OptionsWindow()) }
             addButton("credits") { client!!.screen = CreditsScreen() }
             addButton("exitGame") { Gdx.app.exit() }
         }

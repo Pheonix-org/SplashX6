@@ -22,13 +22,12 @@ import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
-import com.shinkson47.SplashX6.rendering.GameWindowManager;
-import com.shinkson47.SplashX6.rendering.screens.gameutils.units;
+import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
+import com.shinkson47.SplashX6.rendering.windows.OptionsWindow;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Debug;
 
 import static com.shinkson47.SplashX6.game.world.World.*;
-import static com.shinkson47.SplashX6.rendering.GameWindowManager.Companion.*;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
 
@@ -132,15 +131,15 @@ public class GameScreen extends ScreenAdapter {
         // Add buttons
         //TODO Menu bar abstraction? lots of repetition here.
         applyMenuStyling(menu.add(button("endGame", o -> GameHypervisor.EndGame())));
-        applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
+        //applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
         applyMenuStyling(menu.add(button("newGame", o -> GameHypervisor.NewGame())));
-        applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsScreen()))));
+        applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsWindow()))));
         applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
         applyMenuStyling(menu.add(button("endTurn", o -> GameHypervisor.turn_end())));
 
         // Add to stage
         stage.addActor(menu);
-        stage.addActor(GameWindowManager.Companion.getWINDOW_DOCK());
+        stage.addActor(GameWindowManager.getWINDOW_DOCK());
     }
 
 

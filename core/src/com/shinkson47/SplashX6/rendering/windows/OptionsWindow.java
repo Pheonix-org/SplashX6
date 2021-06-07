@@ -1,8 +1,7 @@
-package com.shinkson47.SplashX6.rendering.screens;
+package com.shinkson47.SplashX6.rendering.windows;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.shinkson47.SplashX6.Client;
@@ -10,12 +9,12 @@ import com.shinkson47.SplashX6.game.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.StageWindow;
+import com.shinkson47.SplashX6.rendering.screens.MainMenu;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Languages;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
 
 import static com.shinkson47.SplashX6.utility.APICondition.*;
 import static com.shinkson47.SplashX6.utility.Assets.*;
@@ -31,7 +30,7 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
  * @version 1
  * @since v1
  */
-public class OptionsScreen extends StageWindow {
+public class OptionsWindow extends StageWindow {
 
     // TODO - TEST
     //private Slider musicSlider = new Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN);
@@ -58,19 +57,19 @@ public class OptionsScreen extends StageWindow {
         @Override
         public void toggleShown() {
             if (!GameHypervisor.getInGame()) {
-                OptionsScreen.this.dialog("Oops", "Frustrum changes can only be made whilst in-game.");
+                OptionsWindow.this.dialog("Oops", "Frustrum changes can only be made whilst in-game.");
                 setVisible(false);
                 return;
             }
 
             GameHypervisor.getGameRenderer().getCam().deltaZoom(10000f);
-            OptionsScreen.this.getStage().addActor(this);
+            OptionsWindow.this.getStage().addActor(this);
             toggleAll();
         }
 
         private void toggleAll(){
             super.toggleShown();
-            OptionsScreen.this.toggleShown();
+            OptionsWindow.this.toggleShown();
 
             // TODO enable / disable in-game mouse controls
         }
@@ -118,7 +117,7 @@ public class OptionsScreen extends StageWindow {
     //#endregion constructors
     //=====================================================================
 
-    public OptionsScreen() {
+    public OptionsWindow() {
         super("PREFERENCES");
 
         ArrayList<String> languagesString = new ArrayList<>();

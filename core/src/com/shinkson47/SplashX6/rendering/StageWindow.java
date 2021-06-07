@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
-import com.shinkson47.SplashX6.game.units.Unit;
+import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
 import com.shinkson47.SplashX6.utility.Assets;
 
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public abstract class StageWindow extends Window {
      * Is the same color as the Client 'hr', 'hg', 'b', 'a'
      */
     public static final Drawable lightBG;
+
+
 
     static {
         seperatorStyle = new Label.LabelStyle(new Label("", Assets.SKIN).getStyle());
@@ -90,6 +93,8 @@ public abstract class StageWindow extends Window {
 
     public String title;
 
+    private boolean dontClose = false;
+
 
     //=====================================================================
     //#endregion fields
@@ -121,8 +126,6 @@ public abstract class StageWindow extends Window {
         super("", Assets.SKIN);
         this.title = title;
         if (!style.equals("")) setStyle(Assets.SKIN.get(style, WindowStyle.class));
-        if (GameHypervisor.getInGame()) GameWindowManager.Companion.add(this);
-//        setDebug(true);
 
 
         center();
@@ -214,7 +217,14 @@ public abstract class StageWindow extends Window {
 
             // Add a close button at top border
             w.getTitleTable()
-                    .add(button("close", o -> { w.clear(); w.getStage().getActors().removeValue(w, true); }))
+                    .add(button("close", o -> {
+                        if (w instanceof StageWindow && ((StageWindow)w).dontClose)
+                            ((StageWindow)w).toggleShown();
+                            else {
+                                w.clear();
+                                w.getStage().getActors().removeValue(w, true);
+                            }
+                    }))
                     .padTop(-35)
                     .row();
         }
@@ -597,6 +607,10 @@ public abstract class StageWindow extends Window {
 
     }
 
+    public void setStage(Stage s) {
+        super.setStage(s);
+    }
+
 
     @Override
     public String toString() {
@@ -623,6 +637,12 @@ public abstract class StageWindow extends Window {
         setVisible(!isVisible());
     }
 
+    /**
+     * # Indicates that this window should not close, but instead just hide.
+     */
+    public void dontClose() {
+        dontClose = true;
+    }
 
     /**
      * <h2>Accepts a consumer to use when clicking a button, instead of an entire click listener class</h2>

@@ -22,6 +22,7 @@ import com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
+import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_GAME_LOADING
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
@@ -137,6 +138,7 @@ class GameHypervisor {
             // TODO This couldn't be done before a world is created, but is only temporary.
             // STOPSHIP: 17/04/2021 this is dumb and shouldn't stay
             Debug.create()
+            GameWindowManager.create()
 
             AudioController.playGame()          // Begin playing in-game soundtrack.
             client?.screen = gameRenderer       // Show the game screen to the user.
@@ -400,10 +402,11 @@ class GameHypervisor {
          */
         @JvmStatic
         fun dispose() {
-            inGame = false;
+            inGame = false
             gameRenderer?.dispose()
             gameRenderer = null
             GameData.clear()
+            GameWindowManager.dispose()
         }
 
         /**
@@ -413,7 +416,7 @@ class GameHypervisor {
         @JvmStatic
         fun EndGame() {
             dispose()
-            client?.setScreen(MainMenu());
+            client!!.screen = MainMenu();
         }
 
         /**
