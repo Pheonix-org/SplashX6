@@ -1,8 +1,7 @@
-package com.shinkson47.SplashX6.rendering.screens.gameutils
+package com.shinkson47.SplashX6.rendering.windows.gameutils
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.List
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor

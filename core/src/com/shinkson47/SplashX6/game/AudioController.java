@@ -20,6 +20,7 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
  * <h1>Audio Controller</h1>
  *
  * @author Dylan Brand, Jordan Gray
+ * @since PRE-ALPHA 0.0.1
  */
 public class AudioController {
 

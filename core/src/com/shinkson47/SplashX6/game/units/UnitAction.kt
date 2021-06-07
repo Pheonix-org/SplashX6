@@ -30,15 +30,10 @@ class UnitAction(_displayName: String, _isAvailable: Predicate<Unit>, _onAction:
      */
     val onAction: Predicate<Unit> = _onAction
 
+    /**
+     * # Executes this action's script.
+     */
     fun run(unit: Unit) : Boolean = onAction.test(unit)
 
-
-    // TODO dictionaries of actions available for different classes of units.
-
-
-    override fun toString(): String {
-        return displayName
-    }
-
-
+    override fun toString() = displayName
 }

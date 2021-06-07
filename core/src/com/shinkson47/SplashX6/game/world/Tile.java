@@ -5,36 +5,44 @@ import java.util.Arrays;
 import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
 
 /**
- * <h1></h1>
- * <br>
- * <p>
+ * <h1>Pre GDX tile data.</h1>
+ * Stores a tile and it's data prior to converting data into a
+ * gdx compatable TiledMapTile for use in game.
  *
- * </p>
- *
- * @author Dylan Brand 23/03/2021
- * @version 1
+ * This will later act as a saveable container for data regarding a tile,
+ * since gdx tiledmaps are not serializable.
+ * @author Jordan Gray & Dylan Brand 23/03/2021
+ * @version 1.1
  */
 public class Tile {
-    // TODO not a single docstring here. idk what half this shit does anymore lol
     //#region constants
+
+    /**
+     * Resource names for particular tile types
+     */
     public static final String
             OCEANS = "o_o_o_o",
             WATER  = "s_s_s_s";
 
+    //#endregion constants
+    //#region fields
+
+
+    /**
+     * Full resource name of this tile.
+     */
     public String tileName;
-    public String tileSetName;
-    public int cachedID;
+
+    /**
+     * Strings that represent the quadrants of the tile, N/E/S/W
+     */
+    public String north, east, south, west;
+
+    /**
+     * idk anymore man
+     */
     public boolean isBase = true;
 
-    // 4 strings that reperesent the quadrants of the tile, N/E/S/W
-    public String north;
-    public String east;
-    public String south;
-    public String west;
-
-    //#endregion constants
-
-    //#region fields
 
     //#endregion fields
 

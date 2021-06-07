@@ -7,55 +7,85 @@ import com.shinkson47.SplashX6.game.world.World.*
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
 
 /**
- * # A user playable unit.
+ * # A controllable in-game character
+ * That may be owned and controlled by a human or AI player.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 19/05/2021
- * @since v1
+ * @since PRE-ALPHA 0.0.1
  * @version 1
  */
-class Unit(unitClass: UnitClass, pos: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())) {
+class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())) {
     constructor(unitClass: UnitClass, _x: Int, _y: Int) : this(unitClass, Vector3(_x.toFloat(), _y.toFloat(), 0f))
 
-    /**
-     * # The type of unit this is.
-     * a [UnitClass]. Determines the abilities and limitations of this unit.
-     */
-    val Class : UnitClass = unitClass
-    val displayName : String = unitClass.toString()
+    // =============================================
+    // region fields
+    // =============================================
 
     /**
-     * # The isometric location of the unit
+     * # A user friendly name of this unit.
+     * For now, is just the [unitClass]
      */
-    var isoVec : Vector3 = pos
-    init { setLocation(pos) }
+    val displayName = unitClass.toString()
 
     /**
      * # The unit's destination
      * Marks where the unit is travelling to.
      */
-    var destX : Int = 0
-    var destY : Int = 0
+    var destX = 0
+    var destY = 0
 
     /**
      * # The actions that this unit can perform.
      * Fetched from [UnitActionDictionary], which defines what each class is able to do.
      */
-    val actions: Array<UnitAction> = UnitActionDictionary[Class]!!
+    val actions: Array<UnitAction> = UnitActionDictionary[unitClass]
 
     /**
      * # [UnitAction] that this unit will perform on the next turn.
      */
     var onTurnAction: UnitAction? = null
 
+    // =============================================
+    // endregion fields
+    // region construction
+    // =============================================
+
+    init {
+        setLocation(isoVec)
+    }
+
+    // =============================================
+    // endregion construction
+    // region get / set deprication
+    // =============================================
+
+    /**
+     * Sets the location of the sprite. This should not be done.
+     *
+     * Set the location of the unit instead.
+     */
     @Deprecated("see [setLocation]")
     override fun setX(x: Float) = super.setX(x)
 
+    /**
+     * Sets the location of the sprite. This should not be done.
+     *
+     * Set the location of the unit instead.
+     */
     @Deprecated("see [setLocation]")
     override fun setY(y: Float) = super.setY(y)
 
+    /**
+     * Sets the location of the sprite. This should not be done.
+     *
+     * Set the location of the unit instead.
+     */
     @Deprecated("see [setLocation]")
     override fun setPosition(x: Float, y: Float) = super.setPosition(x, y)
 
-
+    // =============================================
+    // endregion get / set deprication
+    // region functions
+    // =============================================
 
     /**
      * # Sets the location of this sprite in iso space.
@@ -79,9 +109,8 @@ class Unit(unitClass: UnitClass, pos: Vector3) : Sprite(unitSprites.createSprite
 
         val pos: Vector3 = isoToCartesian(x, y)
 
-        // TODO don't have to do this calculation every time
-        // META : Compensate for the origin, so that the sprite is in the center of the cell.
-        // Changing the sprite origin had no effect
+        // Compensate for the origin, so that the sprite is in the center of the cell.
+        // Changing the sprite and atlas origins had no effect
         setX(pos.x - TILE_HALF_WIDTH)
         setY(pos.y - TILE_HALF_HEIGHT)
         return pos
@@ -95,6 +124,15 @@ class Unit(unitClass: UnitClass, pos: Vector3) : Sprite(unitSprites.createSprite
         isoVec.x += deltaY
         return setLocation(isoVec)
     }
+
+    override fun toString(): String {
+        return "$displayName (X${isoVec.x}, Y${isoVec.y})"
+    }
+
+    // =============================================
+    // endregion functions
+    // region Game API
+    // =============================================
 
     /**
      * # Performs this unit's [onTurnAction], if there is one.
@@ -112,7 +150,7 @@ class Unit(unitClass: UnitClass, pos: Vector3) : Sprite(unitSprites.createSprite
         onTurnAction = null
     }
 
-    override fun toString(): String {
-        return "$displayName (X${isoVec.x}, Y${isoVec.y})"
-    }
+    // =============================================
+    // endregion Game API
+    // =============================================
 }

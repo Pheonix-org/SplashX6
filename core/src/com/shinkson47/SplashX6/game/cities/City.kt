@@ -9,41 +9,52 @@ import com.shinkson47.SplashX6.utility.Assets.citySprites
 
 
 /**
- * # TODO
+ * # Defines a settlement city.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 02/06/2021
- * @since v1
- * @version 1
+ * @since PRE-ALPHA 0.0.2
+ * @version 1.1
  */
-class City(pos: Vector3, type : CityTypes) : Runnable {
-
+class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
 
     // ============================================================
     // region fields
     // ============================================================
 
-    // TODO this is repeated in [Unit], but idk how to abstract it cause they're so different.
-
     /**
      * # Does this city have a wall built?
      */
     private var wall : Boolean = false
+        set(value) {
+            field = value
+            checkSpriteUpdate()
+        }
 
     /**
-     * # The size of the sity in population
+     * # The size of the city's population
      */
     private var population : Int = 0
+        set(value) {
+            field = value
+            checkSpriteUpdate()
+        }
 
     /**
-     * # The [CityTypes] of this city
+     * The last known resource name of the underlying sprite
+     *
+     * Sets to [calcSpriteName] at init.
      */
-    val type = type
-
     var cachedSpriteName : String = calcSpriteName()
         private set
 
+    /**
+     * The last known cartesian x of the underlying sprite
+     */
     var cachedSpriteX : Float = 0f
         private set
 
+    /**
+     * The last known cartesian y of the underlying sprite
+     */
     var cachedSpriteY : Float = 0f
         private set
 
@@ -53,38 +64,56 @@ class City(pos: Vector3, type : CityTypes) : Runnable {
      */
     private lateinit var sprite : Sprite
 
-    /**
-     * # The tile this city is situated on.
-     */
-    val isoVec : Vector3 = pos
 
+    // ============================================================
+    // endregion fields
+    // region construction
+    // ============================================================
 
     init {
         firstSpriteInit()
         GameHypervisor.turn_hook(this)
     }
 
+    /**
+     * Lateinit routine for [sprite]. Configures the underlying sprite for the first time.
+     */
     private fun firstSpriteInit() {
         calcSpritePos()
         setSprite()
     }
-
     // ============================================================
-    // endregion fields
+    // endregion construction
     // region functions
     // ============================================================
 
+    /**
+     * Calculates which sprite should be used to represent the state
+     * of this city, and returns the `city.atlas` resource name of it
+     *
+     * Format :
+     * > type_population(_wall)
+     *
+     * i.e `asian_0` or `asian_0_wall`
+     */
     private fun calcSpriteName() : String {
         val pop =
-            if      (population < 4)    0
-            else if (population < 8)    4
-            else if (population < 12)   8
-            else if (population < 16)   12
-            else                        16
+            when {
+                population < 4      -> 0
+                population < 8      -> 4
+                population < 12     -> 8
+                population < 16     -> 12
+                else                -> 16
+            }
 
-        return "${type}_$pop${if (wall) "_wall" else ""}"
+        return "${CITY_TYPE}_$pop${if (wall) "_wall" else ""}"
     }
 
+    /**
+     * Converts the [isoVec] to cartesian position for the sprite to use.
+     *
+     * result is cached in [cachedSpriteX] and [cachedSpriteY]
+     */
     private fun calcSpritePos() {
         val tempPos: Vector3 = World.isoToCartesian(isoVec.x.toInt(), isoVec.y.toInt())
         cachedSpriteX = tempPos.x - World.TILE_HALF_WIDTH
@@ -93,6 +122,9 @@ class City(pos: Vector3, type : CityTypes) : Runnable {
 
     /**
      * # Sets [sprite] to the matching [cachedSpriteName]
+     * using the city sprite atlas to create a new sprite.
+     *
+     * New sprites are moved to [cachedSpriteY], [cachedSpriteX]
      */
     private fun setSprite() {
         sprite = citySprites.createSprite(cachedSpriteName)
@@ -102,7 +134,10 @@ class City(pos: Vector3, type : CityTypes) : Runnable {
 
     /**
      * # Checks if the sprite needs to be updated to match the state of this city
-     * modifies usint [setSprite] only if change is required.
+     * by [calcSpriteName], and comparing it to [cachedSpriteName].
+     *
+     * If they differ, modifies caches new name and changes the sprite using [setSprite]
+     * thus it's only called if a new sprite is required.
      */
     private fun checkSpriteUpdate() {
         val temp = calcSpriteName()
@@ -112,11 +147,16 @@ class City(pos: Vector3, type : CityTypes) : Runnable {
         }
     }
 
+    /**
+     * # Draws the underlying sprite of this city.
+     */
+    fun draw(batch: SpriteBatch) = sprite.draw(batch)
 
-    fun draw(batch: SpriteBatch) {
-        sprite.draw(batch)
-    }
-
+    /**
+     * TODO temporary. Not efficient to hook every city this way.
+     *
+     * # Temporary turn hook that grows the city's population by 1 on every turn.
+     */
     override fun run() {
         population++
         checkSpriteUpdate()

@@ -11,8 +11,8 @@ import java.io.Serializable
  * # Static container for all data of the game in progress.
  * Is serializable so that a game data container can be saved to disk and reloaded.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 25/05/2021
- * @since v1
- * @version 1
+ * @since PRE-ALPHA 0.0.1
+ * @version 1.1
  */
 object GameData : Serializable {
 

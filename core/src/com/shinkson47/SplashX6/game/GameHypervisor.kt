@@ -1,13 +1,3 @@
-/**
- * # The main overseer for a game.
- *
- * Manages and handles all interactions with the current game, and interacts with the client
- *
- * @author [Jordan T. Gray](https://www.shinkson47.in) on 16/04/2021
- * @version 1
- * @since PRE-ALPHA
- */
-
 package com.shinkson47.SplashX6.game;
 
 import com.badlogic.gdx.math.Vector3
@@ -34,6 +24,15 @@ import com.shinkson47.SplashX6.utility.Debug
 import java.lang.Exception
 import kotlin.IllegalArgumentException
 
+/**
+ * # The main overseer for a game.
+ *
+ * Manages and handles all interactions with the current game from the client.
+ *
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 16/04/2021
+ * @version 1
+ * @since PRE-ALPHA 0.0.1
+ */
 class GameHypervisor {
     companion object {
 

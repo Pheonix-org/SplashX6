@@ -32,23 +32,17 @@ import static com.shinkson47.SplashX6.utility.Utility.createNoiseGenerator;
  *
  * @author <a href="https://www.shinkson47.in">Jordan T. Gray on 25/03/2021</a>
  * @version 1
- * @since v1
+ * @since PRE-ALPHA 0.0.1
  */
 public final class World {
 
     /**
-     * <h2>Creates a new world, and stores it in {@link com.shinkson47.SplashX6.game.world.ignored.World#focusedWorld}</h2>
-     * @return
+     * <h2>Creates a new world, and returns it.</h2>
+     * @return the generated world
      * @apiNote Has no regard for any existing world. It will be overwritten.
      */
-    public static com.shinkson47.SplashX6.game.world.World create(){
-        return new com.shinkson47.SplashX6.game.world.World();
-    }
-
-    /**
-     * <h2>Disposes world resources</h2>
-     */
-    public static void dispose() {
+    public static World create(){
+        return new World();
     }
 
 
@@ -73,8 +67,7 @@ public final class World {
             MIN_WORLD_HEIGHT = 6,
             DEFAULT_WIDTH = 500,
             DEFAULT_HEIGHT = 500,
-            FOLIAGE_QUANTITY_MAX = 10000,
-            UNIT_COUNT = 200;
+            FOLIAGE_QUANTITY_MAX = 10000;
 
     //#endregion constants
 
@@ -83,41 +76,25 @@ public final class World {
      * <h2>Perlin used for landmass</h2>
      * Used to determine what parts of the map should be water,
      * or land.
-     * @see com.shinkson47.SplashX6.game.world.ignored.World#CONTINENT_THRESHOLD for altering the ratio of land to water.
+     * @see com.shinkson47.SplashX6.game.world.World#CONTINENT_THRESHOLD for altering the ratio of land to water.
      */
     private FastNoiseLite ContinentalHeatmap;
 
     /**
-     * <h2>Perlin used for biomes</h2>
-     * Biome generation may be changed to a voroni map.
-     * <br>
-     * Determines what kinds of tiles are to be used in a given area.
+     * <h2>Perlin used to generate the world</h2>
      */
-    private FastNoiseLite BiomeHeatmap;
+    private FastNoiseLite BiomeHeatmap, HeightHeatmap, FoliageNoise;
 
     /**
-     * <h2>Perlin height</h2>
-     * Used for modifying terrain with hills and mountains.
+     * <h2>the final tile layer holding the world's tiles.</h2>
      */
-    private FastNoiseLite HeightHeatmap;
-
-
-    private FastNoiseLite FoliageNoise;
+    private TiledMapTileLayer LerpedTileLayer, SpriteLayer,FoliageLayer;
 
     /**
      * <h2>the main tile map container</h2>
      */
     private TiledMap map;
 
-    /**
-     * <h2>the final tile layer holding the world's tiles.</h2>
-     */
-    private TiledMapTileLayer LerpedTileLayer;
-
-    // TODO can this be removed now that units are not a map layer?
-    private TiledMapTileLayer SpriteLayer;
-
-    private TiledMapTileLayer FoliageLayer;
     private static int FOLIAGE_THRESHOLD;
 
     /**
@@ -135,17 +112,18 @@ public final class World {
      * <h2>The tile of this world after interpolation</h2>
      * @apiNote Note well : raw x and y are inverted. <c>worldTile[y][x]</c>
      */
-    public Tile[][] interpolatedTiles;
+    public Tile[][] interpolatedTiles, FoliageLayerTiles;
 
-
-    public Tile[][] FoliageLayerTiles;
-
+    /**
+     * Single chanel data image used to try and determine if the cursor
+     * is over
+     */
     public static BufferedImage hitTest;
     static {
         try {
             hitTest = ImageIO.read(Gdx.files.internal("tsdata/hittest.png").read());
         }
-        catch (IOException e) { }
+        catch (IOException ignored) { }
     }
     //#endregion fields
 
@@ -225,7 +203,7 @@ public final class World {
 
     /**
      * <h2>Generates the base of the world's tiles</h2>
-     * Creates water and land mass, where the landmass is modified by {@link com.shinkson47.SplashX6.game.world.ignored.World#getBiomeTile(int, int)}
+     * Creates water and land mass, where the landmass is modified by {@link com.shinkson47.SplashX6.game.world.World#getBiomeTile(int, int)}
      */
     private void genBase() {
         float f;
@@ -244,7 +222,7 @@ public final class World {
 
     /**
      * <h2>Blends tile boundaries within the world</h2>
-     * Interpolates the tiles in {@link com.shinkson47.SplashX6.game.world.ignored.World#worldTiles} using {@link Tile#interpolate(Tile, Tile, Tile, Tile)}
+     * Interpolates the tiles in {@link com.shinkson47.SplashX6.game.world.World#worldTiles} using {@link Tile#interpolate(Tile, Tile, Tile, Tile)}
      * @see Tile#interpolate(Tile, Tile, Tile, Tile)
      */
     private void genInterpolate() {
@@ -295,7 +273,7 @@ public final class World {
 
     /**
      * <h2>Determines what base tile should be used at x,y</h2>
-     * @return the ground tile which should be according to {@link com.shinkson47.SplashX6.game.world.ignored.World#BiomeHeatmap}
+     * @return the ground tile which should be according to {@link com.shinkson47.SplashX6.game.world.World#BiomeHeatmap}
      */
     private String getBiomeTile(int x, int y){
         float value = BiomeHeatmap.GetNoise(x,y);
@@ -348,7 +326,7 @@ public final class World {
 
 
     /**
-     * <h2>Constructs the GDX {@link TiledMap} stored in this world's {@link com.shinkson47.SplashX6.game.world.ignored.World#map}</h2>
+     * <h2>Constructs the GDX {@link TiledMap} stored in this world's {@link com.shinkson47.SplashX6.game.world.World#map}</h2>
      * Final step, post generation.
      */
     private void convGDX() {
@@ -366,7 +344,7 @@ public final class World {
     }
 
     /**
-     * <h2>Sub routine for {@link com.shinkson47.SplashX6.game.world.ignored.World#convGDX()}. Constructs cells containing tiles, and adds them to the map layer.</h2>
+     * <h2>Sub routine for {@link com.shinkson47.SplashX6.game.world.World#convGDX()}. Constructs cells containing tiles, and adds them to the map layer.</h2>
      * @param tileName The resource name of the tile to be used.
      * @param x The mapspace x to place it, within layer.
      * @param y The mapspace y to place it, within layer.
@@ -385,7 +363,7 @@ public final class World {
      * <h2>Gets a tile at the raw x,y array position.</h2>
      * @return tile in worldTiles at index x, y.
      * @apiNote Does not acknowledge that rows are staggered when rendered.
-     * @see com.shinkson47.SplashX6.game.world.ignored.World#getStaggeredTile(int, int) to account for row stagger, or for getting tiles relative to another
+     * @see com.shinkson47.SplashX6.game.world.World#getStaggeredTile(int, int) to account for row stagger, or for getting tiles relative to another
      */
     public Tile getTile(int x, int y) {
         return Utility.checkIn2DBounds(y, x, worldTiles) ? null : worldTiles[y][x];
@@ -435,11 +413,11 @@ public final class World {
     public void regenerate() { generateWorld(DEFAULT_HEIGHT,DEFAULT_WIDTH); }
 
     /**
-     * <h2>Swaps {@link com.shinkson47.SplashX6.game.world.ignored.World#worldTiles} and {@link com.shinkson47.SplashX6.game.world.ignored.World#interpolatedTiles}</h2>
+     * <h2>Swaps {@link com.shinkson47.SplashX6.game.world.World#worldTiles} and {@link com.shinkson47.SplashX6.game.world.World#interpolatedTiles}</h2>
      * where World tiles stores the original world tiles without blending, and interpolated is after tile blending.
      * <br><br>
      * TODO this should modify an access buffer, not these variables. interpolatedtiles should say interpolated, worldtile should stay as world tiles.
-     * @deprecated These bufferes should nolonger be swapped, now that they export to GDX TileMap. Instead, swap GDX TiledMapLayers using {@link com.shinkson47.SplashX6.game.world.ignored.World#swapTiledInterp()}
+     * @deprecated These bufferes should nolonger be swapped, now that they export to GDX TileMap. Instead, swap GDX TiledMapLayers using {@link com.shinkson47.SplashX6.game.world.World#swapTiledInterp()}
      */
     @Deprecated
     public void swapInterp(){
@@ -449,7 +427,7 @@ public final class World {
     }
 
     /**
-     * <h2>Swaps the layer in {@link com.shinkson47.SplashX6.game.world.ignored.World#map} between {@link com.shinkson47.SplashX6.game.world.ignored.World#LerpedTileLayer} and {@link com.shinkson47.SplashX6.game.world.ignored.World#UnLerpedTileLayer}</h2>
+     * <h2>Swaps the layer in {@link com.shinkson47.SplashX6.game.world.World#map} between {@link com.shinkson47.SplashX6.game.world.World#LerpedTileLayer} and {@link com.shinkson47.SplashX6.game.world.World#UnLerpedTileLayer}</h2>
      * where World tiles stores the original world tiles without blending, and interpolated is after tile blending.
      * <br><br>
      * TODO this should modify an access buffer, not these variables. interpolatedtiles should say interpolated, worldtile should stay as world tiles.
@@ -546,7 +524,7 @@ public final class World {
 
     /**
      * <h2>Gets the GDX {@link TiledMap} of this world.</h2>
-     * @return {@link com.shinkson47.SplashX6.game.world.ignored.World#map}
+     * @return {@link com.shinkson47.SplashX6.game.world.World#map}
      */
     public TiledMap getMap() {
         return map;
