@@ -1,9 +1,7 @@
 package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -24,16 +22,15 @@ import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
+import com.shinkson47.SplashX6.rendering.GameWindowManager;
 import com.shinkson47.SplashX6.rendering.screens.gameutils.units;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Debug;
-import com.shinkson47.SplashX6.game.world.World;
 
 import static com.shinkson47.SplashX6.game.world.World.*;
+import static com.shinkson47.SplashX6.rendering.GameWindowManager.Companion.*;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
-import static com.shinkson47.SplashX6.utility.Assets.LANG;
-import static com.shinkson47.SplashX6.utility.Assets.SKIN;
 
 
 /**
@@ -143,6 +140,7 @@ public class GameScreen extends ScreenAdapter {
 
         // Add to stage
         stage.addActor(menu);
+        stage.addActor(GameWindowManager.Companion.getWINDOW_DOCK());
     }
 
 

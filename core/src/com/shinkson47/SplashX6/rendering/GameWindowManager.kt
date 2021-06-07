@@ -1,51 +1,42 @@
 package com.shinkson47.SplashX6.rendering
 
+import com.badlogic.gdx.scenes.scene2d.ui.List
+import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.utility.Assets
+
 /**
-  * # TODO
-  * @author [Jordan T. Gray](https://www.shinkson47.in) on 04/06/2021
-  * @since v1
-  * @version 1 
- */class GameWindowManager @JvmOverloads constructor () {   
- 
-    
-    // ============================================================
-    // region fields
-    // ============================================================
-    
-    
-    // ============================================================
-    // endregion fields
-    // region functions  
-    // ============================================================
+ * # Utility that manages tool windows within the game screen
+ * The aim is that the user has some way to better manage and access all the
+ * game tool windows.
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 04/06/2021
+ * @since PRE-ALPHA 0.0.2
+ * @version 1
+ */
+class GameWindowManager : StageWindow() {
 
-
-    // ============================================================
-    // endregion functions
-    // region companion    
-    // ============================================================
-
-    /**
-     * # TODO
-     */
     companion object {
-        init {
+        @JvmStatic private val GAME_WINDOWS: Array<StageWindow> = Array()
+        @JvmStatic val WINDOW_DOCK : GameWindowManager = GameWindowManager();
 
+
+        @JvmStatic fun add(sw: StageWindow) {
+            GAME_WINDOWS.add(sw)
+            WINDOW_DOCK.update()
         }
     }
 
-    // ============================================================
-    // endregion companion
-    // region initalisation    
-    // ============================================================
 
-    init {
+    private var list : List<StageWindow>? = null;
 
+    override fun constructContent() {
+        list = List(Assets.SKIN)
+        GAME_WINDOWS.clear()
+        addList(list, "ttWindowDock")
+        update()
     }
-        
-    // ============================================================
-    // endregion initalisation    
-    // ============================================================
-        
-    
-       
+
+    fun update() {
+        list!!.setItems(GAME_WINDOWS)
+        pack()
+    }
 }

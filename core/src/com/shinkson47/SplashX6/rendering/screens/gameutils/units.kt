@@ -98,17 +98,6 @@ class units : StageWindow("Units"), Runnable {
         pack()
     }
 
-    /**
-     * # Adds a list in a scrollable pane of a fixed height
-     */
-    private fun addList(list: List<Unit>, tooltipKey: String) {
-        val sp = ScrollPane(list, skin)
-        add(sp).fillX()
-        tooltip(tooltipKey)
-        getCell(sp).height(200f)
-        row()
-    }
-
     private fun refresh() {
         refreshSelected()
         refreshUnits()

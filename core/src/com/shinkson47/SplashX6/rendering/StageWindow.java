@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.AudioController;
+import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.utility.Assets;
 
 import java.util.ArrayList;
@@ -86,6 +88,8 @@ public abstract class StageWindow extends Window {
      */
     private int lastSpan = 1000;
 
+    public String title;
+
 
     //=====================================================================
     //#endregion fields
@@ -115,8 +119,12 @@ public abstract class StageWindow extends Window {
 
     public StageWindow(String title, String style, Boolean visible, Boolean resizable) {
         super("", Assets.SKIN);
+        this.title = title;
         if (!style.equals("")) setStyle(Assets.SKIN.get(style, WindowStyle.class));
+        if (GameHypervisor.getInGame()) GameWindowManager.Companion.add(this);
 //        setDebug(true);
+
+
         center();
 
         placeTitle(style, title);
@@ -540,6 +548,18 @@ public abstract class StageWindow extends Window {
         return c;
     }
 
+
+    /**
+     * # Adds a list in a scrollable pane of a fixed height
+     */
+    protected void addList(com.badlogic.gdx.scenes.scene2d.ui.List<?> list, String tooltipKey) {
+        ScrollPane sp = new ScrollPane(list, Assets.SKIN);
+        add(sp).fillX();
+        tooltip(tooltipKey);
+        getCell(sp).height(200f);
+        row();
+    }
+
     /**
      * Modifies the provided cell to span all columns of the window table.
      * <p>
@@ -575,6 +595,12 @@ public abstract class StageWindow extends Window {
         for (Cell c : spannedCells)
             c.colspan(lastSpan);
 
+    }
+
+
+    @Override
+    public String toString() {
+        return title;
     }
 
     /**
