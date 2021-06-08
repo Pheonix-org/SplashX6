@@ -195,7 +195,11 @@ public abstract class StageWindow extends Window {
      * @param windowStyle The style of the window, determines the placement and style of heading used.
      * @param title       The title text
      */
-    private static void placeTitle(Window w, String windowStyle, String title) {
+    protected static void placeTitle(Window w, String windowStyle, String title) {
+        placeTitle(w, windowStyle, title, true);
+    }
+
+    protected static void placeTitle(Window w, String windowStyle, String title, Boolean close) {
         // If there's no title, do nothing
         if (title.equals("")) return;
 
@@ -216,6 +220,7 @@ public abstract class StageWindow extends Window {
             w.getTitleTable().padTop(100);
 
             // Add a close button at top border
+            if (close)
             w.getTitleTable()
                     .add(button("close", o -> {
                         if (w instanceof StageWindow && ((StageWindow)w).dontClose)
@@ -566,7 +571,7 @@ public abstract class StageWindow extends Window {
         ScrollPane sp = new ScrollPane(list, Assets.SKIN);
         add(sp).fillX();
         tooltip(tooltipKey);
-        getCell(sp).height(200f);
+        getCell(sp).height(100f);
         row();
     }
 

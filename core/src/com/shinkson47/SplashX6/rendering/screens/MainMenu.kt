@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.rendering.screens
 import com.badlogic.gdx.ScreenAdapter
 import com.shinkson47.SplashX6.utility.Assets
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -38,6 +39,7 @@ class MainMenu : ScreenAdapter() {
     //#region listeners
     private var menuWindow: Window? = null
     private var BaseTable = Table().center()
+    private val batch = SpriteBatch()
 
     /**
      * The window shown at the main menu that contains option for the user
@@ -72,6 +74,10 @@ class MainMenu : ScreenAdapter() {
 
     //#region operations
     override fun render(delta: Float) {
+        batch.begin()
+        batch.draw(Assets.menubg, 0f,0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        batch.end()
+
         stage.act()
         stage.draw()
     }

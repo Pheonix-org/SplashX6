@@ -1,0 +1,140 @@
+
+x6.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boubleborder
+  rotate: false
+  xy: 808, 895
+  size: 120, 102
+  split: 60, 59, 51, 50
+  orig: 120, 102
+  offset: 0, 0
+  index: -1
+buttonOff
+  rotate: false
+  xy: 515, 935
+  size: 291, 62
+  orig: 291, 62
+  offset: 0, 0
+  index: -1
+buttonOffDisable
+  rotate: false
+  xy: 1, 341
+  size: 291, 62
+  orig: 291, 62
+  offset: 0, 0
+  index: -1
+buttonOffHover
+  rotate: false
+  xy: 515, 871
+  size: 291, 62
+  orig: 291, 62
+  offset: 0, 0
+  index: -1
+buttonOn
+  rotate: false
+  xy: 1, 277
+  size: 291, 62
+  orig: 291, 62
+  offset: 0, 0
+  index: -1
+checkOff
+  rotate: false
+  xy: 930, 960
+  size: 34, 37
+  orig: 34, 37
+  offset: 0, 0
+  index: -1
+checkOffDisable
+  rotate: false
+  xy: 294, 331
+  size: 34, 37
+  orig: 34, 37
+  offset: 0, 0
+  index: -1
+checkOffHover
+  rotate: false
+  xy: 515, 797
+  size: 34, 37
+  orig: 34, 37
+  offset: 0, 0
+  index: -1
+checkOn
+  rotate: false
+  xy: 294, 370
+  size: 36, 33
+  orig: 36, 33
+  offset: 0, 0
+  index: -1
+checkOnDisable
+  rotate: false
+  xy: 515, 836
+  size: 36, 33
+  orig: 36, 33
+  offset: 0, 0
+  index: -1
+checkOnHover
+  rotate: false
+  xy: 1, 242
+  size: 36, 33
+  orig: 36, 33
+  offset: 0, 0
+  index: -1
+MorrisRoman-Widget
+  rotate: false
+  xy: 1, 405
+  size: 506, 78
+  orig: 506, 78
+  offset: 0, 0
+  index: -1
+paper background
+  rotate: false
+  xy: 1, 485
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
+radioOff
+  rotate: false
+  xy: 332, 371
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+radioOffDisable
+  rotate: false
+  xy: 553, 837
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+radioOffHover
+  rotate: false
+  xy: 1, 208
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+radioOn
+  rotate: false
+  xy: 39, 243
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+radioOnDisable
+  rotate: false
+  xy: 930, 926
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1
+radioOnHover
+  rotate: false
+  xy: 966, 965
+  size: 33, 32
+  orig: 33, 32
+  offset: 0, 0
+  index: -1

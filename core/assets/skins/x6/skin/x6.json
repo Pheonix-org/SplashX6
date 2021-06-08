@@ -1,0 +1,173 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	Main: {
+		file: MorrisRoman-Black.fnt
+	}
+	MorrisRoman-Widget: {
+		file: MorrisRoman-Widget.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	Black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	TextBorder: {
+		r: 0.47666687
+		g: 0.37695104
+		b: 0.21608898
+		a: 1
+	}
+	White: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+	Widget: {
+		r: 1
+		g: 0.9634576
+		b: 0.90666664
+		a: 1
+	}
+	WindowBG: {
+		r: 0.8666667
+		g: 0.64705884
+		b: 0.41568628
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable: {
+	tiledtex: {
+		region: paper background
+		color: White
+		minWidth: 512
+		minHeight: 512
+	}
+}
+com.ray3k.tenpatch.TenPatchDrawable: {
+	buttonOffDisable10: {
+		region: buttonOffDisable
+		horizontalStretchAreas: [ 65, 249 ]
+		verticalStretchAreas: [ 31, 32 ]
+		tiling: true
+		minWidth: 291
+		minHeight: 62
+		rightWidth: 39
+		leftWidth: 38
+		bottomHeight: 15
+		topHeight: 13
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	buttonOffHover10: {
+		region: buttonOffHover
+		horizontalStretchAreas: [ 65, 249 ]
+		verticalStretchAreas: [ 31, 32 ]
+		tiling: true
+		minWidth: 291
+		minHeight: 62
+		rightWidth: 39
+		leftWidth: 38
+		bottomHeight: 15
+		topHeight: 13
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	buttonOn10: {
+		region: buttonOn
+		horizontalStretchAreas: [ 65, 249 ]
+		verticalStretchAreas: [ 31, 32 ]
+		tiling: true
+		minWidth: 291
+		minHeight: 62
+		rightWidth: 39
+		leftWidth: 38
+		bottomHeight: 15
+		topHeight: 13
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	buttonOff10: {
+		region: buttonOff
+		horizontalStretchAreas: [ 65, 249 ]
+		verticalStretchAreas: [ 31, 32 ]
+		tiling: true
+		minWidth: 291
+		minHeight: 62
+		rightWidth: 39
+		leftWidth: 38
+		bottomHeight: 15
+		topHeight: 13
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: buttonOff10
+		down: buttonOn10
+		over: buttonOffHover10
+		disabled: buttonOffDisable10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: checkOn
+		checkboxOff: checkOff
+		checkboxOnOver: checkOnHover
+		checkboxOver: checkOffHover
+		checkboxOnDisabled: checkOnDisable
+		checkboxOffDisabled: checkOffDisable
+		font: Main
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: Main
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		parent: default
+		font: MorrisRoman-Widget
+		up: buttonOff10
+		down: buttonOn10
+		over: buttonOffHover10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: boubleborder
+		titleFont: Main
+		titleFontColor: Black
+	}
+}
+}

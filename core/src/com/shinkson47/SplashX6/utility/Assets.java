@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.utility;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -36,7 +37,7 @@ public class Assets {
         unitSprites = new TextureAtlas("sprites/units.atlas");
         citySprites = new TextureAtlas("sprites/cities.atlas");
 
-        SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
+        SKIN = new Skin(Gdx.files.internal("skins/x6/skin/x6.json"));
         
         // Tilesets
         TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
@@ -101,6 +102,8 @@ public class Assets {
 
     //#region UI
     public static final Skin SKIN;
+
+    public static final Texture menubg = new Texture("bg.png");
     //#endregion UI
 
     //#region World
@@ -144,8 +147,8 @@ public class Assets {
     //#endregion World
 
     //#region audio
-    public static final Music MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("sounds/MainMenu/night_theme_2.wav"));
-    public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/click33.wav"));
+    public static final Music MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/night_theme_2.wav"));
+    public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/click33.wav"));
     //#endregion audio
 
     public static final String

@@ -235,7 +235,6 @@ class GameHypervisor {
          * in tile space.
          */
         fun unit_setDestination() {
-            // TODO Doesn't seem to set the correct location
             with(GameData.selectedUnit!!) {
                 val dest: Vector3 = camera_focusingOnTile()
                 destX = dest.x.toInt()

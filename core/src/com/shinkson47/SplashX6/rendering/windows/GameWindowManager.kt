@@ -63,6 +63,7 @@ object GameWindowManager {
         private lateinit var list: List<StageWindow>
 
         override fun constructContent() {
+            placeTitle(this, "window", "Available Windows", false)
             isMovable = false
 
             list = List(Assets.SKIN)
