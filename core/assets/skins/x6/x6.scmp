@@ -345,25 +345,6 @@ atlasData: {
 			hidden: false
 		}
 		{
-			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/boubleborder.9.png"
-			bgColor: {
-				r: 1
-				g: 1
-				b: 1
-				a: 1
-			}
-			tint: null
-			tintName: null
-			name: boubleborder
-			tiled: false
-			minWidth: -1
-			minHeight: -1
-			customized: false
-			tenPatchData: null
-			type: NINE_PATCH
-			hidden: false
-		}
-		{
 			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/buttonOffDisable.png"
 			bgColor: {
 				r: 1
@@ -549,6 +530,384 @@ atlasData: {
 				playMode: 2
 			}
 			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: null
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: Black
+			name: Black
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: PIXEL
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/slider-h.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: slider-h
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/slider-h.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: slider-h10
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 108, 108 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 14, 14 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 0
+				contentRight: 0
+				contentTop: 0
+				contentBottom: 0
+				tile: true
+				colorName: null
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/slider-h-knob.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: slider-h-knob
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/slider-h-knob-disable.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: slider-h-knob-disable
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/slider-h-knob-down.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: slider-h-knob-down
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/slider-h-knob-hover.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: slider-h-knob-hover
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/doubleborder.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: doubleborder
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/doubleborder.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: doubleborder10
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 14, 518 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 13, 519 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 16
+				contentRight: 16
+				contentTop: 16
+				contentBottom: 16
+				tile: true
+				colorName: null
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/widet.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: widet
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/widet.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: widet10
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 17, 74 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 15, 76 ]
+					size: 2
+					ordered: true
+				}
+				contentLeft: 15
+				contentRight: 15
+				contentTop: 15
+				contentBottom: 15
+				tile: true
+				colorName: null
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/selecteditem.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: selecteditem
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: TEXTURE
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/selecteditem.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: selecteditem10
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: {
+				horizontalStretchAreas: {
+					items: [ 34, 34, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+					size: 2
+					ordered: true
+				}
+				verticalStretchAreas: {
+					items: [ 18, 17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+					size: 0
+					ordered: true
+				}
+				contentLeft: 33
+				contentRight: 35
+				contentTop: 0
+				contentBottom: 0
+				tile: false
+				colorName: null
+				color1Name: null
+				color2Name: null
+				color3Name: null
+				color4Name: null
+				offsetX: 0
+				offsetY: 0
+				offsetXspeed: 0
+				offsetYspeed: 0
+				frameDuration: 0.03
+				regionNames: []
+				playMode: 2
+			}
+			type: TENPATCH
+			hidden: false
+		}
+		{
+			file: null
+			bgColor: {
+				r: 0
+				g: 0
+				b: 0
+				a: 1
+			}
+			tint: null
+			tintName: White
+			name: White
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: PIXEL
 			hidden: false
 		}
 	]
@@ -782,7 +1141,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: null
+						value: doubleborder10
 					}
 					corner: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -829,7 +1188,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: boubleborder
+						value: doubleborder10
 					}
 					titleFont: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -852,6 +1211,39 @@ jsonData: {
 				}
 				deletable: false
 				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: dialog-modal
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Window
+				properties: {
+					background: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: null
+					}
+					titleFont: {
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: titleFont
+						optional: false
+						value: null
+					}
+					titleFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: titleFontColor
+						optional: true
+						value: null
+					}
+					stageBackground: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: stageBackground
+						optional: true
+						value: Black
+					}
+				}
+				deletable: true
+				parent: default
 			}
 		]
 		com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton: [
@@ -1037,19 +1429,19 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: knobOver
 						optional: true
-						value: null
+						value: slider-h-knob-hover
 					}
 					knobDown: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: knobDown
 						optional: true
-						value: null
+						value: slider-h-knob-down
 					}
 					background: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: false
-						value: null
+						value: slider-h10
 					}
 					disabledBackground: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -1061,13 +1453,13 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: knob
 						optional: true
-						value: null
+						value: slider-h-knob
 					}
 					disabledKnob: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: disabledKnob
 						optional: true
-						value: null
+						value: slider-h-knob-disable
 					}
 					knobBefore: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -1177,13 +1569,82 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
+						value: MorrisRoman-Widget
+					}
+					fontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: false
+						value: Black
+					}
+					overFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: overFontColor
+						optional: true
+						value: null
+					}
+					disabledFontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: disabledFontColor
+						optional: true
+						value: null
+					}
+					background: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: selecteditem10
+					}
+					scrollStyle: {
+						type: com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle
+						name: scrollStyle
+						optional: false
+						value: default
+					}
+					listStyle: {
+						type: com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle
+						name: listStyle
+						optional: false
+						value: default
+					}
+					backgroundOver: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: backgroundOver
+						optional: true
+						value: null
+					}
+					backgroundOpen: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: backgroundOpen
+						optional: true
+						value: null
+					}
+					backgroundDisabled: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: backgroundDisabled
+						optional: true
+						value: null
+					}
+				}
+				deletable: false
+				parent: null
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: window-dock
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.SelectBox
+				properties: {
+					font: {
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
 						value: null
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: false
-						value: null
+						value: Widget
 					}
 					overFontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1234,8 +1695,8 @@ jsonData: {
 						value: null
 					}
 				}
-				deletable: false
-				parent: null
+				deletable: true
+				parent: default
 			}
 		]
 		com.badlogic.gdx.scenes.scene2d.ui.ProgressBar: [
@@ -1370,7 +1831,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColorSelected
 						optional: false
-						value: Black
+						value: White
 					}
 					fontColorUnselected: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1382,7 +1843,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: selection
 						optional: false
-						value: null
+						value: selecteditem10
 					}
 					down: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -1672,7 +2133,7 @@ jsonData: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
 						name: background
 						optional: true
-						value: null
+						value: White
 					}
 					wrapWidth: {
 						type: float
@@ -1977,6 +2438,60 @@ jsonData: {
 				deletable: false
 				parent: null
 			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: bar
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Label
+				properties: {
+					font: {
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: MorrisRoman-Widget
+					}
+					fontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: true
+						value: White
+					}
+					background: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: Black
+					}
+				}
+				deletable: true
+				parent: default
+			}
+			{
+				class: com.ray3k.skincomposer.data.StyleData
+				name: title
+				clazz: com.badlogic.gdx.scenes.scene2d.ui.Label
+				properties: {
+					font: {
+						type: com.badlogic.gdx.graphics.g2d.BitmapFont
+						name: font
+						optional: false
+						value: MorrisRoman-Widget
+					}
+					fontColor: {
+						type: com.badlogic.gdx.graphics.Color
+						name: fontColor
+						optional: true
+						value: Widget
+					}
+					background: {
+						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
+						name: background
+						optional: true
+						value: null
+					}
+				}
+				deletable: true
+				parent: default
+			}
 		]
 		com.badlogic.gdx.scenes.scene2d.ui.TextField: [
 			{
@@ -2065,9 +2580,9 @@ preferences: {
 	}
 	preview-bg-color: {
 		class: com.badlogic.gdx.graphics.Color
-		r: 0.97333354
-		g: 0.97333354
-		b: 0.97333354
+		r: 0
+		g: 0
+		b: 0
 		a: 1
 	}
 	last-import-export-path: {

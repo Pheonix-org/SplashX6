@@ -213,11 +213,10 @@ public abstract class StageWindow extends Window {
             // Use plain upper, with 'title' style class (which wraps in '[]' and opaque bg to cover window border.)
             label = new Label(title.toUpperCase(), Assets.SKIN, "title");
         } else {
-            // No style, surround with ****
-            label = new Label("**** " + title.toUpperCase() + " ****", Assets.SKIN);
+            label = new Label(title.toUpperCase(), Assets.SKIN);
 
             // Move down into window
-            w.getTitleTable().padTop(100);
+            w.getTitleTable().padTop(85);
 
             // Add a close button at top border
             if (close)
@@ -238,6 +237,7 @@ public abstract class StageWindow extends Window {
         label.setAlignment(Align.bottom);
         w.getTitleTable()
                 .add(label)
+                .padBottom(20)
                 .row();
 
         // Add a gap between the title and the first row of content in the window.
@@ -264,7 +264,11 @@ public abstract class StageWindow extends Window {
     }
 
     public static Cell<Label> label(String key, Table t){
-        Label l = new Label(local(key), Assets.SKIN);
+        return label(key, t, "default");
+    }
+
+    public static Cell<Label> label(String key, Table t, String style){
+        Label l = new Label(local(key), Assets.SKIN, style);
 
         return t.add(l).padTop(20f);
     }
@@ -443,7 +447,7 @@ public abstract class StageWindow extends Window {
         }
 
         // Add the tab selector buttons to the top of the window.
-        getTitleTable().add(tabs);
+        getTitleTable().padTop(135).add(tabs);
 
         // Expand and populate the content cell, using the first tab's content.
         expandfill(contentCell);

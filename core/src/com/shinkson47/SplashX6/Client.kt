@@ -11,6 +11,7 @@ import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.rendering.screens.SplashScreen
 
 /**
  * # The main game
@@ -28,7 +29,7 @@ class Client : Game() {
         isFullscreen = Gdx.graphics.isFullscreen
         Assets.Create()
         MouseHandler.create()
-        MainMenu().let { setScreen(it) }
+        setScreen(SplashScreen())
 
         Gdx.gl.glClearColor(r, g, b, a)
     }
@@ -67,12 +68,12 @@ class Client : Game() {
     }
 
     companion object {
-        const val r = 0.2588235294f
-        const val g = 0.2588235294f
-        const val b = 0.9058823529f
+        const val r = 0f
+        const val g = 0f
+        const val b = 0f
         const val a = 1f
-        const val hr = 0.6470588235f
-        const val hg = 0.6470588235f
+        const val hr = 0f
+        const val hg = 0f
 
         @JvmField
         var client: Client? = null

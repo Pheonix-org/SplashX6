@@ -26,7 +26,9 @@ import com.shinkson47.SplashX6.utility.Assets.SKIN
  * @since v1
  * @version 1
  */
-class CreditsScreen : ScreenAdapter() {
+open class CreditsScreen : ScreenAdapter() {
+
+    protected var renderBG = true;
 
     /**
      * # Stage that is only used for scaling.
@@ -37,8 +39,7 @@ class CreditsScreen : ScreenAdapter() {
     /**
      * # The [BitmapFont] used to render the content of [glyph]
      */
-    private var font : BitmapFont = SKIN.getFont("commodore-64")
-    init {font.setColor(Client.hr,Client.hg, Client.b,1f)}
+    protected var font : BitmapFont = SKIN.getFont("Main")
 
     /**
      * # Current string to be rendered by [font]
@@ -81,7 +82,7 @@ class CreditsScreen : ScreenAdapter() {
      *
      * Modified to have the first line removed when [lineIndex] reaches [maxLines]
      */
-    private var lines = Assets.CREDITS_TEXT.split("\n")
+    protected var lines = Assets.CREDITS_TEXT.split("\n")
 
     /**
      * # Calculated max number of lines that can fit within the window before we have to start stripping the
@@ -135,6 +136,7 @@ class CreditsScreen : ScreenAdapter() {
 
 
         batch.begin()                       // Begin GL render semaphore
+        if (renderBG) SKIN.getDrawable("tiledtex").draw(batch,0f,0f,Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
 
         // For every line up to the line we are stamping
         while (currentLineIndex <= lineIndex && currentLineIndex < lines.size) {

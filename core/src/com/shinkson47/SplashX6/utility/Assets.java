@@ -147,12 +147,16 @@ public class Assets {
     //#endregion World
 
     //#region audio
-    public static final Music MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/night_theme_2.wav"));
+    public static final Music
+            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/medieval.ogg")),
+            GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/overworld theme.ogg"));
+
     public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/click33.wav"));
     //#endregion audio
 
     public static final String
-            CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString();
+            CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString(),
+            SPLASH_TEXT = Gdx.files.internal("lang/legal.txt").readString();
 
 
 }

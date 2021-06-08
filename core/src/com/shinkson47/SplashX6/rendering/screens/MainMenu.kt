@@ -125,18 +125,9 @@ class MainMenu : ScreenAdapter() {
         })
         BaseTable.add(SecretButton).center().row()
         stage.addActor(BaseTable)
-        BaseTable = Table().bottom()
-
-        with(BaseTable) {
-            setFillParent(true)
-            label("wipver", this).fillX().align(Align.center).row()
-            label("copr", this).center()
-            padBottom(10f)
-    }
 
         // Set up window to with as glfw environment
         resize(Gdx.graphics.width, Gdx.graphics.height)
-        stage.addActor(BaseTable)
         stage.addActor(menuWindow)
 
         // Set the stage to handle key and mouse input

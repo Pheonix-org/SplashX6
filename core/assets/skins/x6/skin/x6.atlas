@@ -1,140 +1,202 @@
 
 x6.png
-size: 1024,1024
+size: 2048,2048
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-boubleborder
+white-pixel
   rotate: false
-  xy: 808, 895
-  size: 120, 102
-  split: 60, 59, 51, 50
-  orig: 120, 102
+  xy: 515, 1015
+  size: 1, 1
+  orig: 1, 1
   offset: 0, 0
   index: -1
 buttonOff
   rotate: false
-  xy: 515, 935
+  xy: 535, 1408
   size: 291, 62
   orig: 291, 62
   offset: 0, 0
   index: -1
 buttonOffDisable
   rotate: false
-  xy: 1, 341
+  xy: 1043, 1488
   size: 291, 62
   orig: 291, 62
   offset: 0, 0
   index: -1
 buttonOffHover
   rotate: false
-  xy: 515, 871
+  xy: 1, 330
   size: 291, 62
   orig: 291, 62
   offset: 0, 0
   index: -1
 buttonOn
   rotate: false
-  xy: 1, 277
+  xy: 535, 1344
   size: 291, 62
   orig: 291, 62
   offset: 0, 0
   index: -1
 checkOff
   rotate: false
-  xy: 930, 960
+  xy: 922, 1398
   size: 34, 37
   orig: 34, 37
   offset: 0, 0
   index: -1
 checkOffDisable
   rotate: false
-  xy: 294, 331
+  xy: 1, 216
   size: 34, 37
   orig: 34, 37
   offset: 0, 0
   index: -1
 checkOffHover
   rotate: false
-  xy: 515, 797
+  xy: 535, 1233
   size: 34, 37
   orig: 34, 37
   offset: 0, 0
   index: -1
 checkOn
   rotate: false
-  xy: 294, 370
+  xy: 294, 359
   size: 36, 33
   orig: 36, 33
   offset: 0, 0
   index: -1
 checkOnDisable
   rotate: false
-  xy: 515, 836
+  xy: 535, 1309
   size: 36, 33
   orig: 36, 33
   offset: 0, 0
   index: -1
 checkOnHover
   rotate: false
-  xy: 1, 242
+  xy: 922, 1437
   size: 36, 33
   orig: 36, 33
   offset: 0, 0
   index: -1
+doubleborder
+  rotate: false
+  xy: 1, 1018
+  size: 532, 532
+  orig: 532, 532
+  offset: 0, 0
+  index: -1
+MorrisRoman-Black(1)
+  rotate: false
+  xy: 1, 394
+  size: 506, 108
+  orig: 506, 108
+  offset: 0, 0
+  index: -1
 MorrisRoman-Widget
   rotate: false
-  xy: 1, 405
+  xy: 535, 1472
   size: 506, 78
   orig: 506, 78
   offset: 0, 0
   index: -1
 paper background
   rotate: false
-  xy: 1, 485
+  xy: 1, 504
   size: 512, 512
   orig: 512, 512
   offset: 0, 0
   index: -1
 radioOff
   rotate: false
-  xy: 332, 371
+  xy: 1336, 1488
   size: 33, 32
   orig: 33, 32
   offset: 0, 0
   index: -1
 radioOffDisable
   rotate: false
-  xy: 553, 837
+  xy: 828, 1344
   size: 33, 32
   orig: 33, 32
   offset: 0, 0
   index: -1
 radioOffHover
   rotate: false
-  xy: 1, 208
+  xy: 332, 360
   size: 33, 32
   orig: 33, 32
   offset: 0, 0
   index: -1
 radioOn
   rotate: false
-  xy: 39, 243
+  xy: 960, 1438
   size: 33, 32
   orig: 33, 32
   offset: 0, 0
   index: -1
 radioOnDisable
   rotate: false
-  xy: 930, 926
+  xy: 111, 296
   size: 33, 32
   orig: 33, 32
   offset: 0, 0
   index: -1
 radioOnHover
   rotate: false
-  xy: 966, 965
+  xy: 573, 1273
   size: 33, 32
   orig: 33, 32
+  offset: 0, 0
+  index: -1
+selecteditem
+  rotate: false
+  xy: 1, 292
+  size: 70, 36
+  orig: 70, 36
+  offset: 0, 0
+  index: -1
+slider-h
+  rotate: false
+  xy: 1336, 1522
+  size: 216, 28
+  orig: 216, 28
+  offset: 0, 0
+  index: -1
+slider-h-knob
+  rotate: false
+  xy: 1, 255
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+slider-h-knob-disable
+  rotate: false
+  xy: 73, 293
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+slider-h-knob-down
+  rotate: false
+  xy: 535, 1272
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+slider-h-knob-hover
+  rotate: false
+  xy: 573, 1307
+  size: 36, 35
+  orig: 36, 35
+  offset: 0, 0
+  index: -1
+widet
+  rotate: false
+  xy: 828, 1378
+  size: 92, 92
+  orig: 92, 92
   offset: 0, 0
   index: -1

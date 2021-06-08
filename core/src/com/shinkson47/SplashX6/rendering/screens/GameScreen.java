@@ -30,6 +30,7 @@ import com.shinkson47.SplashX6.utility.Debug;
 import static com.shinkson47.SplashX6.game.world.World.*;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
+import static com.shinkson47.SplashX6.utility.Assets.SKIN;
 
 
 /**
@@ -81,6 +82,8 @@ public class GameScreen extends ScreenAdapter {
      */
     private Float centerx = Gdx.graphics.getWidth() * 0.5f, centery = Gdx.graphics.getHeight() * 0.5f;
 
+    public final Table menu = new Table( SKIN );
+
 
 
 
@@ -115,17 +118,12 @@ public class GameScreen extends ScreenAdapter {
         MouseHandler.configureGameInput(stage);
 
         // Table shown at top of window as a menu bar
-        Table menu = new Table( Assets.SKIN );
-
-        menu.setPosition(0,Gdx.graphics.getHeight()-30);
-        menu.setSize(Gdx.graphics.getWidth(),30);
-        menu.top();
+        menu.setPosition(0,Gdx.graphics.getHeight()-90);
+        menu.setSize(Gdx.graphics.getWidth(),90);
+        menu.center();
 
         // Set color
-        Pixmap bgPixmap = new Pixmap(1,1, Pixmap.Format.RGB565);
-        bgPixmap.setColor(Client.hr,Client.hg,Client.a,Client.a);
-        bgPixmap.fill();
-        menu.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(bgPixmap))));
+        menu.setBackground(SKIN.getDrawable("widet10"));
 
 
         // Add buttons
@@ -136,6 +134,7 @@ public class GameScreen extends ScreenAdapter {
         applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsWindow()))));
         applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
         applyMenuStyling(menu.add(button("endTurn", o -> GameHypervisor.turn_end())));
+
 
         // Add to stage
         stage.addActor(menu);

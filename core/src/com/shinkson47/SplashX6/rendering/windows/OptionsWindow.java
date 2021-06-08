@@ -87,7 +87,7 @@ public class OptionsWindow extends StageWindow {
                                 "edges of screen. Test zoomed out, and dragging around.", Assets.SKIN)).row();
 
             add(new Label("DO NOT extend further than nesacerry, \n" +
-                                "as this will greatly effect cpu usage.", Assets.SKIN, "optional")).pad(20).row();
+                                "as this will greatly effect cpu usage.", Assets.SKIN)).pad(20).row();
 
             hsep().padTop(50);
 
@@ -190,16 +190,8 @@ public class OptionsWindow extends StageWindow {
             }
         });
 
-//        // TODO - Implement locale for different languages
-//        Button mute = new Button("Mute") {
-//            AudioController.playButtonSound();
-//
-//        };
-
-        //language.setMaxListCount(3);
         GAME_OPTION_TAB = new Table();
         label("selectLanguage", GAME_OPTION_TAB);
-                //.padRight(20).left();
         GAME_OPTION_TAB.add(languageList).padTop(20f);
 
         GRAPHICS_OPTION_TAB = new Table();
@@ -255,7 +247,8 @@ public class OptionsWindow extends StageWindow {
                      "advanced"
                 )
         );
-        setSize(700, 500);
+        setPosition(100f,100f);
+        setSize(Gdx.graphics.getWidth() - 200, Gdx.graphics.getHeight() - 200);
         //setFillParent(true);
     }
 }
