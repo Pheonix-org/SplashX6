@@ -7,7 +7,7 @@ import com.shinkson47.SplashX6.Client;
 
 import java.awt.*;
 
-public class DesktopLauncher {
+public class SplashX6 {
 	// TODO some kind of swing or java FX launcher GUI.
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -21,6 +21,7 @@ public class DesktopLauncher {
 		config.addIcon("sprites/icon.png", Files.FileType.Internal);
 
 		config.fullscreen = false;
+
 		new LwjglApplication(new Client(), config);
 	}
 }

@@ -175,7 +175,7 @@ open class CreditsScreen : ScreenAdapter() {
      * Sets [maxLines] to the max number of lines that can be displayed with the given height.
      */
     private fun calcMaxLines() = calcMaxLines(Gdx.graphics.height)
-    private fun calcMaxLines(height: Int) { maxLines = (height - 100) / 20 }
+    private fun calcMaxLines(height: Int) { maxLines = (height - 100) / (glyph.height.toInt() * 2) }
 
     /**
      * # Updates the size of the viewport to match the screen.

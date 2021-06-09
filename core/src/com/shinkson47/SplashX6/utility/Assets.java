@@ -35,51 +35,11 @@ import static com.shinkson47.SplashX6.utility.Languages.en;
 public class Assets {
 
     public static void Create(){}
-
-    static{
-        unitSprites = new TextureAtlas("sprites/units.atlas");
-        citySprites = new TextureAtlas("sprites/cities.atlas");
-        menuBG = new TextureAtlas("sprites/menu_bg.atlas");
-        splashBG = new TextureAtlas("sprites/splash_bg.atlas");
-
-        SKIN = new Skin(Gdx.files.internal("skins/x6/skin/x6.json"));
-        
-        // Tilesets
-        TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
-        SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
-
-        // Tileset mapping data
-        // TODO these shouldn't really be ignored
-        Map<String, Object> result;
-        try {
-            result = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
-        } catch (XmlParseException ignored) {
-            result = null;
-        }
-        TILESET_MAP = result;
-
-        try {
-            result = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
-        } catch (XmlParseException ignored) {
-            result = null;
-        }
-        SPRITES_MAP = result;
+    public static void Dispose() {
+        TILESETS.dispose();
     }
 
-    public static I18NBundle LANG;
-
-    public static ArrayList<Locale> languages = new ArrayList<>();
-
-
-    static {
-        for (Languages lang : Languages.values())
-            languages.add(new Locale(lang.toString()));
-    }
-
-    static {
-        loadLanguage(en);
-    }
-
+    // TODO should really be in some kind of language manager
     public static final I18NBundle loadLanguage(Languages lang) {
         LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale(lang.toString()));
         I18NBundle.setExceptionOnMissingKey(false);
@@ -89,21 +49,14 @@ public class Assets {
     }
 
 
-    public static void Dispose() {
-        TILESETS.dispose();
-    }
-
-
-
-
     /* ==========================================================================================*/
     // Actual fucking assets
     /* ==========================================================================================*/
 
 
+    public static I18NBundle LANG;
 
-
-
+    public static ArrayList<Locale> languages;
 
     //#region UI
     public static final Skin SKIN;
@@ -150,7 +103,10 @@ public class Assets {
      *
      * @apiNote The value datatype is int, but the loader will only provide an object. Soz.
      */
-    public static final Map<String, Object> TILESET_MAP, SPRITES_MAP;
+    public static final Map<String, Object>
+            TILESET_MAP,
+            SPRITES_MAP,
+            playlists;
     //#endregion World
 
     //#region audio
@@ -165,13 +121,36 @@ public class Assets {
             CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString(),
             SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString();
 
-    public static Map<String, Object> playlists;
-    static {
+
+
+    static{
+        unitSprites = new TextureAtlas("sprites/units.atlas");
+        citySprites = new TextureAtlas("sprites/cities.atlas");
+        menuBG = new TextureAtlas("sprites/menu_bg.atlas");
+        splashBG = new TextureAtlas("sprites/splash_bg.atlas");
+
+        SKIN = new Skin(Gdx.files.internal("skins/x6/skin/x6.json"));
+
+        // Tilesets
+        TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
+        SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
+
+        // Tileset mapping data
         try {
-            playlists = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
-        } catch (XmlParseException e) {
-            e.printStackTrace();
+            TILESET_MAP = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
+            SPRITES_MAP = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
+            playlists   = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
+        } catch (XmlParseException ignored) {
+            throw new Error("Unable to load XML data.");
         }
+
+
+        // Load languages
+        languages = new ArrayList<>();
+        for (Languages lang : Languages.values())
+            languages.add(new Locale(lang.toString()));
+
+        loadLanguage(en);
     }
 
 

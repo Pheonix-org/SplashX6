@@ -11,6 +11,13 @@ import com.shinkson47.SplashX6.rendering.screens.ScreenTransistion
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.rendering.screens.SplashScreen
+import java.lang.Exception
+import javax.imageio.ImageIO
+import javax.swing.ImageIcon
+
+import com.badlogic.gdx.files.FileHandle
+import java.awt.Image
+
 
 /**
  * # The main game
@@ -63,9 +70,6 @@ class Client : Game() {
         KeyHandler.Poll()
         MouseHandler.Poll()
         currentScreen?.render(Gdx.graphics.deltaTime)
-        //Renderer.render();
-        //AudioManager.Update();
-        //Debug.update();
     }
 
     /**
