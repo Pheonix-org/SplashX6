@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.rendering.windows
 
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
@@ -34,10 +35,7 @@ object GameWindowManager {
         with (WINDOW_DOCK) {
             setPosition(0f, 0f)
             addListener(StageWindow.LambdaClickListener {
-                toggleCurrent()
-                if (currentWindow == selected) return@LambdaClickListener
-                currentWindow = selected
-                toggleCurrent()
+                    select(selected)
             })
         }
     }
@@ -77,9 +75,22 @@ object GameWindowManager {
     }
 
     /**
-     * Destroys all windows.
+     * Clears [GAME_WINDOWS]
      */
     fun dispose() {
         GAME_WINDOWS.clear()
+    }
+
+    fun select(i: Int) = select(WINDOW_DOCK.list.items[i])
+    fun select(it : StageWindow) {
+
+        if (currentWindow == it) {
+            toggleCurrent()
+            return
+        }
+
+        currentWindow?.isVisible = false
+        currentWindow = it
+        toggleCurrent()
     }
 }

@@ -34,7 +34,7 @@ public class AudioController {
      */
     private static float
             musicVolume  = 0.2f,
-            buttonVolume = 0.8f; // DEFAULT VOLUME
+            buttonVolume = 0.2f; // DEFAULT VOLUME
 
     /**
      * <h2>Determines if audio should be played, or not.</h2>

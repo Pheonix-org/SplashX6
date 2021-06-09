@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.utility.Assets
@@ -39,7 +38,8 @@ open class CreditsScreen : ScreenAdapter() {
     /**
      * # The [BitmapFont] used to render the content of [glyph]
      */
-    protected var font : BitmapFont = SKIN.getFont("Main")
+    protected var font : BitmapFont = SKIN.getFont("Vecna")
+    init {font.setColor(0f,0f,0f,1f)}
 
     /**
      * # Current string to be rendered by [font]
@@ -120,7 +120,7 @@ open class CreditsScreen : ScreenAdapter() {
         // If the user is pressing escape, return to the menu.
         // TODO main menu input is not broken down.
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
-            client!!.setScreen(MainMenu())
+            client!!.fadeScreen(MainMenu())
 
         // Increase time since last character
         characterDelta += Gdx.graphics.deltaTime
@@ -161,7 +161,7 @@ open class CreditsScreen : ScreenAdapter() {
 
             // draw whatever we need to draw for the current line.
             // TODO cache x and base of y
-            font.draw(batch, glyph, (Gdx.graphics.width - glyph.width) * 0.5f, Gdx.graphics.height - 50 - (20f * currentLineIndex))
+            font.draw(batch, glyph, (Gdx.graphics.width - glyph.width) * 0.5f, Gdx.graphics.height - 50 - (glyph.height * 2 * currentLineIndex))
 
 
             // move to next line to be drawn this frame

@@ -7,13 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.AudioController;
-import com.shinkson47.SplashX6.game.GameHypervisor;
-import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
 import com.shinkson47.SplashX6.utility.Assets;
 
 import java.util.ArrayList;
@@ -369,7 +368,7 @@ public abstract class StageWindow extends Window {
      * @param negative      The text shown in the negative button. If empty, no button is added.
      * @param resultHandler The handler which handles the button press. If null, no handler is added.
      */
-    protected void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
+    public void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
         dialog(this, title, text, positive, negative, resultHandler);
     }
 
@@ -491,6 +490,26 @@ public abstract class StageWindow extends Window {
         hsep().padBottom(20).row();
 
         return this;
+    }
+
+    /**
+     * dumb compromise that allows statically seperating a table that isn't directly the stage window.
+     * @param t
+     * @param key
+     */
+    public static void seperate(Table t, String key) {
+        t.add(new Label("", seperatorStyle)).colspan(t.getColumns()).height(3).bottom().padBottom(20).row();
+
+        // Create a label that will be the header
+        Label l = new Label(local(key), Assets.SKIN);
+
+        // Make it 20% bigger
+        l.setFontScale(1.2f);
+
+        // Put the text in the middle
+        l.setAlignment(Align.center);
+
+        applyMenuStyling(t.add(l)).padTop(50).row();
     }
 
     /**
@@ -667,6 +686,23 @@ public abstract class StageWindow extends Window {
 
         @Override
         public void clicked(InputEvent event, float x, float y) {
+            c.accept(event);
+        }
+    }
+
+    public static class LambdaChangeListener extends ChangeListener {
+        private Consumer<ChangeEvent> c;
+
+        public LambdaChangeListener(Consumer<ChangeEvent> consumer) {
+            c = consumer;
+        }
+
+        /**
+         * @param event
+         * @param actor The event target, which is the actor that emitted the change event.
+         */
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
             c.accept(event);
         }
     }

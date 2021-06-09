@@ -2,21 +2,16 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
@@ -24,7 +19,6 @@ import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow;
-import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Debug;
 
 import static com.shinkson47.SplashX6.game.world.World.*;
@@ -132,7 +126,7 @@ public class GameScreen extends ScreenAdapter {
         //applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
         applyMenuStyling(menu.add(button("newGame", o -> GameHypervisor.NewGame())));
         applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsWindow()))));
-        applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
+        //applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
         applyMenuStyling(menu.add(button("endTurn", o -> GameHypervisor.turn_end())));
 
 

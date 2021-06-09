@@ -1,13 +1,10 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	Main: {
-		file: MorrisRoman-Black.fnt
+	RetroNewVersion-Large: {
+		file: RetroNewVersion.fnt
 	}
-	MorrisRoman-Widget: {
-		file: MorrisRoman-Widget.fnt
-	}
-	White: {
-		file: MorrisRoman-Black(1).fnt
+	Vecna: {
+		file: Vecna-oppx.fnt
 	}
 }
 com.badlogic.gdx.graphics.Color: {
@@ -230,28 +227,28 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOver: checkOffHover
 		checkboxOnDisabled: checkOnDisable
 		checkboxOffDisabled: checkOffDisable
-		font: Main
+		font: Vecna
+		fontColor: Black
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: Main
+		font: Vecna
+		fontColor: Black
 	}
 	bar: {
 		parent: default
-		font: MorrisRoman-Widget
 		fontColor: White
 		background: Black
 	}
 	title: {
 		parent: default
-		font: MorrisRoman-Widget
 		fontColor: Widget
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: Main
+		font: Vecna
 		fontColorSelected: White
 		fontColorUnselected: Black
 		selection: selecteditem10
@@ -264,7 +261,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
-		font: MorrisRoman-Widget
+		font: Vecna
 		fontColor: Black
 		background: selecteditem10
 		scrollStyle: default
@@ -272,6 +269,7 @@ com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	}
 	window-dock: {
 		parent: default
+		font: Vecna
 		fontColor: Widget
 		scrollStyle: default
 		listStyle: default
@@ -289,7 +287,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		parent: default
-		font: MorrisRoman-Widget
+		font: Vecna
+		fontColor: Widget
 		up: buttonOff10
 		down: buttonOn10
 		over: buttonOffHover10
@@ -304,11 +303,12 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: doubleborder10
-		titleFont: Main
+		titleFont: Vecna
 		titleFontColor: Black
 	}
 	dialog-modal: {
 		parent: default
+		titleFont: Vecna
 		stageBackground: Black
 	}
 }

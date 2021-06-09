@@ -87,8 +87,8 @@ class units : StageWindow("Units"), Runnable {
         actions.addListener(
             LambdaClickListener {
                 GameData.selectedUnit?.let {
-                GameHypervisor.unit_selected()?.onTurnAction = actions.selected
-                        refresh()
+                    GameHypervisor.unit_selected()?.onTurnAction = actions.selected
+                    refresh()
                 }
             }
         )

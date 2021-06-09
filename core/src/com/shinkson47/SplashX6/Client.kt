@@ -7,10 +7,9 @@ import com.badlogic.gdx.graphics.GL20
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.input.keys.KeyHandler
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
+import com.shinkson47.SplashX6.rendering.screens.ScreenTransistion
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.utility.Debug
-import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.rendering.screens.SplashScreen
 
 /**
@@ -27,6 +26,7 @@ class Client : Game() {
     override fun create() {
         client = this
         isFullscreen = Gdx.graphics.isFullscreen
+
         Assets.Create()
         MouseHandler.create()
         setScreen(SplashScreen())
@@ -65,6 +65,14 @@ class Client : Game() {
             super.setScreen(it)
             currentScreen = it
         }
+    }
+
+    fun fadeScreen(newScreen : Screen){
+        setScreen(ScreenTransistion(getScreen(), newScreen))
+    }
+
+    fun resize() {
+        super.resize(Gdx.graphics.width, Gdx.graphics.height)
     }
 
     companion object {

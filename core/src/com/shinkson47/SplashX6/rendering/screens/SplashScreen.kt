@@ -1,6 +1,8 @@
 package com.shinkson47.SplashX6.rendering.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.ScreenAdapter
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dmugang.screens.CreditsScreen
@@ -20,17 +22,25 @@ class SplashScreen : CreditsScreen() {
     val time = 5.4f
     @Volatile var currentTime = 0f
 
+    private val batch = SpriteBatch()
+    private val bg = Animation(0.06f, Assets.splashBG.regions, Animation.PlayMode.LOOP)
+
     init {
-        AudioController.playMainMenu();
+        AudioController.playMainMenu()
         renderBG = false
-        font = SKIN.getFont("White")
+        font.setColor(1f,1f,1f,1f)
         lines = Assets.SPLASH_TEXT.split("\n")
+
     }
 
-
     override fun render(delta: Float) {
+        batch.begin()
+            batch.draw(bg.getKeyFrame(currentTime), (Gdx.graphics.width.toFloat() * 0.5f) - (560 * 0.5f), (Gdx.graphics.height.toFloat() * 0.5f) - (560 * 0.5f), 560f, 560f)
+        batch.end()
+
         super.render(delta)
+
         currentTime += delta
-        if (currentTime >= time) Client.client!!.screen = MainMenu()
+        if (currentTime >= time) Client.client!!.fadeScreen(MainMenu())
     }
 }

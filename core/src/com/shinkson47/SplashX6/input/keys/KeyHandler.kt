@@ -1,6 +1,5 @@
 package com.shinkson47.SplashX6.input.keys
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputMultiplexer
@@ -10,7 +9,7 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
-import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
 
 /**
  * #
@@ -23,14 +22,20 @@ object KeyHandler {
     private val currentInputListener : InputMultiplexer? = null
 
     // TODO dynamic bindings (Key id > consumer kinda deal)
+    // TODO this needs to be a listener. Polling with if statements every frame is not efficient.
     fun Poll() {
         with (Gdx.input) {
-            if (isKeyPressed(Input.Keys.ESCAPE)) client?.screen = MainMenu()
+            if (isKeyPressed(Input.Keys.ESCAPE)) client?.fadeScreen(MainMenu())
             if (isKeyJustPressed(Input.Keys.F5)) NewGame()
             if (isKeyJustPressed(Input.Keys.F11)) Client.toggleFS()
             if (isKeyJustPressed(Input.Keys.F6)) GameData.world?.swapTiledInterp()
 
+
+
             if (! GameHypervisor.inGame) return // after here requires in game
+
+            if (isKeyJustPressed(Input.Keys.NUM_1)) GameWindowManager.select(0);
+
             with (GameHypervisor.gameRenderer?.cam!!) {
 
                 boost(isKeyPressed(Input.Keys.SHIFT_LEFT))

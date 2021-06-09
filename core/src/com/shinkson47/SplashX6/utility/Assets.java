@@ -11,8 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
+import xmlwise.Xmlwise;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -36,6 +39,8 @@ public class Assets {
     static{
         unitSprites = new TextureAtlas("sprites/units.atlas");
         citySprites = new TextureAtlas("sprites/cities.atlas");
+        menuBG = new TextureAtlas("sprites/menu_bg.atlas");
+        splashBG = new TextureAtlas("sprites/splash_bg.atlas");
 
         SKIN = new Skin(Gdx.files.internal("skins/x6/skin/x6.json"));
         
@@ -103,7 +108,7 @@ public class Assets {
     //#region UI
     public static final Skin SKIN;
 
-    public static final Texture menubg = new Texture("bg.png");
+    //public static final Texture menubg = new Texture("sprites/bg.png");
     //#endregion UI
 
     //#region World
@@ -118,7 +123,9 @@ public class Assets {
 
     public static final TextureAtlas
             unitSprites,
-            citySprites;
+            citySprites,
+            menuBG,
+            splashBG;
 
     /**
      * <h2>A map of 'tile name' => tile ID'</h2>
@@ -156,7 +163,16 @@ public class Assets {
 
     public static final String
             CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString(),
-            SPLASH_TEXT = Gdx.files.internal("lang/legal.txt").readString();
+            SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString();
+
+    public static Map<String, Object> playlists;
+    static {
+        try {
+            playlists = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
+        } catch (XmlParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

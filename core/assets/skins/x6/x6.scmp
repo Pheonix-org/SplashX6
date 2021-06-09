@@ -913,7 +913,7 @@ atlasData: {
 	]
 	fontDrawables: [
 		{
-			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/morris-roman/MorrisRoman-Widget.png"
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/morris-roman/Vecna-oppx.png"
 			bgColor: {
 				r: 0
 				g: 0
@@ -922,7 +922,26 @@ atlasData: {
 			}
 			tint: null
 			tintName: null
-			name: MorrisRoman-Widget
+			name: Vecna-oppx
+			tiled: false
+			minWidth: -1
+			minHeight: -1
+			customized: false
+			tenPatchData: null
+			type: FONT
+			hidden: false
+		}
+		{
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/morris-roman/RetroNewVersion.png"
+			bgColor: {
+				r: 1
+				g: 1
+				b: 1
+				a: 1
+			}
+			tint: null
+			tintName: null
+			name: RetroNewVersion
 			tiled: false
 			minWidth: -1
 			minHeight: -1
@@ -989,13 +1008,13 @@ jsonData: {
 	fonts: [
 		{
 			class: com.ray3k.skincomposer.data.FontData
-			name: Main
-			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/morris-roman/MorrisRoman-Black.fnt"
+			name: RetroNewVersion-Large
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/morris-roman/RetroNewVersion.fnt"
 		}
 		{
 			class: com.ray3k.skincomposer.data.FontData
-			name: MorrisRoman-Widget
-			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/morris-roman/MorrisRoman-Widget.fnt"
+			name: Vecna
+			file: "/Users/gordie/Documents/GitHub/SplashX6/core/assets/skins/x6/raw/morris-roman/Vecna-oppx.fnt"
 		}
 	]
 	freeTypeFonts: []
@@ -1194,7 +1213,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: titleFont
 						optional: false
-						value: Main
+						value: Vecna
 					}
 					titleFontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1227,7 +1246,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: titleFont
 						optional: false
-						value: null
+						value: Vecna
 					}
 					titleFontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1569,7 +1588,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: MorrisRoman-Widget
+						value: Vecna
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1638,7 +1657,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: null
+						value: Vecna
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1825,7 +1844,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: Main
+						value: Vecna
 					}
 					fontColorSelected: {
 						type: com.badlogic.gdx.graphics.Color
@@ -1937,13 +1956,13 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: Main
+						value: Vecna
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: true
-						value: null
+						value: Black
 					}
 					downFontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -2283,13 +2302,13 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: MorrisRoman-Widget
+						value: Vecna
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: true
-						value: null
+						value: Widget
 					}
 					downFontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -2420,13 +2439,13 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: Main
+						value: Vecna
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
 						name: fontColor
 						optional: true
-						value: null
+						value: Black
 					}
 					background: {
 						type: com.badlogic.gdx.scenes.scene2d.utils.Drawable
@@ -2447,7 +2466,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: MorrisRoman-Widget
+						value: null
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -2474,7 +2493,7 @@ jsonData: {
 						type: com.badlogic.gdx.graphics.g2d.BitmapFont
 						name: font
 						optional: false
-						value: MorrisRoman-Widget
+						value: null
 					}
 					fontColor: {
 						type: com.badlogic.gdx.graphics.Color
@@ -2580,9 +2599,9 @@ preferences: {
 	}
 	preview-bg-color: {
 		class: com.badlogic.gdx.graphics.Color
-		r: 0
-		g: 0
-		b: 0
+		r: 1
+		g: 1
+		b: 1
 		a: 1
 	}
 	last-import-export-path: {
