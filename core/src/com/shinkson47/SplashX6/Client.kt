@@ -21,17 +21,37 @@ class Client : Game() {
     var currentScreen: Screen? = null
 
     /**
-     * # The game has booted, create stuff
+     * # Engine has booted, boot game.
      */
     override fun create() {
         client = this
         isFullscreen = Gdx.graphics.isFullscreen
 
-        Assets.Create()
+        Assets.Create() // CALL BEFORE ANY ASSET ACCESS!
+        setMacDockIcon()
+
         MouseHandler.create()
         setScreen(SplashScreen())
 
         Gdx.gl.glClearColor(r, g, b, a)
+    }
+
+    /**
+     * When on mac, changes the dock icon.
+     */
+    private fun setMacDockIcon() {
+        try {
+            val cls = Class.forName("com.apple.eawt.Application")
+            val application = cls.newInstance().javaClass.getMethod("getApplication").invoke(null)
+
+            val icon = ImageIO.read(Gdx.files.local("sprites/icon.png").read())
+            application.javaClass.getMethod("setDockIconImage", Image::class.java).invoke(application, icon)
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // nobody cares!
+        }
     }
 
     /**
