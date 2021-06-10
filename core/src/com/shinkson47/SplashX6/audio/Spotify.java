@@ -1,50 +1,32 @@
-package com.shinkson47.SplashX6.audio;/**
-  * <h1></h1>
-  * <br>
-  * <p>
-  *
-  * </p>
-  * @author <a href="https://www.shinkson47.in">Jordan T. Gray on 10/06/2021</a>
-  * @since v1
-  * @version 1 
- */public class Spotify {
+package com.shinkson47.SplashX6.audio;
 
+/**
+ * <h1></h1>
+ * <br>
+ * <p>
+ *
+ * </p>
+ *
+ * @author <a href="https://www.shinkson47.in">Jordan T. Gray on 10/06/2021</a>
+ * @version 1
+ * @since v1
+ */
+public class Spotify {
 
     //=====================================================================
-    //#region constants
-    //#endregion constants
-    //=====================================================================
-
-
-
-
-    //=====================================================================    
-    //#region fields
-    //#endregion fields
+    //#region Fields
     //=====================================================================
 
 
 
-
     //=====================================================================
-    //#region constructors
-    //#endregion constructors
-    //=====================================================================
-
-
-    //=====================================================================    
-    //#region operations
-    //#endregion operations
+    //#endregion Fields
+    //#region API Requests
     //=====================================================================
 
 
-
-
-    //=====================================================================    
-    //#region static
-    //#endregion static
     //=====================================================================
-    
-    
-    
+    //#endregion API Requests
+    //=====================================================================
+
 }

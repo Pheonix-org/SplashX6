@@ -1,15 +1,12 @@
 package com.shinkson47.SplashX6.rendering.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.g2d.Animation
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.dmugang.screens.CreditsScreen
 import com.shinkson47.SplashX6.Client
-import com.shinkson47.SplashX6.game.AudioController
+import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Assets.SKIN
 
 /**
  * # Extends and modifies the credits screen to show splash screen text.
