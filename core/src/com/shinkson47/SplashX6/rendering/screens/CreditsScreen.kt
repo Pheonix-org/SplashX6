@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScreenViewport
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.utility.Assets
@@ -26,7 +25,9 @@ import com.shinkson47.SplashX6.utility.Assets.SKIN
  * @since v1
  * @version 1
  */
-class CreditsScreen : ScreenAdapter() {
+open class CreditsScreen : ScreenAdapter() {
+
+    protected var renderBG = true;
 
     /**
      * # Stage that is only used for scaling.
@@ -37,8 +38,8 @@ class CreditsScreen : ScreenAdapter() {
     /**
      * # The [BitmapFont] used to render the content of [glyph]
      */
-    private var font : BitmapFont = SKIN.getFont("commodore-64")
-    init {font.setColor(Client.hr,Client.hg, Client.b,1f)}
+    protected var font : BitmapFont = SKIN.getFont("Vecna")
+    init {font.setColor(0f,0f,0f,1f)}
 
     /**
      * # Current string to be rendered by [font]
@@ -81,7 +82,7 @@ class CreditsScreen : ScreenAdapter() {
      *
      * Modified to have the first line removed when [lineIndex] reaches [maxLines]
      */
-    private var lines = Assets.CREDITS_TEXT.split("\n")
+    protected var lines = Assets.CREDITS_TEXT.split("\n")
 
     /**
      * # Calculated max number of lines that can fit within the window before we have to start stripping the
@@ -119,7 +120,7 @@ class CreditsScreen : ScreenAdapter() {
         // If the user is pressing escape, return to the menu.
         // TODO main menu input is not broken down.
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
-            client!!.setScreen(MainMenu())
+            client!!.fadeScreen(MainMenu())
 
         // Increase time since last character
         characterDelta += Gdx.graphics.deltaTime
@@ -135,6 +136,7 @@ class CreditsScreen : ScreenAdapter() {
 
 
         batch.begin()                       // Begin GL render semaphore
+        if (renderBG) SKIN.getDrawable("tiledtex").draw(batch,0f,0f,Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
 
         // For every line up to the line we are stamping
         while (currentLineIndex <= lineIndex && currentLineIndex < lines.size) {
@@ -159,7 +161,7 @@ class CreditsScreen : ScreenAdapter() {
 
             // draw whatever we need to draw for the current line.
             // TODO cache x and base of y
-            font.draw(batch, glyph, (Gdx.graphics.width - glyph.width) * 0.5f, Gdx.graphics.height - 50 - (20f * currentLineIndex))
+            font.draw(batch, glyph, (Gdx.graphics.width - glyph.width) * 0.5f, Gdx.graphics.height - 50 - (glyph.height * 2 * currentLineIndex))
 
 
             // move to next line to be drawn this frame
@@ -173,7 +175,7 @@ class CreditsScreen : ScreenAdapter() {
      * Sets [maxLines] to the max number of lines that can be displayed with the given height.
      */
     private fun calcMaxLines() = calcMaxLines(Gdx.graphics.height)
-    private fun calcMaxLines(height: Int) { maxLines = (height - 100) / 20 }
+    private fun calcMaxLines(height: Int) { maxLines = (height - 100) / (glyph.height.toInt() * 2) }
 
     /**
      * # Updates the size of the viewport to match the screen.

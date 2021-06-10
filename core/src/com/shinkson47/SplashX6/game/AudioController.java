@@ -34,7 +34,7 @@ public class AudioController {
      */
     private static float
             musicVolume  = 0.2f,
-            buttonVolume = 0.8f; // DEFAULT VOLUME
+            buttonVolume = 0.2f; // DEFAULT VOLUME
 
     /**
      * <h2>Determines if audio should be played, or not.</h2>
@@ -143,13 +143,12 @@ public class AudioController {
      * Audible sound (music) for the this application's main menu.
      */
     public static synchronized void playMainMenu() {
+        if (nowPlaying == MUSIC_MAIN_MENU && nowPlaying.isPlaying()) return;
         playOnLoop(MUSIC_MAIN_MENU);
     }
 
     public static void playGame() {
-        // TODO play a different track for in-game.
-        // This would also stop the main menu track, but the play methods handle that for you by
-        // stopping nowPlaying.
+        playOnLoop(GAME_DEFAULT);
     }
 
     /**
@@ -219,7 +218,7 @@ public class AudioController {
      * @return nowPlaying pointer.
      */
     private static Music play(@NotNull Music m) {
-        pauseMusic();                // Stop now playing
+        stopMusic();               // Stop now playing
         nowPlaying = m;             // Swap to new music
         assertNowPlayingVolume();   // Make sure new music is at right volume
         resumeMusic();              // The play it.

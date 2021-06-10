@@ -66,16 +66,16 @@ class units : StageWindow("Units"), Runnable {
         // Buttons
         // TODO localise
         // TODO lots of repeating code here
-        add(button("moveUnitToCursor") { t -> GameHypervisor.unit_setDestination(); refresh() }).row()
+        add(button("moveUnitToCursor") { GameHypervisor.unit_setDestination(); refresh() }).row()
         tooltip("ttMoveUnitToCursor")
 
-        add(button("viewDestination") { t -> GameHypervisor.unit_viewDestination(); refresh() }).row()
+        add(button("viewDestination") { GameHypervisor.unit_viewDestination(); refresh() }).row()
         tooltip("ttViewDestination")
 
-        add(button("cancleAction") { t -> GameHypervisor.unit_selected()?.cancelAction(); refresh() }).row()
+        add(button("cancleAction") { GameHypervisor.unit_selected()?.cancelAction(); refresh() }).row()
         tooltip("ttCancleAction")
 
-        add(button("disband") { t -> GameHypervisor.unit_disband(); refresh() }).row()
+        add(button("disband") { GameHypervisor.unit_disband(); refresh() }).row()
         tooltip("ttDisband")
 
         seperate("actions")
@@ -87,8 +87,8 @@ class units : StageWindow("Units"), Runnable {
         actions.addListener(
             LambdaClickListener {
                 GameData.selectedUnit?.let {
-                        it1 -> GameHypervisor.unit_selected()?.onTurnAction = actions.selected
-                        refresh()
+                    GameHypervisor.unit_selected()?.onTurnAction = actions.selected
+                    refresh()
                 }
             }
         )

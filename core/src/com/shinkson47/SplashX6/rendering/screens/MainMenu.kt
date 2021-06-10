@@ -1,22 +1,22 @@
 package com.shinkson47.SplashX6.rendering.screens
 
-import com.badlogic.gdx.ScreenAdapter
-import com.shinkson47.SplashX6.utility.Assets
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.scenes.scene2d.InputEvent
+import com.badlogic.gdx.ScreenAdapter
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.dmugang.screens.CreditsScreen
 import com.shinkson47.SplashX6.Client.Companion.client
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.game.AudioController
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.StageWindow.label
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
+import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.Utility
 
 /**
@@ -33,45 +33,49 @@ import com.shinkson47.SplashX6.utility.Utility
  */
 class MainMenu : ScreenAdapter() {
 
-    private val stage = Stage(ScreenViewport())
-
-    //#region listeners
+    private val stage = Stage(ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
     private var menuWindow: Window? = null
-    private var BaseTable = Table().center()
+    private val batch = SpriteBatch()
+    private val bg = Animation(0.03f, Assets.menuBG.regions, Animation.PlayMode.LOOP)
+    @Volatile private var animationStateTime = 0f
+
 
     /**
-     * The window shown at the main menu that contains option for the user
+     * Sub class that encompasses the window shown at the main menu that contains option for the user
      */
     private inner class MainMenuWindow : StageWindow() {
         /**
          * <h2>Constructs the content to be displayed in this window</h2>
          */
         override fun constructContent() {
-
             // Title label
-            add(
-                Label(
-"""
-   _____ ____  __    ___   _____ __  __        _____
-  / ___// __ \/ /   /   | / ___// / / /  _  __/ ___/
-  \__ \/ /_/ / /   / /| | \__ \/ /_/ /  | |/_/ __ \ 
- ___/ / ____/ /___/ ___ |___/ / __  /  _>  </ /_/ / 
-/____/_/   /_____/_/  |_/____/_/ /_/  /_/|_|\____/  
-""", Assets.SKIN
-                )
-            )
-                .padBottom(100f)
+            add(Label("SPLASH X6", SKIN,"RetroNewVersion-Large", Color.BLACK))
+
                 .row()
+
+            add(
+                Label("PRE-ALPHA 0.0.2 WIP", SKIN)
+            ).padBottom(50f).row()
+
             addButton("newGame") { NewGame() }
             addButton("loadGame") { Utility.notImplementedDialog(stage) }
             addButton("preferences") { stage.addActor(OptionsWindow()) }
-            addButton("credits") { client!!.screen = CreditsScreen() }
+            addButton("credits") { client!!.fadeScreen(CreditsScreen()) }
             addButton("exitGame") { Gdx.app.exit() }
+
+            isMovable = false
+            isResizable = false
         }
     }
 
     //#region operations
     override fun render(delta: Float) {
+        animationStateTime += delta
+
+        batch.begin()
+            batch.draw(bg.getKeyFrame(animationStateTime), 0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        batch.end()
+
         stage.act()
         stage.draw()
     }
@@ -90,47 +94,11 @@ class MainMenu : ScreenAdapter() {
         return 2 * Math.round(f / 2)
     }
 
-    override fun show() {
-        super.show()
-    }
 
-    override fun hide() {
-        super.hide()
-    }
-
-    override fun dispose() {
-        super.dispose()
-    } //#endregion operations
-
-    //#endregion
     init {
         menuWindow = MainMenuWindow()
-        BaseTable.setFillParent(true)
-
-        // Secret button
-        val SecretButton: Button = TextButton("SECRET", Assets.SKIN)
-        SecretButton.addListener(StageWindow.LambdaClickListener { o: InputEvent? ->
-            Gdx.gl.glClearColor(
-                MathUtils.random.nextFloat(),
-                MathUtils.random.nextFloat(),
-                MathUtils.random.nextFloat(),
-                1f
-            )
-        })
-        BaseTable.add(SecretButton).center().row()
-        stage.addActor(BaseTable)
-        BaseTable = Table().bottom()
-
-        with(BaseTable) {
-            setFillParent(true)
-            label("wipver", this).fillX().align(Align.center).row()
-            label("copr", this).center()
-            padBottom(10f)
-    }
-
-        // Set up window to with as glfw environment
         resize(Gdx.graphics.width, Gdx.graphics.height)
-        stage.addActor(BaseTable)
+
         stage.addActor(menuWindow)
 
         // Set the stage to handle key and mouse input

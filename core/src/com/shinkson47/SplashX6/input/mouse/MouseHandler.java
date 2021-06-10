@@ -115,7 +115,7 @@ public class MouseHandler {
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
-            // TODO this crashes on anywhere that isn't the game.
+            if (GameHypervisor.getInGame())
             GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
             return true;
         }

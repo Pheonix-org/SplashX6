@@ -83,7 +83,7 @@ class GameHypervisor {
         @JvmStatic
         fun NewGame() {
             if (inGame) EndGame()
-            client?.setScreen(WorldCreation());
+            client?.fadeScreen(WorldCreation())
         }
 
         /**
@@ -140,7 +140,7 @@ class GameHypervisor {
             GameWindowManager.create()
 
             AudioController.playGame()          // Begin playing in-game soundtrack.
-            client?.screen = gameRenderer       // Show the game screen to the user.
+            client?.fadeScreen(gameRenderer!!)    // Show the game screen to the user.
         }
 
 
@@ -235,7 +235,6 @@ class GameHypervisor {
          * in tile space.
          */
         fun unit_setDestination() {
-            // TODO Doesn't seem to set the correct location
             with(GameData.selectedUnit!!) {
                 val dest: Vector3 = camera_focusingOnTile()
                 destX = dest.x.toInt()
@@ -415,7 +414,7 @@ class GameHypervisor {
         @JvmStatic
         fun EndGame() {
             dispose()
-            client!!.screen = MainMenu();
+            client!!.fadeScreen(MainMenu());
         }
 
         /**

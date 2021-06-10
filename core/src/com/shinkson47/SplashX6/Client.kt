@@ -7,10 +7,17 @@ import com.badlogic.gdx.graphics.GL20
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.input.keys.KeyHandler
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
+import com.shinkson47.SplashX6.rendering.screens.ScreenTransistion
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.utility.Debug
-import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.rendering.screens.SplashScreen
+import java.lang.Exception
+import javax.imageio.ImageIO
+import javax.swing.ImageIcon
+
+import com.badlogic.gdx.files.FileHandle
+import java.awt.Image
+
 
 /**
  * # The main game
@@ -21,16 +28,37 @@ class Client : Game() {
     var currentScreen: Screen? = null
 
     /**
-     * # The game has booted, create stuff
+     * # Engine has booted, boot game.
      */
     override fun create() {
         client = this
         isFullscreen = Gdx.graphics.isFullscreen
-        Assets.Create()
+
+        Assets.Create() // CALL BEFORE ANY ASSET ACCESS!
+        setMacDockIcon()
+
         MouseHandler.create()
-        MainMenu().let { setScreen(it) }
+        setScreen(SplashScreen())
 
         Gdx.gl.glClearColor(r, g, b, a)
+    }
+
+    /**
+     * When on mac, changes the dock icon.
+     */
+    private fun setMacDockIcon() {
+        try {
+            val cls = Class.forName("com.apple.eawt.Application")
+            val application = cls.newInstance().javaClass.getMethod("getApplication").invoke(null)
+
+            val icon = ImageIO.read(Gdx.files.local("sprites/icon.png").read())
+            application.javaClass.getMethod("setDockIconImage", Image::class.java).invoke(application, icon)
+
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            // nobody cares!
+        }
     }
 
     /**
@@ -42,9 +70,6 @@ class Client : Game() {
         KeyHandler.Poll()
         MouseHandler.Poll()
         currentScreen?.render(Gdx.graphics.deltaTime)
-        //Renderer.render();
-        //AudioManager.Update();
-        //Debug.update();
     }
 
     /**
@@ -66,13 +91,21 @@ class Client : Game() {
         }
     }
 
+    fun fadeScreen(newScreen : Screen){
+        setScreen(ScreenTransistion(getScreen(), newScreen))
+    }
+
+    fun resize() {
+        super.resize(Gdx.graphics.width, Gdx.graphics.height)
+    }
+
     companion object {
-        const val r = 0.2588235294f
-        const val g = 0.2588235294f
-        const val b = 0.9058823529f
+        const val r = 0f
+        const val g = 0f
+        const val b = 0f
         const val a = 1f
-        const val hr = 0.6470588235f
-        const val hg = 0.6470588235f
+        const val hr = 0f
+        const val hg = 0f
 
         @JvmField
         var client: Client? = null

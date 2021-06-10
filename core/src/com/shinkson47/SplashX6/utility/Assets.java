@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.utility;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -10,8 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.I18NBundle;
 import xmlwise.Plist;
 import xmlwise.XmlParseException;
+import xmlwise.Xmlwise;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -31,49 +35,11 @@ import static com.shinkson47.SplashX6.utility.Languages.en;
 public class Assets {
 
     public static void Create(){}
-
-    static{
-        unitSprites = new TextureAtlas("sprites/units.atlas");
-        citySprites = new TextureAtlas("sprites/cities.atlas");
-
-        SKIN = new Skin(Gdx.files.internal("skins/C64/skin/uiskin.json"));
-        
-        // Tilesets
-        TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
-        SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
-
-        // Tileset mapping data
-        // TODO these shouldn't really be ignored
-        Map<String, Object> result;
-        try {
-            result = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
-        } catch (XmlParseException ignored) {
-            result = null;
-        }
-        TILESET_MAP = result;
-
-        try {
-            result = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
-        } catch (XmlParseException ignored) {
-            result = null;
-        }
-        SPRITES_MAP = result;
+    public static void Dispose() {
+        TILESETS.dispose();
     }
 
-    public static I18NBundle LANG;
-
-    public static ArrayList<Locale> languages = new ArrayList<>();
-
-
-    static {
-        for (Languages lang : Languages.values())
-            languages.add(new Locale(lang.toString()));
-    }
-
-    static {
-        loadLanguage(en);
-    }
-
+    // TODO should really be in some kind of language manager
     public static final I18NBundle loadLanguage(Languages lang) {
         LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale(lang.toString()));
         I18NBundle.setExceptionOnMissingKey(false);
@@ -83,24 +49,19 @@ public class Assets {
     }
 
 
-    public static void Dispose() {
-        TILESETS.dispose();
-    }
-
-
-
-
     /* ==========================================================================================*/
     // Actual fucking assets
     /* ==========================================================================================*/
 
 
+    public static I18NBundle LANG;
 
-
-
+    public static ArrayList<Locale> languages;
 
     //#region UI
     public static final Skin SKIN;
+
+    //public static final Texture menubg = new Texture("sprites/bg.png");
     //#endregion UI
 
     //#region World
@@ -115,7 +76,9 @@ public class Assets {
 
     public static final TextureAtlas
             unitSprites,
-            citySprites;
+            citySprites,
+            menuBG,
+            splashBG;
 
     /**
      * <h2>A map of 'tile name' => tile ID'</h2>
@@ -140,16 +103,55 @@ public class Assets {
      *
      * @apiNote The value datatype is int, but the loader will only provide an object. Soz.
      */
-    public static final Map<String, Object> TILESET_MAP, SPRITES_MAP;
+    public static final Map<String, Object>
+            TILESET_MAP,
+            SPRITES_MAP,
+            playlists;
     //#endregion World
 
     //#region audio
-    public static final Music MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("sounds/MainMenu/night_theme_2.wav"));
-    public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("sounds/Game/click33.wav"));
+    public static final Music
+            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/medieval.ogg")),
+            GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/overworld theme.ogg"));
+
+    public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/click33.wav"));
     //#endregion audio
 
     public static final String
-            CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString();
+            CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString(),
+            SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString();
+
+
+
+    static{
+        unitSprites = new TextureAtlas("sprites/units.atlas");
+        citySprites = new TextureAtlas("sprites/cities.atlas");
+        menuBG = new TextureAtlas("sprites/menu_bg.atlas");
+        splashBG = new TextureAtlas("sprites/splash_bg.atlas");
+
+        SKIN = new Skin(Gdx.files.internal("skins/x6/skin/x6.json"));
+
+        // Tilesets
+        TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
+        SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
+
+        // Tileset mapping data
+        try {
+            TILESET_MAP = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
+            SPRITES_MAP = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
+            playlists   = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
+        } catch (XmlParseException ignored) {
+            throw new Error("Unable to load XML data.");
+        }
+
+
+        // Load languages
+        languages = new ArrayList<>();
+        for (Languages lang : Languages.values())
+            languages.add(new Locale(lang.toString()));
+
+        loadLanguage(en);
+    }
 
 
 }
