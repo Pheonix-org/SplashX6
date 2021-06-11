@@ -294,6 +294,15 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		over: buttonOffHover10
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: Vecna
+		fontColor: White
+		background: widet10
+		cursor: White
+		selection: Black
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
 		label: default

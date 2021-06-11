@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Select
+import com.shinkson47.SplashX6.audio.SpotifyTestWindow
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.gameutils.units
@@ -64,6 +65,7 @@ object GameWindowManager {
 
 
         add(units())
+        add(SpotifyTestWindow())
     }
 
     fun update () {
