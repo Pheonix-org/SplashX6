@@ -4,10 +4,10 @@ import com.wrapper.spotify.SpotifyApi
 import com.wrapper.spotify.SpotifyHttpManager
 import com.wrapper.spotify.requests.AbstractRequest
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest
-import com.wrapper.spotify.requests.data.player.PauseUsersPlaybackRequest
-import com.wrapper.spotify.requests.data.player.StartResumeUsersPlaybackRequest
+import com.wrapper.spotify.requests.data.library.GetCurrentUsersSavedAlbumsRequest
+import com.wrapper.spotify.requests.data.library.GetUsersSavedTracksRequest
+import com.wrapper.spotify.requests.data.player.*
 import java.awt.Desktop
-import java.lang.Exception
 
 /**
  * # Spotify intergration for Splash X6.
@@ -72,11 +72,11 @@ object Spotify {
      * # Permissions that this application is authenticated to use
      * when performing [REQUEST_AUTHORIZATION].
      *
-     * Determines what requests we may and may make.
+     * Determines what requests we may and may not make.
      *
      * See [Spotify's scope docs.](https://developer.spotify.com/documentation/general/guides/scopes/)
      */
-    private val SCOPE = "user-modify-playback-state"
+    private val SCOPE = "user-modify-playback-state, user-read-playback-state, user-read-currently-playing, user-library-read"
 
     /**
      * # General connection to the spotify api.
@@ -88,7 +88,7 @@ object Spotify {
      */
     var spotifyApi = SpotifyApi.Builder()
         .setClientId("72cabe08e89f49808ac14523a2f809ae")
-        .setClientSecret("9736d5764f1b4c4ab82547b9d34edd91")
+        .setClientSecret("9736d5764f1b4c4ab82547b9d34edd91") // TODO this is bad but idk how to get around it. Should not keep secret in public source.
         .setRedirectUri(SpotifyHttpManager.makeUri("https://shinkson47.in/SplashX6/spotify-callback"))
         .build()
 
@@ -98,6 +98,8 @@ object Spotify {
      * Note that this is not the token which allows us to make api requests.
      */
     private var authCode = ""
+
+    enum class RepeatModes { track, context, off }
 
     //=====================================================================
     //#endregion Fields
@@ -124,6 +126,7 @@ object Spotify {
      */
     private fun buildTokenRequest() { PREAUTH_REQUEST_TOKEN = spotifyApi.authorizationCode(authCode).build() }
 
+
     //=====================================================================
     //#endregion Pre authentication requests
     //#endregion API Requests
@@ -131,11 +134,21 @@ object Spotify {
 
     /**
      * # Performed after authentication, this builds all requests we can perform.
+     * NOTE : Some requests require arguments that can only be provided prior to building the request.
+     * In these cases, the builder is stored instead, and the request is built when the request is made.
      */
     private fun buildRequests() {
         with (spotifyApi) {
-            REQUEST_PAUSE   = pauseUsersPlayback()              .build()
-            REQUEST_PLAY    = startResumeUsersPlayback()        .build()
+            REQUEST_PAUSE       = pauseUsersPlayback()                      .build()
+            REQUEST_PLAY        = startResumeUsersPlayback()                .build()
+            REQUEST_NEXT        = skipUsersPlaybackToNextTrack()            .build()
+            REQUEST_PREVIOUS    = skipUsersPlaybackToPreviousTrack()        .build()
+            REQUEST_NOW_PLAYING = getUsersCurrentlyPlayingTrack()           .build()
+
+            REQUEST_SEEK        = seekToPositionInCurrentlyPlayingTrack(0)
+            REQUEST_REPEAT_MODE = setRepeatModeOnUsersPlayback(RepeatModes.off.toString())
+            REQUEST_VOLUME      = setVolumeForUsersPlayback(0)
+            REQUEST_SHUFFLE     = toggleShuffleForUsersPlayback(false)
         }
     }
 
@@ -144,6 +157,39 @@ object Spotify {
         private set
 
     var REQUEST_PLAY: StartResumeUsersPlaybackRequest? = null
+        private set
+
+    var REQUEST_NEXT: SkipUsersPlaybackToNextTrackRequest? = null
+        private set
+
+    var REQUEST_PREVIOUS: SkipUsersPlaybackToPreviousTrackRequest? = null
+        private set
+
+    var REQUEST_SEEK: SeekToPositionInCurrentlyPlayingTrackRequest.Builder? = null
+        private set
+
+    var REQUEST_REPEAT_MODE: SetRepeatModeOnUsersPlaybackRequest.Builder? = null
+        private set
+
+    var REQUEST_VOLUME: SetVolumeForUsersPlaybackRequest.Builder? = null
+        private set
+
+    var REQUEST_SHUFFLE: ToggleShuffleForUsersPlaybackRequest.Builder? = null
+        private set
+
+    var REQUEST_QUEUE: AddItemToUsersPlaybackQueueRequest? = null
+        private set
+
+    var REQUEST_PLAYBACK_INFO: GetInformationAboutUsersCurrentPlaybackRequest? = null
+        private set
+
+    var REQUEST_NOW_PLAYING: GetUsersCurrentlyPlayingTrackRequest? = null
+        private set
+
+    var REQUEST_SAVED_ALBUMBS: GetCurrentUsersSavedAlbumsRequest? = null
+        private set
+
+    var REQUEST_SAVED_TRACKS: GetUsersSavedTracksRequest? = null
         private set
 
 
@@ -219,13 +265,58 @@ object Spotify {
      * If [create] was not called, or it failed to configure [spotifyApi], has
      * no effect.
      */
-    fun pause() = execute(REQUEST_PAUSE)
+    fun pause()     = execute(REQUEST_PAUSE)
 
     /**
      * # Requests spotify to start or resume playback.
      * If [create] was not called, or it failed to configure [spotifyApi], has
      * no effect.
      */
-    fun play() = execute(REQUEST_PLAY)
+    fun play()      = execute(REQUEST_PLAY)
 
+    /**
+     * # Requests spotify to skip to the next track.
+     * If [create] was not called, or it failed to configure [spotifyApi], has
+     * no effect.
+     */
+    fun next()      = execute(REQUEST_NEXT)
+
+    /**
+     * # Requests spotify to skip to the previous track.
+     * If [create] was not called, or it failed to configure [spotifyApi], has
+     * no effect.
+     */
+    fun previous()   = execute(REQUEST_PREVIOUS)
+
+    /**
+     * # Gets data on the track that's currently playing.
+     */
+    fun nowPlaying() = execute(REQUEST_NOW_PLAYING)
+
+    /**
+     * # Requests spotify to seek to a given time in ms in current playback.
+     */
+    fun seek(ms: Int) : String? {
+        if (REQUEST_SEEK == null) return null
+        REQUEST_SEEK!!.position_ms(ms)
+        return execute(REQUEST_SEEK!!.build())
+    }
+
+    fun repeatMode(mode : RepeatModes) : String? {
+        if (REQUEST_REPEAT_MODE == null) return null
+        REQUEST_REPEAT_MODE!!.state(mode.toString());
+        return execute(REQUEST_REPEAT_MODE!!.build())
+    }
+
+    fun setVolume(percent : Int) : String? {
+        if (REQUEST_VOLUME == null) return null
+        REQUEST_VOLUME!!.volume_percent(percent)
+        return execute(REQUEST_VOLUME!!.build())
+    }
+
+    fun setShuffle(shuffle : Boolean) : String? {
+        if (REQUEST_SHUFFLE == null) return null
+        REQUEST_SHUFFLE!!.state(shuffle)
+        return execute(REQUEST_SHUFFLE!!.build())
+    }
 }
