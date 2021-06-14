@@ -21,14 +21,18 @@ import javax.imageio.ImageIO
  * @since v1
  * @version 1
  */
-class SpotifyTestWindow : StageWindow() {
+class SpotifyTestWindow : StageWindow("Spotify Test") {
 
     override fun constructContent() {
         label("Step 1").row()
 
         addButton("Connect to spotify") {
             Gdx.graphics.setWindowedMode(Gdx.graphics.displayMode.width, Gdx.graphics.displayMode.height)
-            Spotify.create()
+            if (Spotify.create())
+                dialog("", "Connection successful!")
+            else
+                dialog("Connect to spotify", "A browser should've opened. Authorize with spotify, then paste the code you recieve in the box and click 'Authenticate'.");
+
         }
 
         label("Step 2").row()
@@ -59,9 +63,9 @@ class SpotifyTestWindow : StageWindow() {
 
         addButton("Fetch Art")  {
             c = Spotify.nowPlaying()
-
+            if (c == null) return@addButton
             // Turn art into drawable texture
-            Pixmap.downloadFromUrl((c!!.item as Track).album.images[1].url, object : Pixmap.DownloadPixmapResponseListener {
+            Pixmap.downloadFromUrl((c!!.item as Track).album.images[0].url, object : Pixmap.DownloadPixmapResponseListener {
                 /**
                  * Called on the render thread when image was downloaded successfully.
                  * @param pixmap
