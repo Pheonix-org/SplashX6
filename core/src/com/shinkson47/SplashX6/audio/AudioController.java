@@ -1,4 +1,4 @@
-package com.shinkson47.SplashX6.game;
+package com.shinkson47.SplashX6.audio;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;

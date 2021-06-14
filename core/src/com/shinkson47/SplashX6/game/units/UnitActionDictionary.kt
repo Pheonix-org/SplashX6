@@ -1,7 +1,6 @@
 package com.shinkson47.SplashX6.game.units
 
-import com.badlogic.gdx.Game
-import com.shinkson47.SplashX6.game.AudioController
+import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor
 import java.util.function.Predicate
 

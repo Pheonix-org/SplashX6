@@ -5,7 +5,16 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.StreamUtils;
 import com.shinkson47.SplashX6.game.world.FastNoiseLite;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;
@@ -108,4 +117,32 @@ public final class Utility {
     }
     // I tried to implement above by catching an out of bounds exception, but for some reason it wasn't catching it so i resorted to calculating it which is probably slower but oh well
     //#endregion static
+
+
+
+    /**
+     * Converts a collection of items into a GDX compatable {@link Array}
+     * @param items {@link Iterable} collection of items.
+     * @param <T> The type of the items.
+     * @return A GDX {@link Array} containing <code>items</code>
+     */
+    public static <T> Array<T> CollectionToGDXArray(Iterable<T> items) {
+        return MapToGDXArray(items, it -> it);
+    }
+
+    /**
+     * Converts a collection of items into a GDX compatable {@link Array}, and applies a map to the items
+     * as it does so.
+     * @param items {@link Iterable} collection of items.
+     * @param map The function defining the value taken from each item to be stored in the result.
+     * @param <T> The type of the items being supplied
+     * @param <X> The type of the items being returned
+     * @return A GDX {@link Array} containing a map of <code>items</code>
+     */
+    public static <T,X> Array<X> MapToGDXArray(Iterable<T> items, Function<T, X> map) {
+        Array<X> i = new Array<>();
+        items.forEach( it -> i.add(map.apply(it)));
+        return i;
+    }
+
 }

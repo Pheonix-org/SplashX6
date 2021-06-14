@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.shinkson47.SplashX6.Client.Companion.client
+import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.SKIN
@@ -25,15 +27,9 @@ import com.shinkson47.SplashX6.utility.Assets.SKIN
  * @since v1
  * @version 1
  */
-open class CreditsScreen : ScreenAdapter() {
+open class CreditsScreen : ScalingScreenAdapter() {
 
     protected var renderBG = true;
-
-    /**
-     * # Stage that is only used for scaling.
-     */
-    private val stage: Stage = Stage(ScreenViewport())
-
 
     /**
      * # The [BitmapFont] used to render the content of [glyph]
@@ -181,9 +177,10 @@ open class CreditsScreen : ScreenAdapter() {
      * # Updates the size of the viewport to match the screen.
      * Also updates [maxLines] to contain the correct number of lines that can be displayed.
      */
-    override fun resize(width: Int, height: Int) {
+    override fun doResize(width: Int, height: Int) {
         stage.viewport.update(width, height, true)
         batch.projectionMatrix = stage.camera.combined
         calcMaxLines(height)
     }
+
 }

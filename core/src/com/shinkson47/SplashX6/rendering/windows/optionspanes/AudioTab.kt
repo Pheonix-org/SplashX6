@@ -2,7 +2,7 @@ package com.shinkson47.SplashX6.rendering.windows.optionspanes
 
 import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.shinkson47.SplashX6.game.AudioController
+import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.StageWindow.LambdaClickListener
 import com.shinkson47.SplashX6.utility.Assets
