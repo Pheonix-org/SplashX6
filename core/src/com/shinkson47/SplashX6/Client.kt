@@ -2,6 +2,7 @@ package com.shinkson47.SplashX6
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Graphics
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.shinkson47.SplashX6.game.GameHypervisor
@@ -16,6 +17,8 @@ import javax.imageio.ImageIO
 import javax.swing.ImageIcon
 
 import com.badlogic.gdx.files.FileHandle
+import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import java.awt.Image
 
 
@@ -27,10 +30,13 @@ import java.awt.Image
 class Client : Game() {
     var currentScreen: Screen? = null
 
+
+
     /**
      * # Engine has booted, boot game.
      */
     override fun create() {
+        displayMode = Gdx.graphics.displayMode
         client = this
         isFullscreen = Gdx.graphics.isFullscreen
 
@@ -38,9 +44,22 @@ class Client : Game() {
         setMacDockIcon()
 
         MouseHandler.create()
-        setScreen(SplashScreen())
+
+        if (DEBUG_MODE)
+            debugStart()
+        else
+            setScreen(SplashScreen())
 
         Gdx.gl.glClearColor(r, g, b, a)
+    }
+
+    /**
+     * Skips and configures things which annoy us when we're debugging.
+     */
+    private fun debugStart() {
+        AudioController.muteAudio()             // Mute music
+        setScreen(WorldCreation())              // Skip to world creation
+        Gdx.graphics.setWindowedMode(displayMode.width, displayMode.height) // Don't start in fullscreen so we can get to breakpoints
     }
 
     /**
@@ -96,16 +115,23 @@ class Client : Game() {
     }
 
     fun resize() {
-        super.resize(Gdx.graphics.width, Gdx.graphics.height)
+        super.resize(displayMode.width, displayMode.height)
     }
 
     companion object {
+
         const val r = 0f
         const val g = 0f
         const val b = 0f
         const val a = 1f
         const val hr = 0f
         const val hg = 0f
+
+        @JvmStatic
+        lateinit var displayMode: Graphics.DisplayMode
+
+        @JvmField
+        var DEBUG_MODE: Boolean = false
 
         @JvmField
         var client: Client? = null

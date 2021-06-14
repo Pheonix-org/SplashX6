@@ -21,6 +21,7 @@ public class SplashX6 {
 		config.addIcon("sprites/icon.png", Files.FileType.Internal);
 
 		config.fullscreen = false;
+		Client.DEBUG_MODE = true;
 
 		new LwjglApplication(new Client(), config);
 	}
