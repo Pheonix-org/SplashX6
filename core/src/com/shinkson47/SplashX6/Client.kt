@@ -57,8 +57,9 @@ class Client : Game() {
      * Skips and configures things which annoy us when we're debugging.
      */
     private fun debugStart() {
-        AudioController.muteAudio()
-        setScreen(WorldCreation())
+        AudioController.muteAudio()             // Mute music
+        setScreen(WorldCreation())              // Skip to world creation
+        Gdx.graphics.setWindowedMode(displayMode.width, displayMode.height) // Don't start in fullscreen so we can get to breakpoints
     }
 
     /**
