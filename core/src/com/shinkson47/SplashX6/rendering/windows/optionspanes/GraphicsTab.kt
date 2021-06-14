@@ -30,15 +30,14 @@ class GraphicsTab(val parent : OptionsWindow) : Table() {
         val modeList = SelectBox<Graphics.DisplayMode>(Assets.SKIN)
         modeList.setItems(*Gdx.graphics.displayModes)
         modeList.selected = Gdx.graphics.displayMode
-        modeList.addListener(object : ChangeListener() {
-            // TODO make a damn lambdaChangeListener
-            override fun changed(event: ChangeEvent, actor: Actor) {
-                if (Gdx.graphics.isFullscreen) Gdx.graphics.setFullscreenMode(modeList.selected) else Gdx.graphics.setWindowedMode(
+        modeList.addListener(StageWindow.LambdaChangeListener {
+                if (!Client.DEBUG_MODE && Gdx.graphics.isFullscreen) Gdx.graphics.setFullscreenMode(modeList.selected) else Gdx.graphics.setWindowedMode(
                     modeList.selected.width,
                     modeList.selected.height
                 )
+                Client.displayMode = modeList.selected
                 Client.client!!.fadeScreen(MainMenu())
-            }
+                Client.client!!.resize()
         })
 
         StageWindow.label("grahpicalMode", this)

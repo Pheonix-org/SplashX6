@@ -11,12 +11,14 @@ import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
+import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter;
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow;
 import com.shinkson47.SplashX6.utility.Debug;
@@ -34,7 +36,7 @@ import static com.shinkson47.SplashX6.utility.Assets.SKIN;
  * @version 1
  * @since v1
  */
-public class GameScreen extends ScreenAdapter {
+public class GameScreen extends ScalingScreenAdapter {
 
     //========================================================================
     //#region fields
@@ -67,14 +69,9 @@ public class GameScreen extends ScreenAdapter {
     private SpriteBatch worldBatch = new SpriteBatch();
 
     /**
-     * <h2>The container for all HUD GUI</h2>
-     */
-    private Stage stage;
-
-    /**
      * x and y screenspace co-ords for the center of the screen
      */
-    private Float centerx = Gdx.graphics.getWidth() * 0.5f, centery = Gdx.graphics.getHeight() * 0.5f;
+    private Float centerx = width * 0.5f, centery = height * 0.5f;
 
     public final Table menu = new Table( SKIN );
 
@@ -93,7 +90,6 @@ public class GameScreen extends ScreenAdapter {
         // Create objects
         sr = new ShapeRenderer();
         r = new IsometricStaggeredTiledMapRenderer(GameData.INSTANCE.getWorld().getMap());
-        stage = new Stage(new ScreenViewport());
 
         //r.setView(camera.getCam());
 
@@ -112,8 +108,8 @@ public class GameScreen extends ScreenAdapter {
         MouseHandler.configureGameInput(stage);
 
         // Table shown at top of window as a menu bar
-        menu.setPosition(0,Gdx.graphics.getHeight()-90);
-        menu.setSize(Gdx.graphics.getWidth(),90);
+        menu.setPosition(0,height-90);
+        menu.setSize(width,90);
         menu.center();
 
         // Set color
@@ -125,7 +121,7 @@ public class GameScreen extends ScreenAdapter {
         applyMenuStyling(menu.add(button("endGame", o -> GameHypervisor.EndGame())));
         //applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
         applyMenuStyling(menu.add(button("newGame", o -> GameHypervisor.NewGame())));
-        applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsWindow()))));
+        applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsWindow(this)))));
         //applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
         applyMenuStyling(menu.add(button("endTurn", o -> GameHypervisor.turn_end())));
 
@@ -214,7 +210,7 @@ public class GameScreen extends ScreenAdapter {
      * @param height New height
      */
     @Override
-    public void resize(int width, int height) {
+    public void doResize(int width, int height) {
         camera.resize(width, height);
     }
 
@@ -254,14 +250,6 @@ public class GameScreen extends ScreenAdapter {
         return worldBatch;
     }
 
-
-    /**
-     * <h2>Returns the GUI Stage's camera</h2>
-     */
-    public com.badlogic.gdx.graphics.Camera getHUDCam() {
-        return stage.getCamera();
-    }
-
     /**
      * <h2>Returns the GUI stage</h2>
      */
@@ -269,13 +257,11 @@ public class GameScreen extends ScreenAdapter {
         return stage;
     }
 
-
     /**
      * <h2>Returns the GUI batch</h2>
      */
     public Batch getHUDBatch() {
         return stage.getBatch();
     }
-
     //#engregion
 }

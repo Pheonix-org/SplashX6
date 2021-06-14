@@ -13,11 +13,13 @@ import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
+import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.Utility
+import kotlin.math.roundToInt
 
 /**
  * <h1></h1>
@@ -31,13 +33,13 @@ import com.shinkson47.SplashX6.utility.Utility
  * @version 1
  * @since v1
  */
-class MainMenu : ScreenAdapter() {
+class MainMenu : ScalingScreenAdapter() {
 
-    private val stage = Stage(ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
+    //private val stage = Stage(ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
     private var menuWindow: Window? = null
-    private val batch = SpriteBatch()
     private val bg = Animation(0.03f, Assets.menuBG.regions, Animation.PlayMode.LOOP)
     @Volatile private var animationStateTime = 0f
+    private val optionsWindow = OptionsWindow(this)
 
 
     /**
@@ -59,7 +61,7 @@ class MainMenu : ScreenAdapter() {
 
             addButton("newGame") { NewGame() }
             addButton("loadGame") { Utility.notImplementedDialog(stage) }
-            addButton("preferences") { stage.addActor(OptionsWindow()) }
+            addButton("preferences") { optionsWindow.isVisible = true; optionsWindow.toFront() }
             addButton("credits") { client!!.fadeScreen(CreditsScreen()) }
             addButton("exitGame") { Gdx.app.exit() }
 
@@ -72,37 +74,45 @@ class MainMenu : ScreenAdapter() {
     override fun render(delta: Float) {
         animationStateTime += delta
 
-        batch.begin()
-            batch.draw(bg.getKeyFrame(animationStateTime), 0f, 0f, Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
-        batch.end()
+        with (stage.batch) {
+            begin()
+                draw(bg.getKeyFrame(animationStateTime), 0f, 0f, width, height)
+            end()
+        }
 
         stage.act()
         stage.draw()
     }
 
-    override fun resize(width: Int, height: Int) {
-        super.resize(width, height)
+    override fun doResize(width: Int, height: Int) {
         stage.viewport.update(width, height)
         menuWindow!!.setPosition(
-            makeEven(width / 2 - menuWindow!!.width / 2).toFloat(),
-            makeEven(height / 2 - menuWindow!!.height / 2).toFloat()
+            makeEven((super.width  * 0.5f) - (menuWindow!!.width  * 0.5f)),
+            makeEven((super.height * 0.5f) - (menuWindow!!.height * 0.5f))
         )
         //stage.setViewport(viewport);
     }
 
-    private fun makeEven(f: Float): Int {
-        return 2 * Math.round(f / 2)
+
+
+    private fun makeEven(f: Float): Float {
+        return (f / 2f).roundToInt() * 2f
     }
 
 
     init {
         menuWindow = MainMenuWindow()
-        resize(Gdx.graphics.width, Gdx.graphics.height)
+        resize(width.toInt(), height.toInt())
 
         stage.addActor(menuWindow)
+        stage.addActor(optionsWindow)
 
         // Set the stage to handle key and mouse input
         MouseHandler.configureGameInput(stage)
-        AudioController.playMainMenu();
+        AudioController.playMainMenu()
+
+        optionsWindow.dontClose()
+        optionsWindow.isVisible = false
+
     }
 }
