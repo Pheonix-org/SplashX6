@@ -598,6 +598,10 @@ public abstract class StageWindow extends Window {
         row();
     }
 
+    protected Cell span(Actor actor) {
+        return span(getCell(actor));
+    }
+
     /**
      * Modifies the provided cell to span all columns of the window table.
      * <p>
