@@ -5,7 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.shinkson47.SplashX6.game.world.FastNoiseLite;
+
+import java.util.Collection;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;
@@ -108,4 +111,16 @@ public final class Utility {
     }
     // I tried to implement above by catching an out of bounds exception, but for some reason it wasn't catching it so i resorted to calculating it which is probably slower but oh well
     //#endregion static
+
+    /**
+     * Converts a collection of items into a GDX compatable {@link Array}
+     * @param items {@link Iterable} collection of items.
+     * @param <T> The type of the items.
+     * @return A {@link Array} containing <c>items</c> 
+     */
+    public static <T> Array<T> CollectionToGDXArray(Iterable<T> items) {
+        Array<T> arr = new Array<>();
+        items.forEach(arr::add);
+        return arr;
+    }
 }
