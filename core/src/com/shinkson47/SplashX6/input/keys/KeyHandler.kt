@@ -10,6 +10,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
+import com.shinkson47.SplashX6.utility.GraphicalConfig
 
 /**
  * #
@@ -27,7 +28,7 @@ object KeyHandler {
         with (Gdx.input) {
             if (isKeyPressed(Input.Keys.ESCAPE)) client?.fadeScreen(MainMenu())
             if (isKeyJustPressed(Input.Keys.F5)) NewGame()
-            if (isKeyJustPressed(Input.Keys.F11)) Client.toggleFS()
+            if (isKeyJustPressed(Input.Keys.F11)) GraphicalConfig.toggleFullscreen()
             if (isKeyJustPressed(Input.Keys.F6)) GameData.world?.swapTiledInterp()
 
 

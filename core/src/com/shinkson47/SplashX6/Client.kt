@@ -19,6 +19,7 @@ import javax.swing.ImageIcon
 import com.badlogic.gdx.files.FileHandle
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
+import com.shinkson47.SplashX6.utility.GraphicalConfig
 import java.awt.Image
 
 
@@ -36,9 +37,7 @@ class Client : Game() {
      * # Engine has booted, boot game.
      */
     override fun create() {
-        displayMode = Gdx.graphics.displayMode
         client = this
-        isFullscreen = Gdx.graphics.isFullscreen
 
         Assets.Create() // CALL BEFORE ANY ASSET ACCESS!
         setMacDockIcon()
@@ -59,7 +58,7 @@ class Client : Game() {
     private fun debugStart() {
         AudioController.muteAudio()             // Mute music
         setScreen(WorldCreation())              // Skip to world creation
-        Gdx.graphics.setWindowedMode(displayMode.width, displayMode.height) // Don't start in fullscreen so we can get to breakpoints
+        GraphicalConfig.exitFullscreen()        // Exit fullscreen so we can access the ide.
     }
 
     /**
@@ -115,7 +114,7 @@ class Client : Game() {
     }
 
     fun resize() {
-        super.resize(displayMode.width, displayMode.height)
+        super.resize(GraphicalConfig.displayMode.width, GraphicalConfig.displayMode.height)
     }
 
     companion object {
@@ -127,23 +126,11 @@ class Client : Game() {
         const val hr = 0f
         const val hg = 0f
 
-        @JvmStatic
-        lateinit var displayMode: Graphics.DisplayMode
 
         @JvmField
         var DEBUG_MODE: Boolean = false
 
         @JvmField
         var client: Client? = null
-
-        var isFullscreen = false
-
-		fun toggleFS() {
-            if (isFullscreen) Gdx.graphics.setWindowedMode(
-                Gdx.graphics.width,
-                Gdx.graphics.height
-            ) else Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
-            isFullscreen = !isFullscreen
-        }
     }
 }

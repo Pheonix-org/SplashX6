@@ -1,19 +1,25 @@
 package com.shinkson47.SplashX6.rendering.windows.optionspanes
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Graphics
-import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.EventListener
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.shinkson47.SplashX6.Client
+import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.utils.Scaling
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.GraphicalConfig
+import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
- * # TODO
+ * # A graphical wrapper for [GraphicalConfig]
+ * Options tab containing graphical settings.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 09/06/2021
  * @since v1
  * @version 1
@@ -21,28 +27,59 @@ import com.shinkson47.SplashX6.utility.Assets
 class GraphicsTab(val parent : OptionsWindow) : Table() {
 
     init {
+
+        // Resolution (Display modes)
+        StageWindow.label("displayMode", this)
+            .padRight(20f)
+
+        var modesList : SelectBox<Graphics.DisplayMode>? = null;
+        modesList = select(
+            StageWindow.LambdaChangeListener { GraphicalConfig.displayMode = modesList!!.selected },
+            GraphicalConfig.displayMode,
+            *GraphicalConfig.getDisplayModes() + GraphicalConfig.displayMode
+        )
+
+        // Scaling mode
+        StageWindow.label("scalingMode", this)
+            .padRight(20f)
+
+        var scaleList : SelectBox<Scaling>? = null
+        scaleList = select(
+            StageWindow.LambdaChangeListener { GraphicalConfig.scalingMode = scaleList!!.selected },
+            GraphicalConfig.scalingMode,
+            *GraphicalConfig.getScalingModes()
+        )
+
+        // Fullscreen
+        val checkFullscreen = CheckBox(local("fullscreen"), SKIN)
+        checkFullscreen.isChecked = GraphicalConfig.fullscreen
+        checkFullscreen.addListener(StageWindow.LambdaChangeListener { GraphicalConfig.fullscreen = checkFullscreen.isChecked })
+        add(checkFullscreen)
+            .colspan(2)
+            .center()
+            .row()
+
+        // Advanced
         StageWindow.seperate(this, "graphicalAdvanced")
+        add(StageWindow.button("graphicalFrustum") { parent.toggleShown() })
+            .colspan(2)
+            .row()
+    }
 
-        add(StageWindow.button(
-            "graphicalFrustum"
-        ) { o: Any? -> parent.toggleShown() }).row()
+    private fun <T> select(listener : EventListener, selected : T, vararg items : T): SelectBox<T> {
+        val list = SelectBox<T>(Assets.SKIN)
+        with (list) {
+            setItems(Array(items))
+            setSelected(selected)
+            addListener(listener)
+        }
 
-        val modeList = SelectBox<Graphics.DisplayMode>(Assets.SKIN)
-        modeList.setItems(*Gdx.graphics.displayModes)
-        modeList.selected = Gdx.graphics.displayMode
-        modeList.addListener(StageWindow.LambdaChangeListener {
-                if (!Client.DEBUG_MODE && Gdx.graphics.isFullscreen) Gdx.graphics.setFullscreenMode(modeList.selected) else Gdx.graphics.setWindowedMode(
-                    modeList.selected.width,
-                    modeList.selected.height
-                )
-                Client.displayMode = modeList.selected
-                Client.client!!.fadeScreen(MainMenu())
-                Client.client!!.resize()
-        })
+        add(list)
+            .width(350f)
+            .row()
 
-        StageWindow.label("grahpicalMode", this)
 
-        add(modeList).row()
+        return list
     }
 
 }

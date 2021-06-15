@@ -85,12 +85,10 @@ class MainMenu : ScalingScreenAdapter() {
     }
 
     override fun doResize(width: Int, height: Int) {
-        stage.viewport.update(width, height)
         menuWindow!!.setPosition(
             makeEven((super.width  * 0.5f) - (menuWindow!!.width  * 0.5f)),
             makeEven((super.height * 0.5f) - (menuWindow!!.height * 0.5f))
         )
-        //stage.setViewport(viewport);
     }
 
 

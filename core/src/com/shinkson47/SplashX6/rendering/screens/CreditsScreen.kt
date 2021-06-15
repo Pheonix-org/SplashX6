@@ -119,7 +119,7 @@ open class CreditsScreen : ScalingScreenAdapter() {
             client!!.fadeScreen(MainMenu())
 
         // Increase time since last character
-        characterDelta += Gdx.graphics.deltaTime
+        characterDelta += delta
 
         if (characterDelta > DELAY)  {      // If we've waited longer than DELAY
             charIndex++                     // Move to the next character
@@ -132,7 +132,7 @@ open class CreditsScreen : ScalingScreenAdapter() {
 
 
         batch.begin()                       // Begin GL render semaphore
-        if (renderBG) SKIN.getDrawable("tiledtex").draw(batch,0f,0f,Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat())
+        if (renderBG) SKIN.getDrawable("tiledtex").draw(batch,0f,0f,width, height)
 
         // For every line up to the line we are stamping
         while (currentLineIndex <= lineIndex && currentLineIndex < lines.size) {
@@ -157,7 +157,7 @@ open class CreditsScreen : ScalingScreenAdapter() {
 
             // draw whatever we need to draw for the current line.
             // TODO cache x and base of y
-            font.draw(batch, glyph, (Gdx.graphics.width - glyph.width) * 0.5f, Gdx.graphics.height - 50 - (glyph.height * 2 * currentLineIndex))
+            font.draw(batch, glyph, (width - glyph.width) * 0.5f, height - 50 - (glyph.height * 2 * currentLineIndex))
 
 
             // move to next line to be drawn this frame
@@ -170,7 +170,7 @@ open class CreditsScreen : ScalingScreenAdapter() {
     /**
      * Sets [maxLines] to the max number of lines that can be displayed with the given height.
      */
-    private fun calcMaxLines() = calcMaxLines(Gdx.graphics.height)
+    private fun calcMaxLines() = calcMaxLines(height.toInt())
     private fun calcMaxLines(height: Int) { maxLines = (height - 100) / (glyph.height.toInt() * 2) }
 
     /**

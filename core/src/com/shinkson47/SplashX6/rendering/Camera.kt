@@ -9,6 +9,7 @@ import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.lerpDesire
 import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.utility.GraphicalConfig
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.tan
@@ -294,8 +295,8 @@ class Camera: PerspectiveCamera() {
     // ============================================================
 
     fun resize(width: Float, height: Float) {
-        super.viewportHeight = Gdx.graphics.height.toFloat()
-        super.viewportWidth = Gdx.graphics.width.toFloat()
+        super.viewportHeight = GraphicalConfig.displayMode.height.toFloat()
+        super.viewportWidth  = GraphicalConfig.displayMode.width.toFloat()
 
         cacheFrustumValues()
         AssertInBounds()

@@ -498,8 +498,6 @@ public abstract class StageWindow extends Window {
      * @param key
      */
     public static void seperate(Table t, String key) {
-        t.add(new Label("", seperatorStyle)).colspan(t.getColumns()).height(3).bottom().padBottom(20).row();
-
         // Create a label that will be the header
         Label l = new Label(local(key), Assets.SKIN);
 
@@ -509,7 +507,20 @@ public abstract class StageWindow extends Window {
         // Put the text in the middle
         l.setAlignment(Align.center);
 
-        applyMenuStyling(t.add(l)).padTop(50).row();
+        // Add title
+        applyMenuStyling(t.add(l))
+                .colspan(t.getColumns())
+                .padTop(50)
+                .row();
+
+        // Add seperator
+        t.add(new Label("", seperatorStyle))
+                .colspan(t.getColumns())
+                .height(3)
+                .bottom()
+                .padTop(20)
+                .padBottom(30)
+                .row();
     }
 
     /**
