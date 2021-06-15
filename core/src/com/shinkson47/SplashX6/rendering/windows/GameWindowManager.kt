@@ -31,7 +31,7 @@ object GameWindowManager {
     init {
         with (WINDOW_DOCK) {
             setPosition(0f, 0f)
-            addListener(StageWindow.LambdaClickListener {
+            addListener(StageWindow.LambdaChangeListener {
                     select(selected)
             })
         }
