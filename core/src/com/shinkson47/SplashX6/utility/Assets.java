@@ -1,6 +1,8 @@
 package com.shinkson47.SplashX6.utility;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -53,6 +55,7 @@ public class Assets {
     // Actual fucking assets
     /* ==========================================================================================*/
 
+  public static Preferences preferences = Gdx.app.getPreferences("Splash X6 config");
 
     public static I18NBundle LANG;
 

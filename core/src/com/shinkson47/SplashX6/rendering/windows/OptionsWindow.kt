@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.rendering.windows
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.Cell
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.optionspanes.AudioTab
 import com.shinkson47.SplashX6.rendering.windows.optionspanes.GameTab
@@ -14,7 +15,7 @@ import com.shinkson47.SplashX6.rendering.windows.optionspanes.GraphicsTab
  * @since PRE-ALPHA
  * @version 2
  */
-class OptionsWindow : StageWindow("PREFERENCES") {
+class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("PREFERENCES") {
 
     /**
      * Tab windows
@@ -48,7 +49,7 @@ class OptionsWindow : StageWindow("PREFERENCES") {
         )
 
         setPosition(100f, 100f)
-        setSize((Gdx.graphics.width - 200).toFloat(), (Gdx.graphics.height - 200).toFloat())
+        setSize(parent.width - 200, parent.height - 200)
     }
 
     init {

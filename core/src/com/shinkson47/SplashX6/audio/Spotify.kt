@@ -1,9 +1,11 @@
 package com.shinkson47.SplashX6.audio
 
+import com.shinkson47.SplashX6.utility.Assets
 import com.wrapper.spotify.SpotifyApi
 import com.wrapper.spotify.SpotifyHttpManager
 import com.wrapper.spotify.requests.AbstractRequest
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest
+import com.wrapper.spotify.requests.data.browse.GetListOfCategoriesRequest
 import com.wrapper.spotify.requests.data.library.GetCurrentUsersSavedAlbumsRequest
 import com.wrapper.spotify.requests.data.library.GetUsersSavedTracksRequest
 import com.wrapper.spotify.requests.data.player.*
@@ -32,9 +34,17 @@ object Spotify {
      * set-up to be complete.
      *
      * Call [create] again with the authentication code as an argument.
+     *
+     * Returns true if and only if access data could be loaded from
+     * preferences, and was positively tested to be working.
      **/
-    fun create() {
-        authoriseClient() // TODO only need to do once.
+    fun create() : Boolean {
+        //  If data is stored, try and load it. If we can connect, treat connection as complete.
+        if (Assets.preferences.getString("SPOTIFY_AUTH_CODE") != "" && loadToken()) return true
+
+        // Otherwise initiate two part auth.
+        authoriseClient()
+        return false
     }
 
     /**
@@ -53,13 +63,23 @@ object Spotify {
      * This call must be second. Call [create] with no arguments first to authenticate and
      * recieve an authentication code. THEN call this method with said auth code.
      */
-    fun create(AuthenticationCode : String) {
+    fun create(AuthenticationCode : String) : Boolean {
         authCode = AuthenticationCode
 
         buildTokenRequest() // Now that we have an authentication code, we can create a request for a token.
         getToken()          // TODO we need to save this token.
 
         buildRequests()
+        return testConnection()
+    }
+
+    /**
+     * Performs a [REQUEST_PROFILE] to test access to user's account via the API.
+     *
+     * returns true if access was successful.
+     */
+    private fun testConnection() : Boolean {
+        return execute(REQUEST_CATAGORIES) != null
     }
 
 
@@ -144,11 +164,13 @@ object Spotify {
             REQUEST_NEXT        = skipUsersPlaybackToNextTrack()            .build()
             REQUEST_PREVIOUS    = skipUsersPlaybackToPreviousTrack()        .build()
             REQUEST_NOW_PLAYING = getUsersCurrentlyPlayingTrack()           .build()
+            REQUEST_CATAGORIES  = listOfCategories                          .build()
 
             REQUEST_SEEK        = seekToPositionInCurrentlyPlayingTrack(0)
             REQUEST_REPEAT_MODE = setRepeatModeOnUsersPlayback(RepeatModes.off.toString())
             REQUEST_VOLUME      = setVolumeForUsersPlayback(0)
             REQUEST_SHUFFLE     = toggleShuffleForUsersPlayback(false)
+
         }
     }
 
@@ -192,27 +214,12 @@ object Spotify {
     var REQUEST_SAVED_TRACKS: GetUsersSavedTracksRequest? = null
         private set
 
+    var REQUEST_CATAGORIES: GetListOfCategoriesRequest? = null
+        private set
+
 
     //=====================================================================
     //#endregion API Requests
-    //=====================================================================
-
-    // Test
-    @JvmStatic
-    fun main(args: Array<String>) {
-        //authoriseClient()
-
-        //System.out.println("Awaiting code hotswap.");
-        authCode =
-            "AQCIDJ1_al305nMnep7nfFoqly1TzmRV4jxUQFGLLvggIZAuOsE33rSDf1ktIS5mPbGnXdvERT6-TnLHdYYFxNHacBPwXCxStJOWAk4pNtTxKhLbQcxuG3UUg_RaiCtaPpUUaRMmDzDPkflw8GfV3lufAe9dEkpgh7YAl_FKH6-Tg6Hc5dyJ8QVvvadZgG4arEkan7crg9PqZeOKtxODHzU7NjSeBe0vzOD_K6JG6Q"
-
-        // execute token request to get a token.
-        getToken()
-        pause()
-    }
-
-
-    //=====================================================================
     //#region API Action performing
     //=====================================================================
 
@@ -226,21 +233,54 @@ object Spotify {
     }
 
     /**
-     * Asks spotify for an access token, and applies it to [spotifyApi].
+     * Asks spotify for an access token, and applies it to [spotifyApi], and saves it in preferences.
      */
     private fun getToken() {
-        val authorizationCodeCredentials = execute(PREAUTH_REQUEST_TOKEN!!)
-
-        try {
-            spotifyApi.accessToken  = authorizationCodeCredentials!!.accessToken
-            spotifyApi.refreshToken = authorizationCodeCredentials.refreshToken
-        } catch (e : Exception) {
-            e.printStackTrace()
+        with (execute(PREAUTH_REQUEST_TOKEN!!)!!) {
+            cacheToken(accessToken, refreshToken)
+            saveToken(accessToken, refreshToken)
         }
     }
 
+    /**
+     * Stores the tokens in ram in [spotifyApi]
+     */
+    private fun cacheToken(accessToken: String, refreshToken: String) {
+        spotifyApi.accessToken  = accessToken
+        spotifyApi.refreshToken = refreshToken
+    }
 
-    // TODO handle failure
+    /**
+     * Stores the tokens on disk in preferences.
+     */
+    private fun saveToken(accessToken: String, refreshToken: String) {
+        with (Assets.preferences) {
+            putString("SPOTIFY_ACCESS_TOKEN", accessToken)
+            putString("SPOTIFY_REFRESH_TOKEN", refreshToken)
+            putString("SPOTIFY_AUTH_CODE", authCode)
+            flush()
+        }
+    }
+
+    /**
+     * Loads the tokens from disk from preferences and rebuilds all requests.
+     *
+     * Returns [testConnection] after loading.
+     */
+    private fun loadToken() : Boolean {
+        with (Assets.preferences) {
+            cacheToken(getString("SPOTIFY_ACCESS_TOKEN"), getString("SPOTIFY_REFRESH_TOKEN"))
+            authCode = getString("SPOTIFT_AUTH_CODE")
+        }
+        buildRequests()
+        if (!testConnection()) {
+            authCode = ""
+            cacheToken("","")
+            return false;
+        }
+        return  true;
+    }
+
     /**
      * # Performs a request.
      *
