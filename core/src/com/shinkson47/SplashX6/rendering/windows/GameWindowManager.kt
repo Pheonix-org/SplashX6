@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Select
 import com.shinkson47.SplashX6.audio.SpotifyTestWindow
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.windows.gameutils.music
 import com.shinkson47.SplashX6.rendering.windows.gameutils.units
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 
@@ -66,6 +67,7 @@ object GameWindowManager {
 
         add(units())
         add(SpotifyTestWindow())
+        add(music());
     }
 
     fun update () {

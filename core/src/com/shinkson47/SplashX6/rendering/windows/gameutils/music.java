@@ -1,0 +1,54 @@
+package com.shinkson47.SplashX6.rendering.windows.gameutils;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
+import com.badlogic.gdx.utils.Array;
+import com.shinkson47.SplashX6.rendering.StageWindow;
+import com.shinkson47.SplashX6.utility.Assets;
+import com.shinkson47.SplashX6.utility.Utility;
+import xmlwise.Plist;
+import xmlwise.XmlParseException;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
+
+public class music extends StageWindow {
+
+    // Fields
+   Map<String, Object> tracks = Plist.fromXml(Gdx.files.internal("core/assets/audio/data/playlists.plist").readString());
+   private Array<String> playlist = new Array<>();
+
+   // Constructors
+    public music() throws XmlParseException, IOException {
+        super("Music");
+
+
+
+
+        constructContent();
+    }
+
+    // Methods
+
+    @Override
+    protected void constructContent() {
+        if (FIRST_CONSTRUCTION)
+            return;
+
+        top();
+
+        label("playing").padBottom(20);
+        label("songTest").padBottom(20).row();
+
+        playlist.addAll(Utility.CollectionToGDXArray(((Map)tracks.get("playlist one")).values()));
+
+        SelectBox pList = new SelectBox<String>(Assets.SKIN);
+        //pList.setItems(playlist);
+        add(pList).width(400).colspan(2);
+
+    }
+
+
+}
