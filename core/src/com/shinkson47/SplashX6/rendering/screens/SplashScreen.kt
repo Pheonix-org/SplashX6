@@ -19,7 +19,6 @@ class SplashScreen : CreditsScreen() {
     val time = 5.4f
     @Volatile var currentTime = 0f
 
-    private val batch = SpriteBatch()
     private val bg = Animation(0.06f, Assets.splashBG.regions, Animation.PlayMode.LOOP)
 
     init {
@@ -31,9 +30,11 @@ class SplashScreen : CreditsScreen() {
     }
 
     override fun render(delta: Float) {
-        batch.begin()
-            batch.draw(bg.getKeyFrame(currentTime), (width * 0.5f) - (560 * 0.5f), (height * 0.5f) - (560 * 0.5f), 560f, 560f)
-        batch.end()
+        with (stage.batch) {
+            begin()
+                draw(bg.getKeyFrame(currentTime), (width * 0.5f) - (560 * 0.5f), (height * 0.5f) - (560 * 0.5f), 560f, 560f)
+            end()
+        }
 
         super.render(delta)
 
