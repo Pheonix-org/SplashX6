@@ -211,7 +211,7 @@ public class GameScreen extends ScalingScreenAdapter {
      */
     @Override
     public void doResize(int width, int height) {
-        camera.resize(width, height);
+        if (GameHypervisor.getInGame()) camera.resize(width, height);
     }
 
 

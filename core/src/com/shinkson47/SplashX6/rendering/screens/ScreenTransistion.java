@@ -59,4 +59,10 @@ public class ScreenTransistion extends ScreenAdapter {
 
         alpha += fadeDirection ? 0.1 : -0.1;
     }
+
+    @Override
+    public void resize(int width, int height) {
+        currentScreen.resize(width, height);
+        nextScreen.resize(width, height);
+    }
 }

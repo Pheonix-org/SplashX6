@@ -1,9 +1,6 @@
 package com.shinkson47.SplashX6.rendering.screens
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Animation
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.dmugang.screens.CreditsScreen
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.utility.Assets
@@ -32,7 +29,7 @@ class SplashScreen : CreditsScreen() {
     override fun render(delta: Float) {
         with (stage.batch) {
             begin()
-                draw(bg.getKeyFrame(currentTime), (width * 0.5f) - (560 * 0.5f), (height * 0.5f) - (560 * 0.5f), 560f, 560f)
+                draw(bg.getKeyFrame(currentTime), (this@SplashScreen.stage.viewport.screenWidth * 0.5f) - (560 * 0.5f), (this@SplashScreen.stage.viewport.screenHeight * 0.5f) - (560 * 0.5f), 560f, 560f)
             end()
         }
 

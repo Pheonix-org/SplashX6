@@ -1,14 +1,9 @@
 package com.shinkson47.SplashX6.rendering.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.utils.viewport.ExtendViewport
-import com.dmugang.screens.CreditsScreen
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame

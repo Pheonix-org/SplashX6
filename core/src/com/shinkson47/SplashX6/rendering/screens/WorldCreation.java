@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.game.world.World;
 
@@ -26,10 +27,9 @@ import static com.shinkson47.SplashX6.utility.Assets.SKIN;
  * @version 1
  * @since v1
  */
-public class WorldCreation extends ScreenAdapter {
+public class WorldCreation extends ScalingScreenAdapter {
 
-    private Stage stage = new Stage();
-    private SpriteBatch batch = new SpriteBatch();
+
 
     {
         Table SecretTable = new Table();
@@ -56,9 +56,9 @@ public class WorldCreation extends ScreenAdapter {
         if (hasRendered && Client.client.getScreen() == this)
             GameHypervisor.doNewGameCallback();
 
-        batch.begin();
-            SKIN.getDrawable("tiledtex").draw(batch, 0f,0f,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        batch.end();
+        stage.getBatch().begin();
+            SKIN.getDrawable("tiledtex").draw(stage.getBatch(), 0f,0f,width, height);
+        stage.getBatch().end();
 
         stage.act();
         stage.draw();
@@ -67,6 +67,9 @@ public class WorldCreation extends ScreenAdapter {
         if (!Gdx.input.isKeyPressed(Input.Keys.ANY_KEY))
             hasRendered = true;
     }
+
+    @Override
+    public void doResize(int width, int height) { }
 
     //#endregion operations
 

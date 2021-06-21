@@ -14,7 +14,7 @@ import com.shinkson47.SplashX6.utility.GraphicalConfig
  */
 abstract class ScalingScreenAdapter() : ScreenAdapter() {
 
-    @JvmField var width =  GraphicalConfig.displayMode.width.toFloat().coerceAtLeast(GraphicalConfig.MIN_STAGE_WITDH.toFloat())
+    @JvmField var width =  GraphicalConfig.displayMode.width.toFloat() .coerceAtLeast(GraphicalConfig.MIN_STAGE_WITDH.toFloat())
     @JvmField var height = GraphicalConfig.displayMode.height.toFloat().coerceAtLeast(GraphicalConfig.MIN_STAGE_HEIGHT.toFloat())
 
     private val view = ScalingViewport(GraphicalConfig.scalingMode, width, height)
@@ -27,8 +27,10 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
     abstract fun doResize(width: Int, height: Int)
     override fun resize(width: Int, height: Int) {
         view.scaling = GraphicalConfig.scalingMode
+
         view.setWorldSize(this.width, this.height)
         stage.viewport.update(width, height)
+
         doResize(this.width.toInt(), this.height.toInt())
     }
 

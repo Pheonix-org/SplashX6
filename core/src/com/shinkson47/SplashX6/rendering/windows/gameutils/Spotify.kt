@@ -92,11 +92,17 @@ class Spotify : StageWindow("Spotify") {
             .center()
             .row()
 
-        span(add(volumeSlider)).row()
+        val labelCell : Cell<Label> = label("volume")
+        span(labelCell).center().row()
+        labelCell.actor.setAlignment(Align.center)
+
+        span(add(volumeSlider))
+            .right()
+            .row()
         volumeSlider.addListener(LambdaChangeListener {
             if (volumeSlider.isDragging) return@LambdaChangeListener
             Spotify.setVolume(volumeSlider.value.toInt())
-            update()
+            //update() Causes behaviour to look laggy.
         })
 
         // TODO change max with song
@@ -110,18 +116,23 @@ class Spotify : StageWindow("Spotify") {
 //        span(add(seekSlider))
 //            .row()
 
+        seperate("yourLibrary")
 
         typeSelectBox.items = Utility.CollectionToGDXArray(SpotifySourceType.values().asIterable())
         typeSelectBox.addListener(LambdaChangeListener { updateContentSelect() })
+        label("sourceType")
         span(add(typeSelectBox))
             .height(30f)
             .width(500f)
+            .right()
             .row()
 
         contentSelectBox.addListener(LambdaChangeListener { updateSource() })
+        label("Source")
         span(add(contentSelectBox))
             .height(30f)
             .width(500f)
+            .right()
             .row()
 
     }
@@ -154,23 +165,30 @@ class Spotify : StageWindow("Spotify") {
     }
 
     private fun showAlbumArt(np : CurrentlyPlayingContext){
-        // Turn art into drawable texture
-        Pixmap.downloadFromUrl((np.item as Track).album.images[0].url, object : Pixmap.DownloadPixmapResponseListener {
-            /**
-             * Called on the render thread when image was downloaded successfully.
-             * @param pixmap
-             */
-            override fun downloadComplete(pixmap: Pixmap?) {
-                with (albumArt) {
-                    drawable = TextureRegionDrawable(Texture(pixmap))
-                }
-            }
+        try {
+            // Turn art into drawable texture
+            Pixmap.downloadFromUrl(
+                (np.item as Track).album.images[0].url,
+                object : Pixmap.DownloadPixmapResponseListener {
+                    /**
+                     * Called on the render thread when image was downloaded successfully.
+                     * @param pixmap
+                     */
+                    override fun downloadComplete(pixmap: Pixmap?) {
+                        with(albumArt) {
+                            drawable = TextureRegionDrawable(Texture(pixmap))
+                        }
+                    }
 
 
-            override fun downloadFailed(t: Throwable?) {
-               albumArt.drawable = null
-            }
-        })
+                    override fun downloadFailed(t: Throwable?) {
+                        albumArt.drawable = null
+                    }
+                })
+
+        } catch (e : Exception) {
+            e.printStackTrace() // TODO merge to spotify error handler when implemented.
+        }
     }
 
     private fun updateContentSelect() {

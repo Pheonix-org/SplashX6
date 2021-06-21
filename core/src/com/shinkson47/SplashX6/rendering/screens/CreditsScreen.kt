@@ -1,17 +1,12 @@
-package com.dmugang.screens
+package com.shinkson47.SplashX6.rendering.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.utils.viewport.ScalingViewport
-import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
-import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 
