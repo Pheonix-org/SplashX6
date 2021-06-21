@@ -1,19 +1,15 @@
 package com.shinkson47.SplashX6.audio
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.assets.loaders.TextureLoader
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlaying
 import com.wrapper.spotify.model_objects.specification.Track
-import java.net.URL
-import javax.imageio.ImageIO
 
 /**
  * # TODO
@@ -53,7 +49,7 @@ class SpotifyTestWindow : StageWindow("Spotify Test") {
         addButton("Next")        { Spotify.next() }
         addButton("Previous")    { Spotify.previous() }
         addButton("Seek to 10s") { Spotify.seek(10000) }
-        addButton("Repeat track"){ Spotify.repeatMode(Spotify.RepeatModes.track) }
+        addButton("Repeat track"){ Spotify.repeatMode(Spotify.RepeatMode.track) }
         addButton("Volume 10%")  { Spotify.setVolume(10) }
         addButton("Shuffle on")  { Spotify.setShuffle(true) }
 

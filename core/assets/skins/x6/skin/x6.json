@@ -210,6 +210,25 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		regions: []
 		playMode: 2
 	}
+	slider-v-10: {
+		region: slider-v
+		horizontalStretchAreas: [ 12, 13 ]
+		verticalStretchAreas: [ 56, 200 ]
+		tiling: true
+		minWidth: 28
+		minHeight: 216
+		rightWidth: 14
+		leftWidth: 11
+		bottomHeight: 10
+		topHeight: 14
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
@@ -282,6 +301,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 		background: slider-h10
 		knob: slider-h-knob
 		disabledKnob: slider-h-knob-disable
+	}
+	default-vertical: {
+		parent: default-horizontal
+		background: slider-v-10
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {

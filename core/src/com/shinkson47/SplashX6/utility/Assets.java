@@ -114,8 +114,8 @@ public class Assets {
 
     //#region audio
     public static final Music
-            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/medieval.ogg")),
-            GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/overworld theme.ogg"));
+            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/Menu.mp3")),
+            GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/Lively/6054.mp3"));
 
     public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/click33.wav"));
     //#endregion audio

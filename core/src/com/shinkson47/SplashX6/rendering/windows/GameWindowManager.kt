@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.audio.SpotifyTestWindow
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.windows.gameutils.Spotify
 import com.shinkson47.SplashX6.rendering.windows.gameutils.units
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 
@@ -61,7 +62,12 @@ object GameWindowManager {
 
 
         add(units())
-        add(SpotifyTestWindow())
+        //add(SpotifyTestWindow())
+
+        // Try loading spotify, if successful then add spotify window to game.
+        // Otherwise user must connect in preferences first.
+        if (com.shinkson47.SplashX6.audio.Spotify.createFromExisting())
+            add(Spotify())
     }
 
     fun update () {

@@ -140,7 +140,7 @@ class GameHypervisor {
             Debug.create()
             GameWindowManager.create()
 
-            AudioController.playGame()          // Begin playing in-game soundtrack.
+            AudioController.playGame()            // Begin playing in-game soundtrack.
             client?.fadeScreen(gameRenderer!!)    // Show the game screen to the user.
         }
 
@@ -154,23 +154,27 @@ class GameHypervisor {
         @JvmStatic
         fun quickload() {
             validateCall(REQ_IN_GAME, THROW("Can only quickload in game. This should not be possible."))
+            TODO()
         }
+
         @JvmStatic
         fun load() {
             validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
-
+            TODO()
         }
+
         @JvmStatic
         fun quicksave() {
             if (
                 invalidCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("quicksave a game", "no game is loaded")))
-            ) return;
-
-
+            ) return
+            TODO()
         }
+
         @JvmStatic
         fun save() {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("save a game", "no game is loaded")))
+            TODO()
         }
 
         /**
@@ -442,9 +446,5 @@ class GameHypervisor {
     //#endregion breakdown
     //#region misc
     //========================================================================
-
-
-
-
     }
 }

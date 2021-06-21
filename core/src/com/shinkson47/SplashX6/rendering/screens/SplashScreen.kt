@@ -32,7 +32,7 @@ class SplashScreen : CreditsScreen() {
 
     override fun render(delta: Float) {
         batch.begin()
-            batch.draw(bg.getKeyFrame(currentTime), (Gdx.graphics.width.toFloat() * 0.5f) - (560 * 0.5f), (Gdx.graphics.height.toFloat() * 0.5f) - (560 * 0.5f), 560f, 560f)
+            batch.draw(bg.getKeyFrame(currentTime), (width * 0.5f) - (560 * 0.5f), (height * 0.5f) - (560 * 0.5f), 560f, 560f)
         batch.end()
 
         super.render(delta)

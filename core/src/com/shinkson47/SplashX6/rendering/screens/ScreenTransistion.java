@@ -6,6 +6,9 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.shinkson47.SplashX6.Client;
 
+/**
+ * An aggregate screen which fades between two other screens.
+ */
 public class ScreenTransistion extends ScreenAdapter {
     private ShapeRenderer fadeRenderer = new ShapeRenderer();
     private Screen currentScreen;

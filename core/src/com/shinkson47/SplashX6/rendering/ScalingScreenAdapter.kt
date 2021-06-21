@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.rendering
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScalingViewport
+import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.utility.GraphicalConfig
 
 /**
@@ -18,6 +19,10 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
 
     private val view = ScalingViewport(GraphicalConfig.scalingMode, width, height)
     @JvmField protected val stage = Stage(view)
+
+    init {
+        stage.isDebugAll = Client.DEBUG_MODE
+    }
 
     abstract fun doResize(width: Int, height: Int)
     override fun resize(width: Int, height: Int) {

@@ -243,6 +243,8 @@ public abstract class StageWindow extends Window {
         w.row().padTop(
                 w.getTitleTable().getPadTop() + w.getTitleLabel().getHeight()
         );
+
+        w.padTop(30f);
     }
 
     /**
@@ -643,7 +645,7 @@ public abstract class StageWindow extends Window {
     private void updateColSpans(int columns) {
         if (columns <= lastSpan) return;
 
-        lastSpan = columns;
+        lastSpan = columns - 1;
 
         for (Cell c : spannedCells)
             c.colspan(lastSpan);

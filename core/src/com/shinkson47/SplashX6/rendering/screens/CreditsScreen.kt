@@ -178,7 +178,6 @@ open class CreditsScreen : ScalingScreenAdapter() {
      * Also updates [maxLines] to contain the correct number of lines that can be displayed.
      */
     override fun doResize(width: Int, height: Int) {
-        stage.viewport.update(width, height, true)
         batch.projectionMatrix = stage.camera.combined
         calcMaxLines(height)
     }

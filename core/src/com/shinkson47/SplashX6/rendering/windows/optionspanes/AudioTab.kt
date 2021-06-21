@@ -1,14 +1,19 @@
 package com.shinkson47.SplashX6.rendering.windows.optionspanes
 
-import com.badlogic.gdx.scenes.scene2d.ui.Slider
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.audio.Spotify
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.StageWindow.LambdaClickListener
+import com.shinkson47.SplashX6.rendering.StageWindow.seperate
+import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Utility.local
 
 
-class AudioTab : Table() {
+class AudioTab() : Table() {
 
     init {
         // SLIDER FOR MUSIC VOLUME CONTROL
@@ -56,5 +61,46 @@ class AudioTab : Table() {
 
         add(muteCheck)
             .colspan(2)
+            .row()
+
+
+
+        // SPOTIFY CONFIG
+
+        seperate(this, "Spotify")
+
+        val btnConnectToSpotify = TextButton(local("Connect to spotify"), Assets.SKIN)
+        btnConnectToSpotify.addListener(LambdaClickListener{
+            Gdx.graphics.setWindowedMode(Gdx.graphics.displayMode.width, Gdx.graphics.displayMode.height)
+            if (Spotify.create()) // TODO this needs to be localised.
+                StageWindow.dialog(this, "", "Already connected!", "", "", null)
+            else
+                StageWindow.dialog(this, "Connect to spotify", "A browser should've opened." +
+                        "\n Authorize with spotify, then paste the code in the box" +
+                        "\n and click 'Authenticate'.", "", "", null)
+        })
+
+        val authArea = TextField("", Assets.SKIN)
+        authArea.messageText = local("Paste code here")
+
+        val btnAuthenticate = TextButton(local("Authenticate with code"), Assets.SKIN)
+        btnAuthenticate.addListener(LambdaClickListener{
+            if (Spotify.create(authArea.text) && GameHypervisor.inGame)
+                GameWindowManager.add(com.shinkson47.SplashX6.rendering.windows.gameutils.Spotify())
+        })
+
+        //TODO i hate this repetition. Some kind of preferences utilities?
+        add (btnConnectToSpotify)
+            .colspan(2)
+            .row()
+
+        add ( authArea )
+            .colspan(2)
+            .width(500f)
+            .row()
+
+        add (btnAuthenticate)
+            .colspan(2)
+            .row()
     }
 }
