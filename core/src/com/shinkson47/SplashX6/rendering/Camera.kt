@@ -1,6 +1,5 @@
 package com.shinkson47.SplashX6.rendering
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
@@ -9,10 +8,12 @@ import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.lerpDesire
 import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.GraphicalConfig
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.tan
+import kotlin.properties.Delegates
 
 // TODO checklist
 // - make sure this works in place of the old cam
@@ -51,7 +52,7 @@ class Camera: PerspectiveCamera() {
          */
         private const val ZOOM_MAXIMUM: Float = 28f
 
-        private const val TILT_MINIMUM          : Float = 36f
+        internal const val TILT_MINIMUM          : Float = 36f
         private const val TILT_MAXIMUM          : Float = 60f
 
         var MOVEMENT_SPEED : Int = 10
@@ -59,7 +60,7 @@ class Camera: PerspectiveCamera() {
         var TRUE_SPEED     : Int = MOVEMENT_SPEED
 
 
-        var FRUSTRUM_WIDTH_MOD = -500f
+        var FRUSTUM_WIDTH_MOD by Delegates.notNull<Float>()
         var cachedFrustrumStartX = 0f
         var cachedFrustrumWidth = 0f;
     }
@@ -303,8 +304,8 @@ class Camera: PerspectiveCamera() {
     }
 
     fun cacheFrustumValues() {
-        cachedFrustrumStartX = ((viewportWidth + FRUSTRUM_WIDTH_MOD) * 0.5f)
-        cachedFrustrumWidth = viewportWidth + fieldOfView + FRUSTRUM_WIDTH_MOD
+        cachedFrustrumStartX = ((viewportWidth + FRUSTUM_WIDTH_MOD) * 0.5f)
+        cachedFrustrumWidth = viewportWidth + fieldOfView + FRUSTUM_WIDTH_MOD
     }
 
     fun boost(b: Boolean) {
@@ -343,6 +344,8 @@ class Camera: PerspectiveCamera() {
         position.z = 100f
         deltaZoom(1f);
         AssertInBounds();
+
+        FRUSTUM_WIDTH_MOD = Assets.preferences.getFloat("frustumWidthMod", -500f)
         //resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 

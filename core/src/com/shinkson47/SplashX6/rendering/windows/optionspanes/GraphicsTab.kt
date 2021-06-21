@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.rendering.windows.optionspanes
 
+import FrustumCallibration
 import com.badlogic.gdx.Graphics
 import com.badlogic.gdx.scenes.scene2d.EventListener
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox
@@ -9,8 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.Scaling
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
+import com.shinkson47.SplashX6.utility.APICondition
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
+import com.shinkson47.SplashX6.utility.APICondition.Companion.WARN
+import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
+import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.GraphicalConfig
@@ -24,7 +31,7 @@ import com.shinkson47.SplashX6.utility.Utility.local
  * @since v1
  * @version 1
  */
-class GraphicsTab(val parent : OptionsWindow) : Table() {
+class GraphicsTab(val parentOptions : OptionsWindow) : Table() {
 
     init {
 
@@ -61,7 +68,13 @@ class GraphicsTab(val parent : OptionsWindow) : Table() {
 
         // Advanced
         StageWindow.seperate(this, "graphicalAdvanced")
-        add(StageWindow.button("graphicalFrustum") { parent.toggleShown() })
+        add(StageWindow.button("graphicalFrustum") {
+            if (invalidCall(REQ_IN_GAME, WARN("Frustrum changes can only be made whilst in-game.", parentOptions)))
+                return@button
+
+            GameHypervisor.gameRenderer!!.hudStage.addActor(FrustumCallibration())
+            parentOptions.toggleShown()
+        })
             .colspan(2)
             .row()
     }
