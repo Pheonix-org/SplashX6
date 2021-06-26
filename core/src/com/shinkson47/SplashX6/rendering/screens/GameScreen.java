@@ -51,7 +51,7 @@ public class GameScreen extends ScalingScreenAdapter {
      * <h2>Renderer that renders {@link GameData#world}</h2>
      * renders from perspective of {@link GameScreen#camera}
      */
-    public static MapRenderer r;
+    public MapRenderer r;
 
     /**
      * <h2>A renderer used to draw primative shapes</h2>
@@ -152,14 +152,14 @@ public class GameScreen extends ScalingScreenAdapter {
         worldBatch.setProjectionMatrix(camera.combined);
         sr.setProjectionMatrix(camera.combined);
 
-        // Get selected unit, and draw a circle under it.
+        // Get selected unit, and draw a circle under it.?
         Unit u = GameData.INSTANCE.getSelectedUnit();
         sr.begin(ShapeRenderer.ShapeType.Line);
         if (u != null) {
             sr.circle(u.getX() + TILE_HALF_WIDTH, u.getY() + TILE_HALF_HEIGHT, TILE_HALF_HEIGHT);
         }
 
-        Vector3 v = GameHypervisor.camera_focusingOnTile();
+        Vector3 v = GameHypervisor.mouse_focusOnTile();
         v = isoToCartesian((int)v.x, (int)v.y);
         sr.circle((int) v.x, v.y, 10);
 
@@ -263,5 +263,20 @@ public class GameScreen extends ScalingScreenAdapter {
     public Batch getHUDBatch() {
         return stage.getBatch();
     }
+
+    public MapRenderer getR() {
+        return r;
+    }
+
+    public GameManagementScreen getManagementScreen() {
+        return managementScreen;
+    }
+
+    @Override
+    public void show() {
+        sr.end();
+        worldBatch.setProjectionMatrix(camera.combined);
+    }
+
     //#engregion
 }

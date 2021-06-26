@@ -145,4 +145,18 @@ public final class Utility {
         return i;
     }
 
+    /**
+     * <h2>Dispatches a headless helper thread that is executing r.</h2>
+     * @param r The runnable to execute in the thread.
+     * @param name Name to be given to the thread.
+     * @return Reference to the created thread.
+     */
+    public static Thread DispatchDaemonThread(Runnable r, String name) {
+        Runnable target;
+        Thread t = new Thread(r, name);
+        t.setDaemon(true);
+        t.start();
+        return t;
+    }
+
 }

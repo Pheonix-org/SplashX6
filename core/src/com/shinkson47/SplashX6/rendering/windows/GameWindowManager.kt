@@ -2,11 +2,10 @@ package com.shinkson47.SplashX6.rendering.windows
 
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.audio.SpotifyTestWindow
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.gameutils.Spotify
-import com.shinkson47.SplashX6.rendering.windows.gameutils.units
+import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 
 /**
@@ -61,7 +60,7 @@ object GameWindowManager {
         GameHypervisor.gameRenderer!!.menu.add(WINDOW_DOCK)
 
 
-        add(units())
+        add(UnitsWindow())
         //add(SpotifyTestWindow())
 
         // Try loading spotify, if successful then add spotify window to game.
@@ -75,7 +74,7 @@ object GameWindowManager {
     }
 
     private fun toggleCurrent() {
-        currentWindow?.let { WINDOW_DOCK.selected.toggleShown() }
+        currentWindow?.let { currentWindow!!.toggleShown() }
     }
 
     /**
@@ -85,7 +84,12 @@ object GameWindowManager {
         GAME_WINDOWS.clear()
     }
 
-    fun select(i: Int) = select(WINDOW_DOCK.list.items[i])
+    fun select(i: Int) {
+        if (i <= WINDOW_DOCK.list.items.size - 1)
+        select(WINDOW_DOCK.list.items[i])
+    }
+
+
     fun select(it : StageWindow) {
 
         if (currentWindow == it) {

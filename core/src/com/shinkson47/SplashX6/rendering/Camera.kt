@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.lerpDesire
@@ -251,7 +252,7 @@ class Camera: PerspectiveCamera() {
         // (badly) Change viewport to match field of view
         // this can't really be improved, the staggared isometric renderer does not support a perspective camera, or it's culling frustum.
         // TODO As a work-around we could add a user adjustable varable to the width
-        GameScreen.r.setView(combined,position.x - cachedFrustrumStartX ,position.y,  cachedFrustrumWidth, viewportHeight * fieldOfView)
+        GameHypervisor.gameRenderer!!.r.setView(combined,position.x - cachedFrustrumStartX ,position.y,  cachedFrustrumWidth, viewportHeight * fieldOfView)
 
         // Move towards desired position
         desiredPosition.next();
@@ -330,7 +331,6 @@ class Camera: PerspectiveCamera() {
     fun right() {
         desiredPosition.desired.x += TRUE_SPEED
     }
-
 
 
     // ============================================================

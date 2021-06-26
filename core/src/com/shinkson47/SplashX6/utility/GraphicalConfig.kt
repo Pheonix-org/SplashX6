@@ -1,14 +1,9 @@
 package com.shinkson47.SplashX6.utility
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Gdx.graphics
 import com.badlogic.gdx.Graphics.*
 import com.badlogic.gdx.utils.Scaling
 import com.shinkson47.SplashX6.Client
-import com.shinkson47.SplashX6.rendering.screens.MainMenu
-import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_MAIN_MENU
-import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
-import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 
 
 /**
