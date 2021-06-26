@@ -2,7 +2,6 @@ package com.shinkson47.SplashX6
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Graphics
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.shinkson47.SplashX6.game.GameHypervisor
@@ -14,10 +13,9 @@ import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.rendering.screens.SplashScreen
 import java.lang.Exception
 import javax.imageio.ImageIO
-import javax.swing.ImageIcon
 
-import com.badlogic.gdx.files.FileHandle
 import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.input.keys.KeyBinder
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.utility.GraphicalConfig
 import java.awt.Image
@@ -86,6 +84,7 @@ class Client : Game() {
     override fun render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         KeyHandler.Poll()
+        KeyBinder.poll()
         MouseHandler.Poll()
         currentScreen?.render(Gdx.graphics.deltaTime)
     }
