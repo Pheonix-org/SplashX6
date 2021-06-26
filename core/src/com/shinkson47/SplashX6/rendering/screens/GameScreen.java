@@ -73,6 +73,8 @@ public class GameScreen extends ScalingScreenAdapter {
      */
     private Float centerx = width * 0.5f, centery = height * 0.5f;
 
+    private GameManagementScreen managementScreen = new GameManagementScreen(this);
+
     public final Table menu = new Table( SKIN );
 
 
@@ -169,8 +171,26 @@ public class GameScreen extends ScalingScreenAdapter {
 
         sr.end();
 
+        renderSprites();
 
+
+        // META : Draw FPS as 10x, 10y in the world
+        //font.draw(worldBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), 10, 10);
+
+
+
+        // Update the UI (listen for inputs, etc)
+        stage.act(delta);
+
+        // Draw the UI
+        stage.draw();
+
+        Debug.update();
+    }
+
+    public void renderSprites(){
         worldBatch.begin();
+
         // Render cities
         GameData.INSTANCE.getCities().forEach(
                 city -> city.draw(worldBatch)
@@ -185,23 +205,8 @@ public class GameScreen extends ScalingScreenAdapter {
 //                        sr.end();
 //                    }
                     sprite.draw(worldBatch);
-                }
-        );
-
-
-
-        // META : Draw FPS as 10x, 10y in the world
-        //font.draw(worldBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), 10, 10);
-        worldBatch.end();
-
-
-        // Update the UI (listen for inputs, etc)
-        stage.act(delta);
-
-        // Draw the UI
-        stage.draw();
-
-        Debug.update();
+                });
+                worldBatch.end();
     }
 
     /**

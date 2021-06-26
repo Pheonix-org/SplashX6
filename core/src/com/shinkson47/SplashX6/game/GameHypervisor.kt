@@ -1,27 +1,36 @@
 package com.shinkson47.SplashX6.game;
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.Vector
 import com.badlogic.gdx.math.Vector3
+import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.audio.Spotify
 import com.shinkson47.SplashX6.game.cities.City
 import com.shinkson47.SplashX6.game.cities.CityTypes
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.World
-import com.shinkson47.SplashX6.game.world.World.TILE_HALF_HEIGHT
-import com.shinkson47.SplashX6.game.world.World.TILE_HALF_WIDTH
+import com.shinkson47.SplashX6.game.world.World.*
+import com.shinkson47.SplashX6.input.keys.KeyBinder
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
+import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_NOT_IN_UCM
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_GAME_LOADING
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_UNIT_CONTROL_MODE
 import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
+import java.awt.Toolkit
+import java.awt.event.KeyEvent
 import java.lang.Exception
 import kotlin.IllegalArgumentException
 
@@ -139,7 +148,9 @@ class GameHypervisor {
             // STOPSHIP: 17/04/2021 this is dumb and shouldn't stay
             Debug.create()
             GameWindowManager.create()
+            KeyBinder.createGameBinds()
 
+            if (!DEBUG_MODE) Spotify.pause()      // If possible, stop spotify.
             AudioController.playGame()            // Begin playing in-game soundtrack.
             client?.fadeScreen(gameRenderer!!)    // Show the game screen to the user.
         }
@@ -239,9 +250,10 @@ class GameHypervisor {
          * # Sets the destination of the selected unit to the cursor
          * in tile space.
          */
+        @JvmStatic
         fun unit_setDestination() {
             with(GameData.selectedUnit!!) {
-                val dest: Vector3 = camera_focusingOnTile()
+                val dest: Vector3 = cm_selectedTile()
                 destX = dest.x.toInt()
                 destY = dest.y.toInt()
             }
@@ -250,6 +262,7 @@ class GameHypervisor {
         /**
          * # Focusses the camera on the selected units destination.
          */
+        @JvmStatic
         fun unit_viewDestination() {
             camera_moveToTile(GameData.selectedUnit!!.destX, GameData.selectedUnit!!.destY)
         }
@@ -258,6 +271,7 @@ class GameHypervisor {
         /**
          * # focuesses the camera on the selected unit
          */
+        @JvmStatic
         fun unit_view(){
             camera_focusOn(GameData.selectedUnit!!.x + TILE_HALF_WIDTH, GameData.selectedUnit!!.y + TILE_HALF_HEIGHT)
         }
@@ -266,11 +280,13 @@ class GameHypervisor {
          * # Destroys the selected unit
          * Giving the user some resources in return.
          */
+        @JvmStatic
         fun unit_disband() {
             GameData.units.remove(GameData.selectedUnit)
             GameData.selectedUnit = null
         }
 
+        @JvmStatic
         fun unit_selected() : Unit? = GameData.selectedUnit
 
 
@@ -395,6 +411,102 @@ class GameHypervisor {
 
         //========================================================================
         //#endregion camera control
+        //#region input
+        //========================================================================
+
+        @JvmStatic
+        fun mouse_focusOnTile() : Vector3 {
+            with (gameRenderer!!.cam) {
+/*              val mousex = (Gdx.input.x + desiredPosition.present.x) - Gdx.graphics.height
+                val mousey = yFromAngle(desiredTilt.present, (Gdx.graphics.height - Gdx.input.y.toDouble()) + desiredPosition.present.y )
+                Debug.dump("X: $mousex")
+                Debug.dump("Y: $mousey")*/
+                //cartesianToIso(unprojected.x.toInt(), unprojected.y.toInt())
+                val unprojected = unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
+                Debug.dump("Result: $unprojected")
+                return unprojected
+            }
+        }
+
+
+        //========================================================================
+        //#endregion input
+        //#region Control Mode
+        //========================================================================
+
+        @JvmStatic
+        var cm_active = false
+            private set
+
+        /**
+         * # Enters unit control mode
+         */
+        @JvmStatic
+        fun cm_enter() {
+            //cm_showStateCaps(true)
+            cm_active = true
+            client!!.fadeScreen(gameRenderer!!.managementScreen)
+        }
+
+        /**
+         * # Exits unit control mode
+         */
+        @JvmStatic
+        fun cm_exit() {
+            //cm_showStateCaps(false)
+            cm_active = false
+            client!!.fadeScreen(gameRenderer!!)
+        }
+
+        /**
+         * Toggles between [cm_exit] and [cm_enter]
+         */
+        @JvmStatic
+        fun cm_toggle() {
+            if (cm_active) cm_exit() else cm_enter()
+        }
+
+        //private fun cm_showStateCaps(value : Boolean) = Toolkit.getDefaultToolkit().setLockingKeyState(KeyEvent.VK_CAPS_LOCK, value)
+
+        /**
+         * # Returns the tile under the mouse cursor in control mode.
+         */
+        @JvmStatic
+        fun cm_selectedTile() : Vector3 {
+            validateCall(REQ_UNIT_CONTROL_MODE) { cm_enter(); }
+
+            // Get point on world that mouse is pointing to.
+            val unprojected = gameRenderer!!.managementScreen.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
+
+            // Find what tile that is and return it.
+            return cartesianToIso(unprojected.x.toInt(), unprojected.y.toInt())
+        }
+
+        /**
+         * Flag representing wether or not the ucm is currently selecting a unit destination.
+         */
+        @JvmStatic
+        var cm_isSelectingDestination = false
+            private set
+
+        /**
+         * # Selects a destination for a unit in UCM.
+         *
+         *
+         */
+        @JvmStatic
+        fun cm_destinationSelect(){
+            if (cm_isSelectingDestination)
+                unit_setDestination()
+
+            cm_isSelectingDestination = !cm_isSelectingDestination
+        }
+
+        @JvmStatic
+        fun cm_cancelDestinationSelect(){ cm_isSelectingDestination = false; }
+
+        //========================================================================
+        //#endregion ControlMode
         //#region breakdown
         //========================================================================
 
@@ -410,6 +522,7 @@ class GameHypervisor {
             gameRenderer = null
             GameData.clear()
             GameWindowManager.dispose()
+            KeyBinder.destroyGameBinds()
         }
 
         /**
@@ -418,8 +531,10 @@ class GameHypervisor {
          */
         @JvmStatic
         fun EndGame() {
+            cm_exit()
             dispose()
-            client!!.fadeScreen(MainMenu());
+            if (!DEBUG_MODE) Spotify.pause()
+            client!!.fadeScreen(MainMenu())
         }
 
         /**
@@ -446,5 +561,7 @@ class GameHypervisor {
     //#endregion breakdown
     //#region misc
     //========================================================================
+
+
     }
 }

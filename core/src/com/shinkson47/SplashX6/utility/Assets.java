@@ -77,6 +77,9 @@ public class Assets {
             TILESETS,
             SPRITES;
 
+    public static final Texture
+            spotifyFail;
+
     public static final TextureAtlas
             unitSprites,
             citySprites,
@@ -131,6 +134,7 @@ public class Assets {
         citySprites = new TextureAtlas("sprites/cities.atlas");
         menuBG = new TextureAtlas("sprites/menu_bg.atlas");
         splashBG = new TextureAtlas("sprites/splash_bg.atlas");
+        spotifyFail = new Texture("sprites/spotify_fail.png");
 
         SKIN = new Skin(Gdx.files.internal("skins/x6/skin/x6.json"));
 

@@ -3,11 +3,15 @@ package com.shinkson47.SplashX6.rendering.windows.gameutils
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_exit
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen
 import com.shinkson47.SplashX6.utility.Assets
 
 /**
@@ -16,7 +20,7 @@ import com.shinkson47.SplashX6.utility.Assets
  * @since v1
  * @version 1
  */
-class units : StageWindow("Units"), Runnable {
+class UnitsWindow : StageWindow("Units"), Runnable {
 
     private val waiting: List<Unit> = List(Assets.SKIN)
     private val busy: List<Unit> = List(Assets.SKIN)
@@ -26,7 +30,7 @@ class units : StageWindow("Units"), Runnable {
     /**
      * A click listener for a list of units, that selects the unit clicked within the game engine.
      */
-    private class SELECT_LISTENER(val parent: units, val list: List<Unit>) : LambdaClickListener({
+    private class SELECT_LISTENER(val parent: UnitsWindow, val list: List<Unit>) : LambdaClickListener({
         list.selected?.let { // Only if an item is selected,
             GameHypervisor.unit_select(it)
             parent.refreshSelected()
@@ -66,7 +70,7 @@ class units : StageWindow("Units"), Runnable {
         // Buttons
         // TODO localise
         // TODO lots of repeating code here
-        add(button("moveUnitToCursor") { GameHypervisor.unit_setDestination(); refresh() }).row()
+        add(button("moveUnitToCursor") { if (GameHypervisor.cm_active) GameHypervisor.cm_destinationSelect() else GameHypervisor.unit_setDestination(); refresh() }).row()
         tooltip("ttMoveUnitToCursor")
 
         add(button("viewDestination") { GameHypervisor.unit_viewDestination(); refresh() }).row()
@@ -161,5 +165,8 @@ class units : StageWindow("Units"), Runnable {
         refresh()
     }
 
-
+//    override fun toggleShown() {
+//        super.toggleShown()
+//        if (isVisible) cm_enter() else cm_exit()
+//    }
 }

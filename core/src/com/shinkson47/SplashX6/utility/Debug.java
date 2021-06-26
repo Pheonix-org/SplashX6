@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.math.Vector3;
+import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.world.World;
@@ -30,7 +31,7 @@ public class Debug {
     public static DebugWindow MainDebugWindow;
     public static GameScreen gameRenderer;
     private static final List<String> Dumps = new ArrayList<>();
-    private static boolean debugMode = false;
+    private static boolean debugMode = Client.DEBUG_MODE;
 
     public static boolean enabled() { return debugMode; }
 

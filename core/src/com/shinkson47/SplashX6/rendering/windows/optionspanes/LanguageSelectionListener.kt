@@ -38,7 +38,7 @@ class LanguageSelectionListener(
 
         // Make sure we're on the menu.
         if (APICondition.invalidCall(
-                APICondition.REQ_MAIN_MENU,
+                APICondition.REQ_UNIT_CONTROL_MODE,
                 APICondition.WARN("Language can only be changed in the main menu", languageList)
             )
         ) { // If call was rejected, reset to current language and ignore.

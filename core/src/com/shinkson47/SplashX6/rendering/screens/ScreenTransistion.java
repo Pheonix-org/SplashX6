@@ -23,6 +23,7 @@ public class ScreenTransistion extends ScreenAdapter {
     public ScreenTransistion(Screen current, Screen next) {
         this.currentScreen = current;
         this.nextScreen = next;
+        next.show(); // Trigger any prep that needs to be triggered. Will repeat after transition.
     }
 
     @Override

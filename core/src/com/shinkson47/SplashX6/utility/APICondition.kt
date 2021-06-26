@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import java.util.function.Predicate
@@ -130,6 +131,9 @@ class APICondition @JvmOverloads constructor() {
         @JvmField
         val REQ_MAIN_MENU: Predicate<Any?> = Predicate { Client.client?.screen is MainMenu }
 
+        @JvmField
+        val REQ_UNIT_CONTROL_MODE: Predicate<Any?> = Predicate { Client.client?.screen is GameManagementScreen }
+
 
 
 
@@ -144,6 +148,9 @@ class APICondition @JvmOverloads constructor() {
          */
         @JvmStatic
         val MSG_GENERIC : String = "API call made in invalid state."
+
+        @JvmStatic
+        val MSG_NOT_IN_UCM : String = "Unit Control Mode API call issued when not in UCM."
 
         /**
          * Shows a formatted message : `Tried to $triedTo, but $except`.

@@ -5,7 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.input.keys.KeyBinder;
+import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen;
 
 /**
  * <h1>Main mouse handling scripts</h1>
@@ -50,8 +53,14 @@ public class MouseHandler {
             }
 
             // If pressing, notify drag logistics that it's been pressed
-            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
                 DragLogistics.LEFT.down();
+
+                if (Client.client.getCurrentScreen() instanceof GameManagementScreen) {
+                    if (GameHypervisor.getCm_isSelectingDestination()) GameHypervisor.cm_destinationSelect();
+                }
+            }
+
 
             // If down, then update camera's target with the mouse's movement
             if (DragLogistics.LEFT.isDown())
@@ -89,6 +98,7 @@ public class MouseHandler {
         reset();
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(GameZoomDragHandler);
+        inputMultiplexer.addProcessor(KeyBinder.INSTANCE);
     }
 
 

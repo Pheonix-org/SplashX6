@@ -11,12 +11,6 @@ import com.shinkson47.SplashX6.utility.Assets
  * util window used to alter the width of the camera's frustum
  */
 class FrustumCallibration : StageWindow("Culling frustum calabration") {
-    override fun toggleShown() {
-
-        gameRenderer!!.cam.deltaZoom(10000f)
-        getStage().addActor(this)
-        //toggleAll()
-    }
 
     private fun toggleAll() {
         super.toggleShown()
@@ -68,7 +62,11 @@ class FrustumCallibration : StageWindow("Culling frustum calabration") {
     }
 
     init {
-        gameRenderer!!.cam.desiredTilt.desired = TILT_MINIMUM
+        with (gameRenderer!!.cam) {
+            deltaZoom(10000f)
+            desiredTilt.desired = TILT_MINIMUM
+        }
+
         isResizable = false
     }
 }
