@@ -113,6 +113,9 @@ object Spotify {
 
     private var DISABLE : Boolean = false
 
+    var ERROR : Exception? = null
+        private set
+
     fun enable()  { DISABLE = false }
     fun disable() { DISABLE = true }
 
@@ -339,9 +342,11 @@ object Spotify {
      */
     private fun <T> execute(request : AbstractRequest<T>?) : T? {
         if (DISABLE) return null
+        ERROR = null
         try {
             return request?.let { request.execute() }
         } catch (e : Exception){
+            ERROR = e
             e.printStackTrace()
         }
         return null

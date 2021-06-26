@@ -3,17 +3,22 @@ package com.shinkson47.SplashX6.rendering.windows.gameutils
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
+import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.audio.Spotify
 import com.shinkson47.SplashX6.audio.SpotifySourceType
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Utility
 import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlayingContext
 import com.wrapper.spotify.model_objects.specification.Track
+import javax.swing.text.Utilities
 
 /**
  * # GUI front end for [Spotify]
@@ -23,31 +28,33 @@ import com.wrapper.spotify.model_objects.specification.Track
  */
 class Spotify : StageWindow("Spotify") {
 
+    //#region UI elements
     lateinit var typeSelectBox       : SelectBox<SpotifySourceType>
     lateinit var contentSelectBox    : SelectBox<String>
     lateinit var songLabel           : Label
     lateinit var seekSlider          : Slider
     lateinit var volumeSlider          : Slider
     lateinit var albumArt            : Image
-    var playbackState : CurrentlyPlayingContext? = null
+    lateinit var playPause           : TextButton
+    //#endregion
 
-    init {
-        Spotify.create()
-    }
+    /**
+     * # Storage of the last known playback state.
+     */
+    var playbackState : CurrentlyPlayingContext? = null
 
 
     /**
      * <h2>Constructs the content to be displayed in this window</h2>
      */
     override fun constructContent() {
+        // Init alise objects
         typeSelectBox       = SelectBox<SpotifySourceType>(Assets.SKIN)
         contentSelectBox    = SelectBox<String>(Assets.SKIN)
         seekSlider          = Slider(0f,100f, 1f, false, Assets.SKIN)
         volumeSlider        = Slider(0f,100f, 1f, false, Assets.SKIN)
         albumArt            = Image()
         albumArt.setScaling(Scaling.fit)
-
-
 
         span(add(albumArt))
             .height(512f)
@@ -65,25 +72,25 @@ class Spotify : StageWindow("Spotify") {
             .center()
             .row()
 
-        add(button("<") { Spotify.previous(); update() })
+        add(button("<") { Spotify.previous(); })
             .width(50f)
             .fillX()
             .expandX()
             .center()
 
 
-        add(button("|| / >") {
+        val buttonCell = add(button("|| / >") {
             if (playbackState?.is_playing == true) {
                 Spotify.pause()
             } else
                 Spotify.play()
-
-            update()
         })
             .width(200f)
             .fillX()
             .expandX()
             .center()
+
+        playPause = buttonCell.actor
 
         add(button(">") { Spotify.next(); update() })
             .width(50f)
@@ -91,6 +98,7 @@ class Spotify : StageWindow("Spotify") {
             .expandX()
             .center()
             .row()
+
 
         val labelCell : Cell<Label> = label("volume")
         span(labelCell).center().row()
@@ -102,19 +110,7 @@ class Spotify : StageWindow("Spotify") {
         volumeSlider.addListener(LambdaChangeListener {
             if (volumeSlider.isDragging) return@LambdaChangeListener
             Spotify.setVolume(volumeSlider.value.toInt())
-            //update() Causes behaviour to look laggy.
         })
-
-        // TODO change max with song
-//        seekSlider.addListener(LambdaChangeListener {
-//            if (seekSlider.isDragging) return@LambdaChangeListener
-//            nowPlaying ?: return@LambdaChangeListener
-//            Spotify.seek((seekSlider.value).toInt())
-//            update()
-//        })
-//
-//        span(add(seekSlider))
-//            .row()
 
         seperate("yourLibrary")
 
@@ -137,33 +133,65 @@ class Spotify : StageWindow("Spotify") {
 
     }
 
-    override fun toggleShown() {
-        super.toggleShown()
+    /**
+     * # Primary update routine.
+     * Fetches data from spotify and updates the ui to represent it.
+     *
+     * Also can change state of internal soundtrack depending in playstate of spotify.
+     *
+     * > API NOTE : When updating, [Spotify] is disabled to prevent false triggers
+     * > whilst updating the ui. This may effect other async threads accessing [Spotify]
+     */
+    @Synchronized private fun update() {
+        // Attempt to fetch the current state of playback.
+        playbackState = Spotify.info()
 
-        update()
-    }
+        // If there was an issue with the api request
+        if (Spotify.ERROR != null) {
+            fail("Unable to talk to spotify.\n(${Spotify.ERROR!!.javaClass.simpleName}: ${Spotify.ERROR!!.message})")
+            AudioController.resumeMusic()
+            return;
+        }
 
-    private fun update() {
-        playbackState = Spotify.info() ?: return    // Fetch the current state of playback.
+        // If the api request was made, but there's no playback info
+        if (playbackState == null || playbackState!!.item == null) {
+            fail("Start / Re-start spotify & play something.\n(Unable to fetch playback info)")
+            AudioController.resumeMusic()
+            return
+        }
 
-        Spotify.disable()                           // Prevent change events from causing api events.
+        // Alter state of internal playback, if needed.
+        if (playbackState!!.is_playing && AudioController.getNowPlaying().isPlaying)
+            AudioController.pauseMusic()
+        if (!playbackState!!.is_playing && !AudioController.getNowPlaying().isPlaying)
+            AudioController.resumeMusic()
 
-        showAlbumArt(playbackState!!)               // Show art and title
+        // Show correct volume.
+        volumeSlider.value = playbackState!!.device?.volume_percent!!.toFloat()
+
+        // Show correct symbol in play / pause button.
+        playPause.setText(if (playbackState!!.is_playing) "||" else ">")
+
+        // Prevent changes to the ui from causing api events.
+        Spotify.disable()
+
+        // Show art and title
+        showAlbumArt(playbackState!!)
         songLabel.setText(playbackState!!.item.name)
 
-//        with (seekSlider) {                         // Show position
-//                value = playbackState!!.progress_ms.toFloat()
-//                setRange(0f, playbackState!!.item.durationMs.toFloat())
-//        }
-
+        // Show correct playback context type.
+        // NOTE : This has to be last cause of it's changed event.
         if (playbackState!!.context != null)
             typeSelectBox.selected = SpotifySourceType.valueOf(playbackState?.context?.type.toString().lowercase())
 
-        volumeSlider.value = playbackState!!.device?.volume_percent!!.toFloat()
-
+        // Re-enable spotify api requests.
         Spotify.enable()
     }
 
+    /**
+     * Fetches the album art of the currently playing song, and
+     * displays it in [albumArt].
+     */
     private fun showAlbumArt(np : CurrentlyPlayingContext){
         try {
             // Turn art into drawable texture
@@ -175,22 +203,29 @@ class Spotify : StageWindow("Spotify") {
                      * @param pixmap
                      */
                     override fun downloadComplete(pixmap: Pixmap?) {
-                        with(albumArt) {
-                            drawable = TextureRegionDrawable(Texture(pixmap))
-                        }
+                            albumArt.drawable = TextureRegionDrawable(Texture(pixmap))
                     }
 
-
                     override fun downloadFailed(t: Throwable?) {
-                        albumArt.drawable = null
+                        albumArt.drawable = TextureRegionDrawable(Assets.spotifyFail)
                     }
                 })
 
         } catch (e : Exception) {
-            e.printStackTrace() // TODO merge to spotify error handler when implemented.
+            fail (e.message ?: "Something went wrong whilst getting the album art.")
+            e.printStackTrace()
         }
     }
 
+
+    /**
+     * # Changes what context items are available after a change to the context type.
+     *
+     * Sub ran when the context type is changed by the user.
+     *
+     * Note that this triggers the change event of [contentSelectBox] that
+     * causes the context to automatically be changed in [Spotify]
+     */
     private fun updateContentSelect() {
         when (typeSelectBox.selected) {
             SpotifySourceType.playlist -> contentSelectBox.setItems(Spotify.cache_GdxPlaylists)
@@ -200,11 +235,17 @@ class Spotify : StageWindow("Spotify") {
         }
     }
 
+
+    /**
+     * # Changes what context spotify is playing when the source list is changed.
+     *
+     * Ran when the context source box is change by the user or by [updateContentSelect].
+     */
     // TODO i hate this repetition, but i don't seem to be able to abstract it :(
     private fun updateSource() {
         when (typeSelectBox.selected) {
-            SpotifySourceType.playlist -> {                        // We need to find the selected playlist and play it using it's uri :
-                Spotify.cache_Playlists!!.items.forEach {             // For every playlist
+            SpotifySourceType.playlist -> {                         // We need to find the selected playlist and play it using it's uri :
+                Spotify.cache_Playlists!!.items.forEach {           // For every playlist
                     if (it.name == contentSelectBox.selected) {     // If it's the selected playlist
                         Spotify.play(it.uri)                        // Play it.
                         update()
@@ -233,20 +274,72 @@ class Spotify : StageWindow("Spotify") {
     }
 
 
-    val seekRunnable = Runnable {
-            playbackState ?: return@Runnable
+    /**
+     * # 5 Second updater thread.
+     * Remains open whilst in game, only created if spotify is available.
+     *
+     * Calls [update] syncronusly every five seconds or so.
+     */
+    val seekRunnable = object : Runnable {
 
-            if (playbackState!!.is_playing) seekSlider.value += last - System.currentTimeMillis()
+        /**
+         * Ignore this bullshit.
+         *
+         * Some kind of JVM threading bullshit
+         * stops this thread from running
+         * after a while without accessing
+         * a syncronized method.
+         *
+         * Reckon it's to do with variable caching
+         * but i don't really know. They're marked
+         * volatile, but that made no difference.
+         *
+         * This seems to make all the difference, though.
+         */
+        @Synchronized fun sync() {}
 
-            last = System.currentTimeMillis()
-            repost()
+        @Volatile var current = 0L
+        @Volatile var last = System.currentTimeMillis()
+
+        override fun run() {
+            while (GameHypervisor.inGame) {
+                sync()
+                if (!isVisible) continue
+
+                current = System.currentTimeMillis()
+                if (current - last >= 5000) {
+                    update()
+                    last = current
+                }
+            }
         }
-
-    private fun repost() {
-        Gdx.app.postRunnable(this.seekRunnable)
     }
 
-    private var last = System.currentTimeMillis()
-    init { repost() }
+    /**
+     * Shows [Assets.spotifyFail] and [text] to the user, indicating an issue with connection or playback.
+     */
+    private fun fail(text : String){
+        songLabel.setText(text)
+        albumArt.drawable = TextureRegionDrawable(Assets.spotifyFail)
+        pack()
+    }
 
+
+    /**
+     * Override that triggers an update when the window is shown
+     * so that it is up-to-date when show to the user.
+     */
+    override fun toggleShown() {
+        super.toggleShown()
+        update()
+    }
+
+    /**
+     * Initalises spotify api when this window is created
+     * (Which is when the game is created) and dispatches the 5 second updater thread.
+     */
+    init {
+        Spotify.create();
+        Utility.DispatchDaemonThread(seekRunnable, "Spotify Update Thread")
+    }
 }
