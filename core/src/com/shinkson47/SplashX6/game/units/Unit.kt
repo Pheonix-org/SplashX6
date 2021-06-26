@@ -2,6 +2,7 @@ package com.shinkson47.SplashX6.game.units
 
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Vector3
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.game.world.World.*
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
@@ -32,6 +33,8 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
      */
     var destX = 0
     var destY = 0
+
+    var viewDistance = 10;
 
     /**
      * # The actions that this unit can perform.
@@ -102,7 +105,8 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
 
     /**
      * # Moves this unit to the specified tile.
-     * Also updates the position of the underlying sprite to match the new location.
+     * Also updates the position of the underlying sprite to match the new location
+     * and removes any fog-of-war surrounding the unit.
      */
     fun setLocation(x: Int, y: Int) : Vector3 {
         isoVec.set(x.toFloat(),y.toFloat(),0f)
@@ -113,6 +117,9 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
         // Changing the sprite and atlas origins had no effect
         setX(pos.x - TILE_HALF_WIDTH)
         setY(pos.y - TILE_HALF_HEIGHT)
+
+        GameData.world!!.defog(isoVec.x.toInt(), isoVec.y.toInt(), viewDistance)
+
         return pos
     }
 

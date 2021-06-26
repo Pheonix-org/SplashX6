@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
@@ -141,7 +142,7 @@ public final class World {
     public World(int w, int h) { generateWorld(w,h); }
     //#endregion constructors
 
-    //#region operations
+    //#region Generation operations
     /**
      * <h2>Replaces and content in this world with a newly generated one</h2>
      * @param w Width of the new world to generate. Must be positive.
@@ -176,8 +177,11 @@ public final class World {
         // Generate civilisations & barbarians
         //genPopulation();
 
+        // Configure the GDX tilemap for use.
+        configGDX();
+
         // Construct all generated world data into a GDX TiledMap.
-        convGDX();
+        //convGDX();
     }
 
     /**
@@ -324,15 +328,23 @@ public final class World {
     }
 
 
+    /**
+     * <h2>
+     *     Prepares the GDX tilemap to display data.
+     * </h2>
+     * Configures tileset and layers.
+     */
+    private void configGDX() {
+        setTileSets(map);
+        placeLayers(LerpedTileLayer);
+    }
 
     /**
-     * <h2>Constructs the GDX {@link TiledMap} stored in this world's {@link com.shinkson47.SplashX6.game.world.World#map}</h2>
-     * Final step, post generation.
+     * <h2>
+     *    Converts all map data into a single, total, complete map.
+     * </h2>
      */
     private void convGDX() {
-        // Add all of the loaded tilesets to this map.
-        setTileSets(map);
-
         for (int y = 0; y < worldTiles.length; y++)
             for (int x = 0; x < worldTiles[0].length; x++) {
                 createCell(worldTiles[y][x].tileName, x, y, UnLerpedTileLayer);
@@ -340,7 +352,6 @@ public final class World {
                 if (FoliageLayerTiles[y][x] != null)
                     createCell(FoliageLayerTiles[y][x].tileName, x, y, FoliageLayer);
             }
-        placeLayers(LerpedTileLayer);
     }
 
     /**
@@ -439,13 +450,18 @@ public final class World {
             placeLayers(UnLerpedTileLayer);
     }
 
+    /**
+     * Removes and re-places all layers into the GDX map.
+     * @param base The first layer.
+     */
     public void placeLayers(TiledMapTileLayer base){
         map.getLayers().forEach(o -> map.getLayers().remove(o));
         map.getLayers().add(base);
         map.getLayers().add(FoliageLayer);
         map.getLayers().add(SpriteLayer);
     }
-
+    //#endregion
+    //#region Utility operations
 
 
     public static int hittestResult = 0;
@@ -529,5 +545,32 @@ public final class World {
     public TiledMap getMap() {
         return map;
     }
-    //#endregion operations
+
+    //#endregion Utility operations
+    //#region External operations
+
+    /**
+     * <h2>
+     *     Removes the 'fog of war' area around a given point and radius.
+     * </h2>
+     * Achieved by using {@link World#createCell(String, int, int, TiledMapTileLayer)} to insert cells
+     * from the {@link World#worldTiles} memory into {@link World#LerpedTileLayer}
+     * to the displayable map.
+     * @param x Positition of the center
+     * @param y Positition of the center
+     * @param radius Size of the area to de-fog.
+     */
+    public void defog(int x, int y, int radius) {
+        int halfRad = (int) (radius * 0.5);
+
+        for (int ix = Math.max(x - halfRad, 0); ix <= Math.min(x + halfRad,interpolatedTiles[0].length - 1); ix ++)
+            for (int iy = Math.max(y - radius, 0); iy <= Math.min(radius * 2 + y, interpolatedTiles.length - 1) ; iy ++) {
+                createCell(interpolatedTiles[iy][ix].tileName, ix, iy, LerpedTileLayer);
+                if (FoliageLayerTiles[iy][ix] != null)
+                    createCell(FoliageLayerTiles[iy][ix].tileName, ix, iy, FoliageLayer);
+            }
+    }
+
+    //#endregion External operations
+
     }
