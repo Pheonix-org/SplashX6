@@ -106,6 +106,7 @@ object KeyBinder : InputAdapter() {
 
 
         with (GameManagementScreen::class.java) {
+            bind(this, Input.Keys.E) { turn_end() }
             bind(this, Input.Keys.TAB) { cm_exit() }
         }
 

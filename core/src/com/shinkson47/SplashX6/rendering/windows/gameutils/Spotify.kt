@@ -340,6 +340,6 @@ class Spotify : StageWindow("Spotify") {
      */
     init {
         Spotify.create();
-        Utility.DispatchDaemonThread(seekRunnable, "Spotify Update Thread")
+        Utility.DispatchDaemonThread("Spotify Update Thread", seekRunnable)
     }
 }

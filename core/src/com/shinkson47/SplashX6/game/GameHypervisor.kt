@@ -19,6 +19,7 @@ import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
+import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_NOT_IN_UCM
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_GAME_LOADING
@@ -29,9 +30,11 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
+import com.shinkson47.SplashX6.utility.Utility
 import java.awt.Toolkit
 import java.awt.event.KeyEvent
 import java.lang.Exception
+import javax.swing.text.Utilities
 import kotlin.IllegalArgumentException
 
 /**
@@ -256,6 +259,8 @@ class GameHypervisor {
                 val dest: Vector3 = cm_selectedTile()
                 destX = dest.x.toInt()
                 destY = dest.y.toInt()
+
+                unit_selectAction( "Teleport to destination")
             }
         }
 
@@ -288,6 +293,19 @@ class GameHypervisor {
 
         @JvmStatic
         fun unit_selected() : Unit? = GameData.selectedUnit
+
+        @JvmStatic
+        fun unit_selectAction(displayName : String) {
+            with (GameData.selectedUnit!!) {
+                onTurnAction = actions.find { it.displayName == displayName }
+            }
+            unit_updateUnitWindow()
+        }
+
+        @JvmStatic
+        fun unit_updateUnitWindow() {
+            (GameWindowManager.WINDOW_DOCK.items.find { it.title == "Units" } as UnitsWindow).run()
+        }
 
 
         //========================================================================
@@ -367,7 +385,12 @@ class GameHypervisor {
          * # Focusses the camera on a cartesian x, y
          */
         @JvmStatic
-        fun camera_focusOn(x: Float, y: Float) = gameRenderer!!.cam.goTo(x, y)
+        fun camera_focusOn(x: Float, y: Float) {
+            if (cm_active)
+                gameRenderer!!.managementScreen.desiredCameraPosition.desired.set(x,y,0f)
+            else
+                gameRenderer!!.cam.goTo(x, y)
+        }
 
         /**
          * # The cartesian location in the world that the camera is looking at.
@@ -473,7 +496,7 @@ class GameHypervisor {
          */
         @JvmStatic
         fun cm_selectedTile() : Vector3 {
-            validateCall(REQ_UNIT_CONTROL_MODE) { cm_enter(); }
+            //validateCall(REQ_UNIT_CONTROL_MODE) { cm_enter(); }
 
             // Get point on world that mouse is pointing to.
             val unprojected = gameRenderer!!.managementScreen.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
@@ -522,7 +545,7 @@ class GameHypervisor {
             gameRenderer = null
             GameData.clear()
             GameWindowManager.dispose()
-            KeyBinder.destroyGameBinds()
+            Utility.DispatchDaemonThread("KeyBindingDisposer"){ while (client!!.screen !is MainMenu) KeyBinder.destroyGameBinds() }
         }
 
         /**

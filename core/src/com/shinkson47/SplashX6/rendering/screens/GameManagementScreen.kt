@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.rendering.Camera
 import com.shinkson47.SplashX6.utility.lerpDesire
@@ -29,20 +31,15 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
      * Configures projection matrixes, moves [camera] to match the gameScreen's, etc.
      */
     override fun show() {
-        // Move the orhtographic camera to match the parent's camera
-        camera.position.set(parent.cam.position)
-        desiredCameraPosition.desired.set(parent.cam.position)
-        desiredCameraPosition.present.set(parent.cam.position)
-
         // Set orthographic view with current viewport state.
         camera.setToOrtho(false,parent.cam.viewportWidth,parent.cam.viewportHeight)
 
-        // Take over the world renderer, having it render to the ortho camera instead.
-        // Have stuff drawn in the world, like sprites, match the ortho camera's perspective.
-        updateView()
-
         // In case we swap screens mid-frame. Sometimes the semaphore was left open.
         parent.sr.end()
+
+        // Move the camera to the selected unit.
+        unit_selected()?.let { camera_focusOn(it) }
+        updateView()
     }
 
     override fun render(delta: Float) {
@@ -50,6 +47,7 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
         parent.renderSprites()      // Render sprites.
 
         camera.position.set(desiredCameraPosition.next())
+        updateView()
 
         camera.update()             // Draw camera's view to gl.
 
@@ -97,10 +95,10 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
         parent.sr.circle(isocart.x, isocart.y, 20f)
     }
 
-    fun up()    { desiredCameraPosition.desired.y += Camera.TRUE_SPEED; updateView() }
-    fun down()  { desiredCameraPosition.desired.y -= Camera.TRUE_SPEED; updateView() }
-    fun left()  { desiredCameraPosition.desired.x -= Camera.TRUE_SPEED; updateView() }
-    fun right() { desiredCameraPosition.desired.x += Camera.TRUE_SPEED; updateView() }
+    fun up()    { desiredCameraPosition.desired.y += Camera.TRUE_SPEED; }
+    fun down()  { desiredCameraPosition.desired.y -= Camera.TRUE_SPEED; }
+    fun left()  { desiredCameraPosition.desired.x -= Camera.TRUE_SPEED; }
+    fun right() { desiredCameraPosition.desired.x += Camera.TRUE_SPEED; }
 
 
     private fun updateView() {

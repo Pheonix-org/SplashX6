@@ -151,7 +151,7 @@ public final class Utility {
      * @param name Name to be given to the thread.
      * @return Reference to the created thread.
      */
-    public static Thread DispatchDaemonThread(Runnable r, String name) {
+    public static Thread DispatchDaemonThread(String name, Runnable r) {
         Runnable target;
         Thread t = new Thread(r, name);
         t.setDaemon(true);
