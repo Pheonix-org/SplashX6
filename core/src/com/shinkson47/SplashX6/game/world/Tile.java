@@ -12,10 +12,9 @@ import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
  * This will later act as a saveable container for data regarding a tile,
  * since gdx tiledmaps are not serializable.
  * @author Jordan Gray & Dylan Brand 23/03/2021
- * @version 1.1
+ * @version PRE-ALPHA 0.0.1
  */
 public class Tile {
-    //#region constants
 
     /**
      * Resource names for particular tile types
@@ -23,10 +22,6 @@ public class Tile {
     public static final String
             OCEANS = "o_o_o_o",
             WATER  = "s_s_s_s";
-
-    //#endregion constants
-    //#region fields
-
 
     /**
      * Full resource name of this tile.
@@ -43,10 +38,6 @@ public class Tile {
      */
     public boolean isBase = true;
 
-
-    //#endregion fields
-
-    //#region constructors
     public Tile(String TileName){
         if (TileName.contains(".")) {
             this.tileName = TileName.substring(0, TileName.indexOf(".") + 1);
@@ -72,9 +63,9 @@ public class Tile {
         init(_north, _east, _south, _west);
     }
 
-    private void init(String _name){
+    private void init(String _name) {
         init(_name, _name, _name, _name);
-        tileName = _name;// TODO This is dumb, it's set twice
+        tileName = _name;
     }
 
     private void init(String _north, String _east, String _south, String _west){
@@ -84,7 +75,6 @@ public class Tile {
         west  = _west;
 
         tileName = ((!isBase) ? tileName : "") + _north + "_" + _east + "_" + _south + "_" + _west;
-//        cachedID = (int) World.tilesetMap.get(tileName);
     }
 
     /**
@@ -106,6 +96,9 @@ public class Tile {
         return new Tile(north, east, south, west);
     }
 
+    /**
+     * Returns a tile that represents a hill merged with the surrounding terrain.
+     */
     public Tile interpolateHill(Tile nw, Tile ne, Tile se, Tile sw) {
         String _nw = (nw == null) ? "0" : "1";
         String _ne  = (ne == null) ? "0" : "1";
@@ -114,6 +107,7 @@ public class Tile {
         return new Tile("hills." + _ne + "_" + _se + "_" + _sw + "_" + _nw);
     }
 
+
     public boolean isLand() {
         return !isWater();
     }
@@ -121,5 +115,4 @@ public class Tile {
     public boolean isWater() {
         return tileName.equals(OCEANS) || tileName.equals(WATER);
     }
-    //#endregion static
 }

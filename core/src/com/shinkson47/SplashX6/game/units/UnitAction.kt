@@ -7,7 +7,7 @@ import java.util.function.Predicate
  * Can basically perform any script. Only thing [onAction] can't do
  * is modify GameData.units
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 30/05/2021
- * @since v1
+ * @since PRE-ALPHA 0.0.2
  * @version 1
  */
 class UnitAction(_displayName: String, _isAvailable: Predicate<Unit>, _onAction: Predicate<Unit>) {

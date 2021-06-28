@@ -1,6 +1,5 @@
 package com.shinkson47.SplashX6.game.units
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
@@ -39,6 +38,7 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
     var destY = 0
         private set
 
+    // TODO these need to be dictionary based values, depending on the unit's class.
     var viewDistance = 10;
     var travelDistance = 3;
 
@@ -65,9 +65,7 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
     // region construction
     // =============================================
 
-    init {
-        setLocation(isoVec)
-    }
+    init { setLocation(isoVec) }
 
     // =============================================
     // endregion construction
@@ -178,18 +176,14 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
     /**
      * # Performs this unit's [onTurnAction], if there is one.
      */
-    fun doTurn(){
-        onTurnAction?.run(this)
-    }
+    fun doTurn(){ onTurnAction?.run(this) }
 
     /**
      * # Removes [onTurnAction]
      * prevnting this unit from performing any action
      * on each turn.
      */
-    fun cancelAction() {
-        onTurnAction = null
-    }
+    fun cancelAction() { onTurnAction = null }
 
     // =============================================
     // endregion Game API

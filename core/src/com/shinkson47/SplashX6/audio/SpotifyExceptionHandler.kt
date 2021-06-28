@@ -5,10 +5,7 @@ import com.wrapper.spotify.exceptions.detailed.ForbiddenException
 import com.wrapper.spotify.exceptions.detailed.UnauthorizedException
 
 /**
- * # TODO
- * @author [Jordan T. Gray](https://www.shinkson47.in) on 11/06/2021
- * @since v1
- * @version 1
+ * # Unused framework for a general exception handler for spotify intergration
  */
 class SpotifyExceptionHandler {
 

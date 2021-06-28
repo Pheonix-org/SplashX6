@@ -5,10 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameHypervisor;
-import com.shinkson47.SplashX6.input.keys.KeyBinder;
-import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen;
+import com.shinkson47.SplashX6.input.KeyBinder;
 
 /**
  * <h1>Main mouse handling scripts</h1>

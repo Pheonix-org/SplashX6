@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.shinkson47.SplashX6.utility.Assets.*;
 
-// TODO abstract play / stop logic
 
 /*
  * TODO - EVERYTHING HERE

@@ -1,24 +1,20 @@
 package com.shinkson47.SplashX6.rendering.windows.gameutils
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.audio.Spotify
-import com.shinkson47.SplashX6.audio.SpotifySourceType
+import com.shinkson47.SplashX6.audio.Spotify.SpotifySourceType
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Utility
 import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlayingContext
 import com.wrapper.spotify.model_objects.specification.Track
-import javax.swing.text.Utilities
 
 /**
  * # GUI front end for [Spotify]

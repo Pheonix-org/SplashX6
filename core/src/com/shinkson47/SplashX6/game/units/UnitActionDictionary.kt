@@ -22,6 +22,10 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
      * # Marks an action that is always available
      */
     val ALWAYS_AVAILABLE = Predicate<Unit> { true }
+
+    /**
+     * # Marks an action that requires an active destination.
+     */
     val REQ_DESTINATION  = Predicate<Unit> { it.pathNodes != null && it.pathNodes!!.isNotEmpty() }
 
 

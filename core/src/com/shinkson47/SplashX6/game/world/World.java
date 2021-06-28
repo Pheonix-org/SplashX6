@@ -35,6 +35,7 @@ import static com.shinkson47.SplashX6.utility.Utility.createNoiseGenerator;
  * @version 1
  * @since PRE-ALPHA 0.0.1
  */
+// TODO Write this again, but neater.
 public final class World {
 
     /**

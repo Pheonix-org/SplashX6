@@ -1,7 +1,6 @@
 package com.shinkson47.SplashX6.audio
 
 import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Utility
 import com.wrapper.spotify.SpotifyApi
@@ -21,18 +20,71 @@ import java.awt.Desktop
 /**
  * # Spotify intergration for Splash X6.
  *
- * This object handles authentication, and the compilation & execution of requests.
+ * This object handles authentication, and the compilation & execution of requests
+ * between this application and the spotify API.
+ *
  * @since PRE-ALPHA 0.0.2
  * @author [Jordan T Gray](https://shinkson47.in)
- * @version 1
+ * @version 1.1
  */
 object Spotify {
+
+    /**
+     *  # If true, disables ability to perform any API request.
+     */
+    var DISABLE : Boolean = false
+        private set
+        fun enable () { DISABLE = false }
+        fun disable() { DISABLE = true }
+
+    /**
+     * # If any request encountered an issue, it'll be stored here until the next request.
+     * Will automatically be set to null if another request is successful, or replaced by it's exception.
+     *
+     * Poll to determine cause of request failure.
+     */
+    var ERROR : Exception? = null
+        private set
+
+    /**
+     * # Spotify supported playback repeat modes
+     *
+     * enum value names match strings which spotify api expects, so you can use
+     *
+     * > `RepeatMode.track.toString()`
+     */
+    enum class RepeatMode { track, context, off }
+
+    /**
+     * # Types of sources from spotify that Splash can search for in the user's library.
+     */
+    enum class SpotifySourceType { playlist, artist, album }
+
+
+
+
+    /**
+     * # Initalises connection from stored data.
+     *
+     * If a authentication data is stored, it's loaded. If it's valid, requests are built
+     * and returns true.
+     *
+     * If no credentials are saved, or they are not / no longer valid then returns false.
+     */
+    fun createFromExisting() : Boolean {
+        (Assets.preferences.getString("SPOTIFY_AUTH_CODE") != "" && loadToken())
+            .let {
+                if (it) build()
+                return it
+            }
+    }
+
 
     /**
      * # 1 of 2 - Builds API connection.
      * - Authorizes this application via a web re-direct.
      *
-     * This gives us our [authCode] which authorises this application to perform actions on the user's account
+     * This gives us our [cachedAuthCode] which authorises this application to perform actions on the user's account
      * We only need to do this once, after we can store it.
      *
      * ## IMPORTANT API NOTE
@@ -57,21 +109,6 @@ object Spotify {
     }
 
     /**
-     * If a authentication data is stored, it's loaded. If it's valid, requests are built
-     * and returns true.
-     *
-     * If no credentials are saved, or they are not / no longer valid then returns false.
-     */
-    fun createFromExisting() : Boolean {
-        if (Assets.preferences.getString("SPOTIFY_AUTH_CODE") != "" && loadToken()) {
-            build()
-            return true
-        }
-
-        return false
-    }
-
-    /**
      * # 2 of 2 - Builds API connection.
      * - Gets an api token and refresh token
      *
@@ -88,37 +125,27 @@ object Spotify {
      * recieve an authentication code. THEN call this method with said auth code.
      */
     fun create(AuthenticationCode : String) : Boolean {
-        authCode = AuthenticationCode
+        cachedAuthCode = AuthenticationCode
 
         buildTokenRequest() // Now that we have an authentication code, we can create a request for a token.
-        getToken()          // TODO we need to save this token.
+        getToken()
 
         build()
         return testConnection()
     }
 
-    private fun build() {
-        buildRequests()
-        buildCache()
-    }
+    /**
+     * # Once connected, builds API requests and caches data.
+     */
+    private fun build() { buildRequests(); buildCache() }
 
     /**
-     * Performs a [REQUEST_PROFILE] to test access to user's account via the API.
+     * # Tests ability to perform an API request
+     * By performing an [REQUEST_PROFILE] to test access to user's account via the API.
      *
      * returns true if access was successful.
      */
-    private fun testConnection() : Boolean {
-        return execute(REQUEST_CATAGORIES) != null
-    }
-
-    private var DISABLE : Boolean = false
-
-    var ERROR : Exception? = null
-        private set
-
-    fun enable()  { DISABLE = false }
-    fun disable() { DISABLE = true }
-
+    private fun testConnection() = execute(REQUEST_CATAGORIES) != null
 
 
     //=====================================================================
@@ -133,7 +160,7 @@ object Spotify {
      *
      * See [Spotify's scope docs.](https://developer.spotify.com/documentation/general/guides/scopes/)
      */
-    private val SCOPE = "user-modify-playback-state, user-read-playback-state, user-read-currently-playing, user-library-read, playlist-read-private, playlist-read-collaborative, user-follow-read"
+    const val SCOPE = "user-modify-playback-state, user-read-playback-state, user-read-currently-playing, user-library-read, playlist-read-private, playlist-read-collaborative, user-follow-read"
 
     /**
      * # General connection to the spotify api.
@@ -143,20 +170,20 @@ object Spotify {
      * Performs requests, stores access credentials, compiles results. Does all the complex stuff
      * so we don't have to.
      */
-    var spotifyApi = SpotifyApi.Builder()
+    val spotifyApi: SpotifyApi = SpotifyApi.Builder()
         .setClientId("72cabe08e89f49808ac14523a2f809ae")
         .setClientSecret("9736d5764f1b4c4ab82547b9d34edd91") // TODO this is super bad but idk how to get around it. Should not keep secret in public source.
         .setRedirectUri(SpotifyHttpManager.makeUri("https://shinkson47.in/SplashX6/spotify-callback"))
         .build()
 
     /**
-     * Code which authorizes this application to operate on the users account.
+     * Cached OTP which authorizes this application to operate on the users account.
      *
-     * Note that this is not the token which allows us to make api requests.
+     * Obtained when the user gives access via web portal. Only valid then, only useable once.
+     *
+     * > Note that this is not the token which allows us to make api requests. Just to configure the connection.
      */
-    private var authCode = ""
-
-    enum class RepeatMode { track, context, off }
+    private var cachedAuthCode = ""
 
     //=====================================================================
     //#endregion Fields
@@ -164,8 +191,15 @@ object Spotify {
     //=====================================================================
 
     /**
-     * # Requests user to authenticate this app to access spotify via thier account.
-     * For now, access code is stored in [authCode]
+     * # Requests spotify to make an authentication for this app to access spotify.
+     *
+     * Request returns a URI which is opened in a browser. User signs in and gives access via this link.
+     *
+     * This request configures the callback, which is just to a page which shows the authentication code to the user.
+     *
+     * User copys this code, pastes it into the application, and it's used to call stage two of [create].
+     *
+     * Access code is stored in [cachedAuthCode].
      */
     private val PREAUTH_REQUEST_AUTHORIZATION = spotifyApi.authorizationCodeUri()
         .scope(SCOPE)
@@ -173,24 +207,31 @@ object Spotify {
 
     /**
      * # Requests spotify for an access token to use with api requests.
+     *
+     * Once we're authenticated, we may obtain a token to authenticate api requests. This requests does this.
+     *
+     * Once we've obtained this token, we may [build] our requests.
      */
     private var PREAUTH_REQUEST_TOKEN : AuthorizationCodeRequest? = null
 
     /**
-     * Populates [REQUEST_TOKEN] with a API request for a new token.
+     * # Populates [PREAUTH_REQUEST_TOKEN] with a API request for a new token.
      *
      * This exsists purely because this request must be built after we have an auth code.
      */
-    private fun buildTokenRequest() { PREAUTH_REQUEST_TOKEN = spotifyApi.authorizationCode(authCode).build() }
+    private fun buildTokenRequest() { PREAUTH_REQUEST_TOKEN = spotifyApi.authorizationCode(cachedAuthCode).build() }
 
 
     //=====================================================================
     //#endregion Pre authentication requests
-    //#endregion API Requests
+    //#region API Requests
     //=====================================================================
 
     /**
-     * # Performed after authentication, this builds all requests we can perform.
+     * # Builds all requests we can perform.
+     *
+     * Can only be performed after we have obtained an api token.
+     *
      * NOTE : Some requests require arguments that can only be provided prior to building the request.
      * In these cases, the builder is stored instead, and the request is built when the request is made.
      */
@@ -208,6 +249,8 @@ object Spotify {
             REQUEST_SAVED_SONGS         = usersSavedTracks                                  .build()
             REQUEST_PLAYBACK_INFO       = informationAboutUsersCurrentPlayback              .build()
 
+            // REQUESTS THAT REQUIRE ARGUMENTS. STORE THE BUILDER, NOT THE COMPLETE REQUEST.
+
             REQUEST_SEEK                = seekToPositionInCurrentlyPlayingTrack(0)
             REQUEST_REPEAT_MODE         = setRepeatModeOnUsersPlayback(RepeatMode.off.toString())
             REQUEST_VOLUME              = setVolumeForUsersPlayback(0)
@@ -217,6 +260,7 @@ object Spotify {
     }
 
 
+    //#region requests
     var REQUEST_PAUSE: PauseUsersPlaybackRequest? = null
         private set
 
@@ -267,25 +311,31 @@ object Spotify {
 
     var REQUEST_SAVED_ALBUMS: GetCurrentUsersSavedAlbumsRequest? = null
         private set
-
+    // TODO our scope allows us to do more requests than this. Take advantage of that?
+    //#endregion requests
 
 
     //=====================================================================
     //#endregion API Requests
-    //#region API Action performing
+    //#region Request execution.
     //=====================================================================
 
 
     /**
      * # Requests user to authorize this client access to thier account.
-     * Once user has authenticated this app, the auth code can be stored and used to get tokens.
+     * Part of [create] stage 1.
+     *
+     * Executes [PREAUTH_REQUEST_TOKEN], and opens the resulting url in the system browser.
+     *
+     * User will obtain auth key, and paste it into the client. See second stage of [create].
      */
     private fun authoriseClient() {
         Desktop.getDesktop().browse(execute(PREAUTH_REQUEST_AUTHORIZATION))
     }
 
     /**
-     * Asks spotify for an access token, and applies it to [spotifyApi], and saves it in preferences.
+     * # Asks spotify for an access token
+     * Applies it to [spotifyApi], and saves it in preferences file.
      */
     private fun getToken() {
         with (execute(PREAUTH_REQUEST_TOKEN!!)!!) {
@@ -295,7 +345,7 @@ object Spotify {
     }
 
     /**
-     * Stores the tokens in ram in [spotifyApi]
+     * # Stores the tokens in ram via [spotifyApi]
      */
     private fun cacheToken(accessToken: String, refreshToken: String) {
         spotifyApi.accessToken  = accessToken
@@ -303,30 +353,32 @@ object Spotify {
     }
 
     /**
-     * Stores the tokens on disk in preferences.
+     * # Stores the tokens on disk via [com.badlogic.gdx.Preferences].
      */
     private fun saveToken(accessToken: String, refreshToken: String) {
         with (Assets.preferences) {
             putString("SPOTIFY_ACCESS_TOKEN", accessToken)
             putString("SPOTIFY_REFRESH_TOKEN", refreshToken)
-            putString("SPOTIFY_AUTH_CODE", authCode)
+            putString("SPOTIFY_AUTH_CODE", cachedAuthCode)
             flush()
         }
     }
 
     /**
-     * Loads the tokens from disk from preferences and rebuilds all requests.
+     * # Loads tokens from disk from preferences and rebuilds all requests.
      *
      * Returns [testConnection] after loading.
+     *
+     * If data is not valid, cached tokes are deleted.
      */
     private fun loadToken() : Boolean {
         with (Assets.preferences) {
             cacheToken(getString("SPOTIFY_ACCESS_TOKEN"), getString("SPOTIFY_REFRESH_TOKEN"))
-            authCode = getString("SPOTIFT_AUTH_CODE")
+            cachedAuthCode = getString("SPOTIFT_AUTH_CODE")
         }
         buildRequests()
         if (!testConnection()) {
-            authCode = ""
+            cachedAuthCode = ""
             cacheToken("","")
             return false
         }
@@ -336,26 +388,26 @@ object Spotify {
     /**
      * # Performs a request.
      *
-     * and returns it's result, according to it [AbstractRequest] type.
+     * Then returns it's result, according to it's [AbstractRequest] ([returnType]).
      *
-     * If [request] is null or fails, or [DISABLE] is high, does nothing and returns null.
+     * If [DISABLE] is high, has no effect and returns null.
+     *
+     * If a requets fails, [ERROR] will store the exception. Otherwise, [ERROR] will be set to null.
      */
-    private fun <T> execute(request : AbstractRequest<T>?) : T? {
+    private fun <returnType> execute(request : AbstractRequest<returnType>?) : returnType? {
         if (DISABLE) return null
         ERROR = null
         try {
-            return request?.let { request.execute() }
+            return request!!.execute()
         } catch (e : Exception){
             ERROR = e
-            e.printStackTrace()
         }
         return null
     }
 
-
     //=====================================================================
     //#endregion API Action performing
-    //#region API
+    //#region Front facing API wrapper.
     //=====================================================================
 
     /**
@@ -465,8 +517,8 @@ object Spotify {
     }
 
     //=====================================================================
-    //#endregion API
-    //#region API cache
+    //#endregion Front facing API wrapper.
+    //#region Data cache
     //=====================================================================
 
     /**
@@ -474,12 +526,10 @@ object Spotify {
      */
     private fun buildCache() {
         cache_Playlists = savedPlaylists()
-        //cache_Songs     = savedSongs()
         cache_Artists   = savedArtists()
         cache_Albums    = savedAlbums()
 
         cache_GdxPlaylists  = Utility.MapToGDXArray(cache_Playlists!!.items.asIterable()) { it.name }
-        //cache_GdxSongs      = Utility.MapToGDXArray(cache_Songs!!    .items.asIterable()) { it.track.name }
         cache_GdxArtists    = Utility.MapToGDXArray(cache_Artists!!  .items.asIterable()) { it.name }
         cache_GdxAlbums     = Utility.MapToGDXArray(cache_Albums!!   .items.asIterable()) { it.album.name }
     }
@@ -495,9 +545,6 @@ object Spotify {
     var cache_Albums     : Paging<SavedAlbum>? = null
         private set
 
-//    var cache_Songs      : Paging<SavedTrack>? = null
-//        private set
-
     var cache_GdxPlaylists : Array<String>? = null
         private set
 
@@ -506,7 +553,4 @@ object Spotify {
 
     var cache_GdxAlbums     : Array<String>? = null
         private set
-
-//    var cache_GdxSongs      : Array<String>? = null
-//        private set
 }

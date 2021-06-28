@@ -2,17 +2,17 @@ package com.shinkson47.SplashX6.game.cities
 
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.utility.Assets.citySprites
 
-
 /**
- * # Defines a settlement city.
+ * # A settlement city.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 02/06/2021
  * @since PRE-ALPHA 0.0.2
- * @version 1.1
+ * @version 1.2
  */
 class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
 
@@ -39,7 +39,7 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
         }
 
     /**
-     * The last known resource name of the underlying sprite
+     * # The last known resource name of the underlying sprite
      *
      * Sets to [calcSpriteName] at init.
      */
@@ -47,43 +47,18 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
         private set
 
     /**
-     * The last known cartesian x of the underlying sprite
-     */
-    var cachedSpriteX : Float = 0f
-        private set
-
-    /**
-     * The last known cartesian y of the underlying sprite
-     */
-    var cachedSpriteY : Float = 0f
-        private set
-
-    /**
      * # Underlying renderable for this city.
      * Changes as this city mutates.
+     *
+     * Class does not extend Sprite 'cause it's
+     * massively easier to create new sprites instead of mutate them.
      */
     private lateinit var sprite : Sprite
+    private fun spriteLateInit() { setSprite() }
 
 
     // ============================================================
     // endregion fields
-    // region construction
-    // ============================================================
-
-    init {
-        firstSpriteInit()
-        GameHypervisor.turn_hook(this)
-    }
-
-    /**
-     * Lateinit routine for [sprite]. Configures the underlying sprite for the first time.
-     */
-    private fun firstSpriteInit() {
-        calcSpritePos()
-        setSprite()
-    }
-    // ============================================================
-    // endregion construction
     // region functions
     // ============================================================
 
@@ -110,14 +85,11 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
     }
 
     /**
-     * Converts the [isoVec] to cartesian position for the sprite to use.
-     *
-     * result is cached in [cachedSpriteX] and [cachedSpriteY]
+     * # Converts the [isoVec] to cartesian position for the sprite to use.
      */
-    private fun calcSpritePos() {
+    private fun calcSpritePos() : Vector2 {
         val tempPos: Vector3 = World.isoToCartesian(isoVec.x.toInt(), isoVec.y.toInt())
-        cachedSpriteX = tempPos.x - World.TILE_HALF_WIDTH
-        cachedSpriteY = tempPos.y - World.TILE_HALF_HEIGHT
+        return Vector2(tempPos.x - World.TILE_HALF_WIDTH, tempPos.y - World.TILE_HALF_HEIGHT)
     }
 
     /**
@@ -127,8 +99,10 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
      * New sprites are moved to [cachedSpriteY], [cachedSpriteX]
      */
     private fun setSprite() {
-        sprite = citySprites.createSprite(cachedSpriteName)
-        sprite.setPosition(cachedSpriteX, cachedSpriteY)
+        val tempSprite = citySprites.createSprite(cachedSpriteName)
+        val tempPos = calcSpritePos()
+        tempSprite.setPosition(tempPos.x, tempPos.y)
+        sprite = tempSprite
     }
 
 
@@ -140,9 +114,9 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
      * thus it's only called if a new sprite is required.
      */
     private fun checkSpriteUpdate() {
-        val temp = calcSpriteName()
-        if (temp != cachedSpriteName) {
-            cachedSpriteName = temp
+        val tempName = calcSpriteName()
+        if (tempName != cachedSpriteName) {
+            cachedSpriteName = tempName
             setSprite()
         }
     }
@@ -153,13 +127,16 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
     fun draw(batch: SpriteBatch) = sprite.draw(batch)
 
     /**
-     * TODO temporary. Not efficient to hook every city this way.
-     *
      * # Temporary turn hook that grows the city's population by 1 on every turn.
      */
     override fun run() {
         population++
         checkSpriteUpdate()
+    }
+
+    init {
+        spriteLateInit()
+        GameHypervisor.turn_hook(this)
     }
 
     // ============================================================

@@ -21,6 +21,9 @@ object GameData : Serializable {
      */
     var world : World? = null
 
+    /**
+     * # The type of civilisation that the user is playing as.
+     */
     var civType: CityTypes = CityTypes.asian
 
     /**
@@ -38,6 +41,17 @@ object GameData : Serializable {
      * # The unit that the hypervisor is currently operating on.
      */
     var selectedUnit : Unit? = null
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**

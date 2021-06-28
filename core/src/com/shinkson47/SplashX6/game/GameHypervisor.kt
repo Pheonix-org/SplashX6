@@ -1,9 +1,7 @@
 package com.shinkson47.SplashX6.game;
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.Vector
 import com.badlogic.gdx.math.Vector3
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -14,28 +12,21 @@ import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.game.world.World.*
-import com.shinkson47.SplashX6.input.keys.KeyBinder
+import com.shinkson47.SplashX6.input.KeyBinder
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
 import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
-import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_NOT_IN_UCM
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_GAME_LOADING
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
-import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_UNIT_CONTROL_MODE
 import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.Utility
-import java.awt.Toolkit
-import java.awt.event.KeyEvent
-import java.lang.Exception
-import javax.swing.text.Utilities
-import kotlin.IllegalArgumentException
 
 /**
  * # The main overseer for a game.

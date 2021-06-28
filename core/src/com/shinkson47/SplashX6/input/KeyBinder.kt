@@ -1,4 +1,4 @@
-package com.shinkson47.SplashX6.input.keys
+package com.shinkson47.SplashX6.input
 
 import com.badlogic.gdx.*
 import com.shinkson47.SplashX6.Client
@@ -6,15 +6,12 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.EndGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_active
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_exit
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_toggle
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.turn_end
 import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
-import com.shinkson47.SplashX6.rendering.screens.SplashScreen
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager.select
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
@@ -31,6 +28,14 @@ import com.shinkson47.SplashX6.utility.GraphicalConfig
  */
 object KeyBinder : InputAdapter() {
 
+
+    /**
+     * ## Boilerplate defining a action to perform when a key is pressed on a given screen.
+     * @author [Jordan T. Gray](https://www.shinkson47.in) on 23/06/2021
+     * @since PRE-ALPHA 0.0.2
+     * @version 1
+     */
+    data class KeyBinding <T : Screen> (val activeOn : Class<T>, val keyOrButton : Int, val Action : Runnable, val repeat : Boolean, val Release : Runnable?)
 
     /**
      * # Map containing [ArrayList]'s of key bindings for each screen.
@@ -97,6 +102,10 @@ object KeyBinder : InputAdapter() {
 
             bind(this, Input.Keys.E) { turn_end() }
             bind(this, Input.Keys.TAB) { cm_enter() }
+
+            bind(this, Input.Keys.SHIFT_LEFT,
+                Release = { GameHypervisor.gameRenderer?.cam!!.boost(false) },
+                Action =  { GameHypervisor.gameRenderer?.cam!!.boost(true) })
 
         }
 
@@ -184,7 +193,9 @@ object KeyBinder : InputAdapter() {
     /**
      * # Adds a key binding.
      */
-    fun <T : Screen> bind(activeOn : Class<T>, keyOrButton : Int, repeat : Boolean = false, Action : Runnable) = bind(KeyBinding(activeOn, keyOrButton, Action, repeat))
+    fun <T : Screen> bind(activeOn : Class<T>, keyOrButton : Int, repeat : Boolean = false, Release : Runnable? = null, Action : Runnable) = bind(
+        KeyBinding(activeOn, keyOrButton, Action, repeat, Release)
+    )
     fun bind(binding : KeyBinding<*>) {
         with (ScreenMap) {
             if (!containsKey(binding.activeOn))
@@ -196,7 +207,9 @@ object KeyBinder : InputAdapter() {
         if (bindingGame) GameBinds.add(binding)
     }
 
-    fun globalBind(keyOrButton : Int, repeat : Boolean = false, Action : Runnable) = globalBind(KeyBinding(Global::class.java, keyOrButton, Action, repeat))
+    fun globalBind(keyOrButton : Int, repeat : Boolean = false, Release : Runnable? = null, Action : Runnable) = globalBind(
+        KeyBinding(Global::class.java, keyOrButton, Action, repeat, Release)
+    )
     fun globalBind(binding : KeyBinding<*>) {
         if (!GlobalBinds.contains(binding)) GlobalBinds.add(binding)
         if (bindingGame) GameBinds.add(binding)
@@ -208,23 +221,35 @@ object KeyBinder : InputAdapter() {
      * For [KeyBinding]'s where repeat is true, checks if the key is held and executes the binding's action.
      */
     fun poll() {
-        ScreenMap[Client.client!!.screen.javaClass]?.forEach { ExecuteIfDown.invoke(it) }
-        GlobalBinds.forEach { ExecuteIfDown.invoke(it) }
+        ScreenMap[Client.client!!.screen.javaClass]?.forEach { repeatIfDown.invoke(it) }
+        GlobalBinds.forEach { repeatIfDown.invoke(it) }
     }
 
     /**
      * # For a given key press, tries to find and execute a binding that is active on the current screen.
      */
-    fun poll(key : Int) {
-        ScreenMap[Client.client!!.screen.javaClass]?.forEach { MatchAndExecute.invoke(it, key) }
-        GlobalBinds.forEach {MatchAndExecute.invoke(it, key)}
+    fun poll(key : Int, down : Boolean) {
+        if (down) {
+            ScreenMap[Client.client!!.screen.javaClass]?.forEach { MatchAndExecute.invoke(it, key) }
+            GlobalBinds.forEach { MatchAndExecute.invoke(it, key) }
+        } else {
+            ScreenMap[Client.client!!.screen.javaClass]?.forEach { MatchAndRelease.invoke(it, key) }
+            GlobalBinds.forEach { MatchAndRelease.invoke(it, key) }
+        }
     }
 
-    private val MatchAndExecute : (it : KeyBinding<*>, key : Int) -> Unit = { it, key -> if (it.keyOrButton == key || it.keyOrButton == Input.Keys.ANY_KEY) it.Action.run() }
-    private val ExecuteIfDown : (it : KeyBinding<*>) -> Unit = { it -> if (it.repeat && Gdx.input.isKeyPressed(it.keyOrButton)) it.Action.run() }
+    private fun Match(it : Int, key : Int) = it == key || it == Input.Keys.ANY_KEY
+    private val MatchAndExecute : (it : KeyBinding<*>, key : Int) -> Unit = { it, key -> if (Match(it.keyOrButton, key)) it.Action.run() }
+    private val MatchAndRelease : (it : KeyBinding<*>, key : Int) -> Unit = { it, key -> if (Match(it.keyOrButton, key)) it.Release?.run() }
+    private val repeatIfDown : (it : KeyBinding<*>) -> Unit = { it -> if (it.repeat && Gdx.input.isKeyPressed(it.keyOrButton)) it.Action.run() }
 
     override fun keyDown(keycode: Int): Boolean {
-        poll(keycode)
+        poll(keycode, true)
+        return true
+    }
+
+    override fun keyUp(keycode: Int): Boolean {
+        poll(keycode, false)
         return true
     }
 
