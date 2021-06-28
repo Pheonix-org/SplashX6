@@ -6,8 +6,10 @@ import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_exit
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.StageWindow
@@ -70,7 +72,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
         // Buttons
         // TODO localise
         // TODO lots of repeating code here
-        add(button("moveUnitToCursor") { if (GameHypervisor.cm_active) GameHypervisor.cm_destinationSelect() else GameHypervisor.unit_setDestination(); refresh() }).row()
+        add(button("moveUnitToCursor") { if (!cm_enter()) GameHypervisor.cm_destinationSelect(); refresh() }).row()
         tooltip("ttMoveUnitToCursor")
 
         add(button("viewDestination") { GameHypervisor.unit_viewDestination(); refresh() }).row()
@@ -163,6 +165,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
      */
     override fun run() {
         refresh()
+        unit_selected()?.let { camera_focusOn(it) }
     }
 
 //    override fun toggleShown() {

@@ -1,15 +1,18 @@
 package com.shinkson47.SplashX6.rendering.screens
 
 import com.badlogic.gdx.ScreenAdapter
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_isSelectingDestination
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.rendering.Camera
 import com.shinkson47.SplashX6.utility.lerpDesire
+import org.xguzm.pathfinding.grid.GridCell
 
 /**
  * # Child to [GameScreen] which is used to show an orthograpghic overview of the game.
@@ -72,16 +75,60 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
      * Has no effect if no unit is selected.
      */
     fun renderDestinationLine() {
-        with (GameHypervisor.unit_selected()){
-            if (this != null) {
+        with (unit_selected()){
+            if (this != null) { // If there's a selected unit
 
-                if (GameHypervisor.cm_isSelectingDestination) {
-                    val sel = GameHypervisor.cm_selectedTile()
+                // Cache the selected tile.
+                val sel = GameHypervisor.cm_selectedTile()
+
+                // If we're selecting, calculate new destination.
+                if (cm_isSelectingDestination)
+                    setDestination(sel.x.toInt(), sel.y.toInt())
+
+
+
+                // If there's a path, render it. Else see below 'return'
+                pathNodes?.let {
+                    if (it.isEmpty()) return@let
+                    parent.sr.color = Color.PURPLE
+
+                    // The grid cell we're currently operating on.
+                    var it : GridCell = it[0]
+
+                    // The position of the last node. Start with index 0.
+                    var lastNode : Vector3 = World.isoToCartesian(it.x, it.y)
+
+                    // Position of the current node.
+                    var currentNode: Vector3
+
+                    // Starting at the second node, draw lines between current and next node.
+                    for (i in 1 until pathNodes!!.size step travelDistance) {
+
+                        // Calculate node position
+                        it = pathNodes!![i]
+                        currentNode = World.isoToCartesian(it.x, it.y)
+
+                        // Draw line
+                        parent.sr.line(lastNode.x, lastNode.y, currentNode.x, currentNode.y)
+
+                        // Set this node as the last one. Next.
+                        lastNode = currentNode
+                    }
+
+                    parent.sr.color = Color.WHITE
+                    return
+                }
+
+
+                // If there's no path, do nothing if we're not selecting.
+                if (!cm_isSelectingDestination) return
+
+                // If we're selecting and have no path then we're selecting a bad path.
+                // Draw a red line to the intended destination.
+                parent.sr.color = Color.RED
                     val mouse = World.isoToCartesian(sel.x.toInt(), sel.y.toInt())
                     parent.sr.line(Vector3(x, y, 0f), mouse)
-                } else {
-                    parent.sr.line(Vector3(x, y, 0f), World.isoToCartesian(destX, destY))
-                }
+                parent.sr.color = Color.WHITE
             }
         }
     }
@@ -92,7 +139,7 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
     private fun renderMouseCircle() {
         val iso = GameHypervisor.cm_selectedTile()
         val isocart = World.isoToCartesian(iso.x.toInt(), iso.y.toInt())
-        parent.sr.circle(isocart.x, isocart.y, 20f)
+        parent.sr.circle(isocart.x, isocart.y, 10f)
     }
 
     fun up()    { desiredCameraPosition.desired.y += Camera.TRUE_SPEED; }

@@ -4,22 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.game.GameHypervisor;
-import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.game.units.UnitClass;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.Utility;
+import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer;
+import org.xguzm.pathfinding.grid.GridCell;
+import org.xguzm.pathfinding.grid.finders.AStarGridFinder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
-import java.util.Vector;
 
-import static com.shinkson47.SplashX6.utility.Assets.*;
+import static com.shinkson47.SplashX6.utility.Assets.TILESETS;
+import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
 import static com.shinkson47.SplashX6.utility.Utility.createNoiseGenerator;
 
 /**
@@ -116,6 +116,20 @@ public final class World {
     public Tile[][] interpolatedTiles, FoliageLayerTiles;
 
     /**
+     * {@link World#navigationLayer} casted.
+     *
+     * Used for calculating navigation data when pathfinding.
+     */
+    public NavigationTiledMapLayer navigationLayer;
+
+    /**
+     * <h2>Pathfinder</h2>
+     *
+     * @apiNote Usage : pathfinder.find(fromx, fromy, tox, toy, {@link World#navigationLayer}).
+     */
+    public AStarGridFinder<GridCell> pathfinder;
+
+    /**
      * Single chanel data image used to try and determine if the cursor
      * is over
      */
@@ -182,6 +196,9 @@ public final class World {
 
         // Construct all generated world data into a GDX TiledMap.
         //convGDX();
+
+        // Generate data map of where units may and may not travel.
+        genPathfinding();
     }
 
     /**
@@ -202,7 +219,10 @@ public final class World {
         ContinentalHeatmap  = createNoiseGenerator();
         BiomeHeatmap        = createNoiseGenerator();
         HeightHeatmap       = createNoiseGenerator();
-        //Voronoi.Generate(w,System.nanoTime());
+
+        navigationLayer     = new NavigationTiledMapLayer(new GridCell[h][w]);
+        navigationLayer.setWidth(w);
+        navigationLayer.setHeight(h);
     }
 
     /**
@@ -366,6 +386,14 @@ public final class World {
         layer.setCell(x, y, c);
     }
 
+    /**
+     * Creates a tile in {@link World#navigationLayer} with
+     * data as to wether or not units may go here.
+     */
+    private void createNavigationTile(int x, int y) {
+        navigationLayer.setCell(x,y, new GridCell(x,y, getStaggeredTile(x,y).isLand()));
+    }
+
     public Tile getTile(Vector3 vec) {
         return getTile((int) vec.x, (int) vec.y);
     }
@@ -460,6 +488,16 @@ public final class World {
         map.getLayers().add(FoliageLayer);
         map.getLayers().add(SpriteLayer);
     }
+
+    private void genPathfinding() {
+        pathfinder = new AStarGridFinder<>(GridCell.class);
+
+        // Create navigation data for all tiles.
+        for (int y = 0; y < worldTiles.length; y++)
+            for (int x = 0; x < worldTiles[0].length; x++)
+                createNavigationTile(x,y);
+    }
+
     //#endregion
     //#region Utility operations
 
@@ -561,7 +599,7 @@ public final class World {
      * @param radius Size of the area to de-fog.
      */
     public void defog(int x, int y, int radius) {
-        int halfRad = (int) (radius * 0.5);
+        final int halfRad = (int) (radius * 0.5);
 
         for (int ix = Math.max(x - halfRad, 0); ix <= Math.min(x + halfRad,interpolatedTiles[0].length - 1); ix ++)
             for (int iy = Math.max(y - radius, 0); iy <= Math.min(radius * 2 + y, interpolatedTiles.length - 1) ; iy ++) {

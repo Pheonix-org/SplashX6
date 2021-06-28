@@ -22,6 +22,7 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
      * # Marks an action that is always available
      */
     val ALWAYS_AVAILABLE = Predicate<Unit> { true }
+    val REQ_DESTINATION  = Predicate<Unit> { it.pathNodes != null && it.pathNodes!!.isNotEmpty() }
 
 
 
@@ -34,6 +35,23 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
      * # Action that teleports the unit to it's destination
      */
     val TELEPORT =  UnitAction("Teleport to destination", ALWAYS_AVAILABLE, { it.setLocation(it.destX, it.destY); true; })
+
+    /**
+     * # Moves towards destination
+     */
+    val TRAVEL  =  UnitAction("Travel to destination", REQ_DESTINATION, {
+        with (it) {
+            if (!REQ_DESTINATION.test(this)) return@UnitAction false;
+
+            pathNodes = pathNodes!!.drop(travelDistance)
+            if (pathNodes!!.isNotEmpty())
+                setLocation(pathNodes!![0].x, pathNodes!![0].y)
+            else
+                setDestination(destX, destY)
+
+
+            true; }})
+
 
     /**
      * # Action that ends the game
@@ -61,7 +79,7 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     //                    MAP
     //==================================================
     init {
-            put(UnitClass._BASE,   arrayOf(TELEPORT, PING, SPAWN))
+            put(UnitClass._BASE,   arrayOf(TELEPORT, TRAVEL, PING, SPAWN))
             put(UnitClass.settler, arrayOf(SETTLE))
     }
 

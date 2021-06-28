@@ -257,10 +257,9 @@ class GameHypervisor {
         fun unit_setDestination() {
             with(GameData.selectedUnit!!) {
                 val dest: Vector3 = cm_selectedTile()
-                destX = dest.x.toInt()
-                destY = dest.y.toInt()
+                setDestination(dest.x.toInt(), dest.y.toInt())
 
-                unit_selectAction( "Teleport to destination")
+                unit_selectAction( "Travel to destination")
             }
         }
 
@@ -306,6 +305,9 @@ class GameHypervisor {
         fun unit_updateUnitWindow() {
             (GameWindowManager.WINDOW_DOCK.items.find { it.title == "Units" } as UnitsWindow).run()
         }
+
+        @JvmStatic
+        fun unit_canEnter(x : Int, y: Int) : Boolean = GameData.world!!.getTile(x,y).isLand
 
 
         //========================================================================
@@ -451,7 +453,6 @@ class GameHypervisor {
             }
         }
 
-
         //========================================================================
         //#endregion input
         //#region Control Mode
@@ -463,12 +464,17 @@ class GameHypervisor {
 
         /**
          * # Enters unit control mode
+         *
+         * Returns true if caused a transition, else false.
          */
         @JvmStatic
-        fun cm_enter() {
+        fun cm_enter() : Boolean {
+            if (cm_active) return false
             //cm_showStateCaps(true)
             cm_active = true
             client!!.fadeScreen(gameRenderer!!.managementScreen)
+
+            return true
         }
 
         /**

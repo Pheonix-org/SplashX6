@@ -282,6 +282,5 @@ public class GameScreen extends ScalingScreenAdapter {
         sr.end();
         worldBatch.setProjectionMatrix(camera.combined);
     }
-
-    //#engregion
+    //#endregion
 }

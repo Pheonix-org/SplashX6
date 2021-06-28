@@ -1,11 +1,14 @@
 package com.shinkson47.SplashX6.game.units
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.world.World
 import com.shinkson47.SplashX6.game.world.World.*
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
+import org.xguzm.pathfinding.grid.GridCell
 
 /**
  * # A controllable in-game character
@@ -32,9 +35,12 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
      * Marks where the unit is travelling to.
      */
     var destX = 0
+        private set
     var destY = 0
+        private set
 
     var viewDistance = 10;
+    var travelDistance = 3;
 
     /**
      * # The actions that this unit can perform.
@@ -46,6 +52,13 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
      * # [UnitAction] that this unit will perform on the next turn.
      */
     var onTurnAction: UnitAction? = null
+
+    /**
+     * A list of cells in the world.
+     *
+     * Defines the path this unit is trying to take.
+     */
+    var pathNodes : List<GridCell>? = null
 
     // =============================================
     // endregion fields
@@ -109,6 +122,10 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
      * and removes any fog-of-war surrounding the unit.
      */
     fun setLocation(x: Int, y: Int) : Vector3 {
+        val x = MathUtils.clamp(x, 0, GameData.world!!.width() - 1)
+        val y = MathUtils.clamp(y, 0, GameData.world!!.height() - 1)
+
+
         isoVec.set(x.toFloat(),y.toFloat(),0f)
 
         val pos: Vector3 = isoToCartesian(x, y)
@@ -122,6 +139,23 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
 
         return pos
     }
+
+    fun setDestination(x: Int, y: Int) {
+        val x = MathUtils.clamp(x, 0, GameData.world!!.width() - 1)
+        val y = MathUtils.clamp(y, 0, GameData.world!!.height() - 1)
+
+        if (x == destX && y == destY) return // don't pathfind if destination is same.
+
+        destX = x; destY = y;
+        calculatePath()
+    }
+
+    private fun calculatePath() {
+        with(GameData.world!!) {
+            pathNodes = pathfinder.findPath(isoVec.x.toInt(), isoVec.y.toInt(), destX, destY, navigationLayer)
+        }
+    }
+
 
     /**
      * # Moves this sprite by a x and y tiles.
