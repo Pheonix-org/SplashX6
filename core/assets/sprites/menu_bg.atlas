@@ -1,180 +1,47 @@
 menu_bg.png
-size: 3840, 14040
+size: 1920, 6480
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-menu_bg
+60d11cf527ade-1 (glissées)
   rotate: false
   xy: 0, 0
   size: 1920, 1080
   orig: 1920, 1080
   offset: 0, 0
-  index: 0
-menu_bg
-  rotate: false
-  xy: 1920, 0
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 1
-menu_bg
+  index: -1
+60d11cf527ade-2 (glissées)
   rotate: false
   xy: 0, 1080
   size: 1920, 1080
   orig: 1920, 1080
   offset: 0, 0
-  index: 2
-menu_bg
-  rotate: false
-  xy: 1920, 1080
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 3
-menu_bg
+  index: -1
+60d11cf527ade-3 (glissées)
   rotate: false
   xy: 0, 2160
   size: 1920, 1080
   orig: 1920, 1080
   offset: 0, 0
-  index: 4
-menu_bg
-  rotate: false
-  xy: 1920, 2160
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 5
-menu_bg
+  index: -1
+60d11cf527ade-4 (glissées)
   rotate: false
   xy: 0, 3240
   size: 1920, 1080
   orig: 1920, 1080
   offset: 0, 0
-  index: 6
-menu_bg
-  rotate: false
-  xy: 1920, 3240
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 7
-menu_bg
+  index: -1
+60d11cf527ade-5 (glissées)
   rotate: false
   xy: 0, 4320
   size: 1920, 1080
   orig: 1920, 1080
   offset: 0, 0
-  index: 8
-menu_bg
-  rotate: false
-  xy: 1920, 4320
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 9
-menu_bg
+  index: -1
+60d11cf527ade-6 (glissées)
   rotate: false
   xy: 0, 5400
   size: 1920, 1080
   orig: 1920, 1080
   offset: 0, 0
-  index: 10
-menu_bg
-  rotate: false
-  xy: 1920, 5400
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 11
-menu_bg
-  rotate: false
-  xy: 0, 6480
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 12
-menu_bg
-  rotate: false
-  xy: 1920, 6480
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 13
-menu_bg
-  rotate: false
-  xy: 0, 7560
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 14
-menu_bg
-  rotate: false
-  xy: 1920, 7560
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 15
-menu_bg
-  rotate: false
-  xy: 0, 8640
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 16
-menu_bg
-  rotate: false
-  xy: 1920, 8640
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 17
-menu_bg
-  rotate: false
-  xy: 0, 9720
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 18
-menu_bg
-  rotate: false
-  xy: 1920, 9720
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 19
-menu_bg
-  rotate: false
-  xy: 0, 10800
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 20
-menu_bg
-  rotate: false
-  xy: 1920, 10800
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 21
-menu_bg
-  rotate: false
-  xy: 0, 11880
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 22
-menu_bg
-  rotate: false
-  xy: 1920, 11880
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 23
-menu_bg
-  rotate: false
-  xy: 0, 12960
-  size: 1920, 1080
-  orig: 1920, 1080
-  offset: 0, 0
-  index: 24
+  index: -1

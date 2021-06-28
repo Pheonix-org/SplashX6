@@ -32,7 +32,7 @@ class MainMenu : ScalingScreenAdapter() {
 
     //private val stage = Stage(ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
     private var menuWindow: Window? = null
-    private val bg = Animation(0.03f, Assets.menuBG.regions, Animation.PlayMode.LOOP)
+    private val bg = Animation(0.1333333333f, Assets.menuBG.regions, Animation.PlayMode.LOOP)
     @Volatile private var animationStateTime = 0f
     private val optionsWindow = OptionsWindow(this)
 
