@@ -1,51 +1,22 @@
 package com.shinkson47.SplashX6.utility
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+
 /**
-  * # TODO
-  * @author [Jordan T. Gray](https://www.shinkson47.in) on 28/06/2021
-  * @since v1
-  * @version 1 
- */class PrebootAssets @JvmOverloads constructor () {   
- 
-    
-    // ============================================================
-    // region fields
-    // ============================================================
-    
-    
-    // ============================================================
-    // endregion fields
-    // region functions  
-    // ============================================================
+ * # Small collection of assets made available before [Assets] is loaded.
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 28/06/2021
+ * @since PRE-ALPHA 0.0.2
+ * @version 1
+ */
+object PrebootAssets {
 
+    @JvmStatic
+    val PB_SKIN : Skin = Skin(Gdx.files.internal("skins/x6/skin/x6.json"))
 
-    // ============================================================
-    // endregion functions
-    // region companion    
-    // ============================================================
+    val SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString()
 
-    /**
-     * # TODO
-     */
-    companion object {
-        init {
+    val splashBG: TextureAtlas = TextureAtlas("sprites/splash_bg.atlas")
 
-        }
-    }
-
-    // ============================================================
-    // endregion companion
-    // region initalisation    
-    // ============================================================
-
-    init {
-
-    }
-        
-    // ============================================================
-    // endregion initalisation    
-    // ============================================================
-        
-    
-       
 }

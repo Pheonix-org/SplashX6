@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.PrebootAssets
 
 /**
  * # Extends and modifies the credits screen to show splash screen text.
@@ -11,31 +12,34 @@ import com.shinkson47.SplashX6.utility.Assets
  * @since v1
  * @version 1
  */
-class SplashScreen : CreditsScreen() {
+class SplashScreen : CreditsScreen(
+    PrebootAssets.PB_SKIN.getFont("Vecna"),
+          PrebootAssets.SPLASH_TEXT.split("\n")
+) {
 
-    val time = 5.4f
+    val time = 1.5f
     @Volatile var currentTime = 0f
 
-    private val bg = Animation(0.06f, Assets.splashBG.regions, Animation.PlayMode.LOOP)
+    private val bg = Animation(0.06f, PrebootAssets.splashBG.regions, Animation.PlayMode.LOOP)
 
     init {
-        AudioController.playMainMenu()
         renderBG = false
         font.setColor(1f,1f,1f,1f)
-        lines = Assets.SPLASH_TEXT.split("\n")
-
     }
 
     override fun render(delta: Float) {
-        with (stage.batch) {
-            begin()
+            with (stage.batch) {
+                begin()
                 draw(bg.getKeyFrame(currentTime), (this@SplashScreen.stage.viewport.screenWidth * 0.5f) - (560 * 0.5f), (this@SplashScreen.stage.viewport.screenHeight * 0.5f) - (560 * 0.5f), 560f, 560f)
-            end()
-        }
-
-        super.render(delta)
+                end()
+            }
 
         currentTime += delta
-        if (currentTime >= time) Client.client!!.fadeScreen(MainMenu())
+
+        super.render(delta)
+        if (currentTime >= time) {
+            Assets.Create()
+            Client.client!!.fadeScreen(MainMenu())
+        }
     }
 }

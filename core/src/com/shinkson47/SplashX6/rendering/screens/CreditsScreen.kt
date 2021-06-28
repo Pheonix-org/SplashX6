@@ -22,14 +22,21 @@ import com.shinkson47.SplashX6.utility.Assets.SKIN
  * @since v1
  * @version 1
  */
-open class CreditsScreen : ScalingScreenAdapter() {
+open class CreditsScreen(
+    val font : BitmapFont =SKIN.getFont("Vecna"),
+    var lines : List<String> = Assets.CREDITS_TEXT.split("\n")
+) : ScalingScreenAdapter() {
 
     protected var renderBG = true;
 
+
     /**
-     * # The [BitmapFont] used to render the content of [glyph]
+     * # Array of strings from credit text
+     * where each entry is one line from the text.
+     *
+     * Modified to have the first line removed when [lineIndex] reaches [maxLines]
      */
-    protected var font : BitmapFont = SKIN.getFont("Vecna")
+
     init {font.setColor(0f,0f,0f,1f)}
 
     /**
@@ -66,14 +73,6 @@ open class CreditsScreen : ScalingScreenAdapter() {
      */
     private val DELAY : Float = .01f;
 
-
-    /**
-     * # Array of strings from credit text
-     * where each entry is one line from the text.
-     *
-     * Modified to have the first line removed when [lineIndex] reaches [maxLines]
-     */
-    protected var lines = Assets.CREDITS_TEXT.split("\n")
 
     /**
      * # Calculated max number of lines that can fit within the window before we have to start stripping the

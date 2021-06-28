@@ -36,16 +36,17 @@ class Client : Game() {
      */
     override fun create() {
         client = this
-
-        Assets.Create() // CALL BEFORE ANY ASSET ACCESS!
-        setMacDockIcon()
-
-        MouseHandler.create()
-
         if (DEBUG_MODE)
             debugStart()
         else
             setScreen(SplashScreen())
+
+        // NOTE assets are now loaded in splash screen.
+        setMacDockIcon()
+
+        MouseHandler.create()
+
+
 
         Gdx.gl.glClearColor(r, g, b, a)
     }
@@ -54,6 +55,7 @@ class Client : Game() {
      * Skips and configures things which annoy us when we're debugging.
      */
     private fun debugStart() {
+        Assets.Create()
         AudioController.muteAudio()             // Mute music
         setScreen(WorldCreation())              // Skip to world creation
         GraphicalConfig.exitFullscreen()        // Exit fullscreen so we can access the ide.
@@ -83,10 +85,10 @@ class Client : Game() {
      */
     override fun render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        currentScreen?.render(Gdx.graphics.deltaTime)
         KeyHandler.Poll()
         KeyBinder.poll()
         MouseHandler.Poll()
-        currentScreen?.render(Gdx.graphics.deltaTime)
     }
 
     /**

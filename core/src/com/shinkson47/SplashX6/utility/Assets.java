@@ -83,8 +83,7 @@ public class Assets {
     public static final TextureAtlas
             unitSprites,
             citySprites,
-            menuBG,
-            splashBG;
+            menuBG;
 
     /**
      * <h2>A map of 'tile name' => tile ID'</h2>
@@ -124,8 +123,7 @@ public class Assets {
     //#endregion audio
 
     public static final String
-            CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString(),
-            SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString();
+            CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString();
 
 
 
@@ -133,10 +131,9 @@ public class Assets {
         unitSprites = new TextureAtlas("sprites/units.atlas");
         citySprites = new TextureAtlas("sprites/cities.atlas");
         menuBG = new TextureAtlas("sprites/menu_bg.atlas");
-        splashBG = new TextureAtlas("sprites/splash_bg.atlas");
         spotifyFail = new Texture("sprites/spotify_fail.png");
 
-        SKIN = new Skin(Gdx.files.internal("skins/x6/skin/x6.json"));
+        SKIN = PrebootAssets.getPB_SKIN();
 
         // Tilesets
         TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");

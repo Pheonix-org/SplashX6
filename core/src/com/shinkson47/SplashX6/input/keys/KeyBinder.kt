@@ -110,14 +110,6 @@ object KeyBinder : InputAdapter() {
             bind(this, Input.Keys.TAB) { cm_exit() }
         }
 
-        // ========================================
-        //          Splash Screen Bindings
-        // ========================================
-
-        with (SplashScreen::class.java) {
-            bind(this, Input.Keys.ESCAPE) { Client.client!!.fadeScreen(MainMenu()) }
-        }
-
 
         // ========================================
         //          Main Menu Screen Bindings
