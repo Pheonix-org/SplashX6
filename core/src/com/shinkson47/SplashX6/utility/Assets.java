@@ -16,10 +16,7 @@ import xmlwise.XmlParseException;
 import xmlwise.Xmlwise;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 import static com.shinkson47.SplashX6.utility.Languages.en;
 
@@ -125,7 +122,7 @@ public class Assets {
     public static final String
             CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString();
 
-
+    public static final String[] TIPS = Gdx.files.internal("lang/tips.txt").readString().split("\n");
 
     static{
         unitSprites = new TextureAtlas("sprites/units.atlas");

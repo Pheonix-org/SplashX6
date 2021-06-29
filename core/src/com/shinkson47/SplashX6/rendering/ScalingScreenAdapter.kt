@@ -33,6 +33,4 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
 
         doResize(this.width.toInt(), this.height.toInt())
     }
-
-
 }

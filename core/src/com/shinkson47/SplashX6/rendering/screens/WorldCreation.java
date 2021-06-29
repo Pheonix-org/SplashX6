@@ -2,11 +2,8 @@ package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameHypervisor;
@@ -32,14 +29,14 @@ public class WorldCreation extends ScalingScreenAdapter {
 
 
     {
-        Table SecretTable = new Table();
-        SecretTable.setFillParent(true);
-        SecretTable.add(new Label("**** GENERATING WORLD. PLEASE BE PATIENT. ****", SKIN)).padBottom(50).row();
-        SecretTable.add(new Label("WIDTH : " + World.DEFAULT_WIDTH, SKIN)).left().row();
-        SecretTable.add(new Label("HEIGHT : " + World.DEFAULT_HEIGHT, SKIN)).left().row();
-        SecretTable.add(new Label("MAX FOLIAGE SPAWNS : " + World.FOLIAGE_QUANTITY_MAX, SKIN)).left().padBottom(50).row();
-        SecretTable.add(new Label("[SUPER USEFUL GAME TIP HERE]", SKIN)).row();
-        stage.addActor(SecretTable);
+        Table table = new Table();
+        table.setFillParent(true);
+        table.add(new Label("**** GENERATING WORLD. PLEASE BE PATIENT. ****", SKIN)).padBottom(50).row();
+        table.add(new Label("WIDTH : " + World.DEFAULT_WIDTH, SKIN)).left().row();
+        table.add(new Label("HEIGHT : " + World.DEFAULT_HEIGHT, SKIN)).left().row();
+        table.add(new Label("MAX FOLIAGE SPAWNS : " + World.FOLIAGE_QUANTITY_MAX, SKIN)).left().padBottom(50).row();
+        table.add(new Label("[SUPER USEFUL GAME TIP HERE]", SKIN)).row();
+        stage.addActor(table);
     }
 
     //#region operations

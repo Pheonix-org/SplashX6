@@ -98,13 +98,18 @@ class GameHypervisor {
          */
         @JvmStatic
         fun doNewGameCallback() {
-            validateCall(REQ_GAME_LOADING, THROW("Tried to load a game whilst not loading."))
+            //validateCall(REQ_GAME_LOADING, THROW("Tried to load a game whilst not loading."))
+
+            Gdx.graphics.isContinuousRendering = false;
 
             doNewGamePRE()
             inGame = true
 
             doNewGamePOST()
+
             doNewGameFINAL()
+
+            Gdx.graphics.isContinuousRendering = true;
         }
 
         /**
