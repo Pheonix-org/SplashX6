@@ -38,7 +38,7 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     /**
      * # Action that teleports the unit to it's destination
      */
-    val TELEPORT =  UnitAction("Teleport to destination", ALWAYS_AVAILABLE, { it.setLocation(it.destX, it.destY); true; })
+    //val TELEPORT =  UnitAction("Teleport to destination", ALWAYS_AVAILABLE, { it.setLocation(it.destX, it.destY); true; })
 
     /**
      * # Moves towards destination
@@ -56,22 +56,6 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
 
             true; }})
 
-
-    /**
-     * # Action that ends the game
-     */
-    val RETIRE   =  UnitAction("Retire", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask { GameHypervisor.EndGame()} ; true; })
-
-    /**
-     * # Makes a test sound
-     */
-    val PING     =  UnitAction("Ping", ALWAYS_AVAILABLE, { AudioController.playButtonSound(); true; })
-
-    /**
-     * # Spawns a dupe
-     */
-    val SPAWN    =  UnitAction("Give birth", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask { GameHypervisor.spawn(it.isoVec.x.toInt() + 1, it.isoVec.y.toInt(), it.unitClass) } ; true; })
-
     /**
      * # Creates a city.
      */
@@ -83,7 +67,7 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     //                    MAP
     //==================================================
     init {
-            put(UnitClass._BASE,   arrayOf(TELEPORT, TRAVEL, PING, SPAWN))
+            put(UnitClass._BASE,   arrayOf(TRAVEL))
             put(UnitClass.settler, arrayOf(SETTLE))
     }
 
