@@ -4,7 +4,9 @@ package com.shinkson47.SplashX6.game
 import com.shinkson47.SplashX6.game.cities.City
 import com.shinkson47.SplashX6.game.cities.CityTypes
 import com.shinkson47.SplashX6.game.units.Unit
-import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.game.world.WorldTerrain
+import com.shinkson47.SplashX6.game.world.WorldTerrainGenerator
+import com.shinkson47.SplashX6.game.world.generation.Generator
 import java.io.Serializable
 
 /**
@@ -19,7 +21,7 @@ object GameData : Serializable {
     /**
      * # The tile layers making up the world.
      */
-    var world : World? = null
+    var world : WorldTerrain? = null
 
     /**
      * # The type of civilisation that the user is playing as.
@@ -70,7 +72,7 @@ object GameData : Serializable {
      */
     fun new(){
         clear()
-        world = World.create()
+        world = Generator.doYourThing();
         world!!.genPopulation()
     }
 }

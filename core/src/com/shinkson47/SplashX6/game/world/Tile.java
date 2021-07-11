@@ -100,10 +100,10 @@ public class Tile {
      * Returns a tile that represents a hill merged with the surrounding terrain.
      */
     public Tile interpolateHill(Tile nw, Tile ne, Tile se, Tile sw) {
-        String _nw = (nw == null) ? "0" : "1";
-        String _ne  = (ne == null) ? "0" : "1";
-        String _sw = (sw == null) ? "0" : "1";
-        String _se  = (se == null) ? "0" : "1";
+        String _nw =  (nw != null && !nw.tileName.startsWith("hills.")) ? "0" : "1";
+        String _ne  = (ne != null && !ne.tileName.startsWith("hills.")) ? "0" : "1";
+        String _sw =  (sw != null && !sw.tileName.startsWith("hills.")) ? "0" : "1";
+        String _se  = (se != null && !se.tileName.startsWith("hills.")) ? "0" : "1";
         return new Tile("hills." + _ne + "_" + _se + "_" + _sw + "_" + _nw);
     }
 

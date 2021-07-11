@@ -21,7 +21,7 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
     @JvmField protected val stage = Stage(view)
 
     init {
-        stage.isDebugAll = Client.DEBUG_MODE
+        //stage.isDebugAll = Client.DEBUG_MODE
     }
 
     abstract fun doResize(width: Int, height: Int)

@@ -15,6 +15,8 @@ import xmlwise.Plist;
 import xmlwise.XmlParseException;
 import xmlwise.Xmlwise;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.*;
 
@@ -59,8 +61,8 @@ public class Assets {
     public static ArrayList<Locale> languages;
 
     //#region UI
-    public static final Skin SKIN;
-
+    public static final Skin SKIN,
+            SKIN_KENNEY = new Skin(Gdx.files.internal("skins/kenney-pixel/skin/skin.json"));
     //public static final Texture menubg = new Texture("sprites/bg.png");
     //#endregion UI
 
@@ -124,6 +126,12 @@ public class Assets {
 
     public static final String[] TIPS = Gdx.files.internal("lang/tips.txt").readString().split("\n");
 
+    /**
+     * Single chanel data image used to try and determine if the cursor
+     * is over
+     */
+    public static BufferedImage hitTest;
+
     static{
         unitSprites = new TextureAtlas("sprites/units.atlas");
         citySprites = new TextureAtlas("sprites/cities.atlas");
@@ -136,13 +144,13 @@ public class Assets {
         TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
         SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
 
-        // Tileset mapping data
         try {
             TILESET_MAP = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
             SPRITES_MAP = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
             playlists   = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
-        } catch (XmlParseException ignored) {
-            throw new Error("Unable to load XML data.");
+            hitTest = ImageIO.read(Gdx.files.internal("tsdata/hittest.png").read());
+        } catch (XmlParseException | IOException ignored) {
+            throw new Error("Unable to load assets.");
         }
 
 
