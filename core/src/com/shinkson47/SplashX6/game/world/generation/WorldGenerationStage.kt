@@ -38,6 +38,8 @@ abstract class MiscellaneousGenerationStage : WorldGenerationStage()
 
 internal object GenerationCompanion {
 
+
+
     /**
      * # Width of tiles in pixels
      */
@@ -68,8 +70,13 @@ internal object GenerationCompanion {
      */
     const val SEA_LEVEL = 0f
 
-    const val HILL_LEVEL = 0.9f
-    const val MOUNTAIN_LEVEL = 0.97f
+    @JvmField var HILL_LEVEL = 0.48f
+    @JvmField var MOUNTAIN_LEVEL = 0.729f
+
+    /**
+     * FastNoiseLite noise frequency for height generation.
+     */
+    @JvmField var heightFrequency = 0.08f
 
     /**
      * # The smallest permitted world width

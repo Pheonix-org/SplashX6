@@ -37,6 +37,11 @@ class TerrainGenerationEditor : Window("Terrain Generation Editor", SKIN_KENNEY)
         addSliderFor("fractalStrength", 0f , 1f, 0.01f, 0.0f)
         addSliderFor("pingPongStrength", 0f , 2f, 0.1f, 2f)
 
+        addSliderFor("heightFrequency", 0f , 0.5f, 0.01f, 1f)
+        addSliderFor("MOUNTAIN_LEVEL", 0f , 1f, 0.01f, 0.75f)
+        addSliderFor("HILL_LEVEL", 0f , 1f, 0.01f, 0.7f)
+
+
         autoRebuild.isChecked = true
         fastBuild.isChecked = true
 

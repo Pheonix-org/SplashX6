@@ -161,17 +161,16 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap() {
     }
 
 
-
-
-    fun getTile(vec: Vector3) = getTile(vec.x.toInt(), vec.y.toInt())
-
     /**
-     * <h2>Gets a tile at the raw x,y array position.</h2>
+     * Gets tile at x,y from the source.
+     *
      * @return tile in worldTiles at index x, y.
      * @apiNote Does not acknowledge that rows are staggered when rendered.
      * @see com.shinkson47.SplashX6.game.world.WorldTerrain.getStaggeredTile
      */
-    fun getTile(x: Int, y: Int): Tile? = if (Utility.checkIn2DBounds(y, x, worldTiles)) null else worldTiles[y][x]
+    fun getTile(x: Int, y: Int, source : Array<Array<Tile?>> = worldTiles): Tile? = if (Utility.checkIn2DBounds(y, x, source)) null else source[y][x]
+
+    fun getTile(vec: Vector3) = getTile(vec.x.toInt(), vec.y.toInt())
 
     /**
      * <h2>Gets the tile at x, y, offset to ignore the isometric row stagger</h2>
@@ -194,7 +193,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap() {
      * <br></br><br></br>That's what this method is for, it corrects for this stagger offset such that [x+1][y+1] would always return the tile which can be seen to the north east side of another.
      * @return if on an odd row, tile at raw array position [x - 1][y], if even at [x][y].
      */
-    fun getStaggeredTile(x: Int, y: Int): Tile? = getTile(x + if (x != 0) if (y % 2 == 0) -1 else 0 else 0, y)
+    fun getStaggeredTile(x: Int, y: Int, source : Array<Array<Tile?>> = worldTiles): Tile? = getTile(x + if (x != 0) if (y % 2 == 0) -1 else 0 else 0, y, source)
 
     /**
      * <h2>
