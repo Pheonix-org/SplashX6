@@ -23,9 +23,8 @@ class NavigationDataMiscStage : MiscellaneousGenerationStage() {
                                 x,  // Where the tile thinks it is. Matches world position.
                                 y,
                                     // Can this tile be walked on?
-                                getStaggeredTile(x, y)!!.isLand
-                            )
-                        )
+                                isNavligable(x,y)
+                        ))
             }
         }
     }

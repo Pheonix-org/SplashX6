@@ -23,6 +23,7 @@ object Generator {
             // Modify base with interesting stuff.
             VoronoiBiomeModStage(),
             HeightModStage(),
+            ShittyFoliageGenerator(),
 
             // Polish up.
             NavigationDataMiscStage(),

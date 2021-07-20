@@ -273,6 +273,14 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap() {
     fun putEachTile(source : Array<Array<Tile?>>, action: (Int, Int, Tile?) -> Tile?) =
         forEachTile(source) { x, y, tile -> source[y][x] = action.invoke(x,y, tile) }
 
+    /**
+     *
+     */
+    fun isNavligable(x : Int, y : Int) : Boolean {
+        // TODO should this be staggered???
+        return getStaggeredTile(x,y)!!.isLand && getStaggeredTile(x,y,heightTiles) == null
+    }
+
     companion object {
         /**
          * # Width of tiles in pixels
