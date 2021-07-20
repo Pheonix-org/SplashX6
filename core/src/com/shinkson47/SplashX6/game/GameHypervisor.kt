@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.game;
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.audio.GamePlaylist
 import com.shinkson47.SplashX6.game.cities.City
 import com.shinkson47.SplashX6.game.cities.CityTypes
 import com.shinkson47.SplashX6.game.units.Unit
@@ -140,7 +141,7 @@ class GameHypervisor {
             Debug.create()
             GameWindowManager.create()
 
-            AudioController.playGame()          // Begin playing in-game soundtrack.
+            AudioController.playPlaylist(GamePlaylist());
             client?.fadeScreen(gameRenderer!!)    // Show the game screen to the user.
         }
 

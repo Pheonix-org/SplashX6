@@ -115,7 +115,16 @@ public class Assets {
     //#region audio
     public static final Music
             MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/medieval.ogg")),
-            GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/overworld theme.ogg"));
+
+            // Playlist tracks
+            GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/overworld theme.ogg")),
+            TRACK_ONE = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/TownTheme.mp3")),
+            TRACK_TWO = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/demo_track_1.mp3")),
+            TRACK_THREE = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/demo_track_2.mp3")),
+            TRACK_FOUR = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/Heroic Demise (New).mp3")),
+            TRACK_FIVE = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/little town - orchestral.ogg"));
+
+
 
     public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/click33.wav"));
     //#endregion audio

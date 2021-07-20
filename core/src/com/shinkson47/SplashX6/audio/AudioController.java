@@ -1,13 +1,11 @@
 package com.shinkson47.SplashX6.audio;
 
+
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import org.jetbrains.annotations.NotNull;
-
 import static com.shinkson47.SplashX6.utility.Assets.*;
-
-// TODO abstract play / stop logic
 
 /*
  * TODO - EVERYTHING HERE
@@ -33,7 +31,7 @@ public class AudioController {
      * <h2>The current volume levels</h2>
      */
     private static float
-            musicVolume  = 0.2f,
+            musicVolume = 0.2f,
             buttonVolume = 0.2f; // DEFAULT VOLUME
 
     /**
@@ -52,9 +50,12 @@ public class AudioController {
      * <h2>Pointer to the music resource that we are currently playing.</h2>
      * Should never be null.
      */
-    private static Music nowPlaying = MUSIC_MAIN_MENU;
+    protected static Music nowPlaying = MUSIC_MAIN_MENU;
 
-
+    /**
+     * The currently chosen GamePlaylist for this applications in-game soundtrack.
+     */
+    private static GamePlaylist currentPlaylist;
     // ==================================================
     //#endregion Fields
     //#region Volume API
@@ -77,6 +78,10 @@ public class AudioController {
         resumeMusic();
     }
 
+    /**
+     *
+     * @param mute
+     */
     public static void setMute(boolean mute) {
         if (mute)
             muteAudio();
@@ -111,7 +116,6 @@ public class AudioController {
         nowPlaying.setVolume(musicVolume);
     }
 
-
     /**
      * Returns a float value, indicating the current volume of all sound effects.
      *
@@ -136,9 +140,6 @@ public class AudioController {
     //#region Audio triggers api
     // ==================================================
 
-
-    // TODO - CURRENTLY UNUSED???
-
     /**
      * Audible sound (music) for the this application's main menu.
      */
@@ -153,13 +154,13 @@ public class AudioController {
 
     /**
      * Plays a new instance of {@link com.shinkson47.SplashX6.utility.Assets#SFX_BUTTON} at {@link AudioController#buttonVolume}
+     *
      * @return the ID of the new clip. If muted, returns -1 with no effect.
      */
     public static synchronized long playButtonSound() {
         if (isMuted) return -1;
         return SFX_BUTTON.play(buttonVolume);
     }
-
 
     // ==================================================
     //#endregion Audio triggers api
@@ -187,12 +188,27 @@ public class AudioController {
         if (!isMuted) nowPlaying.play();
     }
 
+    /**
+     *
+     */
+    public static synchronized void resetPlaylist() {
+        play(currentPlaylist.reset());
+    }
 
+    /**
+     * Skips the currently playing song in this application.
+     *
+     * If
+     * This only if a playlist is currently being played.
+     */
+    public static void nextSong() {
+        if (currentPlaylist != null)
+            play(currentPlaylist.next());
+    }
     // ==================================================
     //#endregion Music controls
     //#region Music utilities
     // ==================================================
-
 
     /**
      * <h2> Plays the provided music on repeat.</h2>
@@ -201,14 +217,13 @@ public class AudioController {
      * @param m The music to loop
      * @return m
      */
-    private static Music playOnLoop(Music m) {
+    protected static Music playOnLoop(Music m) {
         if (!isMuted) {
             m.setLooping(true);
             play(m);
         }
         return m;
     }
-
 
     /**
      * <h2>Actually plays some music.</h2>
@@ -217,7 +232,7 @@ public class AudioController {
      * @param m The music to play.
      * @return nowPlaying pointer.
      */
-    private static Music play(@NotNull Music m) {
+    public static Music play(@NotNull Music m) {
         stopMusic();               // Stop now playing
         nowPlaying = m;             // Swap to new music
         assertNowPlayingVolume();   // Make sure new music is at right volume
@@ -225,14 +240,21 @@ public class AudioController {
         return nowPlaying;
     }
 
+    /**
+     * Accepts a GamePlaylist object to be instantiated and played throughout the game.
+     *
+     * @param playlist The playlist to be played in the game.
+     * @return Plays the first song at index 0 in the chosen playlist.
+     */
+    public static Music playPlaylist(GamePlaylist playlist) {
+        currentPlaylist = playlist;
 
-
+        return play(playlist.reset()); // Resets the index to 0, and plays the song at that index in the playlist.
+    }
     // ==================================================
     //#endregion Music utilities
     //#region other
     // ==================================================
-
-
 
     /**
      * @return pointer to the music resource that's currently being played.
@@ -242,11 +264,11 @@ public class AudioController {
     }
 
     /**
-     * @return Boolean value, indicating whether the music played is currently muted.
+     * Returns a Boolean value, indicating whether all audio in the application is currently muted.
+     *
+     * @return Boolean value, indicating whether the audio is currently muted.
      */
     public static boolean isMuted() {
         return isMuted;
     }
 }
-
-
