@@ -114,7 +114,7 @@ public class Assets {
     //#region audio
     public static final Music
             GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/Lively/6054.mp3")),
-            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/medieval.ogg"));
+            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/Menu.mp3"));
 
     // Playlist tracks
     /**
