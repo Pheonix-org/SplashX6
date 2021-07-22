@@ -151,7 +151,6 @@ class GameHypervisor {
             KeyBinder.createGameBinds()
 
             if (!DEBUG_MODE) Spotify.pause()      // If possible, stop spotify.
-            AudioController.playGame()            // Begin playing in-game soundtrack.
             AudioController.playPlaylist(GamePlaylist());
             client?.fadeScreen(gameRenderer!!)    // Show the game screen to the user.
         }
