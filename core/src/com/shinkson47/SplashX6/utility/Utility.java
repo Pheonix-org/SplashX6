@@ -149,13 +149,26 @@ public final class Utility {
      * Asserts that a value is within an upper boundary. If boundary is exceeded,
      * the value is reset to a starting value.
      *
-     * @param value The value we're testing.
-     * @param reset The value returned if [value] exceedes [boundary]
+     * @param value    The value we're testing.
+     * @param reset    The value returned if [value] exceedes [boundary]
      * @param boundary The maximum permitted value for [value].
      * @return If [value] exceedes [boundary], returns reset. else returns value.
      */
-    public static Integer ClampBoundary(int value, int reset, int boundary){
+    public static Integer ClampUpperBoundary(int value, int reset, int boundary) {
         return (value > boundary) ? reset : value;
+    }
+
+    /**
+     * Asserts that a value is above the lower boundary. If boundary is exceeded,
+     * the value is reset to a starting value.
+     *
+     * @param value    The value we're testing.
+     * @param reset    The value returned if [value] exceedes [boundary]
+     * @param boundary The lowest permitted value for [value].
+     * @return If [value] exceedes [boundary], returns reset. else returns value.
+     */
+    public static Integer ClampLowerBoundary(int value, int reset, int boundary) {
+        return (value < boundary) ? reset : value;
     }
 
     /**
@@ -163,13 +176,28 @@ public final class Utility {
      * is within an upper boundary. If boundary is exceeded,
      * the value is reset to a starting value.
      *
-     * @param value The value we're testing.
-     * @param reset The value returned if [value] exceedes [boundary]
+     * @param value    The value we're testing.
+     * @param reset    The value returned if [value] exceedes [boundary]
      * @param boundary The maximum permitted value for [value].
      * @return If [value] exceedes [boundary], returns reset. else returns value.
-     * @see Utility#ClampBoundary(int, int, int)
+     * @see Utility#ClampUpperBoundary(int, int, int)
      */
     public static Integer IncrementClampBoundary(int value, int reset, int boundary) {
-        return ClampBoundary(value + 1, reset, boundary);
+        return ClampUpperBoundary(value + 1, reset, boundary);
+    }
+
+    /**
+     * Decrements [value], and asserts that it's new value
+     * is within lower boundary. If boundary is exceeded,
+     * the value is reset to a starting value.
+     *
+     * @param value    The value we're testing.
+     * @param reset    The value returned if [value] exceedes [boundary]
+     * @param boundary The lowest permitted value for [value].
+     * @return If [value] exceedes [boundary], returns reset. else returns value.
+     * @see Utility#ClampUpperBoundary(int, int, int)
+     */
+    public static Integer DecrementClampBoundary(int value, int reset, int boundary) {
+        return ClampLowerBoundary(value - 1, reset, boundary);
     }
 }

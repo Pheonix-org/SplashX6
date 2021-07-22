@@ -7,13 +7,6 @@ import com.shinkson47.SplashX6.rendering.StageWindow;
 import org.jetbrains.annotations.NotNull;
 import static com.shinkson47.SplashX6.utility.Assets.*;
 
-/*
- * TODO - EVERYTHING HERE
- * --- Rectify audio fields play issue
- * --- Implement unused methods?
- * --- Tidy Class + Javadoc
- */
-
 /**
  * <h1>Audio Controller</h1>
  *
@@ -21,8 +14,6 @@ import static com.shinkson47.SplashX6.utility.Assets.*;
  * @since PRE-ALPHA 0.0.1
  */
 public class AudioController {
-
-
     // ==================================================
     //#region Fields
     // ==================================================
@@ -56,11 +47,11 @@ public class AudioController {
      * The currently chosen GamePlaylist for this applications in-game soundtrack.
      */
     private static GamePlaylist currentPlaylist;
+
     // ==================================================
     //#endregion Fields
     //#region Volume API
     // ==================================================
-
 
     /**
      * Stops now playing and prevents more music from being played.
@@ -79,7 +70,6 @@ public class AudioController {
     }
 
     /**
-     *
      * @param mute
      */
     public static void setMute(boolean mute) {
@@ -88,7 +78,6 @@ public class AudioController {
         else
             unmuteAudio();
     }
-
 
     /**
      * Returns a float value, indicating the current volume of all music.
@@ -134,7 +123,6 @@ public class AudioController {
         buttonVolume = volume;
     }
 
-
     // ==================================================
     //#endregion Volume API
     //#region Audio triggers api
@@ -146,10 +134,6 @@ public class AudioController {
     public static synchronized void playMainMenu() {
         if (nowPlaying == MUSIC_MAIN_MENU && nowPlaying.isPlaying()) return;
         playOnLoop(MUSIC_MAIN_MENU);
-    }
-
-    public static void playGame() {
-        playOnLoop(GAME_DEFAULT);
     }
 
     /**
@@ -189,22 +173,25 @@ public class AudioController {
     }
 
     /**
-     *
+     * Skips the currently playing song in this application, playing the next song in the playlist.
      */
-    public static synchronized void resetPlaylist() {
-        play(currentPlaylist.reset());
+    public static void nextSong() {
+        if (currentPlaylist != null) {
+            play(currentPlaylist.next());
+            onSongCompletion();
+        }
     }
 
     /**
-     * Skips the currently playing song in this application.
-     *
-     * If
-     * This only if a playlist is currently being played.
+     * Plays the previous song in the playlist.
      */
-    public static void nextSong() {
-        if (currentPlaylist != null)
-            play(currentPlaylist.next());
+    public static void previousSong() {
+        if (currentPlaylist != null) {
+            play(currentPlaylist.previous());
+            onSongCompletion();
+        }
     }
+
     // ==================================================
     //#endregion Music controls
     //#region Music utilities
@@ -248,13 +235,28 @@ public class AudioController {
      */
     public static Music playPlaylist(GamePlaylist playlist) {
         currentPlaylist = playlist;
+        onSongCompletion();
 
         return play(playlist.reset()); // Resets the index to 0, and plays the song at that index in the playlist.
+    }
+
+    /**
+     * Resets the playlists index to 0.
+     */
+    public static synchronized void resetPlaylist() {
+        play(currentPlaylist.reset());
     }
     // ==================================================
     //#endregion Music utilities
     //#region other
     // ==================================================
+
+    /**
+     * Plays the next song in the playlist once the current song has ended.
+     */
+    public static void onSongCompletion() {
+        currentPlaylist.getCurrentSong().setOnCompletionListener(music -> nextSong());
+    }
 
     /**
      * @return pointer to the music resource that's currently being played.

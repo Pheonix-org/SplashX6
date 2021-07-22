@@ -93,11 +93,11 @@ public class Assets {
      * <br>
      * First tileset starts at 1, each tileset contains 216 tiles. Thus
      * <blockquote>
-     *     <code>
-     *         ID = tilesetStart + tileIndex
-     *     </code>
+     * <code>
+     * ID = tilesetStart + tileIndex
+     * </code>
      * </blockquote>
-     *.
+     * .
      * <br>
      * The order of tilesets can be viewed and changed within the "tilesets.tmx" file.
      * Tilesets can be viewed in thier "tsx" file.
@@ -114,28 +114,24 @@ public class Assets {
 
     //#region audio
     public static final Music
-            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/medieval.ogg")),
+            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/medieval.ogg"));
 
-            // Playlist tracks
-            GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/overworld theme.ogg")),
-            TRACK_ONE = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/TownTheme.mp3")),
-            TRACK_TWO = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/demo_track_1.mp3")),
-            TRACK_THREE = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/demo_track_2.mp3")),
-            TRACK_FOUR = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/Heroic Demise (New).mp3")),
-            TRACK_FIVE = Gdx.audio.newMusic(Gdx.files.internal("audio/GamePlaylist/little town - orchestral.ogg"));
-
-
+    // Playlist tracks
+    /**
+     * <h2>This applications default game playlist</h2>
+     * Loads music files into an Array.
+     */
+    public static final ArrayList<Music> SONGS = new ArrayList<>();
 
     public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/click33.wav"));
     //#endregion audio
 
     public static final String
             CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString(),
-            SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString();
+            SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString(),
+            SONG_LOAD_LIST = Gdx.files.internal("audio/data/loadList.csv").readString();
 
-
-
-    static{
+    static {
         unitSprites = new TextureAtlas("sprites/units.atlas");
         citySprites = new TextureAtlas("sprites/cities.atlas");
         menuBG = new TextureAtlas("sprites/menu_bg.atlas");
@@ -151,11 +147,14 @@ public class Assets {
         try {
             TILESET_MAP = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
             SPRITES_MAP = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
-            playlists   = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
+            playlists = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
         } catch (XmlParseException ignored) {
             throw new Error("Unable to load XML data.");
         }
 
+        // Load playlist
+        for (String s : SONG_LOAD_LIST.split(",\n"))
+            SONGS.add(Gdx.audio.newMusic(Gdx.files.internal(s)));
 
         // Load languages
         languages = new ArrayList<>();
@@ -164,6 +163,4 @@ public class Assets {
 
         loadLanguage(en);
     }
-
-
 }

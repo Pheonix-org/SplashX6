@@ -1,40 +1,36 @@
 package com.shinkson47.SplashX6.audio;
 
 import com.badlogic.gdx.audio.Music;
-import java.util.ArrayList;
 import static com.shinkson47.SplashX6.utility.Assets.*;
+import static com.shinkson47.SplashX6.utility.Utility.DecrementClampBoundary;
 import static com.shinkson47.SplashX6.utility.Utility.IncrementClampBoundary;
-
-// TODO- JAVADOC, TIDY CLASS
+import java.util.ArrayList;
 
 /**
+ * <h1>Basic in-game Music player (temporary)</h1>
  *
- * <h1>Basic In-game Music (temporary)</h1>
- *
- * <i>This is the default (temporary) media player/playlist for this application. Later development of this class
+ * This is the default media player/playlist for this application. Later development of this class
  * will enable a user to have more control and selection of the in-game music.
  *
- * This media player provides a basic playlist of songs for the user to listen to whilst playing Splash</i>
+ * This media player provides a basic playlist of songs for the user to listen to whilst playing Splash.
+ *
  * @author Dylan Brand
+ * @version 1.0
+ * @since PRE-ALPHA 0.0.2
  */
 public class GamePlaylist {
 
     // Fields
-    private final ArrayList<Music> PLAYLIST = new ArrayList<>();
+    private  ArrayList<Music> PLAYLIST = new ArrayList<>();
     private int index;
 
     // Constructor
     /**
-     * Adds all song's to this playlist. *TEMPORARY*
+     * Dynamically populates this GamePlaylist with Music files at {@link com.shinkson47.SplashX6.utility.Assets#SONGS}
      */
     public GamePlaylist() {
-        PLAYLIST.add(GAME_DEFAULT);
-        PLAYLIST.add(TRACK_ONE);
-        PLAYLIST.add(TRACK_TWO);
-        PLAYLIST.add(TRACK_THREE);
-        PLAYLIST.add(TRACK_FOUR);
-        PLAYLIST.add(TRACK_FIVE);
-        //TODO - Dynamically load tracks from file
+        // Dynamically populates the ArrayList.
+        PLAYLIST = SONGS;
     }
 
     // Methods
@@ -58,7 +54,15 @@ public class GamePlaylist {
         return getCurrentSong();
     }
 
-    //TODO - previous method
+    /**
+     * Plays the previous song in the playlist
+     *
+     * @return The currently playing song.
+     */
+    public Music previous() {
+        index = DecrementClampBoundary(index, PLAYLIST.size()-1, 0);
+        return getCurrentSong();
+    }
 
     /**
      * Resets the playlist's index to 0.
@@ -70,16 +74,3 @@ public class GamePlaylist {
         return getCurrentSong();
     }
 }
-
-//TODO - Further Development
-
-//        if (!nowPlaying.isPlaying()) {
-//            try {
-//                nowPlaying.setOnCompletionListener(music -> {
-//                    index++;
-//                    play(playlist.get(index));
-//                });
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }

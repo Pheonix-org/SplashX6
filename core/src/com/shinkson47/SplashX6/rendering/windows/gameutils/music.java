@@ -5,21 +5,18 @@ import com.shinkson47.SplashX6.rendering.StageWindow;
 import xmlwise.XmlParseException;
 import java.io.IOException;
 
-// TODO - Display the currently playing track title, UI modifications, AUTOPLAY when track is complete
+// TODO - Display the currently playing track title, UI modifications
 /**
  * <h1> Window for in-game music UI </h1>
  * @author Dylan Brand
  */
 public class music extends StageWindow {
 
-    // Fields
-
-
     // Constructors
     public music() throws XmlParseException, IOException {
         super("Music");
         constructContent();
-        setSize(this.getMinWidth(), 400f);
+        setSize(this.getMinWidth(), this.getMinHeight()); //500f);
     }
 
     // Methods
@@ -34,17 +31,15 @@ public class music extends StageWindow {
         top();
 
         // Button controls - may be changed/altered in later development
-        addButton("pauseSong", e -> AudioController.pauseMusic());//.pad(20f);
-        addButton("resumeSong", e -> AudioController.resumeMusic());//.padBottom(40f);
+        addButton("pauseSong", e -> AudioController.pauseMusic());
+        addButton("resumeSong", e -> AudioController.resumeMusic());
 
         hsep().pad(20f);
 
-        addButton("skipSong", e -> AudioController.nextSong());//.//padTop(40f);
-        addButton("resetPlaylist", e -> AudioController.resetPlaylist());//.pad(20f);
+        addButton("skipSong", e -> AudioController.nextSong());
+        addButton("previousSong", e -> AudioController.previousSong()); // CHANGE
+        addButton("resetPlaylist", e -> AudioController.resetPlaylist());
 
-        //setSize(500, 1000);
         setResizable(false);
     }
 }
-
-
