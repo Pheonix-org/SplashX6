@@ -42,6 +42,9 @@ Churches In Antioquia - Intro : Open Game Art : CC BY-SA 3.0
 Medieval : Open Game Art : CC BY-SA 3.0
 Overworld Theme : Open Game Art : CC BY-SA 3.0, GPL 3.0
 Palm Of My Hand - At The Alter : Open Game Art : CC BY-SA 3.0
+Heroic Demise : Open Game Art : CC BY 3.0
+Little Town - Orchestral : Open Game Art : CC BY 3.0
+Town Theme : Open Game Art : CC0 1.0
 
 [ CODE ]
 TenPatch : Ray3K : MIT

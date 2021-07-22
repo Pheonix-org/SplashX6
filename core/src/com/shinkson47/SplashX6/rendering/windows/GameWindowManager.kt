@@ -6,6 +6,8 @@ import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.gameutils.Spotify
 import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
+import com.shinkson47.SplashX6.rendering.windows.gameutils.music
+import com.shinkson47.SplashX6.rendering.windows.gameutils.units
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 
 /**
@@ -67,6 +69,9 @@ object GameWindowManager {
         // Otherwise user must connect in preferences first.
         if (com.shinkson47.SplashX6.audio.Spotify.createFromExisting())
             add(Spotify())
+        add(units())
+        add(SpotifyTestWindow())
+        add(music());
     }
 
     fun update () {
