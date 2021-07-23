@@ -1,7 +1,9 @@
 package com.shinkson47.SplashX6.rendering.windows.gameutils;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.shinkson47.SplashX6.audio.AudioController;
 import com.shinkson47.SplashX6.rendering.StageWindow;
+import com.shinkson47.SplashX6.utility.Assets;
 import xmlwise.XmlParseException;
 import java.io.IOException;
 
@@ -16,7 +18,7 @@ public class music extends StageWindow {
     public music() throws XmlParseException, IOException {
         super("Music");
         constructContent();
-        setSize(this.getMinWidth(), this.getMinHeight()); //500f);
+        setSize(this.getMinWidth(), this.getMinHeight());
     }
 
     // Methods
@@ -30,15 +32,28 @@ public class music extends StageWindow {
 
         top();
 
-        // Button controls - may be changed/altered in later development
+        // Information displayed to the user
+        Label info = new Label("To play audio via Spotify, please visit preferences.", Assets.SKIN);
+        this.add(info);
+
+        hsep().pad(20f);
+
         addButton("pauseSong", e -> AudioController.pauseMusic());
+        tooltip("ttPause");
+
         addButton("resumeSong", e -> AudioController.resumeMusic());
+        tooltip("ttResume");
 
         hsep().pad(20f);
 
         addButton("skipSong", e -> AudioController.nextSong());
-        addButton("previousSong", e -> AudioController.previousSong()); // CHANGE
+        tooltip("ttSkip");
+
+        addButton("previousSong", e -> AudioController.previousSong());
+        tooltip("ttPrevious");
+
         addButton("resetPlaylist", e -> AudioController.resetPlaylist());
+        tooltip("ttReset");
 
         setResizable(false);
     }
