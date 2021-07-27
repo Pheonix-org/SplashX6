@@ -60,7 +60,7 @@ object GraphicalConfig  {
      * if [value] is true, application will be asserted into fullscreen,
      * and vice versa.
     */
-    var fullscreen  = graphics.isFullscreen
+    var fullscreen = graphics.isFullscreen
         set(it) {
             field = it
             displayMode = graphics.displayMode

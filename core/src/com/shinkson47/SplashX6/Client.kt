@@ -11,6 +11,7 @@ import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.screens.ScreenTransistion
 import com.shinkson47.SplashX6.rendering.screens.SplashScreen
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
+import com.shinkson47.SplashX6.test.ReleaseTest
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.GraphicalConfig
@@ -43,8 +44,7 @@ class Client : Game() {
 
         MouseHandler.create()
 
-
-
+        // TODO move somewhere else, ideally graphics config.
         Gdx.gl.glClearColor(r, g, b, a)
     }
 
@@ -126,6 +126,18 @@ class Client : Game() {
 
         @JvmField
         var DEBUG_MODE: Boolean = false
+
+        @JvmField
+        var CI_CD: Boolean = false
+
+        /**
+         * Alias of the boot config's fullscreen status.
+         *
+         * Fullscreen cannot be polled when in headless testing environment,
+         * so this is a work around.
+         */
+        @JvmField
+        var CI_CD_FS: Boolean = false
 
         @JvmField
         var client: Client? = null
