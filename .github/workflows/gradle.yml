@@ -57,7 +57,7 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build using Gradle wrapper
-      run: ./gradlew build
+      run: ./gradlew desktop:dist
       
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.4
