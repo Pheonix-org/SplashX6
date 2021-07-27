@@ -33,6 +33,7 @@ class ReleaseTest : Tester() {
                 ===================================================================================================================================================
             """
         )
+        assert(true, "The application ran!")
 
         assert(Client.CI_CD, "CI-CD mode is enabled.", "Running release tests whilst not in CI_CD")
 
