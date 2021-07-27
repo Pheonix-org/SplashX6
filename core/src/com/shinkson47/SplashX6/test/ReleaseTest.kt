@@ -43,7 +43,6 @@ class ReleaseTest : Tester() {
 
         assert(true, "All basic config checks passed! Build seems to be correctly configured for release. No guarantees on it's stability, though!")
 
-        System.exit(0)
         // Cannot boot client.
 //        assert(Client.client!!.currentScreen is SplashScreen, "Splash booted to the splash screen.", "Splash did not boot to the splash screen.")
 //
