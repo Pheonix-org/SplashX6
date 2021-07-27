@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.test
 import com.badlogic.gdx.Application.LOG_ERROR
 import com.badlogic.gdx.Gdx
 import kotlin.AssertionError
+import kotlin.system.exitProcess
 
 /**
  * # A script which performs tests.
@@ -72,7 +73,8 @@ abstract class Tester : Runnable {
             System.err.println("[TESTER] ✗ [## FAIL ##]  : $failMessage")
 
             failed = true
-            throw AssertionError("[TEST FAILURE] : $failMessage")
+            AssertionError("[TEST FAILURE] : $failMessage").printStackTrace()
+            exitProcess(69)
         }
 
         if (passMessage != "")
