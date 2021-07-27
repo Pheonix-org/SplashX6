@@ -64,7 +64,3 @@ jobs:
       with:
         name: Latest.jar
         path: ./desktop/build/libs/desktop-1.0.jar
-
-      if-no-files-found: 
-        error: Build artifact was missing. Build likely failed.
-
