@@ -1,6 +1,7 @@
 package com.shinkson47.SplashX6.audio;
 
 import com.badlogic.gdx.audio.Music;
+import static com.shinkson47.SplashX6.audio.AudioController.nextSong;
 import static com.shinkson47.SplashX6.utility.Assets.*;
 import static com.shinkson47.SplashX6.utility.Utility.DecrementClampBoundary;
 import static com.shinkson47.SplashX6.utility.Utility.IncrementClampBoundary;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 public class GamePlaylist {
 
     // Fields
-    private  ArrayList<Music> PLAYLIST = new ArrayList<>();
+    private final ArrayList<Music> PLAYLIST;
     private int index;
 
     // Constructor
@@ -40,7 +41,10 @@ public class GamePlaylist {
      * @return The index of the current song.
      */
     public Music getCurrentSong() {
-        return PLAYLIST.get(index);
+        final Music PLAYING = PLAYLIST.get(index);
+        PLAYING.setOnCompletionListener(music -> nextSong());
+
+        return PLAYING;
     }
 
     /**

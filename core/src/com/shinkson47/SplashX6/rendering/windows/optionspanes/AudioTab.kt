@@ -18,26 +18,26 @@ class AudioTab() : Table() {
     init {
         // SLIDER FOR MUSIC VOLUME CONTROL
         val musicSlider = Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN)
-        musicSlider.value = AudioController.getMusicVolume()
+        musicSlider.value = AudioController.musicVolume
 
         // SLIDER FOR GAME VOLUME CONTROL
         val gameSlider = Slider(0.0f, 1.0f, 0.1f, false, Assets.SKIN)
-        gameSlider.value = AudioController.getSFXVolume()
+        gameSlider.value = AudioController.musicVolume
 
         // CHECKBOX FOR MUTE
         val muteCheck = StageWindow.checkBox("mute", this)
-        muteCheck.isChecked = AudioController.isMuted()
+        muteCheck.isChecked = AudioController.isMuted
 
 
         // EVENTS
         musicSlider.addListener(StageWindow.LambdaChangeListener {
                 AudioController.playButtonSound() // TODO this shouldn't be here.
-                AudioController.setMusicVolume(musicSlider.value)
+                AudioController.musicVolume = musicSlider.value
         })
 
         gameSlider.addListener(StageWindow.LambdaChangeListener {
                 AudioController.playButtonSound() // TODO this shouldn't be here.
-                AudioController.setSFXVolume(gameSlider.value)
+                AudioController.buttonVolume = gameSlider.value
             })
 
         muteCheck.addListener(LambdaClickListener {

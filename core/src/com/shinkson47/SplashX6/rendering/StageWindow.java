@@ -14,11 +14,9 @@ import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.audio.AudioController;
 import com.shinkson47.SplashX6.utility.Assets;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
 import static com.shinkson47.SplashX6.audio.AudioController.GUI_SOUND;
 import static com.shinkson47.SplashX6.utility.Utility.local;
 

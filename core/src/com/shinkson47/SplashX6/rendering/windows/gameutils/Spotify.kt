@@ -157,9 +157,9 @@ class Spotify : StageWindow("Spotify") {
         }
 
         // Alter state of internal playback, if needed.
-        if (playbackState!!.is_playing && AudioController.getNowPlaying().isPlaying)
+        if (playbackState!!.is_playing && AudioController.nowPlaying.isPlaying)
             AudioController.pauseMusic()
-        if (!playbackState!!.is_playing && !AudioController.getNowPlaying().isPlaying)
+        if (!playbackState!!.is_playing && !AudioController.nowPlaying.isPlaying)
             AudioController.resumeMusic()
 
         // Show correct volume.
