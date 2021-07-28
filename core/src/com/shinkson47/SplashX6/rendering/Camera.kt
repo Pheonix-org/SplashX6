@@ -5,10 +5,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.lerpDesire
-import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.GraphicalConfig
 import kotlin.math.PI
@@ -188,9 +187,9 @@ class Camera: PerspectiveCamera() {
      * TODO i kinda gave up with this. Now just makes sure that center is in bounds.
      */
     fun AssertInBounds() {
-        val worldBottom: Float = -yFromAngle(desiredTilt.desired) - World.TILE_HEIGHT
-        val worldRight : Int =   GameData.world!!.width() * World.TILE_WIDTH
-        val worldTop : Int =     GameData.world!!.height() * World.TILE_HEIGHT / 2
+        val worldBottom: Float = -yFromAngle(desiredTilt.desired) - WorldTerrain.TILE_HEIGHT
+        val worldRight : Int =   GameData.world!!.width * WorldTerrain.TILE_WIDTH
+        val worldTop : Int =     GameData.world!!.height * WorldTerrain.TILE_HEIGHT / 2
 
         if (desiredPosition.desired.x < 0) desiredPosition.desired.x = 0f
         else if (desiredPosition.desired.x > worldRight) desiredPosition.desired.x = worldRight.toFloat()

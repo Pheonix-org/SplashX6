@@ -6,15 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.StreamUtils;
 import com.shinkson47.SplashX6.game.world.FastNoiseLite;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 import static com.shinkson47.SplashX6.utility.Assets.LANG;

@@ -1,18 +1,16 @@
 package com.shinkson47.SplashX6.rendering.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.MapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
@@ -23,7 +21,7 @@ import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow;
 import com.shinkson47.SplashX6.utility.Debug;
 
-import static com.shinkson47.SplashX6.game.world.World.*;
+import static com.shinkson47.SplashX6.game.world.WorldTerrain.*;
 import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
 import static com.shinkson47.SplashX6.rendering.StageWindow.button;
 import static com.shinkson47.SplashX6.utility.Assets.SKIN;
@@ -51,7 +49,7 @@ public class GameScreen extends ScalingScreenAdapter {
      * <h2>Renderer that renders {@link GameData#world}</h2>
      * renders from perspective of {@link GameScreen#camera}
      */
-    public MapRenderer r;
+    public IsometricStaggeredTiledMapRenderer r;
 
     /**
      * <h2>A renderer used to draw primative shapes</h2>
@@ -91,7 +89,7 @@ public class GameScreen extends ScalingScreenAdapter {
 
         // Create objects
         sr = new ShapeRenderer();
-        r = new IsometricStaggeredTiledMapRenderer(GameData.INSTANCE.getWorld().getMap());
+        r = new IsometricStaggeredTiledMapRenderer(GameData.INSTANCE.getWorld());
 
         //r.setView(camera.getCam());
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.utility.Assets.citySprites
 
 /**
@@ -88,8 +88,8 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
      * # Converts the [isoVec] to cartesian position for the sprite to use.
      */
     private fun calcSpritePos() : Vector2 {
-        val tempPos: Vector3 = World.isoToCartesian(isoVec.x.toInt(), isoVec.y.toInt())
-        return Vector2(tempPos.x - World.TILE_HALF_WIDTH, tempPos.y - World.TILE_HALF_HEIGHT)
+        val tempPos: Vector3 = WorldTerrain.isoToCartesian(isoVec.x.toInt(), isoVec.y.toInt())
+        return Vector2(tempPos.x - WorldTerrain.TILE_HALF_WIDTH, tempPos.y - WorldTerrain.TILE_HALF_HEIGHT)
     }
 
     /**

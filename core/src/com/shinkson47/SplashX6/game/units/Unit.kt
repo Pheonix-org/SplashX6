@@ -4,8 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.world.World
-import com.shinkson47.SplashX6.game.world.World.*
+import com.shinkson47.SplashX6.game.world.WorldTerrain
+import com.shinkson47.SplashX6.game.world.WorldTerrain.*
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGHT
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
 import org.xguzm.pathfinding.grid.GridCell
 
@@ -105,7 +108,7 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
      * # Sets the location of this sprite in iso space.
      * where [x] and [y] are iso co-ordinates, and are stored in [isoX], [isoY].
      *
-     * super.[x] and super.[y] store cartesian equivelants, which are calculated in [World.isoToCartesian]
+     * super.[x] and super.[y] store cartesian equivelants, which are calculated in [WorldTerrain.isoToCartesian]
      *
      * For a delta translation, see [deltaPosition]
      */
@@ -120,8 +123,8 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
      * and removes any fog-of-war surrounding the unit.
      */
     fun setLocation(x: Int, y: Int) : Vector3 {
-        val x = MathUtils.clamp(x, 0, GameData.world!!.width() - 1)
-        val y = MathUtils.clamp(y, 0, GameData.world!!.height() - 1)
+        val x = MathUtils.clamp(x, 0, GameData.world!!.width - 1)
+        val y = MathUtils.clamp(y, 0, GameData.world!!.height - 1)
 
 
         isoVec.set(x.toFloat(),y.toFloat(),0f)
@@ -139,8 +142,8 @@ class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.c
     }
 
     fun setDestination(x: Int, y: Int) {
-        val x = MathUtils.clamp(x, 0, GameData.world!!.width() - 1)
-        val y = MathUtils.clamp(y, 0, GameData.world!!.height() - 1)
+        val x = MathUtils.clamp(x, 0, GameData.world!!.width - 1)
+        val y = MathUtils.clamp(y, 0, GameData.world!!.height - 1)
 
         if (x == destX && y == destY) return // don't pathfind if destination is same.
 
