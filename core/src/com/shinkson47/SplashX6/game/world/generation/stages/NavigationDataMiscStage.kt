@@ -13,6 +13,8 @@ import org.xguzm.pathfinding.grid.GridCell
 class NavigationDataMiscStage : MiscellaneousGenerationStage() {
 
     override fun execute(it: WorldTerrain) {
+
+
         with (it) {
             forEachTile {
                     x, y, _ ->

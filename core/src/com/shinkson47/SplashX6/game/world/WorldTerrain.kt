@@ -278,7 +278,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap() {
      */
     fun isNavligable(x : Int, y : Int) : Boolean {
         // TODO should this be staggered???
-        return getStaggeredTile(x,y)!!.isLand && getStaggeredTile(x,y,heightTiles) == null
+        return getStaggeredTile(x,y)!!.isLand && getStaggeredTile(x,y,heightTiles) == null && getStaggeredTile(x,y,FoliageLayerTiles) == null
     }
 
     companion object {
