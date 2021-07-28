@@ -31,7 +31,7 @@ public class SplashX6 {
 		// ===========================
 		// When developing, change to true to enable debug features.
 		// Check for DEBUG_MODE when writing a debug feature.
-		Client.DEBUG_MODE = true;
+		Client.DEBUG_MODE = false;
 
 		checkCICD(arg);
 		constructConfig();
