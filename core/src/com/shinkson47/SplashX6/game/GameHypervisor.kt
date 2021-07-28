@@ -28,6 +28,7 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.Utility
+import java.lang.Thread.sleep
 
 /**
  * # The main overseer for a game.
@@ -548,7 +549,14 @@ class GameHypervisor {
             gameRenderer = null
             GameData.clear()
             GameWindowManager.dispose()
-            Utility.DispatchDaemonThread("KeyBindingDisposer"){ while (client!!.screen !is MainMenu) KeyBinder.destroyGameBinds() }
+
+            // FIXME: 28/07/2021 Possible for this to not take effect if the user enters any other screen within a second of getting to the main menu.
+            Utility.DispatchDaemonThread("KeyBindingDisposer"){
+                while (client!!.screen !is MainMenu) {
+                    sleep(1000)
+                }
+                KeyBinder.destroyGameBinds()
+            }
         }
 
         /**

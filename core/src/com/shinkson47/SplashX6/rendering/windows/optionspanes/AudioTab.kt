@@ -67,23 +67,23 @@ class AudioTab() : Table() {
 
         // SPOTIFY CONFIG
 
-        seperate(this, "Spotify")
+        seperate(this, "spotify")
 
-        val btnConnectToSpotify = TextButton(local("Connect to spotify"), Assets.SKIN)
+        val btnConnectToSpotify = TextButton(local("spotifyConnect"), Assets.SKIN)
         btnConnectToSpotify.addListener(LambdaClickListener{
             Gdx.graphics.setWindowedMode(Gdx.graphics.displayMode.width, Gdx.graphics.displayMode.height)
             if (Spotify.create()) // TODO this needs to be localised.
                 StageWindow.dialog(this, "", "Already connected!", "", "", null)
-            else
+            else // TODO localisation
                 StageWindow.dialog(this, "Connect to spotify", "A browser should've opened." +
                         "\n Authorize with spotify, then paste the code in the box" +
                         "\n and click 'Authenticate'.", "", "", null)
         })
 
         val authArea = TextField("", Assets.SKIN)
-        authArea.messageText = local("Paste code here")
+        authArea.messageText = local("spotifyPaste")
 
-        val btnAuthenticate = TextButton(local("Authenticate with code"), Assets.SKIN)
+        val btnAuthenticate = TextButton(local("spotifyAuthenticate"), Assets.SKIN)
         btnAuthenticate.addListener(LambdaClickListener{
             if (Spotify.create(authArea.text) && GameHypervisor.inGame)
                 GameWindowManager.add(com.shinkson47.SplashX6.rendering.windows.gameutils.Spotify())

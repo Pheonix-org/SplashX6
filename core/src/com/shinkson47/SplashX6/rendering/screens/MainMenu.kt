@@ -51,7 +51,7 @@ class MainMenu : ScalingScreenAdapter() {
                 .row()
 
             add(
-                Label("PRE-ALPHA 0.0.2 WIP", SKIN)
+                Label("PRE-ALPHA 0.0.2", SKIN)
             ).padBottom(50f).row()
 
             addButton("newGame") { NewGame() }

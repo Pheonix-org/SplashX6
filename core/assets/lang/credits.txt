@@ -50,6 +50,8 @@ Town Theme : Open Game Art : CC0 1.0
 TenPatch : Ray3K : MIT
 XMLWise : Lerno : MIT
 LibGDX : LibGDX : Apache 2.0
+Spotify Wrapper : michaelthelin : MIT
+Pathfinding : xaguzman : Apache 2.0
 
 /------------------------\
 META : ASSETS NOT INCLUDED
@@ -68,9 +70,15 @@ Tiled
 Ezgif
 Google Translate
 
-
 Kotlin
 Java
+
+======= THANKS =======
+[ CI-CD AID ]
+Tallz
+https://github.com/atallahhezbor
+
+
 
 
 Thanks for your interest!
