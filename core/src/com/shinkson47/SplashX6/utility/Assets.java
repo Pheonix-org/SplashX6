@@ -36,6 +36,8 @@ import static com.shinkson47.SplashX6.utility.Languages.en;
 public class Assets {
 
     public static void Create(){}
+
+    //TODO this is never called.
     public static void Dispose() {
         TILESETS.dispose();
     }
@@ -129,9 +131,9 @@ public class Assets {
     //#endregion audio
 
     public static final String
-            CREDITS_TEXT = Gdx.files.internal("lang/credits.txt").readString(),
-            SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString(),
-            SONG_LOAD_LIST = Gdx.files.internal("audio/data/loadList.csv").readString();
+            CREDITS_TEXT    = Gdx.files.internal("lang/credits.txt").readString(),
+            SPLASH_TEXT     = Gdx.files.internal("lang/splash.txt").readString(),
+            SONG_LOAD_LIST  = Gdx.files.internal("audio/data/loadList.csv").readString();
 
     public static final String[] TIPS = Gdx.files.internal("lang/tips.txt").readString().split("\n");
 
