@@ -62,7 +62,6 @@ object GameWindowManager {
 
 
         add(UnitsWindow())
-        //add(SpotifyTestWindow())
 
         // Try loading spotify, if successful then add spotify window to game.
         // Otherwise user must connect in preferences first.

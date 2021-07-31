@@ -9,7 +9,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_isSelectingDestination
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
-import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.rendering.Camera
 import com.shinkson47.SplashX6.utility.lerpDesire
 import org.xguzm.pathfinding.grid.GridCell
@@ -96,7 +96,7 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
                     var it : GridCell = it[0]
 
                     // The position of the last node. Start with index 0.
-                    var lastNode : Vector3 = World.isoToCartesian(it.x, it.y)
+                    var lastNode : Vector3 = WorldTerrain.isoToCartesian(it.x, it.y)
 
                     // Position of the current node.
                     var currentNode: Vector3
@@ -106,7 +106,7 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
 
                         // Calculate node position
                         it = pathNodes!![i]
-                        currentNode = World.isoToCartesian(it.x, it.y)
+                        currentNode = WorldTerrain.isoToCartesian(it.x, it.y)
 
                         // Draw line
                         parent.sr.line(lastNode.x, lastNode.y, currentNode.x, currentNode.y)
@@ -126,7 +126,7 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
                 // If we're selecting and have no path then we're selecting a bad path.
                 // Draw a red line to the intended destination.
                 parent.sr.color = Color.RED
-                    val mouse = World.isoToCartesian(sel.x.toInt(), sel.y.toInt())
+                    val mouse = WorldTerrain.isoToCartesian(sel.x.toInt(), sel.y.toInt())
                     parent.sr.line(Vector3(x, y, 0f), mouse)
                 parent.sr.color = Color.WHITE
             }
@@ -138,7 +138,7 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
      */
     private fun renderMouseCircle() {
         val iso = GameHypervisor.cm_selectedTile()
-        val isocart = World.isoToCartesian(iso.x.toInt(), iso.y.toInt())
+        val isocart = WorldTerrain.isoToCartesian(iso.x.toInt(), iso.y.toInt())
         parent.sr.circle(isocart.x, isocart.y, 10f)
     }
 

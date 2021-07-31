@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
-import com.shinkson47.SplashX6.game.world.World;
+import com.shinkson47.SplashX6.game.world.WorldTerrain;
 import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.GameScreen;
 
@@ -84,13 +84,6 @@ public class Debug {
         protected void constructContent() {
             addButton("Toggle General Debug", o -> debugMode = !debugMode);
 
-            seperate("World");
-            addButton("Toggle Tile interpolation", o -> GameData.INSTANCE.getWorld().swapTiledInterp());
-            int i = 0;
-            for(MapLayer t : GameData.INSTANCE.getWorld().getMap().getLayers()){
-                addButton("Toggle layer " + i, o -> t.setVisible(!t.isVisible()));
-                i++;
-            }
             seperate("Camera");
 
             addButton("Experimental : Toggle Camera Pan Tilt", o -> GameHypervisor.getGameRenderer().getCam().setEnableMoveTilt(!GameHypervisor.getGameRenderer().getCam().getEnableMoveTilt()));
@@ -161,7 +154,7 @@ public class Debug {
         // Grid
         for (int x = 0; x <= 10; x ++)
             for (int y = 0; y <= 10; y ++) {
-                Vector3 vector = World.isoToCartesian(x,y);
+                Vector3 vector = WorldTerrain.isoToCartesian(x,y);
                 gameRenderer.getSr().circle(vector.x, vector.y, 10);
             }
         gameRenderer.getSr().end();

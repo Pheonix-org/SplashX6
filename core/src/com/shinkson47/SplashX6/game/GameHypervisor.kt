@@ -11,8 +11,11 @@ import com.shinkson47.SplashX6.game.cities.City
 import com.shinkson47.SplashX6.game.cities.CityTypes
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
-import com.shinkson47.SplashX6.game.world.World
-import com.shinkson47.SplashX6.game.world.World.*
+import com.shinkson47.SplashX6.game.world.WorldTerrain
+import com.shinkson47.SplashX6.game.world.WorldTerrain.*
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGHT
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
@@ -20,7 +23,6 @@ import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
 import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
-import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_GAME_LOADING
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
@@ -305,7 +307,7 @@ class GameHypervisor {
         }
 
         @JvmStatic
-        fun unit_canEnter(x : Int, y: Int) : Boolean = GameData.world!!.getTile(x,y).isLand
+        fun unit_canEnter(x : Int, y: Int) : Boolean = GameData.world!!.getTile(x,y)!!.isLand
 
 
         //========================================================================
@@ -410,13 +412,13 @@ class GameHypervisor {
         @JvmStatic
         fun camera_focusingOnTile(): Vector3 {
             val v = camera_focusingOn()
-            return World.cartesianToIso(v.x.toInt(), v.y.toInt())
+            return WorldTerrain.cartesianToIso(v.x.toInt(), v.y.toInt())
         }
 
 
         @JvmStatic
         fun camera_moveToTile(x: Int, y: Int) {
-            with (World.isoToCartesian(x,y)) {
+            with (WorldTerrain.isoToCartesian(x,y)) {
                 camera_focusOn(this.x, this.y)
             }
         }

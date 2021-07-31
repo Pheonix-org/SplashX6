@@ -9,9 +9,10 @@
  <tileset firstgid="1297" source="tsx/foliage.tsx"/>
  <tileset firstgid="1376" source="tsx/oceans.tsx"/>
  <tileset firstgid="1392" source="tsx/hills.tsx"/>
+ <tileset firstgid="1408" source="tsx/mountains.tsx"/>
  <layer id="1" name="Tile Layer 1" width="1" height="1">
   <data encoding="csv">
-1376
+1393
 </data>
  </layer>
 </map>
