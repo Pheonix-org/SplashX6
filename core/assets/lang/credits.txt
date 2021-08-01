@@ -57,6 +57,9 @@ Pathfinding : xaguzman : Apache 2.0
 /------------------------\
 META : ASSETS NOT INCLUDED
 Night theme 2
+We're missing the menu soundtrack,
+and almost all of these music tracks have been
+removed.
 \------------------------/
 
 ======= TOOLS USED =======

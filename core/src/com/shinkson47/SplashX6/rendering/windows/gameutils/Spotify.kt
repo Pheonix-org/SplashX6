@@ -120,7 +120,7 @@ class Spotify : StageWindow("Spotify") {
             .row()
 
         contentSelectBox.addListener(LambdaChangeListener { updateSource() })
-        label("Source")
+        label("source")
         span(add(contentSelectBox))
             .height(30f)
             .width(500f)
