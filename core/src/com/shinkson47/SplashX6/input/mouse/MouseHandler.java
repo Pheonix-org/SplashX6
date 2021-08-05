@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.input.KeyBinder;
 
 /**
  * <h1>Main mouse handling scripts</h1>
@@ -53,6 +54,10 @@ public class MouseHandler {
             if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
                 DragLogistics.LEFT.down();
 
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && GameHypervisor.getCm_active())
+                GameHypervisor.cm_destinationSelect();
+
+
             // If down, then update camera's target with the mouse's movement
             if (DragLogistics.LEFT.isDown())
                 GameHypervisor.getGameRenderer().getCam().deltaPosition(DragLogistics.LEFT.x(), DragLogistics.LEFT.y());
@@ -89,6 +94,7 @@ public class MouseHandler {
         reset();
         inputMultiplexer.addProcessor(stage);
         inputMultiplexer.addProcessor(GameZoomDragHandler);
+        inputMultiplexer.addProcessor(KeyBinder.INSTANCE);
     }
 
 
@@ -115,7 +121,7 @@ public class MouseHandler {
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
-            // TODO this crashes on anywhere that isn't the game.
+            if (GameHypervisor.getInGame())
             GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
             return true;
         }

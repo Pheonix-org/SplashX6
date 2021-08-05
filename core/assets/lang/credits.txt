@@ -1,0 +1,93 @@
+Press ESC to return.
+
+=========
+
+SPLASH X6
+
+=========
+
+
+
+======= DEVELOPERS =======
+
+[ LEAD DEVELOPER ]
+
+Jordan T. Gray
+http://shinkson47.in
+
+[ JUNIOR DEVELOPER ]
+
+Dylan Brand
+
+
+======= ASSETS =======
+(ASSET : SOURCE : LICENSE)
+
+[ GRAPHICS ]
+
+Icon : FreeCiv : GPL
+Splash Globe : WikiMedia Commons : CC BY-SA 3.0
+Menu BG : TeaHub : Personal
+Skin elements : Open Game Art : CC BY 3.0
+
+FreeLand tileset : FreeCiv : GPL
+
+[ SPRITES ]
+
+FreeLand Sprites : FreeCiv : GPL
+
+[ AUDIO ]
+
+Churches In Antioquia - Intro : Open Game Art : CC BY-SA 3.0
+Medieval : Open Game Art : CC BY-SA 3.0
+Overworld Theme : Open Game Art : CC BY-SA 3.0, GPL 3.0
+Palm Of My Hand - At The Alter : Open Game Art : CC BY-SA 3.0
+Heroic Demise : Open Game Art : CC BY 3.0
+Little Town - Orchestral : Open Game Art : CC BY 3.0
+Town Theme : Open Game Art : CC0 1.0
+Click33 : Open Game Art : CC0 1.0
+
+[ CODE ]
+TenPatch : Ray3K : MIT
+XMLWise : Lerno : MIT
+LibGDX : LibGDX : Apache 2.0
+Spotify Wrapper : michaelthelin : MIT
+Pathfinding : xaguzman : Apache 2.0
+
+/------------------------\
+META : ASSETS NOT INCLUDED
+Night theme 2
+We're missing the menu soundtrack,
+and almost all of these music tracks have been
+removed.
+\------------------------/
+
+======= TOOLS USED =======
+
+IntelliJ Ultimate
+Visual Studio Code
+GitKraken
+GitHub
+Texture packer
+Tiled
+Ezgif
+Google Translate
+
+Kotlin
+Java
+
+======= THANKS =======
+[ CI-CD AID ]
+Tallz
+https://github.com/atallahhezbor
+
+
+
+
+Thanks for your interest!
+- Jordan & Dylan.
+
+Splash X6 ©2021 https://shinkson47.in/SplashX6
+
+
+Press ESC to return.

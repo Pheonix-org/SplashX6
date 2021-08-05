@@ -5,38 +5,38 @@ import java.util.Arrays;
 import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
 
 /**
- * <h1></h1>
- * <br>
- * <p>
+ * <h1>Pre GDX tile data.</h1>
+ * Stores a tile and it's data prior to converting data into a
+ * gdx compatable TiledMapTile for use in game.
  *
- * </p>
- *
- * @author Dylan Brand 23/03/2021
- * @version 1
+ * This will later act as a saveable container for data regarding a tile,
+ * since gdx tiledmaps are not serializable.
+ * @author Jordan Gray & Dylan Brand 23/03/2021
+ * @version PRE-ALPHA 0.0.1
  */
 public class Tile {
-    //#region constants
+
+    /**
+     * Resource names for particular tile types
+     */
+    public static final String
+            OCEANS = "o_o_o_o",
+            WATER  = "s_s_s_s";
+
+    /**
+     * Full resource name of this tile.
+     */
     public String tileName;
-    public String tileSetName;
-    public int cachedID;
+
+    /**
+     * Strings that represent the quadrants of the tile, N/E/S/W
+     */
+    public String north, east, south, west;
+
+    /**
+     * idk anymore man
+     */
     public boolean isBase = true;
-
-    // 4 strings that reperesent the quadrants of the tile, N/E/S/W
-    public String north;
-    public String east;
-    public String south;
-    public String west;
-
-    //#endregion constants
-
-    //#region fields
-
-    //#endregion fields
-
-    //#region constructors
-//    public Tile(){
-//        this(genRandomTileString());
-//    }
 
     public Tile(String TileName){
         if (TileName.contains(".")) {
@@ -63,9 +63,9 @@ public class Tile {
         init(_north, _east, _south, _west);
     }
 
-    private void init(String _name){
+    private void init(String _name) {
         init(_name, _name, _name, _name);
-        tileName = _name;// TODO This is dumb, it's set twice
+        tileName = _name;
     }
 
     private void init(String _north, String _east, String _south, String _west){
@@ -75,52 +75,13 @@ public class Tile {
         west  = _west;
 
         tileName = ((!isBase) ? tileName : "") + _north + "_" + _east + "_" + _south + "_" + _west;
-//        cachedID = (int) World.tilesetMap.get(tileName);
     }
-
-    // for tiles with a single name segment
-
-
-    //#endregion constructors
-
-    //#region operations
-    //#endregion operations
-//    public void updateCache(){
-//        cachedID = TileSet.FindTileTexture(tileSetName + "." + north + "_" + east  + "_" + south  + "_" + west);
-//    }
-    //#region static
-
-
-//    final static String sheetchars = "padgst";
-//    private static String lastGen;
-//    private static char randomchar(){
-//        return sheetchars.charAt(Utility.random.nextInt(sheetchars.length()));
-//    }
-//
-//    public static int genRandomTile(){
-//        int id = -1;
-//        while (id == -1) {
-//            lastGen = randomchar() + "." + randomchar() + "_" + randomchar() + "_" + randomchar() + "_" + randomchar();
-//            id = TileSet.FindTileTexture(lastGen);
-//        }
-//        return id;
-//    }
-//
-//    public static String genRandomTileString(){
-//        genRandomTile();
-//        return lastGen;
-//    }
-//
-//    public static String genResourceString(String s) {
-//        return s + "." + s + "_" + s + "_" + s + "_" + s;
-//    }
 
     /**
      * <h2>Returns a tile that represent this one after being blended with provided tiles</h2>
      */
-    public Tile interpolate(Tile nw, Tile ne, Tile se, Tile sw) {
+    public Tile interpolate(Tile sw, Tile se, Tile ne, Tile nw) {
         if (!isBase || nw != null && !nw.isBase || ne != null && !ne.isBase || se != null && !se.isBase || sw != null && !sw.isBase) return this;
-        // Good luck reading this garbage lol
 
         if (nw == null) nw = new Tile((sw == null) ? west : sw.tileName);
         if (ne == null) ne = new Tile((se == null) ? east : se.tileName);
@@ -132,22 +93,26 @@ public class Tile {
         String south = sw.east.equals(se.west)   ? sw.east  : this.south;
         String west  = nw.south.equals(sw.north) ? nw.south : this.west;
 
-        //updateCache();
         return new Tile(north, east, south, west);
-
-//        north = nw.east.equals(north)   ? ne.west.equals(north) ?    north : nw.east : ne.west ;
-//        east  = ne.south.equals(east)   ? se.north.equals(east) ?    east  : ne.south: se.north;
-//        south = se.west.equals(south)   ? sw.east.equals(south) ?    south : se.west : sw.east;
-//        west  = sw.north.equals(west)   ? nw.south.equals(west) ?    west  : sw.north: nw.south;
-
     }
 
+    /**
+     * Returns a tile that represents a hill merged with the surrounding terrain.
+     */
     public Tile interpolateHill(Tile nw, Tile ne, Tile se, Tile sw) {
-        String _nw = (nw == null) ? "0" : "1";
-        String _ne  = (ne == null) ? "0" : "1";
-        String _sw = (sw == null) ? "0" : "1";
-        String _se  = (se == null) ? "0" : "1";
-        return new Tile("hills." + _ne + "_" + _se + "_" + _sw + "_" + _nw);
+        String _nw  = (nw == null /*&& !nw.tileName.startsWith("hills.")*/) ? "0" : "1";
+        String _ne  = (ne == null /*&& !ne.tileName.startsWith("hills.")*/) ? "0" : "1";
+        String _sw  = (sw == null /*&& !sw.tileName.startsWith("hills.")*/) ? "0" : "1";
+        String _se  = (se == null /*&& !se.tileName.startsWith("hills.")*/) ? "0" : "1";
+        return new Tile(tileName.substring(0, tileName.indexOf(".") + 1) + _ne + "_" + _se + "_" + _sw + "_" + _nw);
     }
-    //#endregion static
+
+
+    public boolean isLand() {
+        return !isWater();
+    }
+
+    public boolean isWater() {
+        return tileName.equals(OCEANS) || tileName.equals(WATER);
+    }
 }

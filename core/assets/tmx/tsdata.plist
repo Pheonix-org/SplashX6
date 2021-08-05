@@ -2654,5 +2654,22 @@
 	<key>hills.0_1_1_1</key><integer>1405</integer>
 	<key>hills.1_1_1_0</key><integer>1406</integer>
 	<key>hills.1_1_1_1</key><integer>1407</integer>
+	
+	<key>mountains.0_0_0_0</key><integer>1408</integer>
+	<key>mountains.0_0_0_1</key><integer>1409</integer>
+	<key>mountains.1_0_0_0</key><integer>1410</integer>
+	<key>mountains.1_0_0_1</key><integer>1411</integer>
+	<key>mountains.0_0_1_0</key><integer>1412</integer>
+	<key>mountains.0_0_1_1</key><integer>1413</integer>
+	<key>mountains.1_0_1_0</key><integer>1414</integer>
+	<key>mountains.1_0_1_1</key><integer>1415</integer>
+	<key>mountains.0_1_0_0</key><integer>1416</integer>
+	<key>mountains.0_1_0_1</key><integer>1417</integer>
+	<key>mountains.1_1_0_0</key><integer>1418</integer>
+	<key>mountains.1_1_0_1</key><integer>1419</integer>
+	<key>mountains.0_1_1_0</key><integer>1420</integer>
+	<key>mountains.0_1_1_1</key><integer>1421</integer>
+	<key>mountains.1_1_1_0</key><integer>1422</integer>
+	<key>mountains.1_1_1_1</key><integer>1423</integer>
 </dict>
 </plist>

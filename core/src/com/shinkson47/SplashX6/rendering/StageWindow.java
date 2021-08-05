@@ -5,19 +5,19 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
-import com.shinkson47.SplashX6.game.AudioController;
+import com.shinkson47.SplashX6.audio.AudioController;
 import com.shinkson47.SplashX6.utility.Assets;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
-import static com.shinkson47.SplashX6.game.AudioController.GUI_SOUND;
+import static com.shinkson47.SplashX6.audio.AudioController.GUI_SOUND;
 import static com.shinkson47.SplashX6.utility.Utility.local;
 
 /**
@@ -45,6 +45,8 @@ public abstract class StageWindow extends Window {
      * Is the same color as the Client 'hr', 'hg', 'b', 'a'
      */
     public static final Drawable lightBG;
+
+
 
     static {
         seperatorStyle = new Label.LabelStyle(new Label("", Assets.SKIN).getStyle());
@@ -86,6 +88,10 @@ public abstract class StageWindow extends Window {
      */
     private int lastSpan = 1000;
 
+    public String title;
+
+    private boolean dontClose = false;
+
 
     //=====================================================================
     //#endregion fields
@@ -115,8 +121,10 @@ public abstract class StageWindow extends Window {
 
     public StageWindow(String title, String style, Boolean visible, Boolean resizable) {
         super("", Assets.SKIN);
+        this.title = title;
         if (!style.equals("")) setStyle(Assets.SKIN.get(style, WindowStyle.class));
-//        setDebug(true);
+
+
         center();
 
         placeTitle(style, title);
@@ -184,7 +192,11 @@ public abstract class StageWindow extends Window {
      * @param windowStyle The style of the window, determines the placement and style of heading used.
      * @param title       The title text
      */
-    private static void placeTitle(Window w, String windowStyle, String title) {
+    protected static void placeTitle(Window w, String windowStyle, String title) {
+        placeTitle(w, windowStyle, title, true);
+    }
+
+    protected static void placeTitle(Window w, String windowStyle, String title, Boolean close) {
         // If there's no title, do nothing
         if (title.equals("")) return;
 
@@ -198,15 +210,22 @@ public abstract class StageWindow extends Window {
             // Use plain upper, with 'title' style class (which wraps in '[]' and opaque bg to cover window border.)
             label = new Label(title.toUpperCase(), Assets.SKIN, "title");
         } else {
-            // No style, surround with ****
-            label = new Label("**** " + title.toUpperCase() + " ****", Assets.SKIN);
+            label = new Label(title.toUpperCase(), Assets.SKIN);
 
             // Move down into window
-            w.getTitleTable().padTop(100);
+            w.getTitleTable().padTop(85);
 
             // Add a close button at top border
+            if (close)
             w.getTitleTable()
-                    .add(button("close", o -> { w.clear(); w.getStage().getActors().removeValue(w, true); }))
+                    .add(button("close", o -> {
+                        if (w instanceof StageWindow && ((StageWindow)w).dontClose)
+                            ((StageWindow)w).toggleShown();
+                            else {
+                                w.clear();
+                                w.getStage().getActors().removeValue(w, true);
+                            }
+                    }))
                     .padTop(-35)
                     .row();
         }
@@ -215,12 +234,15 @@ public abstract class StageWindow extends Window {
         label.setAlignment(Align.bottom);
         w.getTitleTable()
                 .add(label)
+                .padBottom(20)
                 .row();
 
         // Add a gap between the title and the first row of content in the window.
         w.row().padTop(
                 w.getTitleTable().getPadTop() + w.getTitleLabel().getHeight()
         );
+
+        w.padTop(30f);
     }
 
     /**
@@ -236,12 +258,33 @@ public abstract class StageWindow extends Window {
         return b;
     }
 
-    protected Label label(String key){
-        Label l = new Label(local(key), Assets.SKIN);
-        add(l).row();
-        return l;
+    protected Cell<Label> label(String key){
+        return label(key, this);
     }
 
+    public static Cell<Label> label(String key, Table t){
+        return label(key, t, "default");
+    }
+
+    public static Cell<Label> label(String key, Table t, String style){
+        Label l = new Label(local(key), Assets.SKIN, style);
+
+        return t.add(l).padTop(20f);
+    }
+
+    /**
+     * DEVELOPMENT
+     *
+     * add javaadoc if this method stays
+     * @param key
+     * @param t
+     * @return
+     */
+    public static CheckBox checkBox(String key, Table t) {
+        CheckBox c = new CheckBox(local(key), Assets.SKIN);
+        t.add(c).padTop(20f); // DEFAULT SPACING
+        return c;
+    }
     /**
      * <h2>Creates and a button that shows a table in a cell when clicked.</h2>
      *
@@ -325,7 +368,7 @@ public abstract class StageWindow extends Window {
      * @param negative      The text shown in the negative button. If empty, no button is added.
      * @param resultHandler The handler which handles the button press. If null, no handler is added.
      */
-    protected void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
+    public void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
         dialog(this, title, text, positive, negative, resultHandler);
     }
 
@@ -403,7 +446,7 @@ public abstract class StageWindow extends Window {
         }
 
         // Add the tab selector buttons to the top of the window.
-        getTitleTable().add(tabs);
+        getTitleTable().padTop(135).add(tabs);
 
         // Expand and populate the content cell, using the first tab's content.
         expandfill(contentCell);
@@ -447,6 +490,37 @@ public abstract class StageWindow extends Window {
         hsep().padBottom(20).row();
 
         return this;
+    }
+
+    /**
+     * dumb compromise that allows statically seperating a table that isn't directly the stage window.
+     * @param t
+     * @param key
+     */
+    public static void seperate(Table t, String key) {
+        // Create a label that will be the header
+        Label l = new Label(local(key), Assets.SKIN);
+
+        // Make it 20% bigger
+        l.setFontScale(1.2f);
+
+        // Put the text in the middle
+        l.setAlignment(Align.center);
+
+        // Add title
+        applyMenuStyling(t.add(l))
+                .colspan(t.getColumns())
+                .padTop(50)
+                .row();
+
+        // Add seperator
+        t.add(new Label("", seperatorStyle))
+                .colspan(t.getColumns())
+                .height(3)
+                .bottom()
+                .padTop(20)
+                .padBottom(30)
+                .row();
     }
 
     /**
@@ -523,6 +597,22 @@ public abstract class StageWindow extends Window {
         return c;
     }
 
+
+    /**
+     * # Adds a list in a scrollable pane of a fixed height
+     */
+    protected void addList(com.badlogic.gdx.scenes.scene2d.ui.List<?> list, String tooltipKey) {
+        ScrollPane sp = new ScrollPane(list, Assets.SKIN);
+        add(sp).fillX();
+        tooltip(tooltipKey);
+        getCell(sp).height(100f);
+        row();
+    }
+
+    protected Cell span(Actor actor) {
+        return span(getCell(actor));
+    }
+
     /**
      * Modifies the provided cell to span all columns of the window table.
      * <p>
@@ -553,11 +643,21 @@ public abstract class StageWindow extends Window {
     private void updateColSpans(int columns) {
         if (columns <= lastSpan) return;
 
-        lastSpan = columns;
+        lastSpan = columns - 1;
 
         for (Cell c : spannedCells)
             c.colspan(lastSpan);
 
+    }
+
+    public void setStage(Stage s) {
+        super.setStage(s);
+    }
+
+
+    @Override
+    public String toString() {
+        return title;
     }
 
     /**
@@ -580,6 +680,12 @@ public abstract class StageWindow extends Window {
         setVisible(!isVisible());
     }
 
+    /**
+     * # Indicates that this window should not close, but instead just hide.
+     */
+    public void dontClose() {
+        dontClose = true;
+    }
 
     /**
      * <h2>Accepts a consumer to use when clicking a button, instead of an entire click listener class</h2>
@@ -595,6 +701,23 @@ public abstract class StageWindow extends Window {
 
         @Override
         public void clicked(InputEvent event, float x, float y) {
+            c.accept(event);
+        }
+    }
+
+    public static class LambdaChangeListener extends ChangeListener {
+        private Consumer<ChangeEvent> c;
+
+        public LambdaChangeListener(Consumer<ChangeEvent> consumer) {
+            c = consumer;
+        }
+
+        /**
+         * @param event
+         * @param actor The event target, which is the actor that emitted the change event.
+         */
+        @Override
+        public void changed(ChangeEvent event, Actor actor) {
             c.accept(event);
         }
     }

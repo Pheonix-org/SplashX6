@@ -1,33 +1,46 @@
-/**
- * # The main overseer for a game.
- *
- * Manages and handles all interactions with the current game, and interacts with the client
- *
- * @author [Jordan T. Gray](https://www.shinkson47.in) on 16/04/2021
- * @version 1
- * @since v1
- */
-
 package com.shinkson47.SplashX6.game;
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
+import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
+import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.audio.GamePlaylist
+import com.shinkson47.SplashX6.audio.Spotify
+import com.shinkson47.SplashX6.game.cities.City
+import com.shinkson47.SplashX6.game.cities.CityTypes
 import com.shinkson47.SplashX6.game.units.Unit
-import com.shinkson47.SplashX6.game.world.World
+import com.shinkson47.SplashX6.game.units.UnitClass
+import com.shinkson47.SplashX6.game.world.WorldTerrain
+import com.shinkson47.SplashX6.game.world.WorldTerrain.*
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGHT
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
+import com.shinkson47.SplashX6.input.KeyBinder
 import com.shinkson47.SplashX6.rendering.screens.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
+import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
+import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
-import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_GAME_LOADING
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
-import java.lang.Exception
-import kotlin.IllegalArgumentException
+import com.shinkson47.SplashX6.utility.Utility
+import java.lang.Thread.sleep
 
+/**
+ * # The main overseer for a game.
+ *
+ * Manages and handles all interactions with the current game from the client.
+ *
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 16/04/2021
+ * @version 1
+ * @since PRE-ALPHA 0.0.1
+ */
 class GameHypervisor {
     companion object {
 
@@ -78,7 +91,7 @@ class GameHypervisor {
         @JvmStatic
         fun NewGame() {
             if (inGame) EndGame()
-            client?.setScreen(WorldCreation());
+            client?.fadeScreen(WorldCreation())
         }
 
         /**
@@ -89,13 +102,18 @@ class GameHypervisor {
          */
         @JvmStatic
         fun doNewGameCallback() {
-            validateCall(REQ_GAME_LOADING, THROW("Tried to load a game whilst not loading."))
+            //validateCall(REQ_GAME_LOADING, THROW("Tried to load a game whilst not loading."))
+
+            Gdx.graphics.isContinuousRendering = false;
 
             doNewGamePRE()
             inGame = true
 
             doNewGamePOST()
+
             doNewGameFINAL()
+
+            Gdx.graphics.isContinuousRendering = true;
         }
 
         /**
@@ -132,9 +150,12 @@ class GameHypervisor {
             // TODO This couldn't be done before a world is created, but is only temporary.
             // STOPSHIP: 17/04/2021 this is dumb and shouldn't stay
             Debug.create()
+            GameWindowManager.create()
+            KeyBinder.createGameBinds()
 
-            AudioController.playGame()          // Begin playing in-game soundtrack.
-            client?.screen = gameRenderer       // Show the game screen to the user.
+            if (!DEBUG_MODE) Spotify.pause()      // If possible, stop spotify.
+            AudioController.playPlaylist(GamePlaylist());
+            client?.fadeScreen(gameRenderer!!)    // Show the game screen to the user.
         }
 
 
@@ -147,23 +168,27 @@ class GameHypervisor {
         @JvmStatic
         fun quickload() {
             validateCall(REQ_IN_GAME, THROW("Can only quickload in game. This should not be possible."))
+            TODO()
         }
+
         @JvmStatic
         fun load() {
             validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
-
+            TODO()
         }
+
         @JvmStatic
         fun quicksave() {
             if (
                 invalidCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("quicksave a game", "no game is loaded")))
-            ) return;
-
-
+            ) return
+            TODO()
         }
+
         @JvmStatic
         fun save() {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("save a game", "no game is loaded")))
+            TODO()
         }
 
         /**
@@ -171,7 +196,16 @@ class GameHypervisor {
          * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
          */
         @JvmStatic
-        fun spawn(x: Int, y: Int, spriteName: String) {
+        fun spawn(pos: Vector3, spriteName: UnitClass) {
+            spawn(pos.x.toInt(), pos.y.toInt(), spriteName)
+        }
+
+        /**
+         * # Spawns a [unit] with the sprite of [spriteName] on iso co-oord [x],[y]
+         * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
+         */
+        @JvmStatic
+        fun spawn(x: Int, y: Int, spriteName: UnitClass) {
             // TODO check this
             // TODO are null checks still needed?
             // STOPSHIP: 20/05/2021 this is fucking garbage my g.
@@ -219,18 +253,20 @@ class GameHypervisor {
          * # Sets the destination of the selected unit to the cursor
          * in tile space.
          */
+        @JvmStatic
         fun unit_setDestination() {
-            // TODO Doesn't seem to set the correct location
             with(GameData.selectedUnit!!) {
-                val dest: Vector3 = getSelectedTile()
-                destX = dest.x.toInt()
-                destY = dest.y.toInt()
+                val dest: Vector3 = cm_selectedTile()
+                setDestination(dest.x.toInt(), dest.y.toInt())
+
+                unit_selectAction( "Travel to destination")
             }
         }
 
         /**
          * # Focusses the camera on the selected units destination.
          */
+        @JvmStatic
         fun unit_viewDestination() {
             camera_moveToTile(GameData.selectedUnit!!.destX, GameData.selectedUnit!!.destY)
         }
@@ -239,19 +275,39 @@ class GameHypervisor {
         /**
          * # focuesses the camera on the selected unit
          */
+        @JvmStatic
         fun unit_view(){
-            camera_moveTo(GameData.selectedUnit!!.x, GameData.selectedUnit!!.y)
+            camera_focusOn(GameData.selectedUnit!!.x + TILE_HALF_WIDTH, GameData.selectedUnit!!.y + TILE_HALF_HEIGHT)
         }
 
         /**
          * # Destroys the selected unit
          * Giving the user some resources in return.
          */
+        @JvmStatic
         fun unit_disband() {
             GameData.units.remove(GameData.selectedUnit)
+            GameData.selectedUnit = null
         }
 
+        @JvmStatic
         fun unit_selected() : Unit? = GameData.selectedUnit
+
+        @JvmStatic
+        fun unit_selectAction(displayName : String) {
+            with (GameData.selectedUnit!!) {
+                onTurnAction = actions.find { it.displayName == displayName }
+            }
+            unit_updateUnitWindow()
+        }
+
+        @JvmStatic
+        fun unit_updateUnitWindow() {
+            (GameWindowManager.WINDOW_DOCK.items.find { it.title == "Units" } as UnitsWindow).run()
+        }
+
+        @JvmStatic
+        fun unit_canEnter(x : Int, y: Int) : Boolean = GameData.world!!.getTile(x,y)!!.isLand
 
 
         //========================================================================
@@ -300,7 +356,7 @@ class GameHypervisor {
         private fun doEndTurn_Units(){
             // META : If you get a concurrent modification exception here, then
             // an onTurnAction has modified the GameData units list.
-            GameData.units.forEach {it.onTurn()}
+            GameData.units.forEach {it.doTurn()}
         }
 
         private fun doEndTurn_Async(){
@@ -319,25 +375,51 @@ class GameHypervisor {
          * # Focusses the camera on the provided unit.
          */
         @JvmStatic
-        fun camera_moveTo(unit: Unit) = camera_moveTo(unit.x, unit.y)
+        fun camera_focusOn(unit: Unit) = camera_focusOn(unit.x, unit.y)
 
         /**
          * # Focusses the camera on a cartesian x, y
          */
         @JvmStatic
-        fun camera_moveTo(pos: Vector3) = camera_moveTo(pos.x, pos.y)
+        fun camera_focusOn(pos: Vector3) = camera_focusOn(pos.x, pos.y)
 
         /**
          * # Focusses the camera on a cartesian x, y
          */
         @JvmStatic
-        fun camera_moveTo(x: Float, y: Float) = gameRenderer!!.cam.goTo(x, y)
+        fun camera_focusOn(x: Float, y: Float) {
+            if (cm_active)
+                gameRenderer!!.managementScreen.desiredCameraPosition.desired.set(x,y,0f)
+            else
+                gameRenderer!!.cam.goTo(x, y)
+        }
+
+        /**
+         * # The cartesian location in the world that the camera is looking at.
+         */
+        @JvmStatic
+        fun camera_focusingOn(): Vector3 {
+            with (gameRenderer!!.cam) {
+                val v: Vector3 = desiredPosition.get().cpy()
+                v.y = lookingAtY().toFloat()
+                return v;
+            }
+        }
+
+        /**
+         * # Returns the isometric version of [camera_focusingOn]
+         */
+        @JvmStatic
+        fun camera_focusingOnTile(): Vector3 {
+            val v = camera_focusingOn()
+            return WorldTerrain.cartesianToIso(v.x.toInt(), v.y.toInt())
+        }
 
 
         @JvmStatic
         fun camera_moveToTile(x: Int, y: Int) {
-            with (World.isoToCartesian(x,y)) {
-                camera_moveTo(this.x, this.y)
+            with (WorldTerrain.isoToCartesian(x,y)) {
+                camera_focusOn(this.x, this.y)
             }
         }
 
@@ -354,6 +436,106 @@ class GameHypervisor {
 
         //========================================================================
         //#endregion camera control
+        //#region input
+        //========================================================================
+
+        @JvmStatic
+        fun mouse_focusOnTile() : Vector3 {
+            with (gameRenderer!!.cam) {
+/*              val mousex = (Gdx.input.x + desiredPosition.present.x) - Gdx.graphics.height
+                val mousey = yFromAngle(desiredTilt.present, (Gdx.graphics.height - Gdx.input.y.toDouble()) + desiredPosition.present.y )
+                Debug.dump("X: $mousex")
+                Debug.dump("Y: $mousey")*/
+                //cartesianToIso(unprojected.x.toInt(), unprojected.y.toInt())
+                val unprojected = unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
+                Debug.dump("Result: $unprojected")
+                return unprojected
+            }
+        }
+
+        //========================================================================
+        //#endregion input
+        //#region Control Mode
+        //========================================================================
+
+        @JvmStatic
+        var cm_active = false
+            private set
+
+        /**
+         * # Enters unit control mode
+         *
+         * Returns true if caused a transition, else false.
+         */
+        @JvmStatic
+        fun cm_enter() : Boolean {
+            if (cm_active) return false
+            //cm_showStateCaps(true)
+            cm_active = true
+            client!!.fadeScreen(gameRenderer!!.managementScreen)
+
+            return true
+        }
+
+        /**
+         * # Exits unit control mode
+         */
+        @JvmStatic
+        fun cm_exit() {
+            //cm_showStateCaps(false)
+            cm_active = false
+            client!!.fadeScreen(gameRenderer!!)
+        }
+
+        /**
+         * Toggles between [cm_exit] and [cm_enter]
+         */
+        @JvmStatic
+        fun cm_toggle() {
+            if (cm_active) cm_exit() else cm_enter()
+        }
+
+        //private fun cm_showStateCaps(value : Boolean) = Toolkit.getDefaultToolkit().setLockingKeyState(KeyEvent.VK_CAPS_LOCK, value)
+
+        /**
+         * # Returns the tile under the mouse cursor in control mode.
+         */
+        @JvmStatic
+        fun cm_selectedTile() : Vector3 {
+            //validateCall(REQ_UNIT_CONTROL_MODE) { cm_enter(); }
+
+            // Get point on world that mouse is pointing to.
+            val unprojected = gameRenderer!!.managementScreen.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
+
+            // Find what tile that is and return it.
+            return cartesianToIso(unprojected.x.toInt(), unprojected.y.toInt())
+        }
+
+        /**
+         * Flag representing wether or not the ucm is currently selecting a unit destination.
+         */
+        @JvmStatic
+        var cm_isSelectingDestination = false
+            private set
+
+        /**
+         * # Selects a destination for a unit in UCM.
+         *
+         *
+         */
+        @JvmStatic
+        fun cm_destinationSelect(){
+            if (cm_isSelectingDestination)
+                unit_setDestination()
+
+            cm_isSelectingDestination = !cm_isSelectingDestination
+        }
+
+        @JvmStatic
+        fun cm_cancelDestinationSelect(){ cm_isSelectingDestination = false; }
+
+        //========================================================================
+        //#endregion ControlMode
         //#region breakdown
         //========================================================================
 
@@ -364,10 +546,19 @@ class GameHypervisor {
          */
         @JvmStatic
         fun dispose() {
-            inGame = false;
+            inGame = false
             gameRenderer?.dispose()
             gameRenderer = null
             GameData.clear()
+            GameWindowManager.dispose()
+
+            // FIXME: 28/07/2021 Possible for this to not take effect if the user enters any other screen within a second of getting to the main menu.
+            Utility.DispatchDaemonThread("KeyBindingDisposer"){
+                while (client!!.screen !is MainMenu) {
+                    sleep(1000)
+                }
+                KeyBinder.destroyGameBinds()
+            }
         }
 
         /**
@@ -376,8 +567,29 @@ class GameHypervisor {
          */
         @JvmStatic
         fun EndGame() {
+            cm_exit()
             dispose()
-            client?.setScreen(MainMenu());
+            if (!DEBUG_MODE) Spotify.pause()
+            client!!.fadeScreen(MainMenu())
+        }
+
+        /**
+         * # Creates a size 0 settlement at [x],[y] in style matching the player's [civType]
+         * Does so using data from provided unit. Assumes unit is a settler.
+         * Unit is disbanded after.
+         */
+        fun settle(it : Unit) {
+            settle(it.isoVec.cpy(), GameData.civType)
+
+            unit_select(it)
+            unit_disband()
+        }
+
+        /**
+         * # Creates a size 0 settlement at [x],[y] with the provided style.
+         */
+        fun settle(pos: Vector3, type : CityTypes) {
+            GameData.cities.add(City(pos, type))
         }
 
 
@@ -386,10 +598,6 @@ class GameHypervisor {
     //#region misc
     //========================================================================
 
-        @JvmStatic
-        fun getSelectedTile(): Vector3 {
-            val v: Vector3 = gameRenderer!!.cam.desiredPosition.get()
-            return World.WorldspaceToMapspace(v.x.toInt(), v.y.toInt())
-        }
+
     }
 }

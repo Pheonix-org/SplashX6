@@ -1,19 +1,20 @@
 package com.shinkson47.SplashX6.rendering.screens
 
-import com.badlogic.gdx.ScreenAdapter
-import com.shinkson47.SplashX6.utility.Assets
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.utils.viewport.ScreenViewport
+import com.shinkson47.SplashX6.Client.Companion.client
+import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
-import com.shinkson47.SplashX6.game.AudioController
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
+import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
+import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.Utility
-import com.shinkson47.SplashX6.utility.Utility.local
+import kotlin.math.roundToInt
 
 /**
  * <h1></h1>
@@ -27,107 +28,84 @@ import com.shinkson47.SplashX6.utility.Utility.local
  * @version 1
  * @since v1
  */
-class MainMenu : ScreenAdapter() {
+class MainMenu : ScalingScreenAdapter() {
 
-    private val stage = Stage(ScreenViewport())
-
-    //#region listeners
+    //private val stage = Stage(ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
     private var menuWindow: Window? = null
-    private var BaseTable = Table().center()
+    private val bg = Animation(0.1333333333f, Assets.menuBG.regions, Animation.PlayMode.LOOP)
+    @Volatile private var animationStateTime = 0f
+    private val optionsWindow = OptionsWindow(this)
+
 
     /**
-     * The window shown at the main menu that contains option for the user
+     * Sub class that encompasses the window shown at the main menu that contains option for the user
      */
     private inner class MainMenuWindow : StageWindow() {
         /**
          * <h2>Constructs the content to be displayed in this window</h2>
          */
         override fun constructContent() {
-
             // Title label
-            add(
-                Label(
-"""
-   _____ ____  __    ___   _____ __  __        _____
-  / ___// __ \/ /   /   | / ___// / / /  _  __/ ___/
-  \__ \/ /_/ / /   / /| | \__ \/ /_/ /  | |/_/ __ \ 
- ___/ / ____/ /___/ ___ |___/ / __  /  _>  </ /_/ / 
-/____/_/   /_____/_/  |_/____/_/ /_/  /_/|_|\____/  
-""", Assets.SKIN
-                )
-            )
-                .padBottom(100f)
+            add(Label("SPLASH X6", SKIN,"RetroNewVersion-Large", Color.BLACK))
+
                 .row()
+
+            add(
+                Label("PRE-ALPHA 0.0.2", SKIN)
+            ).padBottom(50f).row()
+
             addButton("newGame") { NewGame() }
             addButton("loadGame") { Utility.notImplementedDialog(stage) }
-            addButton("preferences") { stage.addActor(OptionsScreen()) }
-            addButton("credits") { Utility.notImplementedDialog(stage) }
+            addButton("preferences") { optionsWindow.isVisible = true; optionsWindow.toFront() }
+            addButton("credits") { client!!.fadeScreen(CreditsScreen()) }
             addButton("exitGame") { Gdx.app.exit() }
+
+            isMovable = false
+            isResizable = false
         }
     }
 
     //#region operations
     override fun render(delta: Float) {
+        animationStateTime += delta
+
+        with (stage.batch) {
+            begin()
+                draw(bg.getKeyFrame(animationStateTime), 0f, 0f, width, height)
+            end()
+        }
+
         stage.act()
         stage.draw()
     }
 
-    override fun resize(width: Int, height: Int) {
-        super.resize(width, height)
-        stage.viewport.update(width, height)
+    override fun doResize(width: Int, height: Int) {
         menuWindow!!.setPosition(
-            makeEven(width / 2 - menuWindow!!.width / 2).toFloat(),
-            makeEven(height / 2 - menuWindow!!.height / 2).toFloat()
+            makeEven((super.width  * 0.5f) - (menuWindow!!.width  * 0.5f)),
+            makeEven((super.height * 0.5f) - (menuWindow!!.height * 0.5f))
         )
-        //stage.setViewport(viewport);
     }
 
-    private fun makeEven(f: Float): Int {
-        return 2 * Math.round(f / 2)
+
+
+    private fun makeEven(f: Float): Float {
+        return (f / 2f).roundToInt() * 2f
     }
 
-    override fun show() {
-        super.show()
-    }
 
-    override fun hide() {
-        super.hide()
-    }
-
-    override fun dispose() {
-        super.dispose()
-    } //#endregion operations
-
-    //#endregion
     init {
         menuWindow = MainMenuWindow()
-        BaseTable.setFillParent(true)
+        resize(width.toInt(), height.toInt())
 
-        // Secret button
-        val SecretButton: Button = TextButton("SECRET", Assets.SKIN)
-        SecretButton.addListener(StageWindow.LambdaClickListener { o: InputEvent? ->
-            Gdx.gl.glClearColor(
-                MathUtils.random.nextFloat(),
-                MathUtils.random.nextFloat(),
-                MathUtils.random.nextFloat(),
-                1f
-            )
-        })
-        BaseTable.add(SecretButton).center()
-        stage.addActor(BaseTable)
-        BaseTable = Table().bottom()
-        BaseTable.setFillParent(true)
-        BaseTable.add(Label("BY DYLAN BRAND & JORDAN GRAY. COPR 2021 HTTPS://shinkson47.in/SplashX6/index.html", Assets.SKIN))
-            .fill()
-            .padBottom(10f)
-
-        // Set up window to with as glfw environment
-        resize(Gdx.graphics.width, Gdx.graphics.height)
-        stage.addActor(BaseTable)
         stage.addActor(menuWindow)
+        stage.addActor(optionsWindow)
 
         // Set the stage to handle key and mouse input
         MouseHandler.configureGameInput(stage)
-        AudioController.playMainMenu();
+        AudioController.playMainMenu()
+
+        optionsWindow.dontClose()
+        optionsWindow.isVisible = false
+
     }
 }
