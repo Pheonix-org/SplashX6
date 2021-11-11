@@ -1,0 +1,347 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	RetroNewVersion-Large: {
+		file: RetroNewVersion.fnt
+	}
+	Vecna: {
+		file: Vecna-oppx.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	Black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	TextBorder: {
+		r: 0.47666687
+		g: 0.37695104
+		b: 0.21608898
+		a: 1
+	}
+	White: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+	Widget: {
+		r: 1
+		g: 0.9634576
+		b: 0.90666664
+		a: 1
+	}
+	WindowBG: {
+		r: 0.8666667
+		g: 0.64705884
+		b: 0.41568628
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	Black: {
+		name: white-pixel
+		color: Black
+	}
+	White: {
+		name: white-pixel
+		color: White
+	}
+}
+com.badlogic.gdx.scenes.scene2d.utils.TiledDrawable: {
+	tiledtex: {
+		region: paper background
+		color: White
+		minWidth: 512
+		minHeight: 512
+	}
+}
+com.ray3k.tenpatch.TenPatchDrawable: {
+	buttonOffDisable10: {
+		region: buttonOffDisable
+		horizontalStretchAreas: [ 65, 249 ]
+		verticalStretchAreas: [ 31, 32 ]
+		tiling: true
+		minWidth: 291
+		minHeight: 62
+		rightWidth: 39
+		leftWidth: 38
+		bottomHeight: 15
+		topHeight: 13
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	buttonOffHover10: {
+		region: buttonOffHover
+		horizontalStretchAreas: [ 65, 249 ]
+		verticalStretchAreas: [ 31, 32 ]
+		tiling: true
+		minWidth: 291
+		minHeight: 62
+		rightWidth: 39
+		leftWidth: 38
+		bottomHeight: 15
+		topHeight: 13
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	buttonOn10: {
+		region: buttonOn
+		horizontalStretchAreas: [ 65, 249 ]
+		verticalStretchAreas: [ 31, 32 ]
+		tiling: true
+		minWidth: 291
+		minHeight: 62
+		rightWidth: 39
+		leftWidth: 38
+		bottomHeight: 15
+		topHeight: 13
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	buttonOff10: {
+		region: buttonOff
+		horizontalStretchAreas: [ 65, 249 ]
+		verticalStretchAreas: [ 31, 32 ]
+		tiling: true
+		minWidth: 291
+		minHeight: 62
+		rightWidth: 39
+		leftWidth: 38
+		bottomHeight: 15
+		topHeight: 13
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	slider-h10: {
+		region: slider-h
+		horizontalStretchAreas: [ 108, 108 ]
+		verticalStretchAreas: [ 14, 14 ]
+		tiling: true
+		minWidth: 216
+		minHeight: 28
+		rightWidth: 0
+		leftWidth: 0
+		bottomHeight: 0
+		topHeight: 0
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	doubleborder10: {
+		region: doubleborder
+		horizontalStretchAreas: [ 14, 518 ]
+		verticalStretchAreas: [ 13, 519 ]
+		tiling: true
+		minWidth: 532
+		minHeight: 532
+		rightWidth: 16
+		leftWidth: 16
+		bottomHeight: 16
+		topHeight: 16
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	widet10: {
+		region: widet
+		horizontalStretchAreas: [ 17, 74 ]
+		verticalStretchAreas: [ 15, 76 ]
+		tiling: true
+		minWidth: 92
+		minHeight: 92
+		rightWidth: 15
+		leftWidth: 15
+		bottomHeight: 15
+		topHeight: 15
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	selecteditem10: {
+		region: selecteditem
+		horizontalStretchAreas: [ 34, 34 ]
+		verticalStretchAreas: [ 0, 35 ]
+		tiling: false
+		minWidth: 70
+		minHeight: 36
+		rightWidth: 35
+		leftWidth: 33
+		bottomHeight: 0
+		topHeight: 0
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+	slider-v-10: {
+		region: slider-v
+		horizontalStretchAreas: [ 12, 13 ]
+		verticalStretchAreas: [ 56, 200 ]
+		tiling: true
+		minWidth: 28
+		minHeight: 216
+		rightWidth: 14
+		leftWidth: 11
+		bottomHeight: 10
+		topHeight: 14
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: buttonOff10
+		down: buttonOn10
+		over: buttonOffHover10
+		disabled: buttonOffDisable10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: checkOn
+		checkboxOff: checkOff
+		checkboxOnOver: checkOnHover
+		checkboxOver: checkOffHover
+		checkboxOnDisabled: checkOnDisable
+		checkboxOffDisabled: checkOffDisable
+		font: Vecna
+		fontColor: Black
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: Vecna
+		fontColor: Black
+	}
+	bar: {
+		parent: default
+		fontColor: White
+		background: Black
+	}
+	title: {
+		parent: default
+		fontColor: Widget
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: Vecna
+		fontColorSelected: White
+		fontColorUnselected: Black
+		selection: selecteditem10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		background: doubleborder10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: Vecna
+		fontColor: Black
+		background: selecteditem10
+		scrollStyle: default
+		listStyle: default
+	}
+	window-dock: {
+		parent: default
+		font: Vecna
+		fontColor: Widget
+		scrollStyle: default
+		listStyle: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+	default-horizontal: {
+		knobOver: slider-h-knob-hover
+		knobDown: slider-h-knob-down
+		background: slider-h10
+		knob: slider-h-knob
+		disabledKnob: slider-h-knob-disable
+	}
+	default-vertical: {
+		parent: default-horizontal
+		background: slider-v-10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		parent: default
+		font: Vecna
+		fontColor: Widget
+		up: buttonOff10
+		down: buttonOn10
+		over: buttonOffHover10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: Vecna
+		fontColor: White
+		background: widet10
+		cursor: White
+		selection: Black
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+		background: White
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: doubleborder10
+		titleFont: Vecna
+		titleFontColor: Black
+	}
+	dialog-modal: {
+		parent: default
+		titleFont: Vecna
+		stageBackground: Black
+	}
+}
+}

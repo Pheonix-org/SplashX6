@@ -1,0 +1,173 @@
+splash_bg.png
+size: 14400, 600
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+splash_bg
+  rotate: false
+  xy: 0, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 0
+splash_bg
+  rotate: false
+  xy: 600, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 1
+splash_bg
+  rotate: false
+  xy: 1200, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 2
+splash_bg
+  rotate: false
+  xy: 1800, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 3
+splash_bg
+  rotate: false
+  xy: 2400, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 4
+splash_bg
+  rotate: false
+  xy: 3000, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 5
+splash_bg
+  rotate: false
+  xy: 3600, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 6
+splash_bg
+  rotate: false
+  xy: 4200, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 7
+splash_bg
+  rotate: false
+  xy: 4800, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 8
+splash_bg
+  rotate: false
+  xy: 5400, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 9
+splash_bg
+  rotate: false
+  xy: 6000, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 10
+splash_bg
+  rotate: false
+  xy: 6600, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 11
+splash_bg
+  rotate: false
+  xy: 7200, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 12
+splash_bg
+  rotate: false
+  xy: 7800, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 13
+splash_bg
+  rotate: false
+  xy: 8400, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 14
+splash_bg
+  rotate: false
+  xy: 9000, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 15
+splash_bg
+  rotate: false
+  xy: 9600, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 16
+splash_bg
+  rotate: false
+  xy: 10200, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 17
+splash_bg
+  rotate: false
+  xy: 10800, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 18
+splash_bg
+  rotate: false
+  xy: 11400, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 19
+splash_bg
+  rotate: false
+  xy: 12000, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 20
+splash_bg
+  rotate: false
+  xy: 12600, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 21
+splash_bg
+  rotate: false
+  xy: 13200, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 22
+splash_bg
+  rotate: false
+  xy: 13800, 0
+  size: 600, 600
+  orig: 600, 600
+  offset: 0, 0
+  index: 23

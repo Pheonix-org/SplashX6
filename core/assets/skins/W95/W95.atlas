@@ -1,0 +1,202 @@
+
+W95.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+white-pixel
+  rotate: false
+  xy: 1, 440
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+Window_Base
+  rotate: false
+  xy: 1054, 1052
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+Window_Header
+  rotate: false
+  xy: 1, 511
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Window_Header_Inactive
+  rotate: false
+  xy: 509, 833
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Window_Header_Resizable
+  rotate: false
+  xy: 661, 985
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Window_Header_Resizable_Inactive
+  rotate: false
+  xy: 1, 461
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+Windows_Button_Inactive
+  rotate: false
+  xy: 51, 522
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+Windows_Button_Pressed
+  rotate: false
+  xy: 78, 544
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+Windows_Button_Pressed_Outlined
+  rotate: false
+  xy: 509, 798
+  size: 15, 15
+  orig: 15, 15
+  offset: 0, 0
+  index: -1
+Windows_Combo_Closed
+  rotate: false
+  xy: 1027, 1047
+  size: 25, 20
+  orig: 25, 20
+  offset: 0, 0
+  index: -1
+Windows_Combo_Open
+  rotate: false
+  xy: 51, 539
+  size: 25, 20
+  orig: 25, 20
+  offset: 0, 0
+  index: -1
+Windows_Divider_Line
+  rotate: false
+  xy: 729, 1031
+  size: 1, 2
+  orig: 1, 2
+  offset: 0, 0
+  index: -1
+Windows_Icons
+  rotate: false
+  xy: 509, 883
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+Windows_Inner_Frame_Inverted
+  rotate: false
+  xy: 1, 443
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Windows_IsOpen_Icon
+  rotate: false
+  xy: 679, 976
+  size: 7, 7
+  orig: 7, 7
+  offset: 0, 0
+  index: -1
+Windows_Open_Icon
+  rotate: false
+  xy: 711, 1008
+  size: 7, 7
+  orig: 7, 7
+  offset: 0, 0
+  index: -1
+Windows_Progress_Fill
+  rotate: false
+  xy: 509, 815
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Windows_Ratio
+  rotate: false
+  xy: 527, 818
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+Windows_Ratio_Inactive
+  rotate: false
+  xy: 559, 850
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+Windows_Ratio_Selected
+  rotate: false
+  xy: 577, 868
+  size: 13, 13
+  orig: 13, 13
+  offset: 0, 0
+  index: -1
+Windows_SideBar_Underside
+  rotate: false
+  xy: 559, 865
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Windows_Slider_Background
+  rotate: false
+  xy: 1027, 1041
+  size: 12, 4
+  orig: 12, 4
+  offset: 0, 0
+  index: -1
+Windows_Slider_Handle
+  rotate: false
+  xy: 661, 944
+  size: 11, 21
+  orig: 11, 21
+  offset: 0, 0
+  index: -1
+Windows_Toggle_Active
+  rotate: false
+  xy: 661, 967
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+Windows_Toggle_Selected
+  rotate: false
+  xy: 711, 1017
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+arial-15_00
+  rotate: false
+  xy: 1, 1035
+  size: 1024, 32
+  orig: 1024, 32
+  offset: 0, 0
+  index: -1
+RetroNewVersion
+  rotate: false
+  xy: 1, 561
+  size: 506, 379
+  orig: 506, 379
+  offset: 0, 0
+  index: -1
+Vecna-oppx
+  rotate: false
+  xy: 1, 942
+  size: 506, 91
+  orig: 506, 91
+  offset: 0, 0
+  index: -1

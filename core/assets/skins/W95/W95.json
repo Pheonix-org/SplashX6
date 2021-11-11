@@ -1,0 +1,486 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	Arial-15: {
+		file: Arial-15.fnt
+	}
+	RetroNewVersion-Large: {
+		file: RetroNewVersion.fnt
+	}
+	Vecna: {
+		file: Vecna-oppx.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	Black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	Hover_Grey: {
+		r: 0.70666647
+		g: 0.70666647
+		b: 0.70666647
+		a: 1
+	}
+	Tooltip: {
+		r: 0.9828321
+		g: 1
+		b: 0
+		a: 1
+	}
+	White: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	Select_Hover: {
+		name: white-pixel
+		color: Hover_Grey
+		minWidth: 1
+		minHeight: 1
+	}
+}
+com.ray3k.tenpatch.TenPatchDrawable: {
+	Window_10: {
+		region: Window_Header
+		horizontalStretchAreas: [ 3, 44 ]
+		verticalStretchAreas: [ 3, 21 ]
+		tiling: false
+		minWidth: 48
+		minHeight: 48
+		rightWidth: 3
+		leftWidth: 3
+		bottomHeight: 3
+		topHeight: 26
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Window_inactive_10: {
+		region: Window_Header_Inactive
+		horizontalStretchAreas: [ 3, 44 ]
+		verticalStretchAreas: [ 3, 21 ]
+		tiling: false
+		minWidth: 48
+		minHeight: 48
+		rightWidth: 3
+		leftWidth: 3
+		bottomHeight: 3
+		topHeight: 26
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Button_Inactive_10: {
+		region: Windows_Button_Inactive
+		horizontalStretchAreas: [ 4, 9 ]
+		verticalStretchAreas: [ 5, 10 ]
+		tiling: false
+		minWidth: 15
+		minHeight: 15
+		rightWidth: 5
+		leftWidth: 5
+		bottomHeight: 5
+		topHeight: 5
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Button_Pressed_10: {
+		region: Windows_Button_Pressed
+		horizontalStretchAreas: [ 4, 9 ]
+		verticalStretchAreas: [ 5, 10 ]
+		tiling: false
+		minWidth: 15
+		minHeight: 15
+		rightWidth: 5
+		leftWidth: 5
+		bottomHeight: 5
+		topHeight: 5
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Button_hover_10: {
+		region: Windows_Button_Pressed_Outlined
+		horizontalStretchAreas: [ 4, 9 ]
+		verticalStretchAreas: [ 5, 10 ]
+		tiling: true
+		minWidth: 15
+		minHeight: 15
+		rightWidth: 5
+		leftWidth: 5
+		bottomHeight: 5
+		topHeight: 5
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Window_Base_10: {
+		region: Window_Base
+		horizontalStretchAreas: [ 2, 12 ]
+		verticalStretchAreas: [ 2, 12 ]
+		tiling: true
+		minWidth: 15
+		minHeight: 15
+		rightWidth: 4
+		leftWidth: 4
+		bottomHeight: 4
+		topHeight: 4
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Slider_Background_10: {
+		region: Windows_Slider_Background
+		horizontalStretchAreas: [ 1, 9 ]
+		verticalStretchAreas: [ 2, 2 ]
+		tiling: false
+		minWidth: 12
+		minHeight: 4
+		rightWidth: 0
+		leftWidth: 0
+		bottomHeight: 2
+		topHeight: 1
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Inner_Frame_Inverted_10: {
+		region: Windows_Inner_Frame_Inverted
+		horizontalStretchAreas: [ 2, 13 ]
+		verticalStretchAreas: [ 2, 13 ]
+		tiling: false
+		minWidth: 16
+		minHeight: 16
+		rightWidth: 5
+		leftWidth: 4
+		bottomHeight: 4
+		topHeight: 4
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Toggle_Active_10: {
+		region: Windows_Toggle_Active
+		horizontalStretchAreas: [ 2, 12 ]
+		verticalStretchAreas: [ 2, 12 ]
+		tiling: false
+		minWidth: 16
+		minHeight: 16
+		rightWidth: 4
+		leftWidth: 4
+		bottomHeight: 4
+		topHeight: 4
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Combo_Closed_10: {
+		region: Windows_Combo_Closed
+		horizontalStretchAreas: [ 2, 7 ]
+		verticalStretchAreas: [ 7, 7, 12, 12 ]
+		tiling: false
+		minWidth: 25
+		minHeight: 20
+		rightWidth: 17
+		leftWidth: 2
+		bottomHeight: 3
+		topHeight: 4
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Combo_Open_10: {
+		region: Windows_Combo_Open
+		horizontalStretchAreas: [ 2, 7 ]
+		verticalStretchAreas: [ 7, 7, 12, 12 ]
+		tiling: false
+		minWidth: 25
+		minHeight: 20
+		rightWidth: 17
+		leftWidth: 2
+		bottomHeight: 3
+		topHeight: 4
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_SideBar_Underside_10: {
+		region: Windows_SideBar_Underside
+		horizontalStretchAreas: [ 0, 15 ]
+		verticalStretchAreas: [ 0, 15 ]
+		tiling: true
+		minWidth: 16
+		minHeight: 16
+		rightWidth: 0
+		leftWidth: 0
+		bottomHeight: 0
+		topHeight: 0
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Windows_Tooltip: {
+		region: Windows_SideBar_Underside
+		color: Tooltip
+		horizontalStretchAreas: [ 0, 15 ]
+		verticalStretchAreas: [ 0, 15 ]
+		tiling: true
+		minWidth: 16
+		minHeight: 16
+		rightWidth: 0
+		leftWidth: 0
+		bottomHeight: 0
+		topHeight: 0
+		color1: Tooltip
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	tiledtex: {
+		region: Windows_SideBar_Underside
+		horizontalStretchAreas: [ 0, 15 ]
+		verticalStretchAreas: [ 0, 15 ]
+		tiling: true
+		minWidth: 16
+		minHeight: 16
+		rightWidth: 0
+		leftWidth: 0
+		bottomHeight: 0
+		topHeight: 0
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	widet10: {
+		region: Windows_Toggle_Active
+		horizontalStretchAreas: [ 2, 12 ]
+		verticalStretchAreas: [ 2, 12 ]
+		tiling: false
+		minWidth: 16
+		minHeight: 16
+		rightWidth: 4
+		leftWidth: 4
+		bottomHeight: 4
+		topHeight: 4
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: Windows_Button_Inactive_10
+		down: Windows_Button_Pressed_10
+		over: Windows_Button_hover_10
+		focused: Windows_Button_hover_10
+		disabled: Windows_Button_Inactive_10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: Windows_Toggle_Active
+		checkboxOff: Windows_Toggle_Selected
+		font: Arial-15
+		fontColor: Black
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: Arial-15
+		fontColor: Black
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: Arial-15
+		fontColorSelected: White
+		fontColorUnselected: Black
+		selection: Windows_Progress_Fill
+		over: Windows_SideBar_Underside_10
+		background: Windows_Toggle_Active_10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: Windows_SideBar_Underside_10
+		knob: Windows_Progress_Fill
+		knobBefore: Windows_Progress_Fill
+	}
+	default-vertical: {
+		background: Windows_SideBar_Underside_10
+		knob: Windows_Progress_Fill
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		background: Windows_Toggle_Active_10
+		corner: Select_Hover
+		hScroll: Windows_SideBar_Underside_10
+		hScrollKnob: Window_Base_10
+		vScroll: Windows_SideBar_Underside_10
+		vScrollKnob: Window_Base_10
+	}
+	nobg: {
+		corner: Select_Hover
+		hScroll: Windows_SideBar_Underside
+		hScrollKnob: Window_Base_10
+		vScroll: Windows_SideBar_Underside
+		vScrollKnob: Window_Base_10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: Arial-15
+		fontColor: Black
+		background: Windows_Combo_Closed_10
+		scrollStyle: nobg
+		listStyle: default
+		backgroundOpen: Windows_Combo_Open_10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+	default-horizontal: {
+		background: Windows_Slider_Background_10
+		knob: Windows_Slider_Handle
+	}
+	default-vertical: {
+		background: Windows_Slider_Background_10
+		knob: Windows_Slider_Handle
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
+	default-horizontal: {
+		handle: Windows_SideBar_Underside_10
+	}
+	default-vertical: {
+		handle: Windows_SideBar_Underside_10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: Arial-15
+		fontColor: Black
+		up: Windows_Button_Inactive_10
+		down: Windows_Button_Pressed_10
+		over: Windows_Button_hover_10
+		focused: Windows_Button_hover_10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: Arial-15
+		fontColor: Black
+		background: Windows_Toggle_Active_10
+		disabledBackground: Windows_Button_Pressed_10
+		cursor: Select_Hover
+		selection: Select_Hover
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+		background: Windows_Tooltip
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Touchpad$TouchpadStyle: {
+	default: {
+		background: Windows_SideBar_Underside_10
+		knob: Windows_Ratio
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
+	default: {
+		plus: Windows_Open_Icon
+		minus: Windows_IsOpen_Icon
+		selection: Windows_Progress_Fill
+		background: Windows_Toggle_Active_10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: Window_10
+		titleFont: Arial-15
+	}
+}
+}
