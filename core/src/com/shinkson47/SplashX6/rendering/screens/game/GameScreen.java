@@ -1,4 +1,4 @@
-package com.shinkson47.SplashX6.rendering.screens;
+package com.shinkson47.SplashX6.rendering.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -16,6 +16,7 @@ import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter;
+import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen;
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow;
 import com.shinkson47.SplashX6.utility.Debug;
@@ -126,7 +127,9 @@ public class GameScreen extends ScalingScreenAdapter {
 
 
         // Add to stage
-        stage.addActor(menu);
+        //stage.addActor(menu); // Legacy menu
+        stage.addActor(new Menu(this));
+
         stage.addActor(GameWindowManager.getWINDOW_DOCK());
     }
 

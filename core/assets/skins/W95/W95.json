@@ -347,6 +347,46 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		playMode: 2
 		crushMode: 0
 	}
+	Window_Header_Resizable_Inactive_10: {
+		region: Window_Header_Resizable_Inactive
+		horizontalStretchAreas: [ 3, 33 ]
+		verticalStretchAreas: [ 14, 21 ]
+		tiling: false
+		minWidth: 48
+		minHeight: 48
+		rightWidth: 3
+		leftWidth: 3
+		bottomHeight: 3
+		topHeight: 26
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Window_Header_Resizable_10: {
+		region: Window_Header_Resizable
+		horizontalStretchAreas: [ 3, 33 ]
+		verticalStretchAreas: [ 14, 21 ]
+		tiling: false
+		minWidth: 48
+		minHeight: 48
+		rightWidth: 3
+		leftWidth: 3
+		bottomHeight: 3
+		topHeight: 26
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
@@ -445,6 +485,18 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		down: Windows_Button_Pressed_10
 		over: Windows_Button_hover_10
 		focused: Windows_Button_hover_10
+	}
+	MenuItem: {
+		parent: default
+		up: Window_inactive_10
+		down: Window_inactive_10
+		over: Window_10
+	}
+	MenuItemList: {
+		parent: MenuItem
+		up: Window_Header_Resizable_Inactive_10
+		down: Window_Header_Resizable_Inactive_10
+		over: Window_Header_Resizable_10
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {

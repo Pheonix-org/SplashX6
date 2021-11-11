@@ -17,7 +17,7 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
-import com.shinkson47.SplashX6.rendering.screens.GameScreen
+import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager

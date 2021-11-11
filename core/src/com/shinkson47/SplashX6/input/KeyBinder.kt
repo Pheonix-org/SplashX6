@@ -2,16 +2,14 @@ package com.shinkson47.SplashX6.input
 
 import com.badlogic.gdx.*
 import com.shinkson47.SplashX6.Client
-import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.EndGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_exit
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.turn_end
-import com.shinkson47.SplashX6.game.world.WorldTerrainGenerator
 import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen
-import com.shinkson47.SplashX6.rendering.screens.GameScreen
+import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager.select
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor

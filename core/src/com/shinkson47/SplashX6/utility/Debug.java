@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.Client;
-import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.world.WorldTerrain;
 import com.shinkson47.SplashX6.rendering.StageWindow;
-import com.shinkson47.SplashX6.rendering.screens.GameScreen;
+import com.shinkson47.SplashX6.rendering.screens.game.GameScreen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ import java.util.List;
  * @since v1
  */
 public class Debug {
-    public static DebugWindow MainDebugWindow;
+    public static DebugWindow MainDebugWindow = new DebugWindow();
     public static GameScreen gameRenderer;
     private static final List<String> Dumps = new ArrayList<>();
     private static boolean debugMode = Client.DEBUG_MODE;
@@ -37,8 +35,6 @@ public class Debug {
 
     public static void create(){
         gameRenderer = GameHypervisor.getGameRenderer();
-        MainDebugWindow = new DebugWindow();
-        gameRenderer.getHUDStage().addActor(MainDebugWindow);
     }
 
 

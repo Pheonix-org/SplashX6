@@ -18,7 +18,7 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
     @JvmField var height = GraphicalConfig.displayMode.height.toFloat().coerceAtLeast(GraphicalConfig.MIN_STAGE_HEIGHT.toFloat())
 
     private val view = ScalingViewport(GraphicalConfig.scalingMode, width, height)
-    @JvmField protected val stage = Stage(view)
+    @JvmField val stage = Stage(view)
 
     init {
         //stage.isDebugAll = Client.DEBUG_MODE
