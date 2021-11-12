@@ -9,7 +9,6 @@ import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
@@ -18,13 +17,9 @@ import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter;
 import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen;
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
-import com.shinkson47.SplashX6.rendering.windows.OptionsWindow;
 import com.shinkson47.SplashX6.utility.Debug;
 
 import static com.shinkson47.SplashX6.game.world.WorldTerrain.*;
-import static com.shinkson47.SplashX6.rendering.StageWindow.applyMenuStyling;
-import static com.shinkson47.SplashX6.rendering.StageWindow.button;
-import static com.shinkson47.SplashX6.utility.Assets.SKIN;
 
 
 /**
@@ -73,8 +68,6 @@ public class GameScreen extends ScalingScreenAdapter {
 
     private GameManagementScreen managementScreen = new GameManagementScreen(this);
 
-    public final Table menu = new Table( SKIN );
-
 
 
 
@@ -104,32 +97,11 @@ public class GameScreen extends ScalingScreenAdapter {
      * <h2>Constructs GUI shown within the game window</h2>
      */
     private void createUI(){
-        // Have the mouse handler accept this stage for reciveing mouse input
+        // Have the mouse handler accept this stage for receiving mouse input
         MouseHandler.configureGameInput(stage);
 
-        // Table shown at top of window as a menu bar
-        menu.setPosition(0,height-90);
-        menu.setSize(width,90);
-        menu.center();
-
-        // Set color
-        menu.setBackground(SKIN.getDrawable("widet10"));
-
-
-        // Add buttons
-        //TODO Menu bar abstraction? lots of repetition here.
-        applyMenuStyling(menu.add(button("endGame", o -> GameHypervisor.EndGame())));
-        //applyMenuStyling(menu.add(button("add units tool", o -> stage.addActor(new units()))));
-        applyMenuStyling(menu.add(button("newGame", o -> GameHypervisor.NewGame())));
-        applyMenuStyling(menu.add(button("preferences", o -> stage.addActor(new OptionsWindow(this)))));
-        //applyMenuStyling(menu.add(button("dev", o -> Debug.MainDebugWindow.toggleShown())));
-        applyMenuStyling(menu.add(button("endTurn", o -> GameHypervisor.turn_end())));
-
-
         // Add to stage
-        //stage.addActor(menu); // Legacy menu
         stage.addActor(new Menu(this));
-
         stage.addActor(GameWindowManager.getWINDOW_DOCK());
     }
 

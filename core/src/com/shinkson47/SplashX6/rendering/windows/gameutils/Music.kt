@@ -9,7 +9,7 @@ import com.shinkson47.SplashX6.utility.Assets
 // TODO - Display the currently playing track title, UI modifications
 /**
  * # Window for in-game music UI
- * @author Dylan Brand
+ * @author Jordan Gray
  */
 class Music : StageWindow("Music") {
     // Methods

@@ -1,6 +1,7 @@
 package com.shinkson47.SplashX6.rendering;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -90,7 +91,7 @@ public abstract class StageWindow extends Window {
 
     public String title;
 
-    private boolean dontClose = false;
+    private boolean dontClose = true;
 
 
     //=====================================================================
@@ -212,10 +213,11 @@ public abstract class StageWindow extends Window {
         } else {
             label = new Label(title.toUpperCase(), Assets.SKIN);
 
-            // Move down into window
-            w.getTitleTable().padTop(85);
+            // TODO this text needs to be white.
+            // Add the label
+            w.getTitleTable().add(label).expandX();
 
-            // Add a close button at top border
+            // Add a close button at top
             if (close)
             w.getTitleTable()
                     .add(button("close", o -> {
@@ -226,16 +228,13 @@ public abstract class StageWindow extends Window {
                                 w.getStage().getActors().removeValue(w, true);
                             }
                     }))
-                    .padTop(-35)
+                    .right()
                     .row();
+
+            w.getTitleTable().align(Align.right);
         }
 
-        // Add the label
-        label.setAlignment(Align.bottom);
-        w.getTitleTable()
-                .add(label)
-                .padBottom(20)
-                .row();
+
 
         // Add a gap between the title and the first row of content in the window.
         w.row().padTop(

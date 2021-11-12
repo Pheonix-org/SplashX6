@@ -1,10 +1,10 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	Arial-15: {
-		file: Arial-15.fnt
-	}
 	RetroNewVersion-Large: {
 		file: RetroNewVersion.fnt
+	}
+	Serif: {
+		file: MS Sans Serif 8pt.fnt
 	}
 	Vecna: {
 		file: Vecna-oppx.fnt
@@ -401,19 +401,24 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
 		checkboxOn: Windows_Toggle_Active
 		checkboxOff: Windows_Toggle_Selected
-		font: Arial-15
+		font: Serif
 		fontColor: Black
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
+	default: {
+		font: Serif
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: Arial-15
+		font: Serif
 		fontColor: Black
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: Arial-15
+		font: Serif
 		fontColorSelected: White
 		fontColorUnselected: Black
 		selection: Windows_Progress_Fill
@@ -451,7 +456,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
-		font: Arial-15
+		font: Serif
 		fontColor: Black
 		background: Windows_Combo_Closed_10
 		scrollStyle: nobg
@@ -479,7 +484,7 @@ com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		font: Arial-15
+		font: Serif
 		fontColor: Black
 		up: Windows_Button_Inactive_10
 		down: Windows_Button_Pressed_10
@@ -501,7 +506,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
-		font: Arial-15
+		font: Serif
 		fontColor: Black
 		background: Windows_Toggle_Active_10
 		disabledBackground: Windows_Button_Pressed_10
@@ -532,7 +537,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: Window_10
-		titleFont: Arial-15
+		titleFont: Serif
 	}
 }
 }

@@ -335,7 +335,7 @@ class Spotify : StageWindow("Spotify") {
      * (Which is when the game is created) and dispatches the 5 second updater thread.
      */
     init {
-        Spotify.create();
-        Utility.DispatchDaemonThread("Spotify Update Thread", seekRunnable)
+        //Spotify.create();
+        //Utility.DispatchDaemonThread("Spotify Update Thread", seekRunnable)
     }
 }

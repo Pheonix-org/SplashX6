@@ -7,17 +7,10 @@ SPLASH X6
 =========
 
 
-
-======= DEVELOPERS =======
-
 [ LEAD DEVELOPER ]
 
 Jordan T. Gray
 http://shinkson47.in
-
-[ JUNIOR DEVELOPER ]
-
-Dylan Brand
 
 
 ======= ASSETS =======
@@ -85,7 +78,7 @@ https://github.com/atallahhezbor
 
 
 Thanks for your interest!
-- Jordan & Dylan.
+- Jordan
 
 Splash X6 ©2021 https://shinkson47.in/SplashX6
 

@@ -429,7 +429,7 @@ class GameHypervisor {
          * Does so by lerping with an alpha of 100%.
          */
         @JvmStatic
-        fun camera_skipMovement(){
+        fun camera_skipMovement() {
             gameRenderer!!.cam.desiredPosition.next(1f)
         }
 

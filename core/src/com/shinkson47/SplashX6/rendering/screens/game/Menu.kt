@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
 import com.shinkson47.SplashX6.rendering.windows.gameutils.Spotify
 import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
@@ -46,6 +47,8 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
 
 
     init {
+        //TODO localisation
+        //TODO Tooltips
         setPosition(0f, _parent.height - HEIGHT)    // Move to top of screen
         setSize(_parent.width, HEIGHT)                    // Fill width
         center()                                         // Display all contents in the middle.
@@ -54,15 +57,25 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         //setBackground(SKIN.getDrawable("widet10"))
         _parent.stage.addActor(subActionMenu)
 
+
+        // =========================================================
+        //              Menu bar construction.
+
         addMenuItem(this, "Game", NOTHING,
                 MenuSubItem("Preferences", WindowAction(OptionsWindow(_parent))) ,
-                MenuSubItem("New Game") { GameHypervisor.NewGame() } ,
-                MenuSubItem("End Game") { GameHypervisor.EndGame() }
+                MenuSubItem("New Game")     { GameHypervisor.NewGame() } ,
+                MenuSubItem("Load")         { GameHypervisor.load() } ,
+                MenuSubItem("Quickload")    { GameHypervisor.quickload() } ,
+                MenuSubItem("Save")         { GameHypervisor.save() } ,
+                MenuSubItem("Quicksave")    { GameHypervisor.quicksave() } ,
+                MenuSubItem("End Game")     { GameHypervisor.EndGame() }
         )
 
 
-        if (Client.DEBUG_MODE)
-            addMenuItem(this, "Debug", WindowAction(com.shinkson47.SplashX6.utility.Debug.MainDebugWindow))
+
+        addMenuItem(this, "Debug", WindowAction(com.shinkson47.SplashX6.utility.Debug.MainDebugWindow)
+               // MenuSubItem("World Generation", WindowAction(World))
+        )
 
 
         addMenuItem(this, "Spotify", WindowAction(Spotify()),
@@ -71,8 +84,14 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         )
 
         addMenuItem(this, "Warroom", {GameHypervisor.cm_toggle()},
-                MenuSubItem("Manage Units")  { UnitsWindow() }
+                MenuSubItem("Manage Units")     { UnitsWindow() },
+                MenuSubItem("View")             { GameHypervisor.unit_view() },
+                MenuSubItem("View destination") { GameHypervisor.unit_viewDestination() },
+                MenuSubItem("Set destination")  { GameHypervisor.unit_setDestination() },
+                MenuSubItem("Disband")          { GameHypervisor.unit_disband() },
                 )
+
+        addMenuItem(this, "End Turn", { GameHypervisor.turn_end() })
     }
 
 

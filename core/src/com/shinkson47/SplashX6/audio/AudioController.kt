@@ -9,7 +9,7 @@ import com.shinkson47.SplashX6.utility.Assets.SFX_BUTTON
 /**
  * <h1>Audio Controller</h1>
  *
- * @author Dylan Brand, Jordan Gray
+ * @author Jordan Gray
  * @since PRE-ALPHA 0.0.1
  */
 object AudioController {

@@ -15,7 +15,7 @@ import java.util.ArrayList;
  *
  * This media player provides a basic playlist of songs for the user to listen to whilst playing Splash.
  *
- * @author Dylan Brand
+ * @author Jordan Gray
  * @version 1.0
  * @since PRE-ALPHA 0.0.2
  */

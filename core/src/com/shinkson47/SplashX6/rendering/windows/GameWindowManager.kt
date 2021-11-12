@@ -58,7 +58,7 @@ object GameWindowManager {
      * As a part of the post game load stage, creates all game windows.
      */
     fun create() {
-        GameHypervisor.gameRenderer!!.menu.add(WINDOW_DOCK)
+        //GameHypervisor.gameRenderer!!.menu.add(WINDOW_DOCK)
 
 
         add(UnitsWindow())
