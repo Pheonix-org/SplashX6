@@ -13,6 +13,7 @@ import com.shinkson47.SplashX6.utility.Utility
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer
 import org.xguzm.pathfinding.grid.GridCell
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder
+import java.io.Serializable
 import java.util.function.Consumer
 import kotlin.math.floor
 
@@ -23,7 +24,7 @@ import kotlin.math.floor
  * @since PRE-ALPHA 0.0.1
  * @version 2 (Superceedes 'World')
  */
-class WorldTerrain(val width : Int, val height : Int) : TiledMap() {
+class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable {
     constructor() : this(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
     //==============================================
@@ -32,26 +33,35 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap() {
 
     val seed = 1L
 
+
     //#region layers
     /**
      * # The final tile layer holding the world's tiles.
      */
-    private var LerpedTileLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+    @Transient private var LerpedTileLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
 
     /**
      * # the final tile layer holding the world's tiles.
      */
-    private var SpriteLayer:TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+    @Transient private var SpriteLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
 
     /**
      * # the final tile layer holding the world's tiles.
      */
-    private var FoliageLayer:TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+    @Transient private var FoliageLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
 
     /**
      * # the final tile layer holding the world's tiles.
      */
-    private var HeightLayer:TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+    @Transient private var HeightLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+
+    fun networkCreate() {
+        LerpedTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+        SpriteLayer     = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+        FoliageLayer    = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+        HeightLayer     = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+        AStarGridFinder(GridCell::class.java)
+    }
 
     //#endregion layers
     //#region Tiles
@@ -84,7 +94,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap() {
      * # Pathfinder
      * Usage : pathfinder.find(fromx, fromy, tox, toy, [WorldTerrain.navigationLayer]).
      */
-    var pathfinder: AStarGridFinder<GridCell> = AStarGridFinder(GridCell::class.java)
+    @Transient var pathfinder: AStarGridFinder<GridCell> = AStarGridFinder(GridCell::class.java)
 
 
     /**
@@ -92,7 +102,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap() {
      *
      * Used for calculating navigation data when pathfinding.
      */
-    var navigationLayer : NavigationTiledMapLayer = NavigationTiledMapLayer(Array(height) { arrayOfNulls(width) })
+    @Transient var navigationLayer : NavigationTiledMapLayer = NavigationTiledMapLayer(Array(height) { arrayOfNulls(width) })
 
     //#endregion navigation
 

@@ -11,6 +11,7 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
 import org.xguzm.pathfinding.grid.GridCell
+import java.io.Serializable
 
 /**
  * # A controllable in-game character
@@ -19,7 +20,7 @@ import org.xguzm.pathfinding.grid.GridCell
  * @since PRE-ALPHA 0.0.1
  * @version 1
  */
-class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())) {
+class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())), Serializable {
     constructor(unitClass: UnitClass, _x: Int, _y: Int) : this(unitClass, Vector3(_x.toFloat(), _y.toFloat(), 0f))
 
     // =============================================

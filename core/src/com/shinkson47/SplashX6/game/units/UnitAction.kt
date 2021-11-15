@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.game.units
 
+import java.io.Serializable
 import java.util.function.Predicate
 
 /**
@@ -10,7 +11,7 @@ import java.util.function.Predicate
  * @since PRE-ALPHA 0.0.2
  * @version 1
  */
-class UnitAction(_displayName: String, _isAvailable: Predicate<Unit>, _onAction: Predicate<Unit>) {
+class UnitAction(_displayName: String, _isAvailable: UnitActionDictionary.SerializablePredicate<Unit>, _onAction: UnitActionDictionary.SerializablePredicate<Unit>): Serializable {
 
     /**
      * The localised name of this action that can be displayed to the used.
@@ -20,7 +21,7 @@ class UnitAction(_displayName: String, _isAvailable: Predicate<Unit>, _onAction:
     /**
      * Predicate that determines if the action can be used.
      */
-    val isAvailable: Predicate<Unit> = _isAvailable
+    val isAvailable: UnitActionDictionary.SerializablePredicate<Unit> = _isAvailable
 
     /**
      * Action that is executed when the user desires.
@@ -28,7 +29,7 @@ class UnitAction(_displayName: String, _isAvailable: Predicate<Unit>, _onAction:
      * Accepts the calling unit, and returns true/false on
      * it's ability to complete the action.
      */
-    val onAction: Predicate<Unit> = _onAction
+    val onAction: UnitActionDictionary.SerializablePredicate<Unit> = _onAction
 
     /**
      * # Executes this action's script.

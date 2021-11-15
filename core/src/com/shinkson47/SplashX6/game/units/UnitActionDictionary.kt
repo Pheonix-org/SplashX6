@@ -2,6 +2,7 @@ package com.shinkson47.SplashX6.game.units
 
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor
+import java.io.Serializable
 import java.util.function.Predicate
 
 /**
@@ -18,15 +19,19 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     //          ACTION AVAILABILITY PREDICATES
     //==================================================
 
+    class SerializablePredicate <T>(val z : ((T) -> Boolean)) : Predicate<T>, Serializable {
+        override fun test(t: T): Boolean = z(t)
+    }
+
     /**
      * # Marks an action that is always available
      */
-    val ALWAYS_AVAILABLE = Predicate<Unit> { true }
+    val ALWAYS_AVAILABLE = SerializablePredicate<Unit> {true}
 
     /**
      * # Marks an action that requires an active destination.
      */
-    val REQ_DESTINATION  = Predicate<Unit> { it.pathNodes != null && it.pathNodes!!.isNotEmpty() }
+    val REQ_DESTINATION  = SerializablePredicate <Unit> { it.pathNodes != null && it.pathNodes!!.isNotEmpty() }
 
 
 
@@ -43,9 +48,9 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     /**
      * # Moves towards destination
      */
-    val TRAVEL  =  UnitAction("Travel to destination", REQ_DESTINATION, {
-        with (it) {
-            if (!REQ_DESTINATION.test(this)) return@UnitAction false;
+    val TRAVEL  =  UnitAction("Travel to destination", REQ_DESTINATION, SerializablePredicate {
+        with(it) {
+            if (!REQ_DESTINATION.test(this)) return@SerializablePredicate false;
 
             pathNodes = pathNodes!!.drop(travelDistance)
             if (pathNodes!!.isNotEmpty())
@@ -54,13 +59,14 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
                 setDestination(destX, destY)
 
 
-            true; }})
+            true;
+        }
+    })
 
     /**
      * # Creates a city.
      */
-    val SETTLE   =  UnitAction("Settle", ALWAYS_AVAILABLE, { GameHypervisor.turn_asyncTask { GameHypervisor.settle(it) }})
-
+    val SETTLE   =  UnitAction("Settle", ALWAYS_AVAILABLE, SerializablePredicate { GameHypervisor.turn_asyncTask { GameHypervisor.settle(it) } })
 
 
     //==================================================

@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.game.world;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
@@ -14,7 +15,7 @@ import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
  * @author Jordan Gray & Dylan Brand 23/03/2021
  * @version PRE-ALPHA 0.0.1
  */
-public class Tile {
+public class Tile implements Serializable {
 
     /**
      * Resource names for particular tile types
