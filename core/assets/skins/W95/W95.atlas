@@ -6,196 +6,196 @@ filter: Linear, Linear
 repeat: none
 white-pixel
   rotate: false
-  xy: 527, 881
+  xy: 559, 910
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
-MS Sans Serif 8pt
-  rotate: false
-  xy: 509, 984
-  size: 505, 37
-  orig: 505, 37
-  offset: 0, 0
-  index: -1
 Window_Base
   rotate: false
-  xy: 586, 967
+  xy: 586, 936
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 Window_Header
   rotate: false
-  xy: 509, 934
+  xy: 509, 903
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Window_Header_Inactive
   rotate: false
-  xy: 1, 347
+  xy: 1, 342
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Window_Header_Resizable
   rotate: false
-  xy: 153, 499
+  xy: 153, 494
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Window_Header_Resizable_Inactive
   rotate: false
-  xy: 509, 884
+  xy: 509, 853
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
   index: -1
 Windows_Button_Inactive
   rotate: false
-  xy: 1, 308
+  xy: 1, 303
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 Windows_Button_Pressed
   rotate: false
-  xy: 28, 330
+  xy: 28, 325
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 Windows_Button_Pressed_Outlined
   rotate: false
-  xy: 51, 362
+  xy: 51, 357
   size: 15, 15
   orig: 15, 15
   offset: 0, 0
   index: -1
 Windows_Combo_Closed
   rotate: false
-  xy: 559, 962
+  xy: 559, 931
   size: 25, 20
   orig: 25, 20
   offset: 0, 0
   index: -1
 Windows_Combo_Open
   rotate: false
-  xy: 1, 325
+  xy: 1, 320
   size: 25, 20
   orig: 25, 20
   offset: 0, 0
   index: -1
 Windows_Divider_Line
   rotate: false
-  xy: 221, 545
+  xy: 1017, 1014
   size: 1, 2
   orig: 1, 2
   offset: 0, 0
   index: -1
 Windows_Icons
   rotate: false
-  xy: 1, 397
+  xy: 1, 392
   size: 150, 150
   orig: 150, 150
   offset: 0, 0
   index: -1
 Windows_Inner_Frame_Inverted
   rotate: false
-  xy: 559, 944
+  xy: 559, 913
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Windows_IsOpen_Icon
   rotate: false
-  xy: 1016, 1014
+  xy: 221, 535
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 Windows_Open_Icon
   rotate: false
-  xy: 1016, 1005
+  xy: 527, 844
   size: 7, 7
   orig: 7, 7
   offset: 0, 0
   index: -1
 Windows_Progress_Fill
   rotate: false
-  xy: 51, 379
+  xy: 51, 374
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Windows_Ratio
   rotate: false
-  xy: 69, 382
+  xy: 69, 377
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 Windows_Ratio_Inactive
   rotate: false
-  xy: 153, 466
+  xy: 153, 461
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 Windows_Ratio_Selected
   rotate: false
-  xy: 171, 484
+  xy: 171, 479
   size: 13, 13
   orig: 13, 13
   offset: 0, 0
   index: -1
 Windows_SideBar_Underside
   rotate: false
-  xy: 153, 481
+  xy: 153, 476
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Windows_Slider_Background
   rotate: false
-  xy: 203, 525
+  xy: 203, 520
   size: 12, 4
   orig: 12, 4
   offset: 0, 0
   index: -1
 Windows_Slider_Handle
   rotate: false
-  xy: 509, 843
+  xy: 509, 812
   size: 11, 21
   orig: 11, 21
   offset: 0, 0
   index: -1
 Windows_Toggle_Active
   rotate: false
-  xy: 203, 531
+  xy: 203, 526
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Windows_Toggle_Selected
   rotate: false
-  xy: 509, 866
+  xy: 509, 835
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
+MS Sans Serif 8pt
+  rotate: false
+  xy: 509, 953
+  size: 506, 63
+  orig: 506, 63
+  offset: 0, 0
+  index: -1
 RetroNewVersion
   rotate: false
-  xy: 1, 549
+  xy: 1, 544
   size: 506, 379
   orig: 506, 379
   offset: 0, 0
   index: -1
 Vecna-oppx
   rotate: false
-  xy: 1, 930
+  xy: 1, 925
   size: 506, 91
   orig: 506, 91
   offset: 0, 0
