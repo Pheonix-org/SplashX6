@@ -215,6 +215,8 @@ public abstract class StageWindow extends Window implements Runnable {
             // Add the label
             w.getTitleTable().add(label).expandX();
 
+            w.getTitleTable().add(button("pack", o -> {w.pack();}));
+
             // Add a close button at top
             if (close)
             w.getTitleTable()
@@ -227,8 +229,6 @@ public abstract class StageWindow extends Window implements Runnable {
                             }
                     }))
                     .right();
-
-            w.getTitleTable().add(button("pack", o -> {w.pack();}));
 
             w.getTitleTable().row();
             w.getTitleTable().align(Align.right);
