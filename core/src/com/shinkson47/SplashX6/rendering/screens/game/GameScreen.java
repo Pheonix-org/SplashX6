@@ -9,7 +9,6 @@ import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.shinkson47.SplashX6.game.GameData;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
@@ -19,6 +18,7 @@ import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen;
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
 import com.shinkson47.SplashX6.utility.Debug;
 
+import static com.shinkson47.SplashX6.game.GameDataKt.GameData;
 import static com.shinkson47.SplashX6.game.world.WorldTerrain.*;
 
 
@@ -82,7 +82,7 @@ public class GameScreen extends ScalingScreenAdapter {
 
         // Create objects
         sr = new ShapeRenderer();
-        r = new IsometricStaggeredTiledMapRenderer(GameData.INSTANCE.getWorld());
+        newRenderer();
 
         //r.setView(camera.getCam());
 
@@ -91,6 +91,23 @@ public class GameScreen extends ScalingScreenAdapter {
         // Configure UI
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         createUI();
+    }
+
+    /**
+     * Creates a new tiledmap renderer.
+     *
+     * If a renderer exists, Changes it to display GameData.World.
+     * (Used to display a world after creating or loading a new one without creating a new screen.)
+     *
+     * TODO Integrate a multiplayer load with the doNewGameCallback which creates
+     * a new game screen.
+     */
+    public void newRenderer() {
+        r = new IsometricStaggeredTiledMapRenderer(GameData.world);
+//        if (r == null)
+//
+//        else
+//            r.setMap(GameData.world);
     }
 
     /**
@@ -127,7 +144,7 @@ public class GameScreen extends ScalingScreenAdapter {
         sr.setProjectionMatrix(camera.combined);
 
         // Get selected unit, and draw a circle under it.?
-        Unit u = GameData.INSTANCE.getSelectedUnit();
+        Unit u = GameData.selectedUnit;
         sr.begin(ShapeRenderer.ShapeType.Line);
         if (u != null) {
             sr.circle(u.getX() + TILE_HALF_WIDTH, u.getY() + TILE_HALF_HEIGHT, TILE_HALF_HEIGHT);
@@ -164,11 +181,11 @@ public class GameScreen extends ScalingScreenAdapter {
         worldBatch.begin();
 
         // Render cities
-        GameData.INSTANCE.getCities().forEach(
+        GameData.player.getCities().forEach(
                 city -> city.draw(worldBatch)
         );
 
-        GameData.INSTANCE.getUnits().forEach(
+        GameData.player.getUnits().forEach(
                 sprite -> {
                     // META : This draws a gl rect over the true area where sprites are rendered, so you can see where the sprites boundaries are.
 //                    if (Debug.enabled()) {
