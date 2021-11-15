@@ -29,6 +29,8 @@ public class Debug {
     public static DebugWindow MainDebugWindow = new DebugWindow();
     public static GameScreen gameRenderer;
     private static final List<String> Dumps = new ArrayList<>();
+
+    // FIXME : This alias is dumb, and becomes out of sync with Client.debug_mode.
     private static boolean debugMode = Client.DEBUG_MODE;
 
     public static boolean enabled() { return debugMode; }

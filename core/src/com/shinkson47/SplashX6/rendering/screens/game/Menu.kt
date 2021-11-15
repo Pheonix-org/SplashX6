@@ -1,19 +1,17 @@
 package com.shinkson47.SplashX6.rendering.screens.game
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
-import com.shinkson47.SplashX6.rendering.windows.gameutils.Spotify
-import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
+import com.shinkson47.SplashX6.rendering.windows.game.Spotify
+import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 
 /**
@@ -73,8 +71,10 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
 
 
 
-        addMenuItem(this, "Debug", WindowAction(com.shinkson47.SplashX6.utility.Debug.MainDebugWindow)
-               // MenuSubItem("World Generation", WindowAction(World))
+        addMenuItem(this, "Debug", WindowAction(com.shinkson47.SplashX6.utility.Debug.MainDebugWindow),
+               MenuSubItem("Defog All") { GameData.world!!.defogAll() },
+               MenuSubItem("Publish Game") {Server.boot()},
+               MenuSubItem("Connect Locally") {com.shinkson47.SplashX6.network.Client.connect()}
         )
 
 
@@ -84,7 +84,7 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         )
 
         addMenuItem(this, "Warroom", {GameHypervisor.cm_toggle()},
-                MenuSubItem("Manage Units")     { UnitsWindow() },
+                MenuSubItem("Manage Units")     { W_UnitsList() },
                 MenuSubItem("View")             { GameHypervisor.unit_view() },
                 MenuSubItem("View destination") { GameHypervisor.unit_viewDestination() },
                 MenuSubItem("Set destination")  { GameHypervisor.unit_setDestination() },

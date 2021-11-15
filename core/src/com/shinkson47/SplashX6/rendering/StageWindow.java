@@ -1,7 +1,6 @@
 package com.shinkson47.SplashX6.rendering;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.audio.AudioController;
+import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.utility.Assets;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import static com.shinkson47.SplashX6.utility.Utility.local;
  * @version 1
  * @since v1
  */
-public abstract class StageWindow extends Window {
+public abstract class StageWindow extends Window implements Runnable {
 
     //=====================================================================
     //#region fields
@@ -84,10 +84,6 @@ public abstract class StageWindow extends Window {
      */
     // TODO kotlin style docs
     protected boolean FIRST_CONSTRUCTION = true;
-    /**
-     * Last known number of columns in this window
-     */
-    private int lastSpan = 1000;
 
     public String title;
 
@@ -137,6 +133,8 @@ public abstract class StageWindow extends Window {
 
         setResizable(resizable);
         setVisible(visible);
+        updateColSpans();
+        GameHypervisor.turn_hook(this);
         FIRST_CONSTRUCTION = false;
     }
 
@@ -228,9 +226,11 @@ public abstract class StageWindow extends Window {
                                 w.getStage().getActors().removeValue(w, true);
                             }
                     }))
-                    .right()
-                    .row();
+                    .right();
 
+            w.getTitleTable().add(button("pack", o -> {w.pack();}));
+
+            w.getTitleTable().row();
             w.getTitleTable().align(Align.right);
         }
 
@@ -381,6 +381,8 @@ public abstract class StageWindow extends Window {
         placeTitle(this, windowStyle, title);
     }
 
+
+
     /**
      * <h2>Creates and adds a button which fills the row</h2>
      * Used in most places, ideal for lists of buttons.
@@ -391,9 +393,13 @@ public abstract class StageWindow extends Window {
      * @param e    Function of the button
      * @return the button created
      */
-    protected TextButton addButton(String Text, Consumer<InputEvent> e) {
+    protected TextButton addButton(String Text, Consumer<LambdaClickListener> e) { return addButton(Text, true, e); }
+    protected TextButton addButton(String Text, boolean newRow, Consumer<LambdaClickListener> e) { return addButton(Text, newRow, false, e); }
+    protected TextButton addButton(String Text, boolean newRow, boolean span, Consumer<LambdaClickListener> e) {
         TextButton b = button(Text, e);
-        add(b).fill().row();
+        Cell c = add(b).expandX().fillX();
+        if (span) span(c);
+        if (newRow) row();
         clickSound(b);
         return b;
     }
@@ -474,19 +480,22 @@ public abstract class StageWindow extends Window {
      * <h2>Adds a label and a horizontal line with a good ammount of space above and below to seperate content in a column</h2>
      */
     protected StageWindow seperate(String key) {
+        row();
         // Create a label that will be the header
         Label l = new Label(local(key), Assets.SKIN);
 
         // Make it 20% bigger
-        l.setFontScale(1.2f);
+        //l.setFontScale(1.2f);
 
         // Put the text in the middle
-        l.setAlignment(Align.center);
+        //l.setAlignment(Align.center);
+
+        hsep().padTop(10).row();
 
         // Add and adjust title
-        applyMenuStyling(span(add(l))).padTop(50).row();
+        span(add(l)).padTop(10).row();
 
-        hsep().padBottom(20).row();
+
 
         return this;
     }
@@ -529,7 +538,10 @@ public abstract class StageWindow extends Window {
      */
     protected Cell hsep() {
         row();
-        Cell c = span(add(new Label("", seperatorStyle))).colspan(lastSpan).height(3).bottom();
+        Cell c = add(new Label("", seperatorStyle)).height(3);
+        c.padTop(3);
+        c.padBottom(3);
+        span(c);
         row();
         return c;
     }
@@ -567,7 +579,6 @@ public abstract class StageWindow extends Window {
     @Override
     public final <T extends Actor> Cell<T> add(T actor) {
         Cell c = super.add(actor);
-        updateColSpans();
         return c;
     }
 
@@ -622,31 +633,20 @@ public abstract class StageWindow extends Window {
      */
     protected Cell span(Cell c) {
         spannedCells.add(c);
-        expandfill(c).center();
-        c.colspan(lastSpan);
+        c.expandX().fillX();
+        c.colspan(Math.max(getColumns() - 1, 1));
+        row();
         return c;
     }
 
     /**
      * Updates all cells which should span all columns with the current number of columns.
      */
-    private void updateColSpans() {
-        updateColSpans(getColumns());
-    }
-
-    /**
-     * Updates all cells which should span all columns with the provided number of columns.
-     *
-     * @param columns
-     */
-    private void updateColSpans(int columns) {
-        if (columns <= lastSpan) return;
-
-        lastSpan = columns - 1;
-
+    protected void updateColSpans() {
         for (Cell c : spannedCells)
-            c.colspan(lastSpan);
+            c.colspan(Math.max(getColumns(), 1));
 
+        pack();
     }
 
     public void setStage(Stage s) {
@@ -669,6 +669,7 @@ public abstract class StageWindow extends Window {
      */
     @Override
     public final void clear() {
+        GameHypervisor.turn_unhook(this);
         onClose();
         super.clear();
     }
@@ -686,28 +687,35 @@ public abstract class StageWindow extends Window {
         dontClose = true;
     }
 
+    public void allowClose() {
+        dontClose = false;
+    }
+
     /**
      * <h2>Accepts a consumer to use when clicking a button, instead of an entire click listener class</h2>
      * This exists to shorten the required lines needed to make a button do something. Before you had to
      * define an entire implementation class of clickListenener, now just use a consumer.
      */
     public static class LambdaClickListener extends ClickListener {
-        private Consumer c;
+        private Consumer<ClickListener> c;
+        public InputEvent event;
 
-        public LambdaClickListener(Consumer<InputEvent> consumer) {
+        public LambdaClickListener(Consumer<ClickListener> consumer) {
             c = consumer;
         }
 
         @Override
         public void clicked(InputEvent event, float x, float y) {
-            c.accept(event);
+           this.event = event;
+            c.accept(this);
         }
     }
 
     public static class LambdaChangeListener extends ChangeListener {
-        private Consumer<ChangeEvent> c;
+        private Consumer<ChangeListener> c;
+        public ChangeEvent event;
 
-        public LambdaChangeListener(Consumer<ChangeEvent> consumer) {
+        public LambdaChangeListener(Consumer<ChangeListener> consumer) {
             c = consumer;
         }
 
@@ -717,7 +725,12 @@ public abstract class StageWindow extends Window {
          */
         @Override
         public void changed(ChangeEvent event, Actor actor) {
-            c.accept(event);
+            this.event = event;
+            c.accept(this);
         }
     }
+
+    @Override
+    public void run() { refresh(); }
+    protected void refresh() {}
 }

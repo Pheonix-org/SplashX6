@@ -3,8 +3,6 @@ package com.shinkson47.SplashX6.rendering.windows.game.units
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager

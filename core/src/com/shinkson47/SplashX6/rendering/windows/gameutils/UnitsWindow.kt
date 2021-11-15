@@ -100,7 +100,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
         pack()
     }
 
-    private fun refresh() {
+    override fun refresh() {
         refreshSelected()
         refreshUnits()
     }
@@ -115,7 +115,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
         val _busy : Array<Unit> = Array()
 
 
-        GameData.units.forEach {            // Go through all units,
+        GameData.player!!.units.forEach {            // Go through all units,
             if (it.onTurnAction == null)    // and add them to the
                 _waiting.add(it)            // Right list.
             else

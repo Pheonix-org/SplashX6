@@ -4,9 +4,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.windows.gameutils.Music
-import com.shinkson47.SplashX6.rendering.windows.gameutils.Spotify
-import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
+import com.shinkson47.SplashX6.rendering.windows.game.Music
+import com.shinkson47.SplashX6.rendering.windows.game.Spotify
+import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 
 /**
@@ -54,6 +54,11 @@ object GameWindowManager {
     }
 
     /**
+     * Adds a Stage window to the game screen.
+     */
+    fun postWindow(sw : StageWindow) = GameHypervisor.gameRenderer!!.hudStage.addActor(sw)
+
+    /**
      * # Instantiates all game windows.
      * As a part of the post game load stage, creates all game windows.
      */
@@ -61,7 +66,7 @@ object GameWindowManager {
         //GameHypervisor.gameRenderer!!.menu.add(WINDOW_DOCK)
 
 
-        add(UnitsWindow())
+        add(W_UnitsList())
 
         // Try loading spotify, if successful then add spotify window to game.
         // Otherwise user must connect in preferences first.
