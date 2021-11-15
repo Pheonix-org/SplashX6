@@ -1,11 +1,8 @@
 package com.shinkson47.SplashX6.game
 
 
-import com.shinkson47.SplashX6.game.cities.City
-import com.shinkson47.SplashX6.game.cities.CityTypes
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.WorldTerrain
-import com.shinkson47.SplashX6.game.world.WorldTerrainGenerator
 import com.shinkson47.SplashX6.game.world.generation.Generator
 import java.io.Serializable
 
@@ -16,34 +13,26 @@ import java.io.Serializable
  * @since PRE-ALPHA 0.0.1
  * @version 1.1
  */
-object GameData : Serializable {
+@JvmField
+val GameData = _GameData()
+
+class _GameData : Serializable {
 
     /**
      * # The tile layers making up the world.
      */
-    var world : WorldTerrain? = null
+    @JvmField var world : WorldTerrain? = null
 
-    /**
-     * # The type of civilisation that the user is playing as.
-     */
-    var civType: CityTypes = CityTypes.asian
+    @JvmField var civilisations : ArrayList<Civilisation> = ArrayList()
 
-    /**
-     * # List of all units in the world.
-     */
-    // TODO where to put units from other players, or tell them apart??
-    val units  : ArrayList<Unit> = ArrayList()
 
-    /**
-     * # List of all cities in the world.
-     */
-    val cities : ArrayList<City> = ArrayList()
-
+    // This client's data
     /**
      * # The unit that the hypervisor is currently operating on.
      */
-    var selectedUnit : Unit? = null
+    @JvmField var selectedUnit : Unit? = null
 
+    @JvmField var player : Civilisation? = null
 
 
 
@@ -62,9 +51,9 @@ object GameData : Serializable {
      */
     fun clear() {
         world = null
-        units.clear()
-        cities.clear()
+        player = null
         selectedUnit = null
+        civilisations.clear()
     }
 
     /**
@@ -72,7 +61,17 @@ object GameData : Serializable {
      */
     fun new(){
         clear()
+        player = GameHypervisor.civ_new()
         world = Generator.doYourThing();
         world!!.genPopulation()
+    }
+
+    fun networkSet(gameState: _GameData) {
+        world           = gameState.world
+        world!!.networkCreate()
+        world!!.defogAll()
+        civilisations   = gameState.civilisations
+
+        GameHypervisor.gameRenderer!!.newRenderer()
     }
 }

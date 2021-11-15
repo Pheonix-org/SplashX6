@@ -21,7 +21,7 @@ import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
-import com.shinkson47.SplashX6.rendering.windows.gameutils.UnitsWindow
+import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
@@ -209,6 +209,7 @@ class GameHypervisor {
             // TODO check this
             // TODO are null checks still needed?
             // STOPSHIP: 20/05/2021 this is fucking garbage my g.
+            // TODO This can only spawn on player civ
 
             var s: Unit? = null
 
@@ -220,8 +221,16 @@ class GameHypervisor {
 
             assert (s != null)
 
-            GameData.units.add(s)
+
+            GameData.player!!.units.add(s)
         }
+
+        fun civ_new() : Civilisation {
+            val c = Civilisation()
+            GameData.civilisations.add(c)
+            return c
+        }
+
 
 
         //========================================================================
@@ -232,7 +241,7 @@ class GameHypervisor {
         // TODO api predicate for requiring a unit is selected.
 
         @JvmStatic
-        fun unit_select(index: Int) = unit_select(GameData.units.get(index))
+        fun unit_select(index: Int) = unit_select(GameData.player!!.units.get(index))
 
         /**
          * # Selects a unit for focus of manipulation
@@ -242,7 +251,7 @@ class GameHypervisor {
         fun unit_select(unit: Unit) {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("Select a unit", "no game is loaded")))
 
-            if (!GameData.units.contains(unit))
+            if (!GameData.player!!.units.contains(unit))
                 throw IllegalArgumentException("Tried to select a unit that does not exist in the game data!")
 
             GameData.selectedUnit = unit
@@ -286,7 +295,7 @@ class GameHypervisor {
          */
         @JvmStatic
         fun unit_disband() {
-            GameData.units.remove(GameData.selectedUnit)
+            GameData.player!!.units.remove(GameData.selectedUnit)
             GameData.selectedUnit = null
         }
 
@@ -303,7 +312,7 @@ class GameHypervisor {
 
         @JvmStatic
         fun unit_updateUnitWindow() {
-            (GameWindowManager.WINDOW_DOCK.items.find { it.title == "Units" } as UnitsWindow).run()
+            (GameWindowManager.WINDOW_DOCK.items.find { it.title == "Units" } as W_UnitsList).run()
         }
 
         @JvmStatic
@@ -356,7 +365,7 @@ class GameHypervisor {
         private fun doEndTurn_Units(){
             // META : If you get a concurrent modification exception here, then
             // an onTurnAction has modified the GameData units list.
-            GameData.units.forEach {it.doTurn()}
+            GameData.player!!.units.forEach {it.doTurn()}
         }
 
         private fun doEndTurn_Async(){
@@ -579,7 +588,7 @@ class GameHypervisor {
          * Unit is disbanded after.
          */
         fun settle(it : Unit) {
-            settle(it.isoVec.cpy(), GameData.civType)
+            settle(it.isoVec.cpy(), GameData.player!!.civType)
 
             unit_select(it)
             unit_disband()
@@ -589,11 +598,12 @@ class GameHypervisor {
          * # Creates a size 0 settlement at [x],[y] with the provided style.
          */
         fun settle(pos: Vector3, type : CityTypes) {
-            GameData.cities.add(City(pos, type))
+            GameData.player!!.cities.add(City(pos, type))
         }
 
 
-    //========================================================================
+
+        //========================================================================
     //#endregion breakdown
     //#region misc
     //========================================================================
