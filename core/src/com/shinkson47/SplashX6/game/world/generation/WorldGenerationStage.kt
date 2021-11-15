@@ -135,7 +135,7 @@ internal object GenerationCompanion {
 
         l.SetFractalPingPongStrength(pingPongStrength)
 
-        l.SetSeed(1)
+        l.SetSeed(MathUtils.random(25565))
         return l
     }
 }
