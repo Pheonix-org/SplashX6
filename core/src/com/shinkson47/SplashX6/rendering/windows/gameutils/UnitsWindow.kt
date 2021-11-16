@@ -37,13 +37,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
     })
 
 
-    init { constructContent() }
-
-    /**
-     * <h2>Constructs the content to be displayed in this window</h2>
-     */
-    override fun constructContent() {
-        if (FIRST_CONSTRUCTION) return
+    init {
         waiting.selection.required = false
         actions.selection.required = false
         busy.selection.required    = false

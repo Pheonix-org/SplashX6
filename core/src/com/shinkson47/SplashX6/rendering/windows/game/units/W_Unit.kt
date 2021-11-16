@@ -14,18 +14,12 @@ import com.shinkson47.SplashX6.utility.Assets
  * # Displays and manages a single unit.
  *
  *  TODO Remove window when unit is dispanded. How?
- *  TODO turn actions
- *  TODO management actions
- *  TODO abstract turn hook for all windows.
  */
 class W_Unit(val unit : Unit) : StageWindow(unit.displayName) {
 
     private val actions: List<UnitAction> = List(Assets.SKIN)
 
-
-    override fun constructContent() {}
     init {
-
         addButton("viewUnit", false, true) { GameHypervisor.unit_view() }
         tooltip("ttViewUnit")
 

@@ -39,11 +39,7 @@ class Spotify : StageWindow("Spotify") {
      */
     var playbackState : CurrentlyPlayingContext? = null
 
-
-    /**
-     * <h2>Constructs the content to be displayed in this window</h2>
-     */
-    override fun constructContent() {
+    init {
         // Init alise objects
         typeSelectBox       = SelectBox<SpotifySourceType>(Assets.SKIN)
         contentSelectBox    = SelectBox<String>(Assets.SKIN)

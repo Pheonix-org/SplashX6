@@ -31,14 +31,7 @@ class Settlements : StageWindow("Settlements") {
         }
     })
 
-
-    init { constructContent() }
-
-    /**
-     * <h2>Constructs the content to be displayed in this window</h2>
-     */
-    override fun constructContent() {
-        if (FIRST_CONSTRUCTION) return
+    init {
         settlements.selection.required = false
         production.selection.required = false
 

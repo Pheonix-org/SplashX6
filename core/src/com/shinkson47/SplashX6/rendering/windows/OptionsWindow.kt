@@ -24,11 +24,7 @@ class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("PREFERENCE
     private val GRAPHICS_OPTION_TAB: Table = GraphicsTab(this)
     private val SOUND_OPTION_TAB: Table = AudioTab()
 
-    /**
-     * <h2>Constructs the content to be displayed in this window</h2>
-     */
-    override fun constructContent() {
-        if (FIRST_CONSTRUCTION) return  // We need access to the tabs stored at class level. Skip super construction.
+    init {
         val contentCell = add()
 
         tabs(
@@ -50,9 +46,5 @@ class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("PREFERENCE
 
         setPosition(100f, 100f)
         setSize(parent.width - 200, parent.height - 200)
-    }
-
-    init {
-        constructContent()
     }
 }

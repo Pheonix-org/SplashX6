@@ -12,9 +12,7 @@ import com.shinkson47.SplashX6.utility.Assets
  */
 class Music : StageWindow("Music") {
 
-    override fun constructContent() {
-        if (FIRST_CONSTRUCTION) return
-
+    init {
         span(add(
                 Label("You can also control spotify!", Assets.SKIN)
         ).fillX().center())
@@ -40,9 +38,5 @@ class Music : StageWindow("Music") {
         addButton("resetPlaylist") { AudioController.resetPlaylist() }
         tooltip("ttReset")
         updateColSpans()
-    }
-
-    init {
-        constructContent()
     }
 }

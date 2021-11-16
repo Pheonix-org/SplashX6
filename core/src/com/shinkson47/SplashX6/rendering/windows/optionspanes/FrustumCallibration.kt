@@ -22,7 +22,7 @@ class FrustumCallibration : StageWindow("Culling frustum calabration") {
     /**
      * <h2>Constructs the content to be displayed in this window</h2>
      */
-    override fun constructContent() {
+    init {
         add(Label("For when the rendered world does not fit the screen.", Assets.SKIN)).row()
         hsep().padTop(50f)
         add(

@@ -41,17 +41,14 @@ class MainMenu : ScalingScreenAdapter() {
      * Sub class that encompasses the window shown at the main menu that contains option for the user
      */
     private inner class MainMenuWindow : StageWindow() {
-        /**
-         * <h2>Constructs the content to be displayed in this window</h2>
-         */
-        override fun constructContent() {
+        init {
             // Title label
             add(Label("SPLASH X6", SKIN,"RetroNewVersion-Large", Color.BLACK))
 
-                .row()
+                    .row()
 
             add(
-                Label("PRE-ALPHA 0.0.2", SKIN)
+                    Label("PRE-ALPHA 0.0.2", SKIN)
             ).padBottom(50f).row()
 
             addButton("newGame") { NewGame() }
@@ -62,6 +59,7 @@ class MainMenu : ScalingScreenAdapter() {
 
             isMovable = false
             isResizable = false
+            pack()
         }
     }
 

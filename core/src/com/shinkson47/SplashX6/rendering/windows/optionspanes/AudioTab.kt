@@ -86,7 +86,7 @@ class AudioTab() : Table() {
         val btnAuthenticate = TextButton(local("spotifyAuthenticate"), Assets.SKIN)
         btnAuthenticate.addListener(LambdaClickListener{
             if (Spotify.create(authArea.text) && GameHypervisor.inGame)
-                GameWindowManager.add(com.shinkson47.SplashX6.rendering.windows.game.Spotify())
+                StageWindow.post(com.shinkson47.SplashX6.rendering.windows.game.Spotify())
         })
 
         //TODO i hate this repetition. Some kind of preferences utilities?

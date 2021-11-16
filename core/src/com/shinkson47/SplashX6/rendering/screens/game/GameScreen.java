@@ -14,6 +14,7 @@ import com.shinkson47.SplashX6.game.units.Unit;
 import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter;
+import com.shinkson47.SplashX6.rendering.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen;
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
 import com.shinkson47.SplashX6.utility.Debug;
@@ -78,7 +79,7 @@ public class GameScreen extends ScalingScreenAdapter {
 
 
     public GameScreen() {
-        MouseHandler.create(); //TODO should this really be here?
+        MouseHandler.create(); //FIXME This really shouldn't be here.
 
         // Create objects
         sr = new ShapeRenderer();
@@ -90,7 +91,6 @@ public class GameScreen extends ScalingScreenAdapter {
 
         // Configure UI
         resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        createUI();
     }
 
     /**
@@ -100,7 +100,7 @@ public class GameScreen extends ScalingScreenAdapter {
      * (Used to display a world after creating or loading a new one without creating a new screen.)
      *
      * TODO Integrate a multiplayer load with the doNewGameCallback which creates
-     * a new game screen.
+     *  a new game screen.
      */
     public void newRenderer() {
         r = new IsometricStaggeredTiledMapRenderer(GameData.world);
@@ -113,13 +113,13 @@ public class GameScreen extends ScalingScreenAdapter {
     /**
      * <h2>Constructs GUI shown within the game window</h2>
      */
-    private void createUI(){
+    public void createUI(){
         // Have the mouse handler accept this stage for receiving mouse input
         MouseHandler.configureGameInput(stage);
 
         // Add to stage
         stage.addActor(new Menu(this));
-        stage.addActor(GameWindowManager.getWINDOW_DOCK());
+        stage.addActor(StageWindow.getWINDOW_DOCK());
     }
 
 

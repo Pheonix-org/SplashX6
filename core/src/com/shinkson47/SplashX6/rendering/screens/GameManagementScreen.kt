@@ -151,6 +151,6 @@ internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
 
     private fun updateView() {
         parent.r.setView(camera)
-        parent.worldBatch.projectionMatrix = camera.combined // TODO i don't this should be required every frame, but it is. Maybe something is modifying the worldbatch?
+        parent.worldBatch.projectionMatrix = camera.combined // TODO i don't this this should be required every frame, but it is. Maybe something is modifying the worldbatch?
     }
 }

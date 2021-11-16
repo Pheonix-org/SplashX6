@@ -73,13 +73,6 @@ public class Debug {
 
         public DebugWindow() {
             super("DEBUG", false);
-        }
-
-        /**
-         * <h2>Constructs the content to be displayed in this window</h2>
-         */
-        @Override
-        protected void constructContent() {
             addButton("Toggle General Debug", o -> debugMode = !debugMode);
 
             seperate("Camera");

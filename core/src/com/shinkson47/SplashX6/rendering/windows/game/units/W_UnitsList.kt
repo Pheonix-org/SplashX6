@@ -30,16 +30,10 @@ class W_UnitsList : StageWindow("Units"){
         }
 
         if (it.tapCount >= 2)
-            GameWindowManager.postWindow(W_Unit(selected))
+            StageWindow.post(W_Unit(selected))
     }})
 
-    init { constructContent() }
-
-    /**
-     * <h2>Constructs the content to be displayed in this window</h2>
-     */
-    override fun constructContent() {
-        if (FIRST_CONSTRUCTION) return
+   init {
         list.selection.required = false
 
         list.addListener(SELECT_LISTENER(list))
@@ -48,13 +42,12 @@ class W_UnitsList : StageWindow("Units"){
         // TODO localise
         // TODO lots of repeating code here
 
-
         refresh()
-        pack()
     }
 
     override fun refresh() {
         list.setItems(*GameData.player!!.units.toTypedArray())
+        pack()
     }
 
     //#endregion

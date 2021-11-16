@@ -9,7 +9,9 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
+import com.shinkson47.SplashX6.rendering.windows.game.Music
 import com.shinkson47.SplashX6.rendering.windows.game.Spotify
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.SKIN
@@ -39,10 +41,6 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
      * # A Window used to display sub items.
      */
     val subActionMenu = SubActionMenu()
-
-
-
-
 
     init {
         //TODO localisation
@@ -80,7 +78,8 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
 
         addMenuItem(this, "Spotify", WindowAction(Spotify()),
                 MenuSubItem("Play Pause")   { com.shinkson47.SplashX6.audio.Spotify.play() } ,
-                MenuSubItem("Next")         { com.shinkson47.SplashX6.audio.Spotify.next() }
+                MenuSubItem("Next")         { com.shinkson47.SplashX6.audio.Spotify.next() },
+                MenuSubItem("Built-In", WindowAction(Music()))
         )
 
         addMenuItem(this, "Warroom", {GameHypervisor.cm_toggle()},
@@ -169,7 +168,6 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
          */
         val l = List<MenuSubItem>(SKIN)
 
-        override fun constructContent() {}
         init {
             add(l)
                     .left()
@@ -179,6 +177,7 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
             isVisible = false
             setPosition(0f, this@Menu.y - this.height)
             l.addListener(LambdaClickListener { select() })
+            unDock(this)
         }
 
         /**
@@ -245,12 +244,12 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
      */
     inner class WindowAction(val window : StageWindow) : Runnable {
         init {
-            _parent.stage.addActor(window)
             window.isVisible = false
         }
 
         override fun run() {
             window.toggleShown()
+            window.toFront()
         }
     }
 

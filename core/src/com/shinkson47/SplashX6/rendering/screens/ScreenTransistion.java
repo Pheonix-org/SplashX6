@@ -42,7 +42,6 @@ public class ScreenTransistion extends ScreenAdapter {
         // At this time the game no longer exists, but we're still trying to render it.
         // Stuff like that. Ignore it.
 
-        //TODO shoulnd't have to do this every frame.
         fadeRenderer.setColor(0, 0, 0, alpha);
         Gdx.gl.glEnable(Gdx.gl.GL_BLEND);
         Gdx.gl.glBlendFunc(Gdx.gl.GL_SRC_ALPHA, Gdx.gl.GL_ONE_MINUS_SRC_ALPHA);

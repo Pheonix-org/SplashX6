@@ -17,9 +17,10 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
-import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
+import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
+import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
@@ -136,7 +137,9 @@ class GameHypervisor {
          * Contains calls which require a game to be loaded.
          */
         private fun doNewGamePOST(){
-            unit_select(0)   // Select the first unit created at world gen. Should be a settler.
+            gameRenderer!!.createUI() // Populate the game screen with GUI. can't be done whilst gr is null.
+
+            unit_select(0)    // Select the first unit created at world gen. Should be a settler.
             unit_view()             // Focus the camera on that unit.
             camera_skipMovement();  // Skip the camera travelling from 0,0 to the unit.
                                     // without that, the game always starts with the camera flying across the map.
@@ -148,9 +151,8 @@ class GameHypervisor {
          */
         private fun doNewGameFINAL(){
             // TODO This couldn't be done before a world is created, but is only temporary.
-            // STOPSHIP: 17/04/2021 this is dumb and shouldn't stay
+            // STOPSHIP : 17/04/2021 this is dumb and shouldn't stay
             Debug.create()
-            GameWindowManager.create()
             KeyBinder.createGameBinds()
 
             if (!DEBUG_MODE) Spotify.pause()      // If possible, stop spotify.
@@ -310,9 +312,10 @@ class GameHypervisor {
             unit_updateUnitWindow()
         }
 
+        @Deprecated("Windows now automatically update on turn end.")
         @JvmStatic
         fun unit_updateUnitWindow() {
-            (GameWindowManager.WINDOW_DOCK.items.find { it.title == "Units" } as W_UnitsList).run()
+            //(GameWindowManager.WINDOW_DOCK.items.find { it.title == "Units" } as W_UnitsList).run()
         }
 
         @JvmStatic
@@ -556,10 +559,10 @@ class GameHypervisor {
         @JvmStatic
         fun dispose() {
             inGame = false
+            StageWindow.unPostAll()
             gameRenderer?.dispose()
             gameRenderer = null
             GameData.clear()
-            GameWindowManager.dispose()
 
             // FIXME: 28/07/2021 Possible for this to not take effect if the user enters any other screen within a second of getting to the main menu.
             Utility.DispatchDaemonThread("KeyBindingDisposer"){

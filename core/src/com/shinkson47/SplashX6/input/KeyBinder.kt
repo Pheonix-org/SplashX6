@@ -11,7 +11,6 @@ import com.shinkson47.SplashX6.game.GameHypervisor.Companion.turn_end
 import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
-import com.shinkson47.SplashX6.rendering.windows.GameWindowManager.select
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
@@ -89,16 +88,16 @@ object KeyBinder : InputAdapter() {
             bind(this, Input.Keys.F5) { NewGame()  }
 
             // Numbers toggle active tool window.
-            bind(this, Input.Keys.NUM_1) { select(0) }
-            bind(this, Input.Keys.NUM_2) { select(1) }
-            bind(this, Input.Keys.NUM_3) { select(2) }
-            bind(this, Input.Keys.NUM_4) { select(3) }
-            bind(this, Input.Keys.NUM_5) { select(4) }
-            bind(this, Input.Keys.NUM_6) { select(5) }
-            bind(this, Input.Keys.NUM_7) { select(6) }
-            bind(this, Input.Keys.NUM_8) { select(7) }
-            bind(this, Input.Keys.NUM_9) { select(8) }
-            bind(this, Input.Keys.NUM_0) { select(9) }
+//            bind(this, Input.Keys.NUM_1) { select(0) }
+//            bind(this, Input.Keys.NUM_2) { select(1) }
+//            bind(this, Input.Keys.NUM_3) { select(2) }
+//            bind(this, Input.Keys.NUM_4) { select(3) }
+//            bind(this, Input.Keys.NUM_5) { select(4) }
+//            bind(this, Input.Keys.NUM_6) { select(5) }
+//            bind(this, Input.Keys.NUM_7) { select(6) }
+//            bind(this, Input.Keys.NUM_8) { select(7) }
+//            bind(this, Input.Keys.NUM_9) { select(8) }
+//            bind(this, Input.Keys.NUM_0) { select(9) }
 
             if (Client.DEBUG_MODE) {
                 bind(this, Input.Keys.NUMPAD_ADD, true) { GameHypervisor.gameRenderer?.cam!!.desiredPosition.desired.z += 30; }
