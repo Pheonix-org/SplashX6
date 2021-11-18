@@ -399,8 +399,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 	default: {
-		checkboxOn: Windows_Toggle_Active
-		checkboxOff: Windows_Toggle_Selected
+		checkboxOn: Windows_Toggle_Selected
+		checkboxOff: Windows_Toggle_Active
 		font: Serif
 		fontColor: Black
 	}
