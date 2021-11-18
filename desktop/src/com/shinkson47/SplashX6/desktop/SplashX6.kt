@@ -33,7 +33,7 @@ object SplashX6 {
         // ===========================
         // When developing, change to true to enable debug features.
         // Check for DEBUG_MODE when writing a debug feature.
-        Client.DEBUG_MODE = false
+        Client.DEBUG_MODE = true
         checkCICD(arg)
         constructConfig()
         prebootComplete()

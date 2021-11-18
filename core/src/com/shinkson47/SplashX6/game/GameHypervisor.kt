@@ -605,7 +605,6 @@ class GameHypervisor {
         }
 
 
-
         //========================================================================
     //#endregion breakdown
     //#region misc

@@ -1,13 +1,14 @@
 package com.shinkson47.SplashX6.rendering.windows
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.ui.Cell
-import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.Graphics
+import com.badlogic.gdx.scenes.scene2d.ui.Tree
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.windows.optionspanes.AudioTab
-import com.shinkson47.SplashX6.rendering.windows.optionspanes.GameTab
-import com.shinkson47.SplashX6.rendering.windows.optionspanes.GraphicsTab
+import com.shinkson47.SplashX6.rendering.windows.optionspanes.LanguageSelectionListener
+import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.GraphicalConfig
+import com.shinkson47.SplashX6.utility.Languages
+import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
  * # A collection of tabs that provide configurable options to the user.
@@ -17,34 +18,44 @@ import com.shinkson47.SplashX6.rendering.windows.optionspanes.GraphicsTab
  */
 class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("PREFERENCES") {
 
-    /**
-     * Tab windows
-     */
-    private val GAME_OPTION_TAB: Table = GameTab(this)
-    private val GRAPHICS_OPTION_TAB: Table = GraphicsTab(this)
-    private val SOUND_OPTION_TAB: Table = AudioTab()
-
     init {
-        val contentCell = add()
+        val t : Tree<Tree.Node<*, *, *>, Any> = Tree(SKIN)
+        t.selection.isDisabled = true
+        t.indentSpacing = 30f
 
-        tabs(
-            contentCell,
+        // IMPLEMENT localisation
 
-            listOf(
-                GAME_OPTION_TAB,
-                SOUND_OPTION_TAB,
-                GRAPHICS_OPTION_TAB
+        arrayOf(
+            RootNode(
+                    "General",
+                    ListNode(LanguageSelectionListener, "locale", local("selectLanguage"), *Languages.values())
             ),
 
-            listOf(
-                "game",
-                "sound",
-                "graphics",
-                "advanced"
+            RootNode(
+                    "Graphics",
+                    ListNode<Graphics.DisplayMode>(GraphicalConfig, "displayMode", "Display Mode", *GraphicalConfig.getDisplayModes() + GraphicalConfig.displayMode),
+                    ListNode(GraphicalConfig, "scalingMode", "Scaling Mode", *GraphicalConfig.getScalingModes()),
+                    CheckboxNode(GraphicalConfig, "fullscreen", "Fullscreen"),
+                    ScriptNode(local("graphicalFrustum")) { GraphicalConfig.callibrateCullingFrustum(this) }
+            ),
+
+            RootNode(
+                    "Sound",
+
             )
+
+        ).forEach { t.add(it) }
+
+        t.addListener(LambdaClickListener {pack()})
+
+        expandfill(
+                add(t)
+                .minHeight(200f)
+                .minWidth(300f)
         )
 
-        setPosition(100f, 100f)
-        setSize(parent.width - 200, parent.height - 200)
+
+//                SOUND_OPTION_TAB,
+        pack()
     }
 }

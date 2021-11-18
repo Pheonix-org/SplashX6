@@ -19,6 +19,7 @@ import com.shinkson47.SplashX6.rendering.screens.game.GameScreen;
 import com.shinkson47.SplashX6.utility.Assets;
 import com.shinkson47.SplashX6.utility.GraphicalConfig;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -746,6 +747,6 @@ public abstract class StageWindow extends Window implements Runnable {
     }
 
     //=====================================================================
-    //#endregion api extension
+    //#endregion
     //=====================================================================
 }

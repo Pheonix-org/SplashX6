@@ -58,121 +58,121 @@ public class Assets {
 
   public static Preferences preferences = Gdx.app.getPreferences("Splash X6 config");
 
-    public static I18NBundle LANG;
+  public static I18NBundle LANG;
 
-    public static ArrayList<Locale> languages;
+  public static ArrayList<Locale> languages;
 
     //#region UI
-    public static final Skin SKIN,
-            SKIN_KENNEY = new Skin(Gdx.files.internal("skins/kenney-pixel/skin/skin.json"));
-    //public static final Texture menubg = new Texture("sprites/bg.png");
-    //#endregion UI
+  public static final Skin SKIN,
+        SKIN_KENNEY = new Skin(Gdx.files.internal("skins/kenney-pixel/skin/skin.json"));
+  //public static final Texture menubg = new Texture("sprites/bg.png");
+  //#endregion UI
 
-    //#region World
-    /**
-     * <h2>A blank TMX tilemap that contains all of our TSX tilesets and images</h2>
-     * There's no way to directly load TSX, but GDX can load TMX and we can get the tilesets from
-     * the loaded {@link TiledMap}
-     */
-    public static final TiledMap
-            TILESETS,
-            SPRITES;
+  //#region World
+  /**
+   * <h2>A blank TMX tilemap that contains all of our TSX tilesets and images</h2>
+   * There's no way to directly load TSX, but GDX can load TMX and we can get the tilesets from
+   * the loaded {@link TiledMap}
+   */
+  public static final TiledMap
+          TILESETS,
+          SPRITES;
 
-    public static final Texture
-            spotifyFail;
+  public static final Texture
+          spotifyFail;
 
-    public static final TextureAtlas
-            unitSprites,
-            citySprites,
-            menuBG;
+  public static final TextureAtlas
+          unitSprites,
+          citySprites,
+          menuBG;
 
-    /**
-     * <h2>A map of 'tile name' => tile ID'</h2>
-     * Where the name is the "x_x_x_x" structure,
-     * representing what type of tile is shown on each corner of the tile,
-     * starting at north and going clockwise.
-     * <br><br>
-     * The ID is determined by it's position in the TMX load order.
-     * <br>
-     * First tileset starts at 1, each tileset contains 216 tiles. Thus
-     * <blockquote>
-     * <code>
-     * ID = tilesetStart + tileIndex
-     * </code>
-     * </blockquote>
-     * .
-     * <br>
-     * The order of tilesets can be viewed and changed within the "tilesets.tmx" file.
-     * Tilesets can be viewed in thier "tsx" file.
-     * <br><br>
-     * This field fetches it's data from "tmx/tsdata.plist", which defines the map.
-     *
-     * @apiNote The value datatype is int, but the loader will only provide an object. Soz.
-     */
-    public static final Map<String, Object>
-            TILESET_MAP,
-            SPRITES_MAP,
-            playlists;
-    //#endregion World
+  /**
+   * <h2>A map of 'tile name' => tile ID'</h2>
+   * Where the name is the "x_x_x_x" structure,
+   * representing what type of tile is shown on each corner of the tile,
+   * starting at north and going clockwise.
+   * <br><br>
+   * The ID is determined by it's position in the TMX load order.
+   * <br>
+   * First tileset starts at 1, each tileset contains 216 tiles. Thus
+   * <blockquote>
+   * <code>
+   * ID = tilesetStart + tileIndex
+   * </code>
+   * </blockquote>
+   * .
+   * <br>
+   * The order of tilesets can be viewed and changed within the "tilesets.tmx" file.
+   * Tilesets can be viewed in thier "tsx" file.
+   * <br><br>
+   * This field fetches it's data from "tmx/tsdata.plist", which defines the map.
+   *
+   * @apiNote The value datatype is int, but the loader will only provide an object. Soz.
+   */
+  public static final Map<String, Object>
+          TILESET_MAP,
+          SPRITES_MAP,
+          playlists;
+  //#endregion World
 
-    //#region audio
-    public static final Music
-            GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/Lively/6054.mp3")),
-            MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/Menu.mp3"));
+  //#region audio
+  public static final Music
+          GAME_DEFAULT = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/Lively/6054.mp3")),
+          MUSIC_MAIN_MENU = Gdx.audio.newMusic(Gdx.files.internal("audio/soundtrack/Menu.mp3"));
 
-    // Playlist tracks
-    /**
-     * <h2>This applications default game playlist</h2>
-     * Loads music files into an Array.
-     */
-    public static final ArrayList<Music> SONGS = new ArrayList<>();
+  // Playlist tracks
+  /**
+   * <h2>This applications default game playlist</h2>
+   * Loads music files into an Array.
+   */
+  public static final ArrayList<Music> SONGS = new ArrayList<>();
 
-    public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/click33.wav"));
-    //#endregion audio
+  public static final Sound SFX_BUTTON = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/click33.wav"));
+  //#endregion audio
 
-    public static final String
-            CREDITS_TEXT    = Gdx.files.internal("lang/credits.txt").readString(),
-            SPLASH_TEXT     = Gdx.files.internal("lang/splash.txt").readString(),
-            SONG_LOAD_LIST  = Gdx.files.internal("audio/data/loadList.csv").readString();
+  public static final String
+          CREDITS_TEXT    = Gdx.files.internal("lang/credits.txt").readString(),
+          SPLASH_TEXT     = Gdx.files.internal("lang/splash.txt").readString(),
+          SONG_LOAD_LIST  = Gdx.files.internal("audio/data/loadList.csv").readString();
 
-    public static final String[] TIPS = Gdx.files.internal("lang/tips.txt").readString().split("\n");
+  public static final String[] TIPS = Gdx.files.internal("lang/tips.txt").readString().split("\n");
 
-    /**
-     * Single chanel data image used to try and determine if the cursor
-     * is over
-     */
-    public static BufferedImage hitTest;
+  /**
+   * Single chanel data image used to try and determine if the cursor
+   * is over
+   */
+  public static BufferedImage hitTest;
 
-    static{
-        unitSprites = new TextureAtlas("sprites/units.atlas");
-        citySprites = new TextureAtlas("sprites/cities.atlas");
-        menuBG = new TextureAtlas("sprites/menu_bg.atlas");
-        spotifyFail = new Texture("sprites/spotify_fail.png");
+  static{
+      unitSprites = new TextureAtlas("sprites/units.atlas");
+      citySprites = new TextureAtlas("sprites/cities.atlas");
+      menuBG = new TextureAtlas("sprites/menu_bg.atlas");
+      spotifyFail = new Texture("sprites/spotify_fail.png");
 
-        SKIN = PrebootAssets.getPB_SKIN();
+      SKIN = PrebootAssets.getPB_SKIN();
 
-        // Tilesets
-        TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
-        SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
+      // Tilesets
+      TILESETS = new TmxMapLoader().load("tmx/tilesets.tmx");
+      SPRITES = new TmxMapLoader().load("tmx/sprites.tmx");
 
-        try {
-            TILESET_MAP = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
-            SPRITES_MAP = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
-            playlists   = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
-            hitTest = ImageIO.read(Gdx.files.internal("tsdata/hittest.png").read());
-        } catch (XmlParseException | IOException ignored) {
-            throw new Error("Unable to load assets.");
-        }
+      try {
+          TILESET_MAP = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
+          SPRITES_MAP = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
+          playlists   = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
+          hitTest = ImageIO.read(Gdx.files.internal("tsdata/hittest.png").read());
+      } catch (XmlParseException | IOException ignored) {
+          throw new Error("Unable to load assets.");
+      }
 
-        // Load playlist
-        for (String s : SONG_LOAD_LIST.split(",\n"))
-            SONGS.add(Gdx.audio.newMusic(Gdx.files.internal(s)));
+      // Load playlist
+      for (String s : SONG_LOAD_LIST.split(",\n"))
+          SONGS.add(Gdx.audio.newMusic(Gdx.files.internal(s)));
 
-        // Load languages
-        languages = new ArrayList<>();
-        for (Languages lang : Languages.values())
-            languages.add(new Locale(lang.toString()));
+      // Load languages
+      languages = new ArrayList<>();
+      for (Languages lang : Languages.values())
+          languages.add(new Locale(lang.toString()));
 
-        loadLanguage(en);
-    }
+      loadLanguage(en);
+  }
 }

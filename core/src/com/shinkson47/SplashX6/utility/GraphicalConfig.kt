@@ -1,9 +1,17 @@
 package com.shinkson47.SplashX6.utility
 
+import FrustumCallibration
 import com.badlogic.gdx.Gdx.graphics
 import com.badlogic.gdx.Graphics.*
+import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Scaling
 import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.windows.NodeInfo
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
+import com.shinkson47.SplashX6.utility.APICondition.Companion.WARN
+import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 
 
 /**
@@ -13,6 +21,14 @@ import com.shinkson47.SplashX6.Client
  * @version 1
  */
 object GraphicalConfig  {
+
+    fun callibrateCullingFrustum(parent : StageWindow){
+        if (invalidCall(REQ_IN_GAME, WARN("Frustrum changes can only be made whilst in-game.", parent)))
+            return
+
+        GameHypervisor.gameRenderer!!.hudStage.addActor(FrustumCallibration())
+        parent.toggleShown()
+    }
 
     // ============================================================
     // region Resolutions
@@ -60,6 +76,7 @@ object GraphicalConfig  {
      * if [value] is true, application will be asserted into fullscreen,
      * and vice versa.
     */
+    @NodeInfo("Hello")
     var fullscreen = graphics.isFullscreen
         set(it) {
             field = it

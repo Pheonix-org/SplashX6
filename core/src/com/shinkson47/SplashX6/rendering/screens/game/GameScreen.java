@@ -69,8 +69,11 @@ public class GameScreen extends ScalingScreenAdapter {
 
     private GameManagementScreen managementScreen = new GameManagementScreen(this);
 
+    private Menu menu;
 
-
+    public Menu getMenu() {
+        return menu;
+    }
 
     //========================================================================
     //#endregion fields
@@ -118,7 +121,8 @@ public class GameScreen extends ScalingScreenAdapter {
         MouseHandler.configureGameInput(stage);
 
         // Add to stage
-        stage.addActor(new Menu(this));
+        menu = new Menu(this);
+        stage.addActor(menu);
         stage.addActor(StageWindow.getWINDOW_DOCK());
     }
 
