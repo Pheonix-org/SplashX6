@@ -16,32 +16,29 @@ import com.shinkson47.SplashX6.utility.Utility.local
  * @since PRE-ALPHA
  * @version 2
  */
-class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("PREFERENCES") {
+class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("generic.any.options") {
 
     init {
         val t : Tree<Tree.Node<*, *, *>, Any> = Tree(SKIN)
         t.selection.isDisabled = true
         t.indentSpacing = 30f
 
-        // IMPLEMENT localisation
-
         arrayOf(
             RootNode(
-                    "General",
-                    ListNode(LanguageSelectionListener, "locale", local("selectLanguage"), *Languages.values())
+                    "generic.any.general",
+                    ListNode(LanguageSelectionListener, "locale", "specific.preferences.general.selectLanguage", *Languages.values())
             ),
 
             RootNode(
-                    "Graphics",
-                    ListNode<Graphics.DisplayMode>(GraphicalConfig, "displayMode", "Display Mode", *GraphicalConfig.getDisplayModes() + GraphicalConfig.displayMode),
-                    ListNode(GraphicalConfig, "scalingMode", "Scaling Mode", *GraphicalConfig.getScalingModes()),
-                    CheckboxNode(GraphicalConfig, "fullscreen", "Fullscreen"),
-                    ScriptNode(local("graphicalFrustum")) { GraphicalConfig.callibrateCullingFrustum(this) }
+                    "specific.preferences.graphics.graphics",
+                    ListNode<Graphics.DisplayMode>(GraphicalConfig, "displayMode", "specific.preferences.graphics.displayMode", *GraphicalConfig.getDisplayModes() + GraphicalConfig.displayMode),
+                    ListNode(GraphicalConfig, "scalingMode", "specific.preferences.graphics.scalingMode", *GraphicalConfig.getScalingModes()),
+                    CheckboxNode(GraphicalConfig, "fullscreen", "specific.preferences.graphics.fullscreen"),
+                    ScriptNode("specific.preferences.graphics.frustum") { GraphicalConfig.callibrateCullingFrustum(this) }
             ),
 
             RootNode(
-                    "Sound",
-
+                    "generic.sound.sound"
             )
 
         ).forEach { t.add(it) }

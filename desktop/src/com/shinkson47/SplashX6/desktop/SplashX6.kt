@@ -1,16 +1,13 @@
 package com.shinkson47.SplashX6.desktop
 
 import com.badlogic.gdx.Files
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
-import kotlin.jvm.JvmStatic
-import com.shinkson47.SplashX6.desktop.SplashX6
+import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.test.ReleaseTest
 import java.awt.GraphicsEnvironment
 import java.awt.HeadlessException
-import com.shinkson47.SplashX6.test.ReleaseTest
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import com.shinkson47.SplashX6.Client
 import java.awt.Toolkit
-import java.lang.Error
 
 /**
  * <h1>Main entry point for Splash X6</h1>

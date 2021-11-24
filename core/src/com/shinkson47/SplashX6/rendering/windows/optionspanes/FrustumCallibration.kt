@@ -66,7 +66,5 @@ class FrustumCallibration : StageWindow("Culling frustum calabration") {
             deltaZoom(10000f)
             desiredTilt.desired = TILT_MINIMUM
         }
-
-        isResizable = false
     }
 }

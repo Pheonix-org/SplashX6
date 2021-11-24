@@ -19,7 +19,7 @@ import com.shinkson47.SplashX6.utility.Utility
  * @since v1
  * @version 1
  */
-class TerrainGenerationEditor : Window("Terrain Generation Editor", SKIN_KENNEY) {
+class TerrainGenerationEditor : StageWindow("Terrain Generation Editor") {
 
     val buildButton = TextButton("Regenerate", SKIN_KENNEY)
     val autoRebuild = CheckBox("Auto re-build", SKIN_KENNEY)

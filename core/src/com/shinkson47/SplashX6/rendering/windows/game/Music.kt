@@ -22,7 +22,7 @@ class Music : StageWindow("Music") {
         addButton("pauseSong", false){  AudioController.pauseMusic() }.pack()
         tooltip("ttPause")
 
-        addButton("resumeSong") { AudioController.resumeMusic() }
+        addButton("generic.sound.resume") { AudioController.resumeMusic() }
         tooltip("ttResume")
 
         hsep()
@@ -35,7 +35,7 @@ class Music : StageWindow("Music") {
 
         row()
 
-        addButton("resetPlaylist") { AudioController.resetPlaylist() }
+        addButton("specific.windows.music.resetPlaylist") { AudioController.resetPlaylist() }
         tooltip("ttReset")
         updateColSpans()
     }

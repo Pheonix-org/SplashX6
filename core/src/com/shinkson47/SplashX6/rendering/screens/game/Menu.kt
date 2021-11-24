@@ -9,18 +9,21 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
+import com.shinkson47.SplashX6.rendering.windows.MessageWindow
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
+import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.rendering.windows.game.Music
 import com.shinkson47.SplashX6.rendering.windows.game.Spotify
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
  * # The menu bar used in-game to access tools, windows and more.
  */
 class Menu(val _parent : GameScreen) : Table(SKIN) {
-
+    // TODO raise drop down to top
     companion object {
         /**
          * # The height of a menu bar and it's contents
@@ -57,40 +60,42 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         // =========================================================
         //              Menu bar construction.
 
-        addMenuItem(this, "Game", NOTHING,
-                MenuSubItem("Preferences", WindowAction(OptionsWindow(_parent))) ,
-                MenuSubItem("New Game")     { GameHypervisor.NewGame() } ,
-                MenuSubItem("Load")         { GameHypervisor.load() } ,
-                MenuSubItem("Quickload")    { GameHypervisor.quickload() } ,
-                MenuSubItem("Save")         { GameHypervisor.save() } ,
-                MenuSubItem("Quicksave")    { GameHypervisor.quicksave() } ,
-                MenuSubItem("End Game")     { GameHypervisor.EndGame() }
+        addMenuItem(this, "generic.game.game", NOTHING,
+                MenuSubItem("generic.any.options", WindowAction(OptionsWindow(_parent))) ,
+                MenuSubItem("generic.game.new")         { GameHypervisor.NewGame() } ,
+                MenuSubItem("generic.game.load")        { GameHypervisor.load() } ,
+                MenuSubItem("generic.game.quickload")   { GameHypervisor.quickload() } ,
+                MenuSubItem("generic.game.save")        { GameHypervisor.save() } ,
+                MenuSubItem("generic.game.quicksave")   { GameHypervisor.quicksave() } ,
+                MenuSubItem("generic.game.end")         { GameHypervisor.EndGame() }
+        )
+
+        addMenuItem(this, "!Debug", WindowAction(com.shinkson47.SplashX6.utility.Debug.MainDebugWindow),
+                MenuSubItem("!Defog All") { GameData.world!!.defogAll() },
+                MenuSubItem("!World Generation", WindowAction(TerrainGenerationEditor())),
+                MenuSubItem("!Publish Game") {Server.boot()},
+                MenuSubItem("!Connect Locally") {com.shinkson47.SplashX6.network.Client.connect()},
+                MenuSubItem("!Show a message") {MessageWindow("Hello", "Everything is fine :)")},
+                MenuSubItem("!Show an error") { MessageWindow("Fuck you", "Everything is broken", true)}
         )
 
 
-
-        addMenuItem(this, "Debug", WindowAction(com.shinkson47.SplashX6.utility.Debug.MainDebugWindow),
-               MenuSubItem("Defog All") { GameData.world!!.defogAll() },
-               MenuSubItem("Publish Game") {Server.boot()},
-               MenuSubItem("Connect Locally") {com.shinkson47.SplashX6.network.Client.connect()}
+        addMenuItem(this, "specific.windows.music.spotify", WindowAction(Spotify()),
+                MenuSubItem("meta.pseudographic.playpause")         { com.shinkson47.SplashX6.audio.Spotify.play() } ,
+                MenuSubItem("meta.pseudographic.next")              { com.shinkson47.SplashX6.audio.Spotify.next() },
+                MenuSubItem("meta.pseudographic.previous")          { com.shinkson47.SplashX6.audio.Spotify.previous() },
+                MenuSubItem("!Built-In", WindowAction(Music()))
         )
 
-
-        addMenuItem(this, "Spotify", WindowAction(Spotify()),
-                MenuSubItem("Play Pause")   { com.shinkson47.SplashX6.audio.Spotify.play() } ,
-                MenuSubItem("Next")         { com.shinkson47.SplashX6.audio.Spotify.next() },
-                MenuSubItem("Built-In", WindowAction(Music()))
-        )
-
-        addMenuItem(this, "Warroom", {GameHypervisor.cm_toggle()},
-                MenuSubItem("Manage Units")     { W_UnitsList() },
-                MenuSubItem("View")             { GameHypervisor.unit_view() },
-                MenuSubItem("View destination") { GameHypervisor.unit_viewDestination() },
-                MenuSubItem("Set destination")  { GameHypervisor.unit_setDestination() },
-                MenuSubItem("Disband")          { GameHypervisor.unit_disband() },
+        addMenuItem(this, "specific.menubar.warroom", {GameHypervisor.cm_toggle()},
+                MenuSubItem("generic.any.manage")     { W_UnitsList() },
+                MenuSubItem("specific.windows.units.view")            { GameHypervisor.unit_view() },
+                MenuSubItem("specific.windows.units.viewDestination") { GameHypervisor.unit_viewDestination() },
+                MenuSubItem("specific.windows.units.setDestination")  { GameHypervisor.unit_setDestination() },
+                MenuSubItem("specific.windows.units.disband")         { GameHypervisor.unit_disband() },
                 )
 
-        addMenuItem(this, "End Turn", { GameHypervisor.turn_end() })
+        addMenuItem(this, "generic.game.endTurn", { GameHypervisor.turn_end() })
     }
 
 
@@ -107,7 +112,7 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
      * but it also performs an action by itself.
      */
     // TODO image instead, tooltip, sub actions
-    class MenuItem(val parentMenu: Menu, text: String, val action: Runnable, vararg subActions: MenuSubItem) : TextButton(text, SKIN, if (subActions.isEmpty()) "MenuItem" else "MenuItemList") {
+    class MenuItem(val parentMenu: Menu, key: String, val action: Runnable, vararg subActions: MenuSubItem) : TextButton(local(key), SKIN, if (subActions.isEmpty()) "MenuItem" else "MenuItemList") {
         val subActions = subActions as Array<MenuSubItem>
 
         init {
@@ -232,8 +237,8 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         }
     }
 
-    class MenuSubItem(val text : String, val action : Runnable) {
-        override fun toString(): String = text
+    class MenuSubItem(val key : String, val action : Runnable) {
+        override fun toString(): String = local(key)
     }
 
     /**
@@ -259,7 +264,7 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
     /**
      * # Adds an item to the menu.
      */
-    fun addMenuItem(parentMenu: Menu, text: String, action: Runnable, vararg subActions: MenuSubItem) = addMenuItem(MenuItem(parentMenu,text,action, *subActions))
+    fun addMenuItem(parentMenu: Menu, key: String, action: Runnable, vararg subActions: MenuSubItem) = addMenuItem(MenuItem(parentMenu,key,action, *subActions))
     fun addMenuItem(item : MenuItem) = add(item).height(HEIGHT).width(ITEM_WIDTH)
 
 }

@@ -1,7 +1,5 @@
 package com.shinkson47.SplashX6.rendering;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,20 +13,18 @@ import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.audio.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
-import com.shinkson47.SplashX6.rendering.screens.game.GameScreen;
-import com.shinkson47.SplashX6.utility.Assets;
-import com.shinkson47.SplashX6.utility.GraphicalConfig;
+import com.shinkson47.SplashX6.utility.Utility;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+
 import static com.shinkson47.SplashX6.audio.AudioController.GUI_SOUND;
 import static com.shinkson47.SplashX6.utility.Assets.SKIN;
 import static com.shinkson47.SplashX6.utility.Utility.local;
 
 /**
- * <h1>Splash X6's Stage2D.ui window</h1>
+ * <h1>Splash X6's in-game GUI window.</h1>
  * <br/><br/>
  * Splash uses Stage 2d with utilities to make window
  * creation and management easier.
@@ -197,24 +193,25 @@ public abstract class StageWindow extends Window implements Runnable {
     public StageWindow() {
         this("");
     }
-    public StageWindow(String title) {
-        this(title, "");
+    public StageWindow(String key) {
+        this(key, "");
     }
-    public StageWindow(String title, String style) {
-        this(title, style, true);
+    public StageWindow(String key, String style) {
+        this(key, style, true);
     }
-    public StageWindow(String title, Boolean visible) {
-        this(title, "", visible);
+    public StageWindow(String key, Boolean visible) {
+        this(key, "", visible);
     }
-    public StageWindow(String title, String style, Boolean visible) {
-        this(title, style, visible, true);
+    public StageWindow(String key, String style, Boolean visible) {
+        this(key, style, visible, true);
     }
-    public StageWindow(String title, String style, Boolean visible, Boolean resizable) {
+    public StageWindow(String key, String style, Boolean visible, Boolean resizable) {
         super("", SKIN);
-        this.title = title;
+        this.title = key;
         if (!style.equals("")) setStyle(SKIN.get(style, WindowStyle.class));
+
         center();
-        placeTitle(style, title);
+        placeTitle(style, key);
         setResizable(resizable);
         setVisible(visible);
         updateColSpans();
@@ -231,12 +228,13 @@ public abstract class StageWindow extends Window implements Runnable {
      * <h2>Places a label on the provided window to act as the window title.</h2>
      *
      * @param windowStyle The style of the window, determines the placement and style of heading used.
-     * @param title       The title text
+     * @param key       The title text
      */
-    protected static void placeTitle(Window w, String windowStyle, String title) { placeTitle(w, windowStyle, title, true); }
-    protected static void placeTitle(Window w, String windowStyle, String title, Boolean close) {
+    protected void placeTitle(String windowStyle, String key) { placeTitle(this, windowStyle, key); }
+    protected static void placeTitle(Window w, String windowStyle, String key) { placeTitle(w, windowStyle, key, true); }
+    protected static void placeTitle(Window w, String windowStyle, String key, Boolean close) {
         w.padTop(30f);
-        if (title.equals("")) return;   // If there's no title, do nothing
+        if (key.equals("")) return;   // If there's no title, do nothing
 
         w.getTitleTable().reset();      // Start from fresh
 
@@ -245,19 +243,19 @@ public abstract class StageWindow extends Window implements Runnable {
         // If using a dialog
         if (windowStyle.equals("dialog") || windowStyle.equals("dialog-modal")) {
             // Use plain upper, with 'title' style class (which wraps in '[]' and opaque bg to cover window border.)
-            label = new Label(title.toUpperCase(), SKIN, "title");
+            label = new Label(local(key).toUpperCase(), SKIN, "title");
         } else {
-            label = new Label(title.toUpperCase(), SKIN); // TODO this text needs to be white. Not sure why it isn't atm.
+            label = new Label(local(key).toUpperCase(), SKIN); // TODO this text needs to be white. Not sure why it isn't atm.
             w.getTitleTable().add(label).expandX();
 
             // IMPLEMENT a way for the user to configure which side the buttons are placed on.
             // FIXME the buttons don't match the forehead size
             // Buttons
-            w.getTitleTable().add(button("pack", o -> {w.pack();}));
+            w.getTitleTable().add(button("meta.pseudographic.pack", o -> {w.pack();}));
 
             if (close)
                 w.getTitleTable()
-                        .add(button("close", o -> {
+                        .add(button("meta.pseudographic.close", o -> {
                             if (w instanceof StageWindow && ((StageWindow)w).dontClose)
                                 ((StageWindow)w).toggleShown();
                             else
@@ -410,29 +408,19 @@ public abstract class StageWindow extends Window implements Runnable {
     }
 
     /**
-     * <h2>Places a label on this window to act as the window title.</h2>
-     *
-     * @param windowStyle The style of the window, determines the placement and style of heading used.
-     * @param title       The title text
-     */
-    private void placeTitle(String windowStyle, String title) {
-        placeTitle(this, windowStyle, title);
-    }
-
-    /**
      * <h2>Creates and adds a button which fills the row</h2>
      * Used in most places, ideal for lists of buttons.
      * <p>
      * Once the button is added, automatically moves to the next row.
      *
-     * @param Text Text contained in the button
+     * @param Key Text contained in the button
      * @param e    Function of the button
      * @return the button created
      */
-    protected TextButton addButton(String Text, Consumer<LambdaClickListener> e) { return addButton(Text, true, e); }
-    protected TextButton addButton(String Text, boolean newRow, Consumer<LambdaClickListener> e) { return addButton(Text, newRow, false, e); }
-    protected TextButton addButton(String Text, boolean newRow, boolean span, Consumer<LambdaClickListener> e) {
-        TextButton b = button(Text, e);
+    protected TextButton addButton(String Key, Consumer<LambdaClickListener> e) { return addButton(Key, true, e); }
+    protected TextButton addButton(String Key, boolean newRow, Consumer<LambdaClickListener> e) { return addButton(Key, newRow, false, e); }
+    protected TextButton addButton(String Key, boolean newRow, boolean span, Consumer<LambdaClickListener> e) {
+        TextButton b = button(Key, e);
         Cell c = add(b).expandX().fillX();
         if (span) span(c);
         if (newRow) row();
@@ -472,6 +460,19 @@ public abstract class StageWindow extends Window implements Runnable {
     protected Cell row(Actor... actors) {
         row();
         return add(actors).row();
+    }
+
+    /**
+     * Centers a window in it's current state on it's stage
+     */
+    public void centerStage() {
+        int _alignment = getAlign();
+        align(Align.center);
+        setPosition(
+                Utility.center(getStage().getWidth(), getWidth()),
+                Utility.center(getStage().getHeight(), getHeight())
+        );
+        align(_alignment);
     }
 
     /**
@@ -539,7 +540,7 @@ public abstract class StageWindow extends Window implements Runnable {
     public static void seperate(Table t, String key) {
         t.row();
         // Create a label that will be the header
-        Label l = new Label(local(key), SKIN);
+        Label l = new Label((key.isEmpty()) ? key : local(key), SKIN);
 
         hsep(t)
                 .padTop(10)

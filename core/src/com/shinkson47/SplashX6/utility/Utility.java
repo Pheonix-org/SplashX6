@@ -6,7 +6,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.world.FastNoiseLite;
+import com.shinkson47.SplashX6.rendering.windows.MessageWindow;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -74,6 +78,24 @@ public final class Utility {
         return a + f * (b - a);
     }
 
+    /**
+     * For centering an item within a parent.
+     *
+     * Calcualtes a centerpoint on a given axis.
+     *
+     * Call twice, once for each axis.
+     *
+     * i.e
+     * <p>
+     *     setPosition(
+     *          center(ScreenWidth, WindowWidth),
+     *          center(ScreenHeight, WindowHeight)
+     *     );
+     * </p>
+     */
+    public static float center(float containerLength, float childLength) {
+        return (containerLength * 0.5f) - (childLength * 0.5f);
+    }
 
     /**
      * <h2>Determines if X and Y are within bounds of a 2d array</h2>
@@ -107,12 +129,8 @@ public final class Utility {
     }
 
     public static String local(String key) {
-        return LANG.get(key);
+        return (key.startsWith("!")) ? key.substring(1)  : LANG.get(key);
     }
-    // I tried to implement above by catching an out of bounds exception, but for some reason it wasn't catching it so i resorted to calculating it which is probably slower but oh well
-    //#endregion static
-
-
 
     /**
      * Converts a collection of items into a GDX compatable {@link Array}
@@ -208,4 +226,9 @@ public final class Utility {
         return t;
     }
 
+    public static void warn(String s) {
+        System.err.println("Warning for SplashX6 developers : " + s);
+        if (Client.DEBUG_MODE && GameHypervisor.getInGame())
+            new MessageWindow("!Developer Warning", "!" + s, true);
+    }
 }

@@ -387,6 +387,46 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		playMode: 2
 		crushMode: 0
 	}
+	Message_Normal_10: {
+		region: Message_Normal
+		horizontalStretchAreas: [ 7, 40 ]
+		verticalStretchAreas: [ 8, 19 ]
+		tiling: true
+		minWidth: 48
+		minHeight: 48
+		rightWidth: 5
+		leftWidth: 5
+		bottomHeight: 6
+		topHeight: 28
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
+	Message_Error_10: {
+		region: Message_Error
+		horizontalStretchAreas: [ 7, 40 ]
+		verticalStretchAreas: [ 8, 19 ]
+		tiling: true
+		minWidth: 48
+		minHeight: 48
+		rightWidth: 5
+		leftWidth: 5
+		bottomHeight: 6
+		topHeight: 28
+		offsetX: 0
+		offsetY: 0
+		offsetXspeed: 0
+		offsetYspeed: 0
+		frameDuration: 0.03
+		regions: []
+		playMode: 2
+		crushMode: 0
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
@@ -537,6 +577,14 @@ com.badlogic.gdx.scenes.scene2d.ui.Tree$TreeStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: Window_10
+		titleFont: Serif
+	}
+	Message: {
+		background: Message_Normal_10
+		titleFont: Serif
+	}
+	Message_error: {
+		background: Message_Error_10
 		titleFont: Serif
 	}
 }

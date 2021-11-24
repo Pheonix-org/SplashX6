@@ -5,6 +5,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.Utility.local
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.full.declaredMembers
 
@@ -59,19 +61,17 @@ abstract class ReflectionNode<V, A : Actor?>(
         try {
             return (field.annotations.find { it is NodeInfo } as NodeInfo).message
         } catch (e : Exception) {
-            System.err.println("Warning for SplashX6 developers : ${field.name} has no @NodeInfo.")
+            Utility.warn("${field.name} has no @NodeInfo.")
             return ""
         }
     }
 }
 
-
-
 object test {
     @JvmField @field:NodeInfo("No significance.") var testBool = false
 }
 
-class CheckboxNode(C: Any, fieldName: String, message: String) : ReflectionNode<Boolean, CheckBox>(C, fieldName, CheckBox(message, SKIN)) {
+class CheckboxNode(C: Any, fieldName: String, key: String) : ReflectionNode<Boolean, CheckBox>(C, fieldName, CheckBox(local(key), SKIN)) {
     init {
         actor.isChecked = value()
 
@@ -81,12 +81,13 @@ class CheckboxNode(C: Any, fieldName: String, message: String) : ReflectionNode<
     }
 }
 
-class ListNode<V>(C: Any, fieldName: String, message: String, vararg values : V) : ReflectionNode<V, VerticalGroup>(C, fieldName, VerticalGroup()) {
+class ListNode<V>(C: Any, fieldName: String, key: String, vararg values : V) : ReflectionNode<V, VerticalGroup>(C, fieldName, VerticalGroup()) {
     init {
         actor
                 .fill()
                 .align(Align.left)
-        actor.addActor(Label(message, SKIN))
+
+        actor.addActor(Label(local(key), SKIN))
 
         val list = SelectBox<V>(SKIN)
         actor.addActor(list)
@@ -97,13 +98,13 @@ class ListNode<V>(C: Any, fieldName: String, message: String, vararg values : V)
     }
 }
 
-class ScriptNode(message: String, payload : Runnable) : Tree.Node<Tree.Node<*, *, *>, Runnable, TextButton>(TextButton(message, SKIN)) {
+class ScriptNode(key: String, payload : Runnable) : Tree.Node<Tree.Node<*, *, *>, Runnable, TextButton>(TextButton(local(key), SKIN)) {
     init {
         actor.addListener(StageWindow.LambdaClickListener {payload.run()})
     }
 }
 
-class RootNode(text : String, vararg children : Tree.Node<*,*,*>) : Tree.Node<Tree.Node<*, *, *>, Tree.Node<*, *, *>, Actor>(Label(text, SKIN)) {
+class RootNode(key : String, vararg children : Tree.Node<*,*,*>) : Tree.Node<Tree.Node<*, *, *>, Tree.Node<*, *, *>, Actor>(Label(local(key), SKIN)) {
     init {
         children.forEach { add(it) }
     }

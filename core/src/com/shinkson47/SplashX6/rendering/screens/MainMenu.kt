@@ -51,11 +51,11 @@ class MainMenu : ScalingScreenAdapter() {
                     Label("PRE-ALPHA 0.0.2", SKIN)
             ).padBottom(50f).row()
 
-            addButton("newGame") { NewGame() }
-            addButton("loadGame") { Utility.notImplementedDialog(stage) }
-            addButton("preferences") { optionsWindow.isVisible = true; optionsWindow.toFront() }
-            addButton("credits") { client!!.fadeScreen(CreditsScreen()) }
-            addButton("exitGame") { Gdx.app.exit() }
+            addButton("generic.game.new") { NewGame() }
+            addButton("generic.game.load") { Utility.notImplementedDialog(stage) }
+            addButton("generic.any.options") { optionsWindow.isVisible = true; optionsWindow.toFront() }
+            addButton("specific.menu.credits") { client!!.fadeScreen(CreditsScreen()) }
+            addButton("generic.game.exit") { Gdx.app.exit() }
 
             isMovable = false
             isResizable = false
