@@ -344,8 +344,8 @@ public abstract class StageWindow extends Window implements Runnable {
      * @param text     The body content of the dialog
      * @param positive The text shown in the positive button. If empty, shows "OK!"
      */
-    protected void dialog(String title, String text, String positive) {
-        dialog(title, text, positive, "");
+    protected void dialog(String titleKey, String textKey, String positive) {
+        dialog(titleKey, textKey, positive, "");
     }
 
     /**
@@ -356,8 +356,8 @@ public abstract class StageWindow extends Window implements Runnable {
      * @param positive The text shown in the positive button. If empty, shows "OK!"
      * @param negative The text shown in the negative button. If empty, no button is added.
      */
-    protected void dialog(String title, String text, String positive, String negative) {
-        dialog(title, text, positive, negative, null);
+    protected void dialog(String titleKey, String textKey, String positive, String negative) {
+        dialog(titleKey, textKey, positive, negative, null);
     }
 
     /**
@@ -369,30 +369,33 @@ public abstract class StageWindow extends Window implements Runnable {
      * @param negative      The text shown in the negative button. If empty, no button is added.
      * @param resultHandler The handler which handles the button press. If null, no handler is added.
      */
-    public void dialog(String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
-        dialog(this, title, text, positive, negative, resultHandler);
+    public void dialog(String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler, Actor... actors) {
+        dialog(this, titleKey, textKey, positive, negative, resultHandler, actors);
     }
 
 
     // TODO change all strings to keys fetches
     // TODO test the dialog. Fairly sure it's broken after changing the theme.
-    public static void dialog(Actor actor, String title, String text, String positive, String negative, Consumer<Boolean> resultHandler) {
+    public static void dialog(Actor actor, String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler,
+        Actor... actors
+    ) {
         if (actor.getStage() == null)
             throw new NullPointerException("Tried to show a dialog, but the caller was not on a stage.");
 
         // Construct dialog, that gives the result to the handler
-        Dialog dialog = new Dialog("", SKIN, "dialog-modal") {
+        Dialog dialog = new Dialog("", SKIN) {
             protected void result(Object object) {
                 if (resultHandler != null)
-                    resultHandler.accept((boolean) object);
+                    resultHandler.accept((object == null) ? false : (boolean) object);
             }
         };
 
-        placeTitle(dialog, "dialog-modal", title);
+        placeTitle(dialog, "", titleKey);
 
         // Format and add content.
         dialog.getContentTable().padTop(30).padBottom(30);
-        dialog.text(text);
+        dialog.text(local(textKey));
+        dialog.add(actors);
 
         // If text is provided, add corresponding buttons and handler.
 

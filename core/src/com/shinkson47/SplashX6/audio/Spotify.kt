@@ -16,12 +16,16 @@ import com.wrapper.spotify.requests.data.library.GetUsersSavedTracksRequest
 import com.wrapper.spotify.requests.data.player.*
 import com.wrapper.spotify.requests.data.playlists.GetListOfCurrentUsersPlaylistsRequest
 import java.awt.Desktop
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /**
  * # Spotify intergration for Splash X6.
  *
  * This object handles authentication, and the compilation & execution of requests
  * between this application and the spotify API.
+ *
+ * TODO use refresh token. User has to reconnect every access token expires.
  *
  * @since PRE-ALPHA 0.0.2
  * @author [Jordan T Gray](https://shinkson47.in)
@@ -145,7 +149,12 @@ object Spotify {
      *
      * returns true if access was successful.
      */
-    private fun testConnection() = execute(REQUEST_CATAGORIES) != null
+    private fun testConnection() : Boolean {
+        refreshToken()
+        return implTestConnection()
+    }
+
+    private fun implTestConnection() = execute(REQUEST_CATAGORIES) != null;
 
 
     //=====================================================================
@@ -172,8 +181,10 @@ object Spotify {
      */
     val spotifyApi: SpotifyApi = SpotifyApi.Builder()
         .setClientId("72cabe08e89f49808ac14523a2f809ae")
-        .setClientSecret("9736d5764f1b4c4ab82547b9d34edd91") // TODO this is super bad but idk how to get around it. Should not keep secret in public source.
-        .setRedirectUri(SpotifyHttpManager.makeUri("https://shinkson47.in/SplashX6/spotify-callback"))
+        .setClientSecret("9736d5764f1b4c4ab82547b9d34edd91")
+            // TODO this is super bad but idk how to get around it. Should not keep secret in public source.
+            //  Perhaps we could use github secret's storage?
+        .setRedirectUri(SpotifyHttpManager.makeUri("https://www.shinkson47.in/SplashX6/spotify-callback"))
         .build()
 
     /**
@@ -339,9 +350,32 @@ object Spotify {
      */
     private fun getToken() {
         with (execute(PREAUTH_REQUEST_TOKEN!!)!!) {
+            saveTokenFetchData(accessToken, refreshToken, expiresIn)
+        }
+    }
+
+    /**
+     * # If the token has expired, requests a new token.
+     *
+     * Requests a new access token using the refresh token, and saves the result.
+     */
+    private fun refreshToken() {
+        // If the token hasn't expired, try making a request.
+        // If the resuest is successful, we don't need to refresh.
+        if (!tokenHasExpired() && implTestConnection()) return
+
+        with (execute(spotifyApi.authorizationCodeRefresh().build())!!) {
+            saveTokenFetchData(accessToken, refreshToken, expiresIn)
+        }
+    }
+
+    /**
+     * # Saves the token and expiry data after refreshing or obtaining an access token.
+     */
+    private fun saveTokenFetchData(accessToken: String, refreshToken: String, expiresIn: Int) {
+            saveExpiry(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC), expiresIn)
             cacheToken(accessToken, refreshToken)
             saveToken(accessToken, refreshToken)
-        }
     }
 
     /**
@@ -350,6 +384,23 @@ object Spotify {
     private fun cacheToken(accessToken: String, refreshToken: String) {
         spotifyApi.accessToken  = accessToken
         spotifyApi.refreshToken = refreshToken
+    }
+
+    private fun tokenHasExpired() : Boolean =
+        loadExpiryLast().plusSeconds(loadExpiresIn().toLong()).isBefore(LocalDateTime.now())
+
+    private fun loadExpiryLast() : LocalDateTime =
+        LocalDateTime.ofEpochSecond(Assets.preferences.getLong("SPOTIFY_REFRESH_LAST", 0), 0, ZoneOffset.UTC)
+
+    private fun loadExpiresIn() : Int =
+        Assets.preferences.getInteger("SPOTIFY_REFRESH_LENGTH", 0)
+
+    private fun saveExpiry(lastRefresh : Long, expiresIn : Int) {
+        with (Assets.preferences) {
+            putLong("SPOTIFY_REFRESH_LAST", lastRefresh)
+            putInteger("SPOTIFY_REFRESH_LENGTH", expiresIn)
+            flush()
+        }
     }
 
     /**
@@ -400,6 +451,7 @@ object Spotify {
         try {
             return request!!.execute()
         } catch (e : Exception){
+            // TODO Check for expired token
             ERROR = e
         }
         return null
@@ -553,4 +605,6 @@ object Spotify {
 
     var cache_GdxAlbums     : Array<String>? = null
         private set
+
+
 }
