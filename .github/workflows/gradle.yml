@@ -31,9 +31,14 @@ name: Release Build check
 
 on:
   push:
-    branches: [ master/master ]
+    branches:
+      - master
+      - develop
   pull_request:
-    branches: [ master/master ]
+    branches: 
+      - master
+      - develop
+      
 
 jobs:
   build:
