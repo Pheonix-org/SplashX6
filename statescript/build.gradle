@@ -1,0 +1,14 @@
+plugins {
+    id 'antlr'
+}
+
+sourceCompatibility = 13
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+eclipse.project.name = appName + "-statescript"
+
+dependencies {
+    antlr   "org.antlr:antlr4:4.9"
+    compile "com.squareup:javapoet:1.13.0"
+}

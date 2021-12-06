@@ -1,7 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.5.0'
 
-
     repositories {
         mavenLocal()
         mavenCentral()
@@ -9,10 +8,12 @@ buildscript {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         google()
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     }
+
+
 }
 
 allprojects {
@@ -38,6 +39,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
 }
+
 
 project(":desktop") {
     apply plugin: "java-library"
@@ -72,6 +74,17 @@ project(":core") {
         
     }
 }
+
+project(":statescript") {
+    apply plugin: "java-library"
+
+    dependencies {
+        implementation project(":core")
+    }
+}
+
+
+
 repositories {
     mavenCentral()
 }
