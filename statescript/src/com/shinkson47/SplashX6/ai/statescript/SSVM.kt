@@ -42,10 +42,10 @@ object SSVM {
         // Check for no file.
         if (args.isEmpty()) throw IllegalArgumentException("No file provided.")
 
-        if (args[0].endsWith(".ss")) {
+        if (args[0].endsWith(".sms")) {
             println("Compiling file : ${args[0]}")
         } else {
-            error("Not a statescript file. Ensure file ends with *.ss : \n ${args[0]}")
+            error("Not a statescript file. Ensure file ends with *.sms : \n ${args[0]}")
         }
 
         // Read file.
@@ -58,7 +58,7 @@ object SSVM {
         val parser = StateScriptParser(CommonTokenStream(lexer))
 
         println("\n\n============================================================")
-        println("Parsing. Token errors below. Errors from within java code blocks may be ignored.")
+        println("Parsing. Any errors in the State Machine Script file will appear here.")
         println("============================================================")
         // Create a parse tree of tokens from the entry rule of 'script'.
         val tree: ParseTree = parser.script()
@@ -105,6 +105,7 @@ object SSVM {
                 "\t}\n}"
 
         file.writeText(fileContents, UTF_8)
+        println("output : ${file.toAbsolutePath()}")
     }
 
     @JvmStatic
@@ -142,7 +143,7 @@ object SSVM {
 
     var code = ""
     @JvmStatic
-    fun addCode(block: StateScriptParser.BlockContext) {
+    fun addCode(block: StateScriptParser.ClassBodyContext) {
         println("Injected a code block.")
         code += strip(origionalText(block))
     }

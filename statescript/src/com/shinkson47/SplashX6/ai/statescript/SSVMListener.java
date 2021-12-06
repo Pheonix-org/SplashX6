@@ -56,7 +56,7 @@ public class SSVMListener extends StateScriptBaseListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCode(StateScriptParser.CodeContext ctx) { SSVM.addCode(ctx.block()); }
+	@Override public void enterCode(StateScriptParser.CodeContext ctx) { SSVM.addCode(ctx.classBody()); }
 	/**
 	 * {@inheritDoc}
 	 *
