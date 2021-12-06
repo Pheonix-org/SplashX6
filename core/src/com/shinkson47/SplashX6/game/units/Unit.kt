@@ -20,7 +20,7 @@ import java.io.Serializable
  * @since PRE-ALPHA 0.0.1
  * @version 1
  */
-class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())), Serializable {
+open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())), Serializable {
     constructor(unitClass: UnitClass, _x: Int, _y: Int) : this(unitClass, Vector3(_x.toFloat(), _y.toFloat(), 0f))
 
     // =============================================
