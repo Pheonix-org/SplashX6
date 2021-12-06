@@ -519,8 +519,8 @@ public class StateScriptParser extends Parser {
 
 	public static class CodeContext extends ParserRuleContext {
 		public TerminalNode CODE() { return getToken(StateScriptParser.CODE, 0); }
-		public BlockContext block() {
-			return getRuleContext(BlockContext.class,0);
+		public ClassBodyContext classBody() {
+			return getRuleContext(ClassBodyContext.class,0);
 		}
 		public CodeContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -550,7 +550,7 @@ public class StateScriptParser extends Parser {
 			setState(324);
 			match(CODE);
 			setState(325);
-			block();
+			classBody();
 			}
 		}
 		catch (RecognitionException re) {
@@ -11696,11 +11696,11 @@ public class StateScriptParser extends Parser {
 		"\7\3\2\2\2\u013d\u013e\7\4\2\2\u013e\u013f\5\u00b8]\2\u013f\t\3\2\2\2"+
 		"\u0140\u0141\7\5\2\2\u0141\u0142\5\u00b8]\2\u0142\13\3\2\2\2\u0143\u0144"+
 		"\7\6\2\2\u0144\u0145\5\u00b8]\2\u0145\r\3\2\2\2\u0146\u0147\7\7\2\2\u0147"+
-		"\u0148\5\u00b8]\2\u0148\17\3\2\2\2\u0149\u014a\7\66\2\2\u014a\u014b\7"+
-		"\n\2\2\u014b\u014c\7q\2\2\u014c\u014d\7\13\2\2\u014d\u0150\7q\2\2\u014e"+
-		"\u014f\7#\2\2\u014f\u0151\5\u00e2r\2\u0150\u014e\3\2\2\2\u0150\u0151\3"+
-		"\2\2\2\u0151\u0152\3\2\2\2\u0152\u0153\7L\2\2\u0153\21\3\2\2\2\u0154\u0155"+
-		"\7\3\2\2\u0155\u0156\7q\2\2\u0156\u0157\7H\2\2\u0157\u0159\5\b\5\2\u0158"+
+		"\u0148\5@!\2\u0148\17\3\2\2\2\u0149\u014a\7\66\2\2\u014a\u014b\7\n\2\2"+
+		"\u014b\u014c\7q\2\2\u014c\u014d\7\13\2\2\u014d\u0150\7q\2\2\u014e\u014f"+
+		"\7#\2\2\u014f\u0151\5\u00e2r\2\u0150\u014e\3\2\2\2\u0150\u0151\3\2\2\2"+
+		"\u0151\u0152\3\2\2\2\u0152\u0153\7L\2\2\u0153\21\3\2\2\2\u0154\u0155\7"+
+		"\3\2\2\u0155\u0156\7q\2\2\u0156\u0157\7H\2\2\u0157\u0159\5\b\5\2\u0158"+
 		"\u015a\5\n\6\2\u0159\u0158\3\2\2\2\u0159\u015a\3\2\2\2\u015a\u015c\3\2"+
 		"\2\2\u015b\u015d\5\f\7\2\u015c\u015b\3\2\2\2\u015c\u015d\3\2\2\2\u015d"+
 		"\u015e\3\2\2\2\u015e\u015f\7I\2\2\u015f\23\3\2\2\2\u0160\u0162\5\2\2\2"+

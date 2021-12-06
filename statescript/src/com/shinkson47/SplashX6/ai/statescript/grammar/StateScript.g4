@@ -30,10 +30,7 @@ exitScript  : EXIT block;
 
 code:
 	CODE
-	block
-//	LBRACE
-//	classBodyDeclaration*
-//	RBRACE
+	classBody
 	;
 
 switchState: SWITCH FROM Identifier TO Identifier (IF parExpression)? SEMI;
