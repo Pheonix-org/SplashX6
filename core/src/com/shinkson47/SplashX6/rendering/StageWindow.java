@@ -22,6 +22,7 @@ import java.util.function.Consumer;
 import static com.shinkson47.SplashX6.audio.AudioController.GUI_SOUND;
 import static com.shinkson47.SplashX6.utility.Assets.SKIN;
 import static com.shinkson47.SplashX6.utility.Utility.local;
+import static java.lang.System.gc;
 
 /**
  * <h1>Splash X6's in-game GUI window.</h1>
@@ -103,7 +104,7 @@ public abstract class StageWindow extends Window implements Runnable {
      */
     public static void post(StageWindow sw) {
         if (!GameHypervisor.getInGame()) return;
-        Stage s = GameHypervisor.getGameRenderer().getHUDStage();
+        Stage s = GameHypervisor.getGameRenderer().stage;
         s.addActor(sw);
 
         // IMPLEMENT a way for the user to configure where windows are created.
@@ -134,6 +135,7 @@ public abstract class StageWindow extends Window implements Runnable {
         for (StageWindow sw : WINDOW_DOCK.getItems()) {
             WINDOW_DOCK.getItems().removeValue(sw, true);
             sw.clear();
+            gc();
         }
     }
 

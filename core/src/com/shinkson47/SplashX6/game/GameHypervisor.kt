@@ -19,6 +19,7 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
+import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
@@ -517,11 +518,14 @@ class GameHypervisor {
         fun cm_selectedTile() : Vector3 {
             //validateCall(REQ_UNIT_CONTROL_MODE) { cm_enter(); }
 
-            // Get point on world that mouse is pointing to.
-            val unprojected = gameRenderer!!.managementScreen.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
+            return if (client!!.currentScreen is Warroom) {
+                // Get point on world that mouse is pointing to.
+                val unprojected = gameRenderer!!.managementScreen.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
 
-            // Find what tile that is and return it.
-            return cartesianToIso(unprojected.x.toInt(), unprojected.y.toInt())
+                // Find what tile that is and return it.
+                cartesianToIso(unprojected.x.toInt(), unprojected.y.toInt())
+            } else
+                camera_focusingOnTile()
         }
 
         /**

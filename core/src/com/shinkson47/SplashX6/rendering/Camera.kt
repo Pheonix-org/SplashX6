@@ -252,7 +252,7 @@ class Camera: PerspectiveCamera() {
         // (badly) Change viewport to match field of view
         // this can't really be improved, the staggared isometric renderer does not support a perspective camera, or it's culling frustum.
         // TODO As a work-around we could add a user adjustable varable to the width
-        GameHypervisor.gameRenderer!!.r.setView(combined,position.x - cachedFrustrumStartX ,position.y,  cachedFrustrumWidth, viewportHeight * fieldOfView)
+        GameHypervisor.gameRenderer!!.r!!.setView(combined,position.x - cachedFrustrumStartX ,position.y,  cachedFrustrumWidth, viewportHeight * fieldOfView)
 
         // Move towards desired position
         desiredPosition.next();

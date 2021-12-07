@@ -30,7 +30,7 @@ class W_UnitsList : StageWindow("Units"){
         }
 
         if (it.tapCount >= 2)
-            StageWindow.post(W_Unit(selected))
+            post(W_Unit(selected))
     }})
 
    init {

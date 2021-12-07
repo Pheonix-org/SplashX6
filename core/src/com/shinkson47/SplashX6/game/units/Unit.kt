@@ -37,9 +37,9 @@ open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSpri
      * # The unit's destination
      * Marks where the unit is travelling to.
      */
-    var destX = 0
+    var destX = -1
         private set
-    var destY = 0
+    var destY = -1
         private set
 
     // TODO these need to be dictionary based values, depending on the unit's class.

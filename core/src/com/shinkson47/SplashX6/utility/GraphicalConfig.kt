@@ -26,7 +26,7 @@ object GraphicalConfig  {
         if (invalidCall(REQ_IN_GAME, WARN("Frustrum changes can only be made whilst in-game.", parent)))
             return
 
-        GameHypervisor.gameRenderer!!.hudStage.addActor(FrustumCallibration())
+        GameHypervisor.gameRenderer!!.stage.addActor(FrustumCallibration())
         parent.toggleShown()
     }
 
