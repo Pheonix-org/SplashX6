@@ -44,37 +44,38 @@ public class MouseHandler {
      */
     public static void Poll() {
         // TODO gotta a be a way to abstract this garbage...
-            if (!GameHypervisor.getInGame()) return;
-            // If releasing, notify drag logistics that it's been released
-            if (DragLogistics.LEFT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                DragLogistics.LEFT.up();
-            }
+        if (!GameHypervisor.getInGame()) return;
+        // If releasing, notify drag logistics that it's been released
+        if (DragLogistics.LEFT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.LEFT))
+            DragLogistics.LEFT.up();
+        if (DragLogistics.RIGHT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
+            DragLogistics.RIGHT.up();
+        if (DragLogistics.MIDDLE.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.MIDDLE))
+            DragLogistics.MIDDLE.up();
 
-            // If pressing, notify drag logistics that it's been pressed
-            if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
-                DragLogistics.LEFT.down();
+
+        // If pressing, notify drag logistics that it's been pressed
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT))
+            DragLogistics.LEFT.down();
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT))
+            DragLogistics.RIGHT.down();
+        if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE))
+            DragLogistics.MIDDLE.down();
 
         if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && GameHypervisor.getCm_active())
                 GameHypervisor.cm_destinationSelect();
 
 
-            // If down, then update camera's target with the mouse's movement
-            if (DragLogistics.LEFT.isDown())
-                GameHypervisor.getGameRenderer().getCam().deltaPosition(DragLogistics.LEFT.x(), DragLogistics.LEFT.y());
-
-        // If releasing, notify drag logistics that it's been released
-        if (DragLogistics.RIGHT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
-            DragLogistics.RIGHT.up();
-
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT))
-            DragLogistics.RIGHT.down();
-
-            if (DragLogistics.RIGHT.isDown()) {
-                DragLogistics.RIGHT.x();
-                GameHypervisor.getGameRenderer().getCam().deltaTilt(DragLogistics.RIGHT.y());
-            }
+        // If down, then update camera's target with the mouse's movement
+        if (DragLogistics.RIGHT.isDown())
+            GameHypervisor.getGameRenderer().getCam().deltaPosition(DragLogistics.RIGHT.x(), DragLogistics.RIGHT.y());
 
 
+
+        if (DragLogistics.MIDDLE.isDown()) {
+            DragLogistics.MIDDLE.x(); // Side effect of calculating y.
+            GameHypervisor.getGameRenderer().getCam().deltaTilt(DragLogistics.MIDDLE.y());
+        }
     }
 
     /**
@@ -108,20 +109,12 @@ public class MouseHandler {
      * <h2>Zooms and moves the game camera with middle mouse</h2>
      */
     public static final InputAdapter GameZoomDragHandler = new InputAdapter() {
-        /**
-         * <h2>Moves the game camera with middle mouse down</h2>
-         */
-        @Override
-        public boolean keyDown(int keycode) {
-                return false;
-        }
 
         /**
          * <h2>Zooms game camera when user scrolls</h2>
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
-            if (GameHypervisor.getInGame())
             GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
             return true;
         }

@@ -8,7 +8,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_exit
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.turn_end
-import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen
+import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
@@ -118,7 +118,7 @@ object KeyBinder : InputAdapter() {
         // ========================================
 
 
-        with (GameManagementScreen::class.java) {
+        with (Warroom::class.java) {
             bind(this, Input.Keys.E) { turn_end() }
             bind(this, Input.Keys.TAB) { cm_exit() }
         }
@@ -154,7 +154,7 @@ object KeyBinder : InputAdapter() {
             bind(this, Input.Keys.LEFT, true) { camera.left() }
         }
 
-        with (GameManagementScreen::class.java) {
+        with (Warroom::class.java) {
             // Camera control
             bind(this, Input.Keys.W, true) { GameHypervisor.gameRenderer!!.managementScreen.up() }
             bind(this, Input.Keys.S, true) { GameHypervisor.gameRenderer!!.managementScreen.down() }

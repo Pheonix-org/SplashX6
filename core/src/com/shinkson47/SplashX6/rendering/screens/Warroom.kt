@@ -20,7 +20,7 @@ import org.xguzm.pathfinding.grid.GridCell
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 23/06/2021
  * @since PRE-ALPHA 0.0.2
  */
-internal class GameManagementScreen(val parent : GameScreen) : ScreenAdapter() {
+internal class Warroom(val parent : GameScreen) : ScreenAdapter() {
 
     /**
      * Orthograpgic camera used to view the world top-down.

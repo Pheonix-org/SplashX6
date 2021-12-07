@@ -15,8 +15,7 @@ import com.shinkson47.SplashX6.input.mouse.MouseHandler;
 import com.shinkson47.SplashX6.rendering.Camera;
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter;
 import com.shinkson47.SplashX6.rendering.StageWindow;
-import com.shinkson47.SplashX6.rendering.screens.GameManagementScreen;
-import com.shinkson47.SplashX6.rendering.windows.GameWindowManager;
+import com.shinkson47.SplashX6.rendering.screens.Warroom;
 import com.shinkson47.SplashX6.utility.Debug;
 
 import static com.shinkson47.SplashX6.game.GameDataKt.GameData;
@@ -67,7 +66,7 @@ public class GameScreen extends ScalingScreenAdapter {
      */
     private Float centerx = width * 0.5f, centery = height * 0.5f;
 
-    private GameManagementScreen managementScreen = new GameManagementScreen(this);
+    private Warroom managementScreen = new Warroom(this);
 
     private Menu menu;
 
@@ -266,7 +265,7 @@ public class GameScreen extends ScalingScreenAdapter {
         return r;
     }
 
-    public GameManagementScreen getManagementScreen() {
+    public Warroom getManagementScreen() {
         return managementScreen;
     }
 

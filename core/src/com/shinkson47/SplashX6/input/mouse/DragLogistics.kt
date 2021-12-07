@@ -10,7 +10,6 @@ import java.awt.Point
  * @version 1
  * @since v1
  */
-// TODO translate comments to kotlin
 class DragLogistics {
     /**
      * <h2>Is this mouse button down?</h2>
