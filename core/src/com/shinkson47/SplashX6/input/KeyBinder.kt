@@ -148,6 +148,10 @@ object KeyBinder : InputAdapter() {
             bind(this, Input.Keys.S, true) { camera.down() }
             bind(this, Input.Keys.D, true) { camera.right() }
             bind(this, Input.Keys.A, true) { camera.left() }
+            bind(this, Input.Keys.UP, true) { camera.up() }
+            bind(this, Input.Keys.DOWN, true) { camera.down() }
+            bind(this, Input.Keys.RIGHT, true) { camera.right() }
+            bind(this, Input.Keys.LEFT, true) { camera.left() }
         }
 
         with (GameManagementScreen::class.java) {
