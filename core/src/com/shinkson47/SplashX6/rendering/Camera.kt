@@ -163,7 +163,8 @@ class Camera: PerspectiveCamera() {
      */
     fun deltaZoom(delta: Float) {
         desiredZoom.set(MathUtils.clamp(fieldOfView + (delta * zoomMultiplier), ZOOM_MINIMUM, ZOOM_MAXIMUM))
-        desiredTilt.set(MathUtils.clamp(MathUtils.lerp(TILT_MINIMUM, TILT_MAXIMUM, 1/(((fieldOfView-ZOOM_MINIMUM)/(ZOOM_MAXIMUM - ZOOM_MINIMUM))) * tiltMultiplier), TILT_MINIMUM, TILT_MAXIMUM))
+        deltaTilt(MathUtils.lerp(TILT_MINIMUM, TILT_MAXIMUM, 1/(((fieldOfView-ZOOM_MINIMUM)/(ZOOM_MAXIMUM - ZOOM_MINIMUM))) * tiltMultiplier))
+        deltaPosition(0f, yFromAngle(desiredTilt.desired)-yFromAngle(desiredTilt.present))
     }
 
     fun deltaTilt(delta: Float) {
@@ -330,6 +331,7 @@ class Camera: PerspectiveCamera() {
     fun right() {
         desiredPosition.desired.x += TRUE_SPEED
     }
+
 
 
     // ============================================================
