@@ -33,6 +33,9 @@ task dist(type: Jar) {
     with jar
 }
 
+jar {
+    baseName 'Splash X6'
+}
 
 dist.dependsOn classes
 
