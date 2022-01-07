@@ -8,7 +8,7 @@ import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.audio.GamePlaylist
 import com.shinkson47.SplashX6.audio.Spotify
 import com.shinkson47.SplashX6.game.cities.City
-import com.shinkson47.SplashX6.game.cities.CityTypes
+import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.WorldTerrain
@@ -22,9 +22,6 @@ import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
-import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
-import com.shinkson47.SplashX6.rendering.windows.MessageWindow
-import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
@@ -32,6 +29,7 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
+import com.shinkson47.SplashX6.utility.TurnHook
 import com.shinkson47.SplashX6.utility.Utility
 import java.lang.Thread.sleep
 
@@ -68,13 +66,13 @@ class GameHypervisor {
          * # Runnables to be performed on [turnEnd].
          * Removed after being performed once.
          */
-        private val TURN_ASYNC_TASKS : ArrayList<Runnable> = ArrayList()
+        private val TURN_ASYNC_TASKS : ArrayList<TurnHook> = ArrayList()
 
         /**
          * # Runnables to be performed on [turnEnd].
          * Kept until removed, activated every turn.
          */
-        private val TURN_HOOKS : ArrayList<Runnable> = ArrayList()
+        private val TURN_HOOKS : ArrayList<TurnHook> = ArrayList()
 
 
         //========================================================================
@@ -130,7 +128,6 @@ class GameHypervisor {
             // Create a new game screen stored locally. It will be shown to the user in the FINAL.
             // For now, loading screen is still being displayed. This is just so we can access the camera and whatnot.
             gameRenderer = GameScreen()
-
         }
 
         /**
@@ -229,8 +226,8 @@ class GameHypervisor {
             GameData.player!!.units.add(s)
         }
 
-        fun civ_new() : Civilisation {
-            val c = Civilisation()
+        fun civ_new(civType: CityType): Civilisation {
+            val c = Civilisation(civType)
             GameData.civilisations.add(c)
             return c
         }
@@ -349,19 +346,29 @@ class GameHypervisor {
          * actions run on [turn_end]
          */
         @JvmStatic
-        fun turn_asyncTask(runnable: Runnable) = TURN_ASYNC_TASKS.add(runnable)
+        fun turn_asyncTask(runnable: TurnHook) = TURN_ASYNC_TASKS.add(runnable)
+
+        @JvmStatic @Deprecated("Runnables have been replaced by the [TurnHook] alias.")
+        fun turn_asyncTask(runnable: Runnable) = turn_asyncTask(runnable as TurnHook)
 
         /**
          * # Stores a runnable that will be invoked after every turn.
          */
         @JvmStatic
-        fun turn_hook(runnable: Runnable) = TURN_HOOKS.add(runnable)
+        fun turn_hook(runnable: TurnHook) = TURN_HOOKS.add(runnable)
+
+
+        @JvmStatic @Deprecated("Runnables have been replaced by the [TurnHook] alias.")
+        fun turn_hook(runnable: Runnable) = turn_hook(runnable as TurnHook)
 
         /**
          * # Removes a [turn_hook]
          */
         @JvmStatic
-        fun turn_unhook(runnable: Runnable) = TURN_HOOKS.remove(runnable)
+        fun turn_unhook(runnable: TurnHook) = TURN_HOOKS.remove(runnable)
+
+        @JvmStatic @Deprecated("Runnables have been replaced by the [TurnHook] alias.")
+        fun turn_unhook(runnable: Runnable) = turn_unhook(runnable as TurnHook)
 
 
         /**
@@ -605,7 +612,7 @@ class GameHypervisor {
         /**
          * # Creates a size 0 settlement at [x],[y] with the provided style.
          */
-        fun settle(pos: Vector3, type : CityTypes) {
+        fun settle(pos: Vector3, type : CityType) {
             GameData.player!!.cities.add(City(pos, type))
         }
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.utility.Assets.citySprites
+import com.shinkson47.SplashX6.utility.TurnHook
 
 /**
  * # A settlement city.
@@ -14,7 +15,7 @@ import com.shinkson47.SplashX6.utility.Assets.citySprites
  * @since PRE-ALPHA 0.0.2
  * @version 1.2
  */
-class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
+class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook {
 
     // ============================================================
     // region fields
@@ -55,6 +56,8 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
      */
     private lateinit var sprite : Sprite
     private fun spriteLateInit() { setSprite() }
+
+    private val production = Production(this)
 
 
     // ============================================================
@@ -129,9 +132,10 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityTypes) : Runnable {
     /**
      * # Temporary turn hook that grows the city's population by 1 on every turn.
      */
-    override fun run() {
+    override fun onTurn() {
         population++
         checkSpriteUpdate()
+        production.doOnTurn()
     }
 
     init {

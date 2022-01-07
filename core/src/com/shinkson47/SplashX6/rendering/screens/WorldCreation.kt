@@ -5,16 +5,17 @@ import com.shinkson47.SplashX6.utility.Assets
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.doNewGameCallback
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.inGame
-import com.shinkson47.SplashX6.game.world.WorldTerrain
+import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
+import com.shinkson47.SplashX6.utility.Assets.SKIN
 
 /**
  * # Provides the user a place to configure the game and world generation
@@ -50,6 +51,8 @@ class WorldCreation : ScalingScreenAdapter() {
 
     private val gameCreationWindow = W_GameCreation()
 
+    private var type = CityType.asian
+
     //==========================================
     //#endregion fields
     //#region operations
@@ -74,7 +77,7 @@ class WorldCreation : ScalingScreenAdapter() {
             }
 
         stage.batch.begin()
-        Assets.SKIN.getDrawable("tiledtex").draw(stage.batch, 0f, 0f, width, height)
+        SKIN.getDrawable("tiledtex").draw(stage.batch, 0f, 0f, width, height)
         stage.batch.end()
 
         stage.act()
@@ -147,7 +150,14 @@ class WorldCreation : ScalingScreenAdapter() {
             //      Advanced terrain
             addButton("specific.gamecreation.terrainSettings", true, true) { stage.addActor(TerrainGenerationEditor()) }
 
-            //add(SelectBox<>
+            row()
+            label("specific.gamecreation.civtype")
+
+            val x = SelectBox<CityType>(SKIN)
+            x.items.addAll(*CityType.values())
+            add(x)
+
+            x.addListener(LambdaChangeListener { GameData.pref_civType = x.selected})
 
             span(
                     hsep()

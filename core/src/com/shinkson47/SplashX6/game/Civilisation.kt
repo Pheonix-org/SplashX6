@@ -1,16 +1,11 @@
 package com.shinkson47.SplashX6.game
 
 import com.shinkson47.SplashX6.game.cities.City
-import com.shinkson47.SplashX6.game.cities.CityTypes
+import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.game.units.Unit
 import java.io.Serializable
 
-class Civilisation : Serializable {
-
-    /**
-     * # The type of civilisation that the user is playing as.
-     */
-    var civType: CityTypes = CityTypes.asian
+class Civilisation(var civType: CityType) : Serializable {
 
     /**
      * # List of all units in the world.

@@ -7,7 +7,7 @@ package com.shinkson47.SplashX6.game.cities
  * @since PRE-ALPHA 0.0.2
  * @version 1
  */
-enum class CityTypes {
+enum class CityType {
     asian,
     tropical
 }

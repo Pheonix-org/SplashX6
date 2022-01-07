@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.audio.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.utility.TurnHook;
 import com.shinkson47.SplashX6.utility.Utility;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ import static java.lang.System.gc;
  * @version 2
  * @since v1
  */
-public abstract class StageWindow extends Window implements Runnable {
+public abstract class StageWindow extends Window implements TurnHook {
 
     //=====================================================================
     //#region Companion
@@ -694,12 +695,8 @@ public abstract class StageWindow extends Window implements Runnable {
     // TODO the new small windows that are not a part of the menu need to call this.
     public void allowClose() { dontClose = false; }
 
-    /**
-     * Called on the end of every turn, indicating to
-     * open windows that they should update.
-     */
     @Override
-    public void run() { refresh(); }
+    public void onTurn() { refresh(); }
 
     /**
      * Optional notification to implementation.

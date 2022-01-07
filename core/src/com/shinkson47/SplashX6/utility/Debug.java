@@ -84,6 +84,7 @@ public class Debug {
 
             addButton("Unit test", o -> { TestScript.INSTANCE.run(); dialog("Test script complete", "Check terminal for results."); });
         }
+
     }
 
     /**
