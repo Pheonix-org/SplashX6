@@ -398,6 +398,7 @@ public abstract class StageWindow extends Window implements TurnHook {
         // Format and add content.
         dialog.getContentTable().padTop(30).padBottom(30);
         dialog.text(local(textKey));
+        dialog.row();
         dialog.add(actors);
 
         // If text is provided, add corresponding buttons and handler.
@@ -697,6 +698,11 @@ public abstract class StageWindow extends Window implements TurnHook {
 
     @Override
     public void onTurn() { refresh(); }
+
+    // I hate this, it re-implements but java would require every window to implement it. idk man.
+
+    @Override public void run() { doOnTurn(); }
+    @Override public void doOnTurn() { onTurn(); }
 
     /**
      * Optional notification to implementation.

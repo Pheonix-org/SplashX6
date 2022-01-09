@@ -3,11 +3,8 @@ package com.shinkson47.SplashX6.game.world.generation.stages
 import com.shinkson47.SplashX6.game.world.FastNoiseLite
 import com.shinkson47.SplashX6.game.world.Tile
 import com.shinkson47.SplashX6.game.world.WorldTerrain
-import com.shinkson47.SplashX6.game.world.WorldTerrainGenerator
 import com.shinkson47.SplashX6.game.world.generation.BaseGenerationStage
-import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion.SEA_LEVEL
 import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion.createNoiseGenerator
-import com.shinkson47.SplashX6.game.world.generation.WorldGenerationStage
 
 /**
  * # Generates base worlds using [FastNoiseLite]
@@ -22,17 +19,17 @@ class NoiseBaseStage : BaseGenerationStage() {
     /**
      * Noise used in generator.
      */
-    private lateinit var perlin : FastNoiseLite
+    private lateinit var noise : FastNoiseLite
 
     override fun execute(it: WorldTerrain) {
-        perlin = createNoiseGenerator()
+        noise = createNoiseGenerator()
 
         it.putEachTile { x: Int, y: Int, ignored -> generateBaseTile(x,y) }
     }
 
     private var f : Float = 0f
     private fun generateBaseTile (x: Int, y: Int) : Tile {
-        f = perlin.GetNoise(x.toFloat(), y.toFloat())
+        f = noise.GetNoise(x.toFloat(), y.toFloat())
 
         return Tile(
             if (f < WorldTerrain.SEA_LEVEL)                 // Will this tile be below sea level?

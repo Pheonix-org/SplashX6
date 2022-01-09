@@ -132,13 +132,27 @@ public class Debug {
         gameRenderer.getSr().setColor(Color.WHITE);
         gameRenderer.getSr().setProjectionMatrix(gameRenderer.getHUDBatch().getProjectionMatrix());
         gameRenderer.getSr().circle(Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f, 5);
+        //gameRenderer.getHUDBatch().begin();
+        //gameRenderer.getFont().draw(gameRenderer.getHUDBatch(), "Screen center (White)", Gdx.graphics.getWidth() * 0.5f, Gdx.graphics.getHeight() * 0.5f + 5);
+
+
+
+        gameRenderer.getSr().setProjectionMatrix(gameRenderer.getCam().combined);
+
+        // White dot on the tile that te camera is looking at.
+        Vector3 v = GameHypervisor.camera_focusingOnTile();
+        v = WorldTerrain.isoToCartesian((int)v.x, (int)v.y);
+        gameRenderer.getSr().setColor(Color.RED);
+        gameRenderer.getSr().circle(v.x, v.y, 4);
+        //gameRenderer.getFont().draw(gameRenderer.getHUDBatch(), "Camera Cursor Selected Tile (Worldspace, Red)", v.x, v.y + 10);
 
         // purple dot where the camera's looking. should match above white dot
         gameRenderer.getSr().setColor(Color.PURPLE);
-        gameRenderer.getSr().setProjectionMatrix(gameRenderer.getCam().combined);
-        Vector3 v = new Vector3(gameRenderer.getCam().position.x, gameRenderer.getCam().lookingAtY(), 0);
+        v = new Vector3(gameRenderer.getCam().position.x, gameRenderer.getCam().lookingAtY(), 0);
+        gameRenderer.getSr().circle(v.x, v.y, 3);
+        //gameRenderer.getFont().draw(gameRenderer.getHUDBatch(), "Camera Cursor (Worldspace, Purple)", v.x, v.y + 10);
+        //gameRenderer.getHUDBatch().end();
 
-        gameRenderer.getSr().circle((int)v.x, (int)v.y, 6);
 
         gameRenderer.getSr().end();
 

@@ -45,7 +45,7 @@ public class Assets {
     // TODO should really be in some kind of language manager
     public static final I18NBundle loadLanguage(Languages lang) {
         LANG = I18NBundle.createBundle(Gdx.files.internal("lang/lang"), new Locale(lang.toString()));
-        I18NBundle.setExceptionOnMissingKey(false);
+        //I18NBundle.setExceptionOnMissingKey(false);
 
         //#
         return LANG;

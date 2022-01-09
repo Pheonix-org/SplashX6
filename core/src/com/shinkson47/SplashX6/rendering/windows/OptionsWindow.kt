@@ -11,9 +11,12 @@ import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.optionspanes.LanguageSelectionListener
 import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Assets.SKIN_KENNEY
 import com.shinkson47.SplashX6.utility.GraphicalConfig
 import com.shinkson47.SplashX6.utility.Languages
 import com.shinkson47.SplashX6.utility.Utility.local
+import java.awt.Toolkit
+import java.awt.datatransfer.DataFlavor
 import java.lang.Exception
 import java.util.function.Consumer
 
@@ -51,12 +54,12 @@ class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("generic.an
                             SliderNode<Float>(AudioController, "musicVolume", "generic.sound.musicVolume", 0f, 1f, 0.1f),
                             SliderNode<Float>(AudioController, "buttonVolume", "generic.sound.sfxVolume", 0f, 1f, 0.1f), // TODO audio controller channel need updating. this isn't for buttons.
                             CheckboxNode(AudioController, "isMuted", "generic.sound.mute"),
-                    ),
-
-                    RootNode(
-                        "specific.windows.music.spotify",
-                            ScriptNode("specific.windows.music.connect") { spotifyConnect() }
-                    )
+                    )//,
+//
+//                    RootNode(
+//                        "specific.windows.music.spotify",
+//                            ScriptNode("specific.windows.music.connect") {  }
+//                    )
             )
 
         ).forEach { t.add(it) }
@@ -76,29 +79,6 @@ class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("generic.an
     // so i moved them here.
     //=========================
 
-    private fun spotifyConnect() {
-        Gdx.graphics.setWindowedMode(Gdx.graphics.displayMode.width, Gdx.graphics.displayMode.height)
-        if (Spotify.create()) // TODO this needs to be localised.
-            dialog("", "specific.windows.music.alreadyConnected", "", "", null)
-        else {
-            //TODO textbox is a bit wonky, and text is invisible.
-            val textbox = TextArea(local("specific.windows.music.pasteCode"), SKIN)
 
-            dialog(
-                "!Connect to spotify", "A browser should've opened." +
-                        "\n Authorize with spotify, then paste the code in the box" +
-                        "\n and click 'Authenticate'.", "", "",
-                {
-                    try {
-                        if (Spotify.create(textbox.text))
-                            dialog("generic.any.success", "")
-                    } catch (e : Exception) {
-                        dialog("!Spotify Connection Error", "${Spotify.ERROR?.message}" )
-                    }
-                },
-                        textbox
-            )
-        }
-    }
 }
 

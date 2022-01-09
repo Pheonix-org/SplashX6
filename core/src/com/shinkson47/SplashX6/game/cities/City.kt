@@ -57,7 +57,8 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook {
     private lateinit var sprite : Sprite
     private fun spriteLateInit() { setSprite() }
 
-    private val production = Production(this)
+    val production = Production(this)
+
 
 
     // ============================================================

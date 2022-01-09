@@ -160,6 +160,9 @@ object KeyBinder : InputAdapter() {
             bind(this, Input.Keys.X, false) { GameData.selectedUnit?.let { StageWindow.post(W_Unit(it)) } }
             bind(this, Input.Keys.GRAVE, false) { StageWindow.unPostAll() }
             bind(this, Input.Keys.SPACE, false) { GameHypervisor.cm_destinationSelect() }
+
+
+            bind(this, Input.Keys.NUMPAD_ADD, true) { camera.desiredPosition.desired.z += 20 }
         }
 
         with (Warroom::class.java) {

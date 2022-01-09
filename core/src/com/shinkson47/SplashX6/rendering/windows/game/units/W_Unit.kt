@@ -15,7 +15,7 @@ import com.shinkson47.SplashX6.utility.Assets
  *
  *  TODO Remove window when unit is dispanded. How?
  */
-class W_Unit(val unit : Unit) : StageWindow(unit.displayName) {
+class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
 
     private val actions: List<UnitAction> = List(Assets.SKIN)
 

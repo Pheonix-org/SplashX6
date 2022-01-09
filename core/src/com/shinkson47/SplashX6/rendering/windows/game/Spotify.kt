@@ -12,9 +12,12 @@ import com.shinkson47.SplashX6.audio.Spotify.SpotifySourceType
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.GraphicalConfig
 import com.shinkson47.SplashX6.utility.Utility
 import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlayingContext
 import com.wrapper.spotify.model_objects.specification.Track
+import java.awt.Toolkit
+import java.awt.datatransfer.DataFlavor
 
 /**
  * # GUI front end for [Spotify]
@@ -22,17 +25,22 @@ import com.wrapper.spotify.model_objects.specification.Track
  * @since PRE-ALPHA 0.0.2
  * @version 1
  */
-class Spotify : StageWindow("Spotify") {
+class Spotify : StageWindow("specific.windows.music.spotify") {
 
     //#region UI elements
-    lateinit var typeSelectBox       : SelectBox<SpotifySourceType>
-    lateinit var contentSelectBox    : SelectBox<String>
-    lateinit var songLabel           : Label
-    lateinit var seekSlider          : Slider
-    lateinit var volumeSlider          : Slider
-    lateinit var albumArt            : Image
-    lateinit var playPause           : TextButton
+    var typeSelectBox       : SelectBox<SpotifySourceType>
+    var contentSelectBox    : SelectBox<String>
+    var songLabel           : Label
+    var deviceLabel         : Label
+    var seekSlider          : Slider
+    var volumeSlider        : Slider
+    var albumArt            : Image
+    var playPause           : TextButton
     //#endregion
+
+
+
+
 
     /**
      * # Storage of the last known playback state.
@@ -41,73 +49,16 @@ class Spotify : StageWindow("Spotify") {
 
     init {
         // Init alise objects
-        typeSelectBox       = SelectBox<SpotifySourceType>(Assets.SKIN)
-        contentSelectBox    = SelectBox<String>(Assets.SKIN)
-        seekSlider          = Slider(0f,100f, 1f, false, Assets.SKIN)
-        volumeSlider        = Slider(0f,100f, 1f, false, Assets.SKIN)
-        albumArt            = Image()
+        typeSelectBox = SelectBox<SpotifySourceType>(Assets.SKIN)
+        contentSelectBox = SelectBox<String>(Assets.SKIN)
+        seekSlider = Slider(0f, 100f, 1f, false, Assets.SKIN)
+        volumeSlider = Slider(0f, 100f, 1f, false, Assets.SKIN)
+        albumArt = Image()
         albumArt.setScaling(Scaling.fit)
-
-        span(add(albumArt))
-            .height(512f)
-            .width(512f)
-            .center()
-            .row()
-
-        songLabel = label("").actor
-        songLabel.setAlignment(Align.center)
-        songLabel.setText("Song Name")
-        span(getCell(songLabel))
-            .fillX()
-            .expandX()
-            .center()
-            .row()
-
-        add(button("<") { Spotify.previous(); })
-            .width(50f)
-            .fillX()
-            .expandX()
-            .center()
-
-
-        val buttonCell = add(button("|| / >") {
-            if (playbackState?.is_playing == true) {
-                Spotify.pause()
-            } else
-                Spotify.play()
-        })
-            .width(200f)
-            .fillX()
-            .expandX()
-            .center()
-
-        playPause = buttonCell.actor
-
-        add(button(">") { Spotify.next(); update() })
-            .width(50f)
-            .fillX()
-            .expandX()
-            .center()
-            .row()
-
-
-        val labelCell : Cell<Label> = label("volume")
-        span(labelCell).center().row()
-        labelCell.actor.setAlignment(Align.center)
-
-        span(add(volumeSlider))
-            .right()
-            .row()
-        volumeSlider.addListener(LambdaChangeListener {
-            if (volumeSlider.isDragging) return@LambdaChangeListener
-            Spotify.setVolume(volumeSlider.value.toInt())
-        })
-
-        seperate("yourLibrary")
 
         typeSelectBox.items = Utility.CollectionToGDXArray(SpotifySourceType.values().asIterable())
         typeSelectBox.addListener(LambdaChangeListener { updateContentSelect() })
-        label("sourceType")
+        label("specific.windows.music.sourceType")
         span(add(typeSelectBox))
             .height(30f)
             .width(500f)
@@ -115,13 +66,60 @@ class Spotify : StageWindow("Spotify") {
             .row()
 
         contentSelectBox.addListener(LambdaChangeListener { updateSource() })
-        label("source")
+        label("specific.windows.music.source")
         span(add(contentSelectBox))
             .height(30f)
             .width(500f)
             .right()
             .row()
 
+        seperate("specific.windows.music.nowPlaying")
+
+        deviceLabel = implSongLabelCreation()
+
+        add(albumArt)
+            .height(512f)
+            .width(512f)
+            .center()
+            .colspan(3)
+            .row()
+
+        songLabel = implSongLabelCreation()
+
+
+        val t = Table()
+        t.add(button("meta.pseudographic.previous") { Spotify.previous(); })
+
+        val buttonCell = t.add(button("meta.pseudographic.playPause") {
+            if (playbackState?.is_playing == true) {
+                Spotify.pause()
+            } else
+                Spotify.play()
+        })
+
+        playPause = buttonCell.actor
+
+        t.add(button("meta.pseudographic.next") { Spotify.next(); update() })
+
+        add(t).expandX().fillX().colspan(3).row()
+
+        val labelCell: Cell<Label> = label("generic.sound.volume")
+
+        labelCell.center().colspan(3).row()
+        labelCell.actor.setAlignment(Align.center)
+
+        add(volumeSlider)
+            .colspan(3)
+            .fillX()
+            .expandX()
+            .row()
+        volumeSlider.addListener(LambdaChangeListener {
+            if (volumeSlider.isDragging) return@LambdaChangeListener
+            Spotify.setVolume(volumeSlider.value.toInt())
+        })
+
+
+        pack()
     }
 
     /**
@@ -140,6 +138,8 @@ class Spotify : StageWindow("Spotify") {
         // If there was an issue with the api request
         if (Spotify.ERROR != null) {
             fail("Unable to talk to spotify.\n(${Spotify.ERROR!!.javaClass.simpleName}: ${Spotify.ERROR!!.message})")
+            if (!Spotify.testConnection()) spotifyConnect()
+            isVisible = false
             AudioController.resumeMusic()
             return;
         }
@@ -169,6 +169,7 @@ class Spotify : StageWindow("Spotify") {
         // Show art and title
         showAlbumArt(playbackState!!)
         songLabel.setText(playbackState!!.item.name)
+        deviceLabel.setText("@ ${playbackState!!.device.name}")
 
         // Show correct playback context type.
         // NOTE : This has to be last cause of it's changed event.
@@ -177,6 +178,18 @@ class Spotify : StageWindow("Spotify") {
 
         // Re-enable spotify api requests.
         Spotify.enable()
+    }
+
+    private fun implSongLabelCreation(): Label {
+        val x = label("")
+            .fillX()
+            .expandX()
+            .center()
+            .colspan(3)
+            .actor
+        x.setAlignment(Align.center)
+        row()
+        return x
     }
 
     /**
@@ -298,12 +311,35 @@ class Spotify : StageWindow("Spotify") {
                 if (!isVisible) continue
 
                 current = System.currentTimeMillis()
-                if (current - last >= 5000) {
+                if (current - last >= 3000) {
                     update()
                     last = current
                 }
+
+                if (Thread.currentThread().isInterrupted)
+                    return
             }
         }
+    }
+
+    private val updaterThread = Thread(seekRunnable).apply { isDaemon = true }
+
+
+    init {
+        startUpdater()
+    }
+
+    private fun startUpdater() {
+        if (updaterThread.isAlive) return
+        try {
+            updaterThread.start()
+        } catch (ignored: Exception) {};
+    }
+
+    private fun stopUpdater() {
+        if(!updaterThread.isAlive) return
+        updaterThread.interrupt()
+        updaterThread.stop()
     }
 
     /**
@@ -323,6 +359,28 @@ class Spotify : StageWindow("Spotify") {
     override fun toggleShown() {
         super.toggleShown()
         update()
+    }
+
+    private fun spotifyConnect() {
+        GraphicalConfig.fullscreen = false
+        if (Spotify.create()) // TODO this needs to be localised.
+            dialog("", "specific.windows.music.alreadyConnected", "", "", null)
+        else {
+
+            dialog(
+                "!Connect to spotify", "A browser should've opened." +
+                        "\n Authorize with spotify, then paste the code in the box" +
+                        "\n and click 'Ok'.", "", "",
+                {
+                    try {
+                        if (Spotify.create(Toolkit.getDefaultToolkit().systemClipboard.getData(DataFlavor.stringFlavor) as String))
+                            dialog("generic.any.success", "")
+                    } catch (e : java.lang.Exception) {
+                        dialog("!Spotify Connection Error", "${Spotify.ERROR?.message}" )
+                    }
+                }
+            )
+        }
     }
 
     /**

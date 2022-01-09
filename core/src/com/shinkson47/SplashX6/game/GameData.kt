@@ -73,8 +73,8 @@ class _GameData : Serializable {
     fun networkSet(gameState: _GameData) {
         world = gameState.world
         world!!.networkCreate()
-        world!!.defogAll()
-        civilisations = gameState.civilisations
+        world!!.removeFogOfWar()
+        civilisations   = gameState.civilisations
 
         GameHypervisor.gameRenderer!!.newRenderer()
     }

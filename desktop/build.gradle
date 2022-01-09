@@ -37,6 +37,8 @@ jar {
     baseName 'Splash X6'
 }
 
+
+
 dist.dependsOn classes
 
 eclipse.project.name = appName + "-desktop"

@@ -6,6 +6,7 @@ import com.shinkson47.SplashX6.utility.Utility
 import com.wrapper.spotify.SpotifyApi
 import com.wrapper.spotify.SpotifyHttpManager
 import com.wrapper.spotify.enums.ModelObjectType
+import com.wrapper.spotify.exceptions.detailed.BadRequestException
 import com.wrapper.spotify.model_objects.specification.*
 import com.wrapper.spotify.requests.AbstractRequest
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRequest
@@ -102,11 +103,12 @@ object Spotify {
      * Returns true if and only if access data could be loaded from
      * preferences, and was positively tested to be working.
      **/
-    fun create() : Boolean {
+    fun create(autoOnly: Boolean = false) : Boolean {
         //  If data is stored, try and load it. If we can connect, treat connection as complete.
         if (createFromExisting())
             return true
 
+        if (autoOnly) return false
         // Otherwise initiate two part auth.
         authoriseClient()
         return false
@@ -149,9 +151,9 @@ object Spotify {
      *
      * returns true if access was successful.
      */
-    private fun testConnection() : Boolean {
+    fun testConnection() : Boolean {
         refreshToken()
-        return implTestConnection()
+        return ERROR == null && implTestConnection()
     }
 
     private fun implTestConnection() = execute(REQUEST_CATAGORIES) != null;
@@ -350,7 +352,7 @@ object Spotify {
      */
     private fun getToken() {
         with (execute(PREAUTH_REQUEST_TOKEN!!)!!) {
-            saveTokenFetchData(accessToken, refreshToken, expiresIn)
+            saveTokenFetchData(accessToken, expiresIn, refreshToken)
         }
     }
 
@@ -364,18 +366,20 @@ object Spotify {
         // If the resuest is successful, we don't need to refresh.
         if (!tokenHasExpired() && implTestConnection()) return
 
-        with (execute(spotifyApi.authorizationCodeRefresh().build())!!) {
-            saveTokenFetchData(accessToken, refreshToken, expiresIn)
-        }
+        try {
+            with(execute(spotifyApi.authorizationCodeRefresh().build())!!) {
+                saveTokenFetchData(accessToken, expiresIn)
+            }
+        } catch (ignored : Exception) { }
     }
 
     /**
      * # Saves the token and expiry data after refreshing or obtaining an access token.
      */
-    private fun saveTokenFetchData(accessToken: String, refreshToken: String, expiresIn: Int) {
+    private fun saveTokenFetchData(accessToken: String, expiresIn: Int, refreshToken: String = spotifyApi.refreshToken) {
             saveExpiry(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC), expiresIn)
             cacheToken(accessToken, refreshToken)
-            saveToken(accessToken, refreshToken)
+            saveToken(accessToken,  refreshToken)
     }
 
     /**
@@ -488,10 +492,20 @@ object Spotify {
      */
     fun nowPlaying() = execute(REQUEST_NOW_PLAYING)
 
+    private fun nextPage(page : Paging<Any>) {
+        
+    }
+
     /**
      * # Gets a list of 50 of the user's saved playlists.
      */
-    fun savedPlaylists() = execute(REQUEST_SAVED_PLAYLISTS)
+    fun savedPlaylists() : Paging<PlaylistSimplified> {
+        val paging = execute(REQUEST_SAVED_PLAYLISTS)!!
+        val items = Utility.MapToGDXArray(paging.items.asIterable()) { it.name }
+
+
+        return paging
+    }
 
     /**
      * # Gets a list of 50 of the user's saved songs.

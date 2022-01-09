@@ -198,7 +198,6 @@ class GameScreen : ScalingScreenAdapter() {
                 // Cache the selected tile.
                 val sel = GameHypervisor.cm_selectedTile()
 
-
                 // If we're selecting, calculate new destination.
                 if (cm_isSelectingDestination)
                     setDestination(sel.x.toInt(), sel.y.toInt())
@@ -214,17 +213,17 @@ class GameScreen : ScalingScreenAdapter() {
                     var it : GridCell = it[0]
 
                     // The position of the last node. Start with index 0.
-                    var lastNode : Vector3 = WorldTerrain.isoToCartesian(it.x, it.y)
+                    var lastNode : Vector3 = isoToCartesian(it.x, it.y)
 
                     // Position of the current node.
                     var currentNode: Vector3
 
                     // Starting at the second node, draw lines between current and next node.
-                    for (i in 1 until pathNodes!!.size step travelDistance) {
+                    for (i in 1 until pathNodes!!.size) {
 
                         // Calculate node position
                         it = pathNodes!![i]
-                        currentNode = WorldTerrain.isoToCartesian(it.x, it.y)
+                        currentNode = isoToCartesian(it.x, it.y)
 
                         // Draw line
                         sr.line(lastNode.x, lastNode.y, currentNode.x, currentNode.y)
@@ -237,14 +236,13 @@ class GameScreen : ScalingScreenAdapter() {
                     return
                 }
 
-
                 // If there's no path, do nothing if we're not selecting.
                 if (!cm_isSelectingDestination) return
 
                 // If we're selecting and have no path then we're selecting a bad path.
                 // Draw a red line to the intended destination.
                 sr.color = Color.RED
-                val mouse = WorldTerrain.isoToCartesian(sel.x.toInt(), sel.y.toInt())
+                val mouse = isoToCartesian(sel.x.toInt(), sel.y.toInt())
                 sr.line(Vector3(x, y, 0f), mouse)
                 sr.color = Color.WHITE
             }

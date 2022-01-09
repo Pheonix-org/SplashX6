@@ -154,7 +154,8 @@ class WorldCreation : ScalingScreenAdapter() {
             label("specific.gamecreation.civtype")
 
             val x = SelectBox<CityType>(SKIN)
-            x.items.addAll(*CityType.values())
+            x.setItems(*CityType.values())
+            x.selected = x.items.first()
             add(x)
 
             x.addListener(LambdaChangeListener { GameData.pref_civType = x.selected})

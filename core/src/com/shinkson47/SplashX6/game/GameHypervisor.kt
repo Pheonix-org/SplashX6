@@ -142,6 +142,8 @@ class GameHypervisor {
             unit_view()             // Focus the camera on that unit.
             camera_skipMovement();  // Skip the camera travelling from 0,0 to the unit.
                                     // without that, the game always starts with the camera flying across the map.
+
+            Spotify.create(autoOnly = true) // Try to connect to the api at startup. Don't prompt.
         }
 
         /**
@@ -349,7 +351,9 @@ class GameHypervisor {
         fun turn_asyncTask(runnable: TurnHook) = TURN_ASYNC_TASKS.add(runnable)
 
         @JvmStatic @Deprecated("Runnables have been replaced by the [TurnHook] alias.")
-        fun turn_asyncTask(runnable: Runnable) = turn_asyncTask(runnable as TurnHook)
+        fun turn_asyncTask(runnable: Runnable) = turn_asyncTask(object : TurnHook {
+            override fun onTurn() { runnable.run() }
+        })
 
         /**
          * # Stores a runnable that will be invoked after every turn.
@@ -359,7 +363,9 @@ class GameHypervisor {
 
 
         @JvmStatic @Deprecated("Runnables have been replaced by the [TurnHook] alias.")
-        fun turn_hook(runnable: Runnable) = turn_hook(runnable as TurnHook)
+        fun turn_hook(runnable: Runnable) = turn_hook(object : TurnHook {
+            override fun onTurn() { runnable.run() }
+        })
 
         /**
          * # Removes a [turn_hook]
@@ -388,6 +394,33 @@ class GameHypervisor {
 
         //========================================================================
         //#endregion game control
+        //#region settlement
+        //========================================================================
+
+
+        /**
+         * # Creates a size 0 settlement at [x],[y] in style matching the player's [civType]
+         * Does so using data from provided unit. Assumes unit is a settler.
+         * Unit is disbanded after.
+         */
+        fun settle(it : Unit) {
+            settle(it.isoVec.cpy(), GameData.player!!.civType)
+
+            unit_select(it)
+            unit_disband()
+        }
+
+        /**
+         * # Creates a size 0 settlement at [x],[y] with the provided style.
+         */
+        fun settle(pos: Vector3, type : CityType) {
+            GameData.player!!.cities.add(City(pos, type))
+        }
+
+
+
+        //========================================================================
+        //#endregion settlement
         //#region camera control
         //========================================================================
 
@@ -433,7 +466,7 @@ class GameHypervisor {
         @JvmStatic
         fun camera_focusingOnTile(): Vector3 {
             val v = camera_focusingOn()
-            return WorldTerrain.cartesianToIso(v.x.toInt(), v.y.toInt())
+            return cartesianToIso(v.x.toInt(), v.y.toInt())
         }
 
 
@@ -595,25 +628,6 @@ class GameHypervisor {
             dispose()
             if (!DEBUG_MODE) Spotify.pause()
             client!!.fadeScreen(MainMenu())
-        }
-
-        /**
-         * # Creates a size 0 settlement at [x],[y] in style matching the player's [civType]
-         * Does so using data from provided unit. Assumes unit is a settler.
-         * Unit is disbanded after.
-         */
-        fun settle(it : Unit) {
-            settle(it.isoVec.cpy(), GameData.player!!.civType)
-
-            unit_select(it)
-            unit_disband()
-        }
-
-        /**
-         * # Creates a size 0 settlement at [x],[y] with the provided style.
-         */
-        fun settle(pos: Vector3, type : CityType) {
-            GameData.player!!.cities.add(City(pos, type))
         }
 
 

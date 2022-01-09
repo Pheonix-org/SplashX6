@@ -159,7 +159,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
 
 
     /**
-     * <h2>Sub routine for [com.shinkson47.SplashX6.game.world.WorldTerrain.defogAll]. Constructs cells containing tiles, and adds them to the map layer.</h2>
+     * <h2>Sub routine for [com.shinkson47.SplashX6.game.world.WorldTerrain.removeFogOfWar]. Constructs cells containing tiles, and adds them to the map layer.</h2>
      * @param tileName The resource name of the tile to be used.
      * @param x The mapspace x to place it, within layer.
      * @param y The mapspace y to place it, within layer.
@@ -210,7 +210,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
      * Converts all map data into a single, total, complete map.
     </h2> *
      */
-    fun defogAll() {
+    fun removeFogOfWar() {
         defog(width / 2, height / 2, Math.max(width, height))
     }
 

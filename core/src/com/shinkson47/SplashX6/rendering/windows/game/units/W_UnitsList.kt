@@ -14,7 +14,7 @@ import com.shinkson47.SplashX6.utility.Assets
  * @since v1
  * @version 2
  */
-class W_UnitsList : StageWindow("Units"){
+class W_UnitsList : StageWindow("generic.game.units"){
 
     private val list: List<Unit> = List(Assets.SKIN)
 
