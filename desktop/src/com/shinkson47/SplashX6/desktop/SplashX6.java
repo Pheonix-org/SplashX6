@@ -14,6 +14,8 @@ import static java.awt.GraphicsEnvironment.isHeadless;
  * <h1>Main entry point for Splash X6</h1>
  * Contains pre-boot scripture for configuration
  * of the engine, and meta-execution of tests.
+ *
+ * @author [Jordan T Gray](https://shinkson47.in)
  */
 public class SplashX6 {
 
@@ -31,7 +33,7 @@ public class SplashX6 {
 		// ===========================
 		// When developing, change to true to enable debug features.
 		// Check for DEBUG_MODE when writing a debug feature.
-		Client.DEBUG_MODE = true;
+		Client.DEBUG_MODE = false;
 
 		checkCICD(arg);
 		constructConfig();

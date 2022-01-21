@@ -1,6 +1,5 @@
 package com.shinkson47.SplashX6.rendering.windows.game.units
 
-
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
@@ -10,27 +9,36 @@ import com.shinkson47.SplashX6.game.units.UnitActionDictionary
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 
+// TODO Remove window when unit is dispanded. How?
+
 /**
  * # Displays and manages a single unit.
+ * Opened via the [W_UnitsList], or via bind 'x' to open for the currently selected unit.
  *
- *  TODO Remove window when unit is dispanded. How?
+ * [unit] - The unit that this window manages.
  */
 class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
 
+    /**
+     * # Filtered list of actions that this particular unit can perform.
+     *
+     * Starts as a list of [UnitAction] from [UnitActionDictionary],
+     * and may be mutated based on state.
+     */
     private val actions: List<UnitAction> = List(Assets.SKIN)
 
     init {
-        addButton("viewUnit", false, true) { GameHypervisor.unit_view() }
-        tooltip("ttViewUnit")
+        addButton("specific.windows.units.view", false, true) { GameHypervisor.unit_view() }
+        tooltip("specific.windows.units.ttView")
 
         hsep()
 
-        addButton("viewDestination", false) { GameHypervisor.unit_viewDestination(); refresh() }
-        tooltip("ttViewDestination")
-        addButton("moveUnitToCursor") { if (!cm_enter()) GameHypervisor.cm_destinationSelect(); refresh() }
-        tooltip("ttMoveUnitToCursor")
+        addButton("specific.windows.units.viewDestination", false) { GameHypervisor.unit_viewDestination(); refresh() }
+        tooltip("specific.windows.units.ttViewDestination")
+        addButton("specific.windows.units.moveUnitToCursor") { if (!cm_enter()) GameHypervisor.cm_destinationSelect(); refresh() }
+        tooltip("specific.windows.units.ttMoveUnitToCursor")
 
-        seperate("turnAction")
+        seperate("specific.windows.units.turnAction")
 
         actions.selection.required = false
         actions.addListener(
@@ -41,14 +49,14 @@ class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
         )
 
         span(add(actions))
-        tooltip("ttActions")
+        tooltip("specific.windows.units.ttActions")
 
-        addButton("cancleAction", false, true) { GameHypervisor.unit_selected()?.cancelAction(); refresh() }
-        tooltip("ttCancleAction")
+        addButton("specific.windows.units.cancleAction", false, true) { GameHypervisor.unit_selected()?.cancelAction(); refresh() }
+        tooltip("specific.windows.units.ttCancelAction")
 
         hsep()
-        addButton("disband", false, true) { GameHypervisor.unit_disband(); refresh() }
-        tooltip("ttDisband")
+        addButton("specific.windows.units.disband", false, true) { GameHypervisor.unit_disband(); refresh() }
+        tooltip("specific.windows.units.ttDisband")
 
         refresh()
 

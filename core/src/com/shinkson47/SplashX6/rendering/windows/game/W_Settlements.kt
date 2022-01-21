@@ -10,7 +10,6 @@ import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Utility.local
-import javax.swing.GroupLayout
 
 /**
  * # Displays and manages the player's settlements and thier prouction within

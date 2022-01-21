@@ -27,8 +27,6 @@ import javax.imageio.ImageIO
 class Client : Game() {
     var currentScreen: Screen? = null
 
-
-
     /**
      * # Engine has booted, boot game.
      */
