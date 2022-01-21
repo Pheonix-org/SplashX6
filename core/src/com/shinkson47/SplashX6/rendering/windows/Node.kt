@@ -41,32 +41,38 @@ annotation class NodeInfo(val message : String)
 abstract class ReflectionNode<V, A : Actor?>(
         val instance: Any,
         fieldName: String,
-        actor: A)
+        actor: A,
+        var after: Runnable? = null
+)
     : Tree.Node<Tree.Node<*,*,*>, V, A>(actor)
-
 {
-    var field : KMutableProperty<V>
+    var field : KMutableProperty<V>? = null
 
     init {
-        field = instance::class.declaredMembers.find { it.name==fieldName }!! as KMutableProperty<V>
+        try {
+            field = instance::class.declaredMembers.find { it.name == fieldName }!! as KMutableProperty<V>
 
-        val s = message()
-        if (s.isNotBlank())
-            StageWindow.tooltip(actor, s)
-        // FIXME this tooltip is added, but does't show when hovered over.
+            val s = message()
+            if (s.isNotBlank())
+                StageWindow.tooltip(actor, s)
+            // FIXME this tooltip is added, but does't show when hovered over.
+        } catch (e: NullPointerException) {
+            Utility.warn(" OPTIONS : SERIOUS : ${instance::class.simpleName}.$fieldName IS NOT A VALID PREFERENCE PROPERTY!")
+        }
     }
 
     protected fun valueChanged(value : V) {
-        (field as KMutableProperty).setter.call(instance, value)
+        field!!.setter.call(instance, value)
+        after?.run()
     }
 
-    protected fun value() : V = field.getter.call(instance) as V
+    protected fun value() : V = field!!.getter.call(instance)
 
     protected fun message() : String {
         try {
-            return (field.annotations.find { it is NodeInfo } as NodeInfo).message
+            return (field!!.annotations.find { it is NodeInfo } as NodeInfo).message
         } catch (e : Exception) {
-            Utility.warn("${field.name} has no @NodeInfo.")
+            Utility.warn("${field!!.name} has no @NodeInfo.")
             return ""
         }
     }
@@ -132,12 +138,19 @@ class CheckboxNode(C: Any, fieldName: String, key: String) : ReflectionNode<Bool
  */
 class SliderNode<V : Number>(C : Any, fieldName: String, key : String, min : Float = 0f, max : Float = 100f, step : Float = 1f) : TitledNode<V, Slider>(C, fieldName, key, Slider(min, max, step, false, SKIN)) {
     init {
-        // Redundant test of V's ability to cast. Will throw exception if it's not a valid argument.
-        val z = _actor.value as V
+        // Evaluate V's ability to cast. Will throw exception if it's not a valid argument.
+        try {
+            _actor.value as V
+        } catch (e : ClassCastException) {
+            Utility.warn(" OPTIONS : SERIOUS : SLIDER TYPE CANNOT BE CAST TO FIELD TYPE : ${C::class.java.simpleName}.$fieldName & ${_actor.value::class.java.simpleName}")
+        }
 
         actor.addListener(StageWindow.LambdaChangeListener{
             valueChanged(_actor.value as V)
         })
+
+        // TODO this is a dangerous cast.
+        _actor.value = value() as Float
     }
 }
 

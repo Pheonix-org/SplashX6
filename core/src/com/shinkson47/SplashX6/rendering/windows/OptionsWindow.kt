@@ -15,6 +15,7 @@ import com.shinkson47.SplashX6.utility.Assets.SKIN_KENNEY
 import com.shinkson47.SplashX6.utility.GraphicalConfig
 import com.shinkson47.SplashX6.utility.Languages
 import com.shinkson47.SplashX6.utility.Utility.local
+import com.shinkson47.SplashX6.utility.UtilityK
 import java.awt.Toolkit
 import java.awt.datatransfer.DataFlavor
 import java.lang.Exception
@@ -32,6 +33,7 @@ class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("generic.an
         val t : Tree<Tree.Node<*, *, *>, Any> = Tree(SKIN)
         t.selection.isDisabled = true
         t.indentSpacing = 30f
+
 
         arrayOf(
             RootNode(
@@ -54,7 +56,21 @@ class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("generic.an
                             SliderNode<Float>(AudioController, "musicVolume", "generic.sound.musicVolume", 0f, 1f, 0.1f),
                             SliderNode<Float>(AudioController, "buttonVolume", "generic.sound.sfxVolume", 0f, 1f, 0.1f), // TODO audio controller channel need updating. this isn't for buttons.
                             CheckboxNode(AudioController, "isMuted", "generic.sound.mute"),
-                    )//,
+                    ),
+            ),
+            RootNode(
+                "specific.preferences.misc",
+                RootNode(
+                    "!specific.preferences.tooltip.tooltip",
+                    SliderNode<Float>(UtilityK::class.objectInstance!!, "ttInitialTime", "specific.preferences.tooltip.initial", 0f, 5f, 0.5f),
+                    SliderNode<Float>(UtilityK, "ttSubsequentTime", "specific.preferences.tooltip.subsequent", 0f, 5f, 0.1f),
+                    SliderNode<Float>(UtilityK, "ttResetTime", "specific.preferences.tooltip.reset", 0f, 5f, 0.1f),
+            )
+
+
+
+
+                //,
 //
 //                    RootNode(
 //                        "specific.windows.music.spotify",
@@ -71,14 +87,5 @@ class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("generic.an
         )
         pack()
     }
-
-
-    //=========================
-    //#region scripts
-    // I didn't want long scripts disrupting the nice and neat tree definition code above,
-    // so i moved them here.
-    //=========================
-
-
 }
 

@@ -15,6 +15,7 @@ import com.shinkson47.SplashX6.audio.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.utility.TurnHook;
 import com.shinkson47.SplashX6.utility.Utility;
+import com.shinkson47.SplashX6.utility.UtilityK;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -595,7 +596,7 @@ public abstract class StageWindow extends Window implements TurnHook {
      * @return t
      */
     public static final Actor tooltip(Actor t, String s){
-        t.addListener(new TextTooltip(s, SKIN));
+        t.addListener(new TextTooltip(s, UtilityK.INSTANCE.getTtManager(), SKIN));
         return t;
     }
 
