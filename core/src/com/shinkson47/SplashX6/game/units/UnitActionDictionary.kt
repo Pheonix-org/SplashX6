@@ -78,6 +78,10 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     }
 
     override fun get(key: UnitClass): Array<UnitAction> {
-        return super.get(UnitClass._BASE)!! + super.get(key)!!
+        return try {
+            super.get(UnitClass._BASE)!! + super.get(key)!!
+        } catch (e : NullPointerException) {
+            super.get(UnitClass._BASE)!!
+        }
     }
 }

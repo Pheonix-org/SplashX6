@@ -4,11 +4,15 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.utils.Align
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.cities.City
+import com.shinkson47.SplashX6.game.cities.Production
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
 import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
@@ -22,9 +26,9 @@ class W_Settlements : StageWindow("generic.game.settlements") {
     /**
      * # The list of settlements displayed in this window
      */
-    private val cities: SelectBox<City>             = SelectBox(Assets.SKIN)
-    private val queue: List<Unit>                   = List(Assets.SKIN)
-    private val production: List<UnitAction>        = List(Assets.SKIN)
+    private val cities: SelectBox<City>                         = SelectBox(Assets.SKIN)
+    private val queue: List<Production.ProductionProject>       = List(Assets.SKIN)
+    private val production: List<Production.ProductionProject>  = List(Assets.SKIN)
 
     //private val lblCityProductionPower              = label("specific.windows.settlements.productionPower")
     private val lblCityProductionPower : Label
@@ -38,30 +42,41 @@ class W_Settlements : StageWindow("generic.game.settlements") {
 
         setPosition(0f, Gdx.graphics.height.toFloat())
 
+        cities.addListener(LambdaChangeListener { refresh() })
         add(cities)
             .colspan(3)
             .fillX()
             .expandX()
             .row()
 
-        var v : WidgetGroup = HorizontalGroup()
-        v.addActor(Label("specific.windows.settlements.productionPower", Assets.SKIN))
-        v.addActor(Label("specific.windows.settlements.productionPower", Assets.SKIN).also { lblCityProductionPower = it })
+        label("specific.windows.settlements.productionPower").also { lblCityProductionPower = it.actor }
         row()
+
+        label("specific.windows.settlements.available")
+            .expandX()
+            .fillX()
+            .left()
+            .actor.setAlignment(Align.left)
 
         label("specific.windows.settlements.queue")
             .expandX()
             .fillX()
             .left()
-            .actor.setAlignment(Align.left)
+            .colspan(2)
+            .actor.setAlignment(Align.right)
         row()
 
         expandfill(add(production)
             .minWidth(150f)
         )
 
-        v = VerticalGroup()
-        v.addActor(TextButton(local("generic.any.add"), Assets.SKIN))
+        var v : WidgetGroup = VerticalGroup()
+        v.addActor(TextButton(local("generic.any.add"), Assets.SKIN).also { it.addListener(LambdaClickListener {
+            cities.selected?.production!!.queue(production.selected)
+            refresh()
+        } )})
+
+
         v.addActor(Label(local("specific.windows.settlements.cost"), Assets.SKIN))
         v.addActor(lblCost)
 
@@ -79,5 +94,19 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         pack()
     }
 
-    override fun refresh() {}
+    override fun refresh() {
+        cities.setItems(CollectionToGDXArray(GameData.player!!.cities))
+
+        cities.selected?.let { refresh(queue.items, it.production.queue) }
+
+        queue.selection.validate()
+
+        cities.selected?.let { refresh(production.items, it.production.producable()) }
+        production.selection.validate()
+    }
+
+    private fun <T> refresh(list :  com.badlogic.gdx.utils.Array<T>, data : Collection<T>) {
+        list.clear()
+        list.addAll(CollectionToGDXArray(data))
+    }
 }

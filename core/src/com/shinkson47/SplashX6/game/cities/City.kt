@@ -78,11 +78,11 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook {
     private fun calcSpriteName() : String {
         val pop =
             when {
-                population < 4      -> 0
-                population < 8      -> 4
-                population < 12     -> 8
-                population < 16     -> 12
-                else                -> 16
+                population < 10      -> 0
+                population < 25      -> 4
+                population < 40      -> 8
+                population < 50      -> 12
+                else                 -> 16
             }
 
         return "${CITY_TYPE}_$pop${if (wall) "_wall" else ""}"
@@ -143,6 +143,8 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook {
         spriteLateInit()
         GameHypervisor.turn_hook(this)
     }
+
+    override fun toString(): String = "$CITY_TYPE at $isoVec"
 
     // ============================================================
     // endregion functions

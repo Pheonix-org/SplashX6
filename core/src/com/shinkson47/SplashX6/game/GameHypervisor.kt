@@ -219,7 +219,8 @@ class GameHypervisor {
             try {
                 s = Unit(spriteName, x, y)
             } catch (ignore: Exception) {
-                return;
+                return
+                // TODO don't ignore this...
             }
 
             assert (s != null)

@@ -13,4 +13,6 @@ interface TurnHook : Runnable {
     fun doOnTurn() {
         onTurn()
     }
+
+
 }

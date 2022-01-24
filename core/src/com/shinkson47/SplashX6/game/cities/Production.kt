@@ -43,6 +43,7 @@ class Production(val forCity: City) : TurnHook {
      *      if production is high enough. that can't happen.
      */
     private fun recurseContribution(power : Int) {
+        //TODO this happens multiple times, when i think it shouldn't.
         with (getWorkingOn()) {
             if (this == null) return
             val overflow = contribute(power)
@@ -66,12 +67,14 @@ class Production(val forCity: City) : TurnHook {
      */
     fun removeWorkingOn() = queue.removeAt(0)
 
+    fun producable(): Collection<ProductionProject> = UnitClass.values().map {  UnitProductionProject(it)  }
+
 
     /**
      * # A project that can be completed by a city.
      */
     abstract class ProductionProject(
-        val cost: Int = 100,
+        val cost: Int = 15,
         var progress: Int = 0
     ) {
 
@@ -81,7 +84,7 @@ class Production(val forCity: City) : TurnHook {
         var isClaimed = false
             private set
 
-        fun assign(to: Production) = production.let { production = to }
+        fun assign(to: Production) { production = to }
         lateinit var production: Production
             private set
 
@@ -100,10 +103,11 @@ class Production(val forCity: City) : TurnHook {
                     return this
 
                 progress += this
-                tryClaim()
-                return if (progress > cost)
+                return if (progress > cost) {
+                    isComplete = true
+                    tryClaim()
                     progress - cost
-                else
+                } else
                     0
             }
         }
@@ -120,11 +124,16 @@ class Production(val forCity: City) : TurnHook {
             doClaim()
         }
 
-        abstract fun doClaim();
+        abstract fun doClaim()
     }
 
     class UnitProductionProject(val type : UnitClass) : Production.ProductionProject() {
         override fun doClaim() = GameHypervisor.spawn(production.forCity.isoVec, type)
+
+        /**
+         * Returns a string representation of the object.
+         */
+        override fun toString(): String = type.toString()
     }
 }
 
