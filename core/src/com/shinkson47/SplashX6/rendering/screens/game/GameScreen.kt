@@ -274,7 +274,6 @@ class GameScreen : ScalingScreenAdapter() {
 
     override fun show() {
         sr.end()
-        worldBatch.projectionMatrix = cam.combined
     } //#endregion
 
     //========================================================================
