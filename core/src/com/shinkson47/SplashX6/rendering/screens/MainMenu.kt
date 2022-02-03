@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
@@ -52,7 +53,7 @@ class MainMenu : ScalingScreenAdapter() {
             ).padBottom(50f).row()
 
             addButton("generic.game.new") { NewGame() }
-            addButton("generic.game.load") { Utility.notImplementedDialog(stage) }
+            addButton("generic.game.load") { GameHypervisor.load() }
             addButton("generic.any.options") { optionsWindow.isVisible = true; optionsWindow.toFront() }
             addButton("specific.menu.credits") { client!!.fadeScreen(CreditsScreen()) }
             addButton("generic.game.exit") { Gdx.app.exit() }

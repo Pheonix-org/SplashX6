@@ -31,6 +31,8 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.TurnHook
 import com.shinkson47.SplashX6.utility.Utility
+import java.io.*
+
 import java.lang.Thread.sleep
 
 /**
@@ -103,9 +105,12 @@ class GameHypervisor {
          */
         @JvmStatic
         fun doNewGameCallback() {
-            //validateCall(REQ_GAME_LOADING, THROW("Tried to load a game whilst not loading."))
+            GameData.new() // create game data. Must be before game screen is created.
+            doGameLoadCallback()
+        }
 
-            Gdx.graphics.isContinuousRendering = false;
+        fun doGameLoadCallback() {
+            Gdx.graphics.isContinuousRendering = false
 
             doNewGamePRE()
             inGame = true
@@ -114,7 +119,7 @@ class GameHypervisor {
 
             doNewGameFINAL()
 
-            Gdx.graphics.isContinuousRendering = true;
+            Gdx.graphics.isContinuousRendering = true
         }
 
         /**
@@ -123,8 +128,6 @@ class GameHypervisor {
          * Contains calls which do not require a game to be loaded.
          */
         private fun doNewGamePRE() {
-            GameData.new() // create game data. Must be before game screen is created.
-
             // Create a new game screen stored locally. It will be shown to the user in the FINAL.
             // For now, loading screen is still being displayed. This is just so we can access the camera and whatnot.
             gameRenderer = GameScreen()
@@ -177,7 +180,10 @@ class GameHypervisor {
         @JvmStatic
         fun load() {
             validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
-            TODO()
+            GameData = ObjectInputStream(FileInputStream(File("./save.X6"))).readObject() as _GameData
+
+            doGameLoadCallback()
+            GameData.deserialize()
         }
 
         @JvmStatic
@@ -191,7 +197,7 @@ class GameHypervisor {
         @JvmStatic
         fun save() {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("save a game", "no game is loaded")))
-            TODO()
+            ObjectOutputStream(FileOutputStream(File("./save.X6"))).writeObject(GameData)
         }
 
         /**
