@@ -17,6 +17,7 @@ import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.rendering.windows.game.Music
 import com.shinkson47.SplashX6.rendering.windows.game.W_Settlements
 import com.shinkson47.SplashX6.rendering.windows.game.Spotify
+import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.Debug.DebugWindow
@@ -74,8 +75,11 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
                 MenuSubItem("generic.game.end")         { GameHypervisor.EndGame() }
         )
 
+        addMenuItem(this, "!Help", WindowAction(W_Help()))
+
         addMenuItem(this, "!Debug", WindowAction(DebugWindow()),
                 MenuSubItem("!Defog All") { GameData.world!!.removeFogOfWar() },
+                MenuSubItem("!Reload Help Text") { W_Help.reload() },
                 MenuSubItem("!World Generation", WindowAction(TerrainGenerationEditor())),
                 MenuSubItem("!Publish Game") {Server.boot()},
                 MenuSubItem("!Connect Locally") {com.shinkson47.SplashX6.network.Client.connect()},
