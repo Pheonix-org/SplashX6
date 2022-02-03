@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>en</key>
+	<dict>
+		<key>Basics</key>
+		<dict>
+		<key>Welcome</key>
+		<string>Welcome to splash X6! 
+
+Your adventure in this world is just beginning.
+As you play, you&apos;ll learn to produce and control an
+army of units to use at your disposal.
+
+Use them to defend, attack and explore as you
+build your civilisation and research.</string>
+			<key>Movement</key>
+			<string>Your units will move and explore as you command.
+
+The warroom allows you to use your mouse cursor
+to direct your units with a right-click, but you can
+also quickly set a destination in the main game view 
+by pressing space and moving the camera.
+
+Whichever method you choose to enter &apos;destination selection
+mode&apos;, you&apos;ll notice a line appearing, leading to the selection.
+
+A purple line indicates the unit may travel to this
+location, and the path that they will take to get there.
+
+A red line indicates that they are not able to travel there,
+i.e they are blocked by mountains or water.	</string>
+			<key>Menu Bar</key>
+			<string>The menu bar, located at the top of the screen,
+provides access to all the tools and windows
+you will need to play the game.
+
+Each of the items on the menu may act as a button, 
+a menu, or both.
+
+Menus are indicated by the handle in the lower right
+of the button. Explore thier options by clicking
+and holding down the mouse on a button to open the
+drop-down menu, and dragging the curser over the
+options that appear before letting go.
+
+Click an option in the menu or the menu button again to hide
+the drop-down.</string>
+		</dict>
+		<key>Sytems</key>
+		<dict>
+			<key>Production</key>
+			<dict/>
+		</dict>
+	</dict>
+</dict>
+</plist>
