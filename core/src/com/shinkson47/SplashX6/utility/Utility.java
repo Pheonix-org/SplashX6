@@ -10,7 +10,6 @@ import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.game.world.FastNoiseLite;
 import com.shinkson47.SplashX6.rendering.windows.MessageWindow;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.MissingResourceException;
 import java.util.function.Function;
