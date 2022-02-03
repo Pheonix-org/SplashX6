@@ -4,11 +4,12 @@ import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.utility.TurnHook
 import com.shinkson47.SplashX6.utility.UtilityK.tryOrNull
+import java.io.Serializable
 
 /**
  * # Defines the behaviour of a cities' production.
  */
-class Production(val forCity: City) : TurnHook {
+class Production(val forCity: City) : TurnHook, Serializable {
 
     init { GameHypervisor.turn_hook(this) }
     companion object {
