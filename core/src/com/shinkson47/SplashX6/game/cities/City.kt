@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.utility.Assets.citySprites
+import com.shinkson47.SplashX6.utility.PartiallySerializable
 import com.shinkson47.SplashX6.utility.TurnHook
+import java.io.Serializable
 
 /**
  * # A settlement city.
@@ -15,7 +17,7 @@ import com.shinkson47.SplashX6.utility.TurnHook
  * @since PRE-ALPHA 0.0.2
  * @version 1.2
  */
-class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook {
+class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallySerializable {
 
     // ============================================================
     // region fields
@@ -54,7 +56,7 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook {
      * Class does not extend Sprite 'cause it's
      * massively easier to create new sprites instead of mutate them.
      */
-    private lateinit var sprite : Sprite
+    @Transient private lateinit var sprite : Sprite
     private fun spriteLateInit() { setSprite() }
 
     val production = Production(this)
@@ -102,7 +104,7 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook {
      *
      * New sprites are moved to [cachedSpriteY], [cachedSpriteX]
      */
-    private fun setSprite() {
+    fun setSprite() {
         val tempSprite = citySprites.createSprite(cachedSpriteName)
         val tempPos = calcSpritePos()
         tempSprite.setPosition(tempPos.x, tempPos.y)
@@ -142,6 +144,10 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook {
     init {
         spriteLateInit()
         GameHypervisor.turn_hook(this)
+    }
+
+    final override fun deserialize() {
+        setSprite()
     }
 
     override fun toString(): String = "$CITY_TYPE at $isoVec"

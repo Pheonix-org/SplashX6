@@ -10,6 +10,7 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
+import com.shinkson47.SplashX6.utility.PartiallySerializable
 import org.xguzm.pathfinding.grid.GridCell
 import java.io.Serializable
 
@@ -20,7 +21,7 @@ import java.io.Serializable
  * @since PRE-ALPHA 0.0.1
  * @version 1
  */
-open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())), Serializable {
+open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())), PartiallySerializable {
     constructor(unitClass: UnitClass, _x: Int, _y: Int) : this(unitClass, Vector3(_x.toFloat(), _y.toFloat(), 0f))
 
     // =============================================
@@ -168,6 +169,8 @@ open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSpri
         return setLocation(isoVec)
     }
 
+
+
     override fun toString(): String {
         return "$displayName (X${isoVec.x}, Y${isoVec.y})"
     }
@@ -192,4 +195,9 @@ open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSpri
     // =============================================
     // endregion Game API
     // =============================================
+
+    final override fun deserialize() {
+        set(unitSprites.createSprite(unitClass.toString()))
+        setLocation(isoVec)
+    }
 }

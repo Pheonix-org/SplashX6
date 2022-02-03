@@ -5,6 +5,7 @@ import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.generation.Generator
+import com.shinkson47.SplashX6.utility.PartiallySerializable
 import java.io.Serializable
 
 /**
@@ -15,9 +16,9 @@ import java.io.Serializable
  * @version 1.1
  */
 @JvmField
-val GameData = _GameData()
+var GameData = _GameData()
 
-class _GameData : Serializable {
+class _GameData : PartiallySerializable {
 
     /**
      * # The tile layers making up the world.
@@ -72,10 +73,18 @@ class _GameData : Serializable {
 
     fun networkSet(gameState: _GameData) {
         world = gameState.world
-        world!!.networkCreate()
-        world!!.removeFogOfWar()
-        civilisations   = gameState.civilisations
-
         GameHypervisor.gameRenderer!!.newRenderer()
+
+        civilisations = gameState.civilisations
+        deserialize()
+    }
+
+    override fun deserialize() {
+        world!!.deserialize()
+
+        civilisations.forEach {
+            it.units.forEach  { it.deserialize() }
+            it.cities.forEach { it.deserialize() }
+        }
     }
 }

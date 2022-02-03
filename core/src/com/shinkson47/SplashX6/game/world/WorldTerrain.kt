@@ -7,8 +7,10 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.spawn
 import com.shinkson47.SplashX6.game.units.UnitClass
+import com.shinkson47.SplashX6.game.world.generation.stages.NavigationDataMiscStage
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.hitTest
+import com.shinkson47.SplashX6.utility.PartiallySerializable
 import com.shinkson47.SplashX6.utility.Utility
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer
 import org.xguzm.pathfinding.grid.GridCell
@@ -20,11 +22,18 @@ import kotlin.math.floor
 /**
  * # The terrain for a game world.
  * Does not contain unit etc that are in the world.
+ *
+ * Container for terrain and terrain navigation data in both
+ * raw [Tile] form (For generation, interpretation, and serialization) and
+ * [TiledMap] / [TiledMapTileLayer] form (for game engine & rendering).
+ *
+ * > n.b : [TiledMap] and it's layers are not serializable, hence this class is
+ * [PartiallySerializable] and the Tiled components are transient. See [WorldTerrain.deserialize].
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 29/06/2021
  * @since PRE-ALPHA 0.0.1
  * @version 2 (Superceedes 'World')
  */
-class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable {
+class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySerializable {
     constructor() : this(DEFAULT_WIDTH, DEFAULT_HEIGHT)
 
     //==============================================
@@ -38,30 +47,22 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
     /**
      * # The final tile layer holding the world's tiles.
      */
-    @Transient private var LerpedTileLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+    @Transient private lateinit var LerpedTileLayer: TiledMapTileLayer
 
     /**
      * # the final tile layer holding the world's tiles.
      */
-    @Transient private var SpriteLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+    @Transient private lateinit var SpriteLayer: TiledMapTileLayer
 
     /**
      * # the final tile layer holding the world's tiles.
      */
-    @Transient private var FoliageLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+    @Transient private lateinit var FoliageLayer: TiledMapTileLayer
 
     /**
      * # the final tile layer holding the world's tiles.
      */
-    @Transient private var HeightLayer: TiledMapTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
-
-    fun networkCreate() {
-        LerpedTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
-        SpriteLayer     = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
-        FoliageLayer    = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
-        HeightLayer     = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
-        AStarGridFinder(GridCell::class.java)
-    }
+    @Transient private lateinit var HeightLayer: TiledMapTileLayer
 
     //#endregion layers
     //#region Tiles
@@ -94,7 +95,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
      * # Pathfinder
      * Usage : pathfinder.find(fromx, fromy, tox, toy, [WorldTerrain.navigationLayer]).
      */
-    @Transient var pathfinder: AStarGridFinder<GridCell> = AStarGridFinder(GridCell::class.java)
+    @Transient lateinit var pathfinder: AStarGridFinder<GridCell>
 
 
     /**
@@ -102,7 +103,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
      *
      * Used for calculating navigation data when pathfinding.
      */
-    @Transient var navigationLayer : NavigationTiledMapLayer = NavigationTiledMapLayer(Array(height) { arrayOfNulls(width) })
+    @Transient lateinit var navigationLayer : NavigationTiledMapLayer
 
     //#endregion navigation
 
@@ -111,10 +112,24 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
     //==============================================
 
     init {
+        initLayers()
+        initPathfinder()
+        configGDX()
+    }
+
+    private fun initLayers() {
+        LerpedTileLayer = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+        SpriteLayer     = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+        FoliageLayer    = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+        HeightLayer     = TiledMapTileLayer(width, height, TILE_WIDTH, TILE_HEIGHT)
+
+        navigationLayer = NavigationTiledMapLayer(Array(height) { arrayOfNulls(width) })
         navigationLayer.width  = width
         navigationLayer.height = height
+    }
 
-        configGDX()
+    private fun initPathfinder() {
+        pathfinder = AStarGridFinder(GridCell::class.java)
     }
 
     /**
@@ -126,6 +141,25 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
         placeLayers(LerpedTileLayer)
     }
 
+    /**
+     * Re-creates the world layers after loading this instance from stream.
+     */
+    final override fun deserialize() {
+        // Create transient layers
+        initLayers()
+
+        // Re-populate navigation data.
+        NavigationDataMiscStage().execute(this)
+        initPathfinder()
+
+        // Import layers and load tilesets.
+        configGDX()
+
+        //TODO We do not know what areas of the map should
+        //     or should not be defogged / have been explored.
+        // STOPSHIP: 03/02/2022 This permits a player to save and load a world to skip exploration of the world.
+        removeFogOfWar()
+    }
 
     /**
      * <h2>Replaces all tilesets with those stored in [Assets.TILESETS]</h2>
@@ -155,7 +189,6 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
         layers.add(FoliageLayer)
         layers.add(SpriteLayer)
     }
-
 
 
     /**
@@ -252,7 +285,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
         while (true) {
             vec = randomPoint()
             t = getTile(vec)
-            if (t!!.isLand) return vec
+            if (t?.isLand == true) return vec
         }
     }
 
@@ -348,7 +381,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), Serializable
         /**
          * # The smallest permitted world size
          */
-        const val FOLIAGE_QUANTITY_MAX = 10000
+        const val FOLIAGE_QUANTITY_MAX = 50000
 
         private var hittestResult = 0
         /**
