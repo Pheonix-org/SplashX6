@@ -11,6 +11,7 @@ import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
 import com.shinkson47.SplashX6.utility.Utility.local
@@ -26,14 +27,14 @@ class W_Settlements : StageWindow("generic.game.settlements") {
     /**
      * # The list of settlements displayed in this window
      */
-    private val cities: SelectBox<City>                         = SelectBox(Assets.SKIN)
-    private val queue: List<Production.ProductionProject>       = List(Assets.SKIN)
-    private val production: List<Production.ProductionProject>  = List(Assets.SKIN)
+    private val cities: SelectBox<City>                         = SelectBox(SKIN)
+    private val queue: List<Production.ProductionProject>       = List(SKIN)
+    private val production: List<Production.ProductionProject>  = List(SKIN)
 
     //private val lblCityProductionPower              = label("specific.windows.settlements.productionPower")
     private val lblCityProductionPower : Label
-    private val lblCost                = Label("0", Assets.SKIN)
-    private val lblCompleteIn          = Label("0", Assets.SKIN)
+    private val lblCost                = Label("0", SKIN)
+    private val lblCompleteIn          = Label("0", SKIN)
 
 
     init {
@@ -66,26 +67,26 @@ class W_Settlements : StageWindow("generic.game.settlements") {
             .actor.setAlignment(Align.right)
         row()
 
-        expandfill(add(production)
+        expandfill(add(ScrollPane(production, SKIN))
             .minWidth(150f)
         )
 
         var v : WidgetGroup = VerticalGroup()
-        v.addActor(TextButton(local("generic.any.add"), Assets.SKIN).also { it.addListener(LambdaClickListener {
+        v.addActor(TextButton(local("generic.any.add"), SKIN).also { it.addListener(LambdaClickListener {
             cities.selected?.production!!.queue(production.selected)
             refresh()
         } )})
 
 
-        v.addActor(Label(local("specific.windows.settlements.cost"), Assets.SKIN))
+        v.addActor(Label(local("specific.windows.settlements.cost"), SKIN))
         v.addActor(lblCost)
 
-        v.addActor(Label(local("specific.windows.settlements.completeIn"), Assets.SKIN))
+        v.addActor(Label(local("specific.windows.settlements.completeIn"), SKIN))
         v.addActor(lblCompleteIn)
-        v.addActor(TextButton(local("generic.any.remove"), Assets.SKIN))
+        v.addActor(TextButton(local("generic.any.remove"), SKIN))
         expandfill(add(v))
 
-        expandfill(add(queue)
+        expandfill(add(ScrollPane(queue, SKIN))
             .minWidth(150f)
         )
 
