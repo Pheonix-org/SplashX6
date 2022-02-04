@@ -1,10 +1,12 @@
 package com.shinkson47.SplashX6.rendering.screens.game
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.cities.Production
@@ -21,12 +23,15 @@ import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.Debug.DebugWindow
+import com.shinkson47.SplashX6.utility.Utility.AssertEndsWith
 import com.shinkson47.SplashX6.utility.Utility.local
 
 /**
  * # The menu bar used in-game to access tools, windows and more.
  */
 class Menu(val _parent : GameScreen) : Table(SKIN) {
+
+    val chooser = FileChooser.createSaveDialog("Choose save location", SKIN, Gdx.files.external("/"))
     // TODO raise drop down to top
     companion object {
         /**
@@ -60,6 +65,16 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         //setBackground(SKIN.getDrawable("widet10"))
         _parent.stage.addActor(subActionMenu)
 
+        chooser.setResultListener { success, result ->
+            if (success)
+                GameHypervisor.save(Gdx.files.external(AssertEndsWith(result.path(), ".X6")).file())
+            true
+        }
+
+        chooser.setFilter { file -> file.path.matches(Regex("(.*(?:X6))")) || (file.isDirectory && !file.name.startsWith(".")) }
+        chooser.setOkButtonText("Save")
+        chooser.isResizable = true
+
 
         // =========================================================
         //              Menu bar construction.
@@ -68,9 +83,9 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         addMenuItem(this, "generic.game.game", NOTHING,
                 MenuSubItem("generic.any.options", WindowAction(OptionsWindow(_parent))) ,
                 MenuSubItem("generic.game.new")         { GameHypervisor.NewGame() } ,
-                MenuSubItem("generic.game.load")        { GameHypervisor.load() } ,
+                //MenuSubItem("generic.game.load")           { GameHypervisor.load() } ,
                 MenuSubItem("generic.game.quickload")   { GameHypervisor.quickload() } ,
-                MenuSubItem("generic.game.save")        { GameHypervisor.save() } ,
+                MenuSubItem("generic.game.save")        { chooser.show(stage) } ,
                 MenuSubItem("generic.game.quicksave")   { GameHypervisor.quicksave() } ,
                 MenuSubItem("generic.game.end")         { GameHypervisor.EndGame() }
         )

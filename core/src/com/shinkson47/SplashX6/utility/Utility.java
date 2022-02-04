@@ -239,4 +239,8 @@ public final class Utility {
         if (Client.DEBUG_MODE && GameHypervisor.getInGame())
             new MessageWindow("!Developer Warning", "!" + s, true);
     }
+
+    public static String AssertEndsWith(String s, String suffix) {
+        return (s.endsWith(suffix)) ? s : s + suffix;
+    }
 }

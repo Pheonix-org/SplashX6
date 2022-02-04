@@ -115,8 +115,11 @@ public class MouseHandler {
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
-            GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
-            return true;
+            if(GameHypervisor.getInGame()) {
+                GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
+                return true;
+            } else
+                return false;
         }
     };
     //#endregion handlers

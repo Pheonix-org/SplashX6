@@ -178,9 +178,9 @@ class GameHypervisor {
         }
 
         @JvmStatic
-        fun load() {
+        fun load(f : File) {
             validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
-            GameData = ObjectInputStream(FileInputStream(File("./save.X6"))).readObject() as _GameData
+            GameData = ObjectInputStream(FileInputStream(f)).readObject() as _GameData
 
             doGameLoadCallback()
             GameData.deserialize()
@@ -195,9 +195,9 @@ class GameHypervisor {
         }
 
         @JvmStatic
-        fun save() {
+        fun save(f: File) {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("save a game", "no game is loaded")))
-            ObjectOutputStream(FileOutputStream(File("./save.X6"))).writeObject(GameData)
+            ObjectOutputStream(FileOutputStream(f)).writeObject(GameData)
         }
 
         /**
