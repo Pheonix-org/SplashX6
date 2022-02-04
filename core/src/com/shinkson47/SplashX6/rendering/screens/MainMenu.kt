@@ -5,20 +5,20 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.gdx.musicevents.tool.file.FileChooser
+import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
+import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import kotlin.math.roundToInt
-import java.io.File
-
-import java.io.FileFilter
 
 
 /**
@@ -60,6 +60,15 @@ class MainMenu : ScalingScreenAdapter() {
 
             addButton("generic.game.new") { NewGame() }
             addButton("generic.game.load") { chooser.show(stage) }
+            addButton("connect") {
+                try {
+                    NetworkClient.connect()
+                } catch (e : Exception) {
+                    e.printStackTrace()
+                    dialog("!Failed to connect!", "!${e.javaClass.simpleName}\n${e.message}")
+                }
+                ConnectGame()
+            }
             addButton("generic.any.options") { optionsWindow.isVisible = true; optionsWindow.toFront() }
             addButton("specific.menu.credits") { client!!.fadeScreen(CreditsScreen()) }
             addButton("generic.game.exit") { Gdx.app.exit() }

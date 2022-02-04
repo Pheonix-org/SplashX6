@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.rendering.screens.game
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.List
@@ -11,6 +12,8 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.cities.Production
 import com.shinkson47.SplashX6.game.units.UnitClass
+import com.shinkson47.SplashX6.network.Packet
+import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.MessageWindow
@@ -97,7 +100,8 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
                 MenuSubItem("!Reload Help Text") { W_Help.reload() },
                 MenuSubItem("!World Generation", WindowAction(TerrainGenerationEditor())),
                 MenuSubItem("!Publish Game") {Server.boot()},
-                MenuSubItem("!Connect Locally") {com.shinkson47.SplashX6.network.Client.connect()},
+                MenuSubItem("!Connect Locally") {com.shinkson47.SplashX6.network.NetworkClient.connect()},
+                MenuSubItem("!Notify Start") {Server.sendToAllClients(Packet(PacketType.Start, GameData))},
                 MenuSubItem("!Show a message") {MessageWindow("Hello", "Everything is fine :)")},
                 MenuSubItem("!Show an error") { MessageWindow("Fuck you", "Everything is broken", true)},
 

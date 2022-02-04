@@ -3,6 +3,7 @@ package com.shinkson47.SplashX6.network
 import com.shinkson47.SplashX6.game.GameData
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.net.BindException
 import java.net.ServerSocket
 import java.net.Socket
 
@@ -19,21 +20,26 @@ object Server {
     private var socketConnectionThreads : ArrayList<Thread> = ArrayList()
     private var socketConnections : ArrayList<serverThreadRunnable> = ArrayList()
 
+    var alive: Boolean = false
+        private set
+
     /**
      * # A socket which can be used to talk to clients.
      */
-    val socket = ServerSocket(25565)
+    lateinit var socket : ServerSocket;
 
 
 
     /**
-     * # A thread which runs in the [socketPool] talks to a single [Client] via [socket]
+     * # A thread which runs in the [socketPool] talks to a single [NetworkClient] via [socket]
      */
     private class serverThreadRunnable : Runnable {
         lateinit var _clientSocket : Socket
         lateinit var _clientInput  : ObjectInputStream
         lateinit var _clientOutput : ObjectOutputStream
         var running : Boolean = true
+
+        fun isConnected() = this::_clientSocket.isInitialized && _clientSocket.isConnected
 
 
         override fun run() {
@@ -64,7 +70,10 @@ object Server {
             send(Packet(PacketType.Status, GameData))
         }
 
-        fun send(packet: Packet) = Packet.send(packet, _clientInput, _clientOutput)
+        fun send(packet: Packet) {
+            if (isConnected())
+                Packet.send(packet, _clientInput, _clientOutput)
+        }
     }
 
     private fun newSocketThread() {
@@ -83,12 +92,29 @@ object Server {
     //#region           Power
     // ============================================
 
-    fun boot()      {
-        newSocketThread()
+    fun boot() : Boolean {
+        if (!alive) {
+            try {
+                socket = ServerSocket(25565)
+            } catch (e : BindException) {
+                e.printStackTrace()
+                return false
+            }
+            newSocketThread()
+        }
+        alive = socketConnectionThreads.last().isAlive
+        return printStatus()
     }
 
     fun shutdown()  {
+        if (alive)
+            socketConnections.forEach { it.stop() }
+        printStatus()
+    }
 
+    fun printStatus() : Boolean {
+        println("server ${if (alive) "alive" else "dead"}")
+        return alive
     }
 
     // ============================================
@@ -133,5 +159,11 @@ object Server {
     @JvmStatic
     fun main(args: Array<String>) {
         boot()
+    }
+
+    fun sendToAllClients(pkt : Packet) {
+        socketConnections.forEach {
+            it.send(pkt)
+        }
     }
 }

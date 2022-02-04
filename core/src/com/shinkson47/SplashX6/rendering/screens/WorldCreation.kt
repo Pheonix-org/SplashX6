@@ -12,10 +12,13 @@ import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.doNewGameCallback
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.inGame
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.cities.CityType
+import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.UtilityK.getIP
 
 /**
  * # Provides the user a place to configure the game and world generation
@@ -26,7 +29,7 @@ import com.shinkson47.SplashX6.utility.Assets.SKIN
  * @version 2
  * @since v1
  */
-class WorldCreation : ScalingScreenAdapter() {
+class WorldCreation(val isConnecting : Boolean = false) : ScalingScreenAdapter() {
 
     //==========================================
     //#region fields
@@ -35,7 +38,7 @@ class WorldCreation : ScalingScreenAdapter() {
     /**
      * # A label that will display game tips whilst loading
      */
-    private val tipLabel = Label("", Assets.SKIN)
+    private val tipLabel = Label("", SKIN)
 
     /**
      * Used to ensure that the loading screen has been rendered
@@ -75,6 +78,10 @@ class WorldCreation : ScalingScreenAdapter() {
                 constructLoadingGUI()
                 loadingScreenRendered = true
             }
+        else if (isConnecting && !loadingScreenRendered) {
+            renderConnecting()
+            loadingScreenRendered = true
+        }
 
         stage.batch.begin()
         SKIN.getDrawable("tiledtex").draw(stage.batch, 0f, 0f, width, height)
@@ -100,12 +107,15 @@ class WorldCreation : ScalingScreenAdapter() {
     /**
      * # Constructs the GUI shown whilst the game is generating
      */
-    private fun constructLoadingGUI() {
+    private fun constructLoadingGUI() = loadingText("specific.gamecreation.generating")
+    private fun renderConnecting() = loadingText("!Waiting for host to start game.")
+
+    private fun loadingText(key : String) {
         val table = Table()
         table.setFillParent(true)
 
         // TODO Add other information.
-        StageWindow.label("specific.gamecreation.generating", table).padBottom(50f).row()
+        StageWindow.label(key, table).padBottom(50f).row()
 
         //table.add(Label("WIDTH : " + WorldTerrain.DEFAULT_WIDTH, Assets.SKIN)).left().row()
         //table.add(Label("HEIGHT : " + WorldTerrain.DEFAULT_HEIGHT, Assets.SKIN)).left().row()
@@ -120,7 +130,10 @@ class WorldCreation : ScalingScreenAdapter() {
     /**
      * # Cancels the world generation, and returns to the main menu
      */
-    fun cancel() = Client.client!!.fadeScreen(MainMenu())
+    fun cancel() {
+        Server.shutdown()
+        Client.client!!.fadeScreen(MainMenu())
+    }
 
     //==========================================
     //#endregion operations
@@ -131,11 +144,15 @@ class WorldCreation : ScalingScreenAdapter() {
             userFinished = true
         } else {
 
-            stage.addActor(gameCreationWindow)
-            gameCreationWindow.centerStage()
+            addw(gameCreationWindow)
 
             Gdx.input.inputProcessor = stage
         }
+    }
+
+    private fun addw(w : StageWindow) {
+        stage.addActor(w)
+        w.centerStage()
     }
 
     private inner class W_GameCreation() : StageWindow() {
@@ -165,10 +182,29 @@ class WorldCreation : ScalingScreenAdapter() {
                     .padTop(30f)
             )
 
-            addButton("generic.buttons.cancel", false) { cancel() }
-            addButton("generic.game.new") { userFinished = true }
-
+            span(addButton("generic.game.new") { userFinished = true })
+            row()
+            span(addButton("!LAN") {
+                if (Server.boot())
+                    addw(W_NetworkConnect())
+                else
+                    dialog("!Not available!", "!Failed to start the server. Is there already one running?")
+            })
+            row()
+            span(addButton("generic.buttons.cancel", false) { cancel() })
             updateColSpans()
+            pack()
+        }
+    }
+
+    private inner class W_NetworkConnect : StageWindow("!Connect") {
+        init {
+            label("!HOST IP : ${getIP().hostAddress}")
+            row()
+            label("!Wait for players, then click start.")
+            row()
+            addButton("!Start Game!") { userFinished = true; }
+
             pack()
         }
     }

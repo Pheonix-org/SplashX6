@@ -3,6 +3,8 @@ package com.shinkson47.SplashX6.utility
 import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager
 import com.shinkson47.SplashX6.rendering.windows.NodeInfo
 import com.shinkson47.SplashX6.utility.Assets.preferences
+import java.net.Inet4Address
+import java.net.InetAddress
 
 /**
  * # Kotlin specific utilities.
@@ -44,4 +46,6 @@ object UtilityK {
             preferences.flush()
             field = value
         }
+
+    fun getIP(): InetAddress = InetAddress.getLocalHost()
 }

@@ -1,7 +1,9 @@
 package com.shinkson47.SplashX6.game;
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
+import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -17,12 +19,17 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
+import com.shinkson47.SplashX6.network.NetworkClient
+import com.shinkson47.SplashX6.network.Packet
+import com.shinkson47.SplashX6.network.PacketType
+import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_CLIENT_CONNECTED
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
@@ -82,6 +89,10 @@ class GameHypervisor {
         //#region construction
         //========================================================================
 
+        fun ConnectGame() {
+            validateCall(REQ_CLIENT_CONNECTED, THROW("Cannot load a game from server if not connected to a server."))
+            client!!.fadeScreen(WorldCreation(isConnecting = true))
+        }
 
         /**
          * # Initiates the creation of a new game
@@ -161,6 +172,13 @@ class GameHypervisor {
 
             if (!DEBUG_MODE) Spotify.pause()      // If possible, stop spotify.
             AudioController.playPlaylist(GamePlaylist());
+            switchToGameScreen()
+
+            if (Server.alive)
+                Server.sendToAllClients(Packet(PacketType.Start, GameData))
+        }
+
+        private fun switchToGameScreen() {
             client?.fadeScreen(gameRenderer!!)    // Show the game screen to the user.
         }
 
@@ -177,13 +195,43 @@ class GameHypervisor {
             TODO()
         }
 
+        /**
+         * We are not in game, and are loading one.
+         *
+         * Populates GameData from a serialized file, then loads the game ui.
+         */
         @JvmStatic
         fun load(f : File) {
             validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
-            GameData = ObjectInputStream(FileInputStream(f)).readObject() as _GameData
+            load(ObjectInputStream(FileInputStream(f)).readObject() as _GameData)
+        }
 
-            doGameLoadCallback()
+        /**
+         * We are not in game, and are loading one.
+         *
+         * Populates GameDate from an existing instance, then loads the ui.
+         */
+        @JvmStatic
+        fun load(gd : _GameData) {
+            validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
+            GameData = gd
             GameData.deserialize()
+            doGameLoadCallback()
+
+        }
+
+        /**
+         * We are already in-game, and are changing the game data.
+         *
+         * GameData is replaced and de-serialized.
+         *
+         * A new renderer is created to render the world.
+         */
+        @JvmStatic
+        fun update(newData: _GameData) {
+            GameData = newData
+            GameData.deserialize()
+            gameRenderer!!.newRenderer()
         }
 
         @JvmStatic
