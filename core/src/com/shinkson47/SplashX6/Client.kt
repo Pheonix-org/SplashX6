@@ -67,7 +67,7 @@ class Client : Game() {
             val icon = ImageIO.read(Gdx.files.local("sprites/icon.png").read())
             application.javaClass.getMethod("setDockIconImage", Image::class.java).invoke(application, icon)
 
-
+ 
         } catch (e: Exception) {
             e.printStackTrace()
             // nobody cares!
