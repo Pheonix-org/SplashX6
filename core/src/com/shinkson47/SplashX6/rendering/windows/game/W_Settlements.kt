@@ -69,11 +69,12 @@ class W_Settlements : StageWindow("generic.game.settlements") {
 
         expandfill(add(ScrollPane(production, SKIN))
             .minWidth(150f)
+            .maxHeight(500f)
         )
 
         var v : WidgetGroup = VerticalGroup()
         v.addActor(TextButton(local("generic.any.add"), SKIN).also { it.addListener(LambdaClickListener {
-            cities.selected?.production!!.queue(production.selected)
+            production.selected?.let { cities.selected?.production!!.queue(it) }
             refresh()
         } )})
 
@@ -90,7 +91,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
             .minWidth(150f)
         )
 
-
+        isResizable = false
         refresh()
         pack()
     }

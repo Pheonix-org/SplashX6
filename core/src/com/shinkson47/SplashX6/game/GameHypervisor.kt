@@ -336,6 +336,7 @@ class GameHypervisor {
          */
         @JvmStatic
         fun unit_viewDestination() {
+            if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't view a unit's destination if no unit selected!"))) return
             camera_moveToTile(GameData.selectedUnit!!.destX, GameData.selectedUnit!!.destY)
         }
 
@@ -345,6 +346,7 @@ class GameHypervisor {
          */
         @JvmStatic
         fun unit_view(){
+            if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't view a unit if no unit selected!"))) return
             camera_focusOn(GameData.selectedUnit!!.x + TILE_HALF_WIDTH, GameData.selectedUnit!!.y + TILE_HALF_HEIGHT)
         }
 
@@ -354,6 +356,7 @@ class GameHypervisor {
          */
         @JvmStatic
         fun unit_disband() {
+            if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't disband a unit if no unit selected!"))) return
             GameData.player!!.units.remove(GameData.selectedUnit)
             GameData.selectedUnit = null
         }
@@ -363,6 +366,7 @@ class GameHypervisor {
 
         @JvmStatic
         fun unit_selectAction(displayName : String) {
+            if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't mutate a unit if no unit selected!"))) return
             with (GameData.selectedUnit!!) {
                 onTurnAction = actions.find { it.displayName == displayName }
             }
