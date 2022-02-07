@@ -75,7 +75,7 @@ object GraphicalConfig  {
      * if [value] is true, application will be asserted into fullscreen,
      * and vice versa.
     */
-    @NodeInfo("Hello")
+    @NodeInfo("Determines if the games takes complete control over your GPU.")
     var fullscreen = graphics.isFullscreen
         set(it) {
             field = it
