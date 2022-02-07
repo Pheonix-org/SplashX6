@@ -27,7 +27,7 @@ import java.util.function.Consumer
  * @since PRE-ALPHA
  * @version 2
  */
-class OptionsWindow(val parent : ScalingScreenAdapter) : StageWindow("generic.any.options") {
+class W_Options(val parent : ScalingScreenAdapter) : StageWindow("generic.any.options") {
 
     init {
         val t : Tree<Tree.Node<*, *, *>, Any> = Tree(SKIN)

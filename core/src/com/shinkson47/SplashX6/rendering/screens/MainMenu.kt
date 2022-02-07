@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.gdx.musicevents.tool.file.FileChooser
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor
@@ -15,7 +14,7 @@ import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
+import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import kotlin.math.roundToInt
@@ -40,7 +39,7 @@ class MainMenu : ScalingScreenAdapter() {
     private val bg = Animation(0.1333333333f, Assets.menuBG.regions, Animation.PlayMode.LOOP)
     val chooser = FileChooser.createPickDialog("Choose save file", SKIN, Gdx.files.external("/"))
     @Volatile private var animationStateTime = 0f
-    private val optionsWindow = OptionsWindow(this)
+    private val optionsWindow = W_Options(this)
 
 
     /**

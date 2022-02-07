@@ -1,6 +1,5 @@
 package com.shinkson47.SplashX6.rendering.screens.game
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.List
@@ -16,8 +15,7 @@ import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.windows.MessageWindow
-import com.shinkson47.SplashX6.rendering.windows.OptionsWindow
+import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.rendering.windows.game.Music
 import com.shinkson47.SplashX6.rendering.windows.game.W_Settlements
@@ -83,7 +81,7 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         // =========================================================
 
         addMenuItem(this, "generic.game.game", NOTHING,
-                MenuSubItem("generic.any.options", WindowAction(OptionsWindow(_parent))) ,
+                MenuSubItem("generic.any.options", WindowAction(W_Options(_parent))) ,
                 MenuSubItem("generic.game.new")         { GameHypervisor.NewGame() } ,
                 //MenuSubItem("generic.game.load")           { GameHypervisor.load() } ,
                 MenuSubItem("generic.game.quickload")   { GameHypervisor.quickload() } ,
