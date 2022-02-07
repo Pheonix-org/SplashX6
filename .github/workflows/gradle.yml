@@ -88,3 +88,10 @@ jobs:
     - name: Run internal tests
       run: java -jar ./desktop/build/libs/desktop-1.0.jar butt # Build Unit Test Trigger ;)
       # TODO i have no fucking clue how to check the exit code. It won't be 0, even when is's successful cause of some gradle bullshittery. Hmm.
+
+    - name: Notify Discord
+      uses: fateyan/action-discord-notifier@v1.2.0
+      with:
+        webhook: https://discord.com/api/webhooks/940239198441598976/TAiqBf40maPNW6hti5PI5OLZZ_k7MlX3aO2ftDW3Cqn8Ef3pHe5PCv5ATKXXjdwVi9Gt
+        # Message title
+        message-title: '@here a new build is available on the master.'
