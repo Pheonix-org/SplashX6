@@ -135,7 +135,7 @@ public final class Utility {
         try {
             return LANG.get(key);
         } catch (MissingResourceException e) {
-            warn(e.getMessage());
+            warnDev(e.getMessage());
             return "???" + key + "???";
         }
     }
@@ -227,17 +227,53 @@ public final class Utility {
      * @return Reference to the created thread.
      */
     public static Thread DispatchDaemonThread(String name, Runnable r) {
-        Runnable target;
         Thread t = new Thread(r, name);
         t.setDaemon(true);
         t.start();
         return t;
     }
 
-    public static void warn(String s) {
-        System.err.println("Warning for SplashX6 developers : " + s);
+    /**
+     * Warns a developer / development session to a problem
+     * that is otherwise silent.
+     */
+    public static void warnDev(String message) {
+       warnDev(message, "");
+    }
+
+    /**
+     * Warns a developer / development session to a problem
+     * that is otherwise silent.
+     */
+    public static void warnDev(String message, String title) {
+        System.err.println("Warning for SplashX6 developers : " + message);
         if (Client.DEBUG_MODE && GameHypervisor.getInGame())
-            new MessageWindow("!Developer Warning", "!" + s, true);
+            warnPlayer(message, title);
+    }
+
+    /**
+     * Warns a player / user in any session to a problem
+     * that is not fatal - i.e player attempts to do something
+     * that they're not allowed to.
+     */
+    public static void warnPlayer(String message) {
+        warnPlayer(message, "");
+    }
+    
+    public static void warnPlayer(String message, String title) {
+        message(title, message, true);
+    }
+
+    public static void message(String message) {
+        message(message, "");
+    }
+
+    public static void message(String message, String title) {
+        message(message, title, false);
+    }
+
+    public static void message(String message, String title, Boolean isError) {
+        new MessageWindow("!" + title, "!" + message, isError);
     }
 
     public static String AssertEndsWith(String s, String suffix) {

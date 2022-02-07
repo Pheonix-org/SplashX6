@@ -26,8 +26,7 @@ import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.Debug.DebugWindow
-import com.shinkson47.SplashX6.utility.Utility.AssertEndsWith
-import com.shinkson47.SplashX6.utility.Utility.local
+import com.shinkson47.SplashX6.utility.Utility.*
 
 /**
  * # The menu bar used in-game to access tools, windows and more.
@@ -102,8 +101,8 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
                 MenuSubItem("!Publish Game") {Server.boot()},
                 MenuSubItem("!Connect Locally") {com.shinkson47.SplashX6.network.NetworkClient.connect()},
                 MenuSubItem("!Notify Start") {Server.sendToAllClients(Packet(PacketType.Start, GameData))},
-                MenuSubItem("!Show a message") {MessageWindow("Hello", "Everything is fine :)")},
-                MenuSubItem("!Show an error") { MessageWindow("Fuck you", "Everything is broken", true)},
+                MenuSubItem("!Show a message") { message("Everything is fine :)")},
+                MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},
 
                 MenuSubItem("!Add a production project") { GameData.player!!.cities[0].production.queue(Production.UnitProductionProject(UnitClass.chariot)) }
         )

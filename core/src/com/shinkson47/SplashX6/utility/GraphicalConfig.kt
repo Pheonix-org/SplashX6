@@ -3,7 +3,6 @@ package com.shinkson47.SplashX6.utility
 import FrustumCallibration
 import com.badlogic.gdx.Gdx.graphics
 import com.badlogic.gdx.Graphics.*
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.utils.Scaling
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameHypervisor
@@ -23,7 +22,7 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 object GraphicalConfig  {
 
     fun callibrateCullingFrustum(parent : StageWindow){
-        if (invalidCall(REQ_IN_GAME, WARN("Frustrum changes can only be made whilst in-game.", parent)))
+        if (invalidCall(REQ_IN_GAME, WARN("Frustrum changes can only be made whilst in-game.")))
             return
 
         GameHypervisor.gameRenderer!!.stage.addActor(FrustumCallibration())

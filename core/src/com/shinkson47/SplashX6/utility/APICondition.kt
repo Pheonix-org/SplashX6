@@ -1,15 +1,16 @@
 package com.shinkson47.SplashX6.utility
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.Actor
 import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.Server
-import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
+import com.shinkson47.SplashX6.utility.Utility.message
+import com.shinkson47.SplashX6.utility.Utility.warnDev
 import java.util.function.Predicate
 
 /**
@@ -93,10 +94,11 @@ class APICondition @JvmOverloads constructor() {
          * [caller] is required to find the GUI stage where the diaog should be displayed.
          */
         @JvmStatic
-        fun WARN(message: String, caller: Actor): Runnable = _WARN_USER(message, caller)
-        class _WARN_USER(val message: String, val caller: Actor) : Runnable {
+        fun WARN(message: String): Runnable = _WARN_USER(message)
+        class _WARN_USER(val message: String) : Runnable {
             override fun run() {
-                StageWindow.dialog(caller, "Invalid operation!", "$message", "Whoops, OK!", "", null)
+                //StageWindow.dialog(caller, "Invalid operation!", "$message", "Whoops, OK!", "", null)
+                message(message)
                 _THROW(message).run()
             }
         }
@@ -136,6 +138,9 @@ class APICondition @JvmOverloads constructor() {
 
         @JvmField
         val REQ_UNIT_CONTROL_MODE: Predicate<Any?> = Predicate { Client.client?.screen is Warroom }
+
+        @JvmField
+        val REQ_UNIT_SELECTED: Predicate<Any?> = Predicate { GameData.selectedUnit != null }
 
         @JvmField
         val REQ_CLIENT_CONNECTED: Predicate<Any?> = Predicate { NetworkClient.isConnected() }

@@ -1,9 +1,7 @@
 package com.shinkson47.SplashX6.game;
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -19,7 +17,6 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
-import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
@@ -32,7 +29,9 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_CLIENT_CONNECTED
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_UNIT_SELECTED
 import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
+import com.shinkson47.SplashX6.utility.APICondition.Companion.WARN
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Debug
@@ -322,6 +321,8 @@ class GameHypervisor {
          */
         @JvmStatic
         fun unit_setDestination() {
+            if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't set a unit's destination if no unit selected!"))) return
+
             with(GameData.selectedUnit!!) {
                 val dest: Vector3 = cm_selectedTile()
                 setDestination(dest.x.toInt(), dest.y.toInt())
@@ -637,6 +638,8 @@ class GameHypervisor {
          */
         @JvmStatic
         fun cm_destinationSelect(){
+            if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't move a unit if no unit is selected!"))) return
+
             if (cm_isSelectingDestination)
                 unit_setDestination()
 

@@ -1,14 +1,9 @@
 package com.shinkson47.SplashX6.network
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Net
-import com.shinkson47.SplashX6.Client
-import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.update
-import com.shinkson47.SplashX6.utility.Utility
-import com.shinkson47.SplashX6.utility.Utility.warn
+import com.shinkson47.SplashX6.utility.Utility.warnDev
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.net.Socket
@@ -52,8 +47,8 @@ object NetworkClient {
                 val pkt = read()
                 when (pkt.type) {
                     PacketType.Ping -> send(Packet(PacketType.Pong))
-                    PacketType.Pong -> warn("The server sent the client a random pong?")
-                    PacketType.Ack -> warn("The server sent the client a random ack?")
+                    PacketType.Pong -> warnDev("The server sent the client a random pong?")
+                    PacketType.Ack -> warnDev("The server sent the client a random ack?")
                     PacketType.Status -> statusUpdate(pkt)
                     PacketType.Start -> statusUpdate(pkt)
                     PacketType.End -> TODO("The client doesn't know how to repond to the server.")
@@ -71,7 +66,7 @@ object NetworkClient {
     fun statusUpdate(pkt : Packet) {
         lastState = pkt
         if (pkt.gameState == null) {
-            warn("Recieved an state update from server that contained no state!")
+            warnDev("Recieved an state update from server that contained no state!")
             return
         }
 

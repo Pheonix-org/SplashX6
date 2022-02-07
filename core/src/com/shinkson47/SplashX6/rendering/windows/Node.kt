@@ -57,7 +57,7 @@ abstract class ReflectionNode<V, A : Actor?>(
                 StageWindow.tooltip(actor, s)
             // FIXME this tooltip is added, but does't show when hovered over.
         } catch (e: NullPointerException) {
-            Utility.warn(" OPTIONS : SERIOUS : ${instance::class.simpleName}.$fieldName IS NOT A VALID PREFERENCE PROPERTY!")
+            Utility.warnDev(" OPTIONS : SERIOUS : ${instance::class.simpleName}.$fieldName IS NOT A VALID PREFERENCE PROPERTY!")
         }
     }
 
@@ -72,7 +72,7 @@ abstract class ReflectionNode<V, A : Actor?>(
         try {
             return (field!!.annotations.find { it is NodeInfo } as NodeInfo).message
         } catch (e : Exception) {
-            Utility.warn("${field!!.name} has no @NodeInfo.")
+            Utility.warnDev("${field!!.name} has no @NodeInfo.")
             return ""
         }
     }
@@ -142,7 +142,7 @@ class SliderNode<V : Number>(C : Any, fieldName: String, key : String, min : Flo
         try {
             _actor.value as V
         } catch (e : ClassCastException) {
-            Utility.warn(" OPTIONS : SERIOUS : SLIDER TYPE CANNOT BE CAST TO FIELD TYPE : ${C::class.java.simpleName}.$fieldName & ${_actor.value::class.java.simpleName}")
+            Utility.warnDev(" OPTIONS : SERIOUS : SLIDER TYPE CANNOT BE CAST TO FIELD TYPE : ${C::class.java.simpleName}.$fieldName & ${_actor.value::class.java.simpleName}")
         }
 
         actor.addListener(StageWindow.LambdaChangeListener{
