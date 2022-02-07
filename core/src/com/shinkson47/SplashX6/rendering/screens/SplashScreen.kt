@@ -37,7 +37,7 @@ class SplashScreen : CreditsScreen(
         currentTime += delta
 
         super.render(delta)
-        if (currentTime >= time) {
+        if (currentTime >= time && Client.client!!.currentScreen == this) {
             Assets.Create()
             Client.client!!.fadeScreen(MainMenu())
         }
