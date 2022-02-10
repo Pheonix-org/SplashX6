@@ -8,12 +8,17 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.Window
+import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.doNewGameCallback
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.inGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.cities.CityType
+import com.shinkson47.SplashX6.network.NetworkClient.connect
+import com.shinkson47.SplashX6.network.NetworkClient.isConnected
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
@@ -29,7 +34,10 @@ import com.shinkson47.SplashX6.utility.UtilityK.getIP
  * @version 2
  * @since v1
  */
-class WorldCreation(val isConnecting : Boolean = false) : ScalingScreenAdapter() {
+class WorldCreation(
+    val isConnecting: Boolean = false,
+    val isLoading: Boolean = false
+) : ScalingScreenAdapter() {
 
     //==========================================
     //#region fields
@@ -54,7 +62,32 @@ class WorldCreation(val isConnecting : Boolean = false) : ScalingScreenAdapter()
 
     private val gameCreationWindow = W_GameCreation()
 
-    private var type = CityType.asian
+    private val chooser = FileChooser.createPickDialog("Choose save file", SKIN, Gdx.files.external("/"))
+
+    init {
+        chooser.setResultListener { success, result ->
+            if (success && result != null) {
+                stage.actors.removeValue(chooser, true)
+                controller.switchState(2)
+                true
+            } else {
+                GameHypervisor.EndGame()
+                false
+            }
+
+        }
+        chooser.setOkButtonText("Load")
+        chooser.setFilter { file ->
+            file.path.matches(Regex("(.*(?:X6))")) || (file.isDirectory && !file.name.startsWith(
+                "."
+            ))
+        }
+        chooser.isResizable = true
+    }
+
+    //==========================================
+    //#endregion actors
+    //==========================================
 
     //==========================================
     //#endregion fields
@@ -65,8 +98,11 @@ class WorldCreation(val isConnecting : Boolean = false) : ScalingScreenAdapter()
      * # Renders the screen
      */
     override fun render(delta: Float) {
-        // Render once, then on the second frame callback to the game hypervisor to create the game.
-        // We have to perform a full render and return to put a loading screen up.
+        controller.run()
+        with(stage) {
+            batch.begin()
+            SKIN.getDrawable("tiledtex").draw(batch, 0f, 0f, width, height)
+            batch.end()
 
         // Second part of this test ensures that we outwait any transision screen before the callback.
         //if (hasRendered && Client.client!!.screen === this) doNewGameCallback()
@@ -102,20 +138,23 @@ class WorldCreation(val isConnecting : Boolean = false) : ScalingScreenAdapter()
      */
     private fun nextTip() = tipLabel.setText(Assets.TIPS[MathUtils.random(Assets.TIPS.size - 1)])
 
-    override fun doResize(width: Int, height: Int) {}
+    fun constructGeneratingText() = constructText("specific.gamecreation.generating")
+    fun constructDeserializingText() = constructText("!Loading existing world. Please wait.")
+    fun constructConnectingText() = constructText("!Waiting for host to start game.")
+    private fun constructText(key: String) {
+        with(loadingContainer) {
+            setFillParent(true)
 
-    /**
-     * # Constructs the GUI shown whilst the game is generating
-     */
-    private fun constructLoadingGUI() = loadingText("specific.gamecreation.generating")
-    private fun renderConnecting() = loadingText("!Waiting for host to start game.")
+            StageWindow
+                .label(key, this)
+                .padBottom(50f)
+                .row()
 
-    private fun loadingText(key : String) {
-        val table = Table()
-        table.setFillParent(true)
+            nextTip()
 
-        // TODO Add other information.
-        StageWindow.label(key, table).padBottom(50f).row()
+            add(tipLabel)
+                .row()
+        }
 
         //table.add(Label("WIDTH : " + WorldTerrain.DEFAULT_WIDTH, Assets.SKIN)).left().row()
         //table.add(Label("HEIGHT : " + WorldTerrain.DEFAULT_HEIGHT, Assets.SKIN)).left().row()
@@ -144,21 +183,18 @@ class WorldCreation(val isConnecting : Boolean = false) : ScalingScreenAdapter()
             userFinished = true
         } else {
 
-            addw(gameCreationWindow)
-
-            Gdx.input.inputProcessor = stage
-        }
-    }
-
-    private fun addw(w : StageWindow) {
+    fun addw(w: Window) {
         stage.addActor(w)
-        w.centerStage()
+
+        if (w is StageWindow)
+            w.centerStage()
     }
 
-    private inner class W_GameCreation() : StageWindow() {
+    inner class W_GameCreation : StageWindow() {
         init {
             isResizable = false
             isMovable = false
+
 
             // TODO Civ class
             //      Opponents
@@ -175,10 +211,10 @@ class WorldCreation(val isConnecting : Boolean = false) : ScalingScreenAdapter()
             x.selected = x.items.first()
             add(x)
 
-            x.addListener(LambdaChangeListener { GameData.pref_civType = x.selected})
+            x.addListener(LambdaChangeListener { GameData.pref_civType = x.selected })
 
             span(
-                    hsep()
+                hsep()
                     .padTop(30f)
             )
 
@@ -208,4 +244,156 @@ class WorldCreation(val isConnecting : Boolean = false) : ScalingScreenAdapter()
             pack()
         }
     }
+
+
+    /**
+     * # World Creation Screen State Machine.
+     *
+     * Controlls the state of the game loading window.
+     *
+     * Generated using Shinkson's State Machine Scripture.
+     *
+     * See WorldCreation.sms
+     */
+    inner class WorldCreationScreenController : StateMachine("WorldCreationScreenController") {
+        private var framebuffer = 0
+        private val isDeserializing = false
+
+
+        init {
+            // State : GameConfigure
+            addState(State(
+                "GameConfigure",
+                {},
+                this,
+                {
+                    addw(gameCreationWindow)
+                    Gdx.input.inputProcessor = stage
+                },
+                {
+                    if (isConnecting) {
+                        constructConnectingText()
+                    } else if (isDeserializing or isLoading) {
+                        constructDeserializingText()
+                    } else {
+                        constructGeneratingText()
+                    }
+                }
+            ))
+            // State : GameLoad
+            addState(
+                State(
+                    "GameLoad",
+                    {},
+                    this,
+                    {
+                        chooser.show(stage)
+                    },
+                    null
+                )
+            )
+            // Switch : from GameConfigure to GameLoad
+            registerSwitchCondition(0, 1) { isLoading }
+            // State : PreRender
+            addState(
+                State(
+                    "PreRender",
+                    { framebuffer++ },
+                    this,
+                    null,
+                    null
+                )
+            )
+            // State : GeneratingWorld
+            addState(
+                State(
+                    "GeneratingWorld",
+                    {},
+                    this,
+                    { doNewGameCallback() },
+                    null
+                )
+            )
+            // State : LanInit
+            addState(
+                State(
+                    "LanInit",
+                    {},
+                    this,
+                    { boot() },
+                    null
+                )
+            )
+            // State : LanConfigure
+            addState(
+                State(
+                    "LanConfigure",
+                    {},
+                    this,
+                    {
+                        Gdx.input.inputProcessor = stage
+                        stage.actors.removeValue(loadingContainer, true)
+                        addw(W_NetworkConnect())
+                    },
+                    null
+                )
+            )
+            // State : Deserializing
+            addState(
+                State(
+                    "Deserializing",
+                    {},
+                    this,
+                    {
+                        if (isLoading)
+                            load(Gdx.files.external(chooser.result.path()).file())
+                    },
+                    null
+                )
+            )
+            // State : Complete
+            addState(
+                State(
+                    "Complete",
+                    {},
+                    this,
+                    { GameHypervisor.doNewGameFINAL() },
+                    null
+                )
+            )
+            // State : LanConnecting
+            addState(
+                State(
+                    "LanConnecting",
+                    {},
+                    this,
+                    { connect() },
+                    null
+                )
+            )
+            // Switch : from GameConfigure to PreRender
+            registerSwitchCondition(0, 2) { Client.DEBUG_MODE or isConnecting }
+            // Switch : from PreRender to Deserializing
+            registerSwitchCondition(2, 6) { framebuffer >= 3 && isLoading }
+            // Switch : from PreRender to GeneratingWorld
+            registerSwitchCondition(2, 3) { framebuffer >= 3 && !isConnected() && !isLoading }
+            // Switch : from PreRender to LanConnecting
+            registerSwitchCondition(2, 8) { framebuffer >= 3 && isConnecting }
+            // Switch : from LanInit to GameConfigure
+            registerSwitchCondition(4, 0) { !alive }
+            // Switch : from LanInit to PreRender
+            registerSwitchCondition(4, 2) { alive }
+            // Switch : from GeneratingWorld to LanConfigure
+            registerSwitchCondition(3, 5) { alive }
+            // Switch : from GeneratingWorld to Complete
+            registerSwitchCondition(3, 7) { !alive }
+            // Switch : from LanConnecting to Complete
+            registerSwitchCondition(8, 7) { GameHypervisor.inGame }
+            // Switch : from Deserializing to Complete
+            registerSwitchCondition(6, 7) { true }
+            defaultState(0)
+        }
+    }
+
+    override fun doResize(width: Int, height: Int) {}
 }

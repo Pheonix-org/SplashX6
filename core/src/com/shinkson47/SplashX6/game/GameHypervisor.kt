@@ -17,6 +17,7 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
+import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
@@ -89,7 +90,6 @@ class GameHypervisor {
         //========================================================================
 
         fun ConnectGame() {
-            validateCall(REQ_CLIENT_CONNECTED, THROW("Cannot load a game from server if not connected to a server."))
             client!!.fadeScreen(WorldCreation(isConnecting = true))
         }
 
@@ -105,6 +105,14 @@ class GameHypervisor {
         fun NewGame() {
             if (inGame) EndGame()
             client?.fadeScreen(WorldCreation())
+        }
+
+        /**
+         * # Initiates the loading of a game
+         */
+        fun LoadGame() {
+            if (inGame) EndGame()
+            client?.fadeScreen(WorldCreation(isLoading = true))
         }
 
         /**
@@ -596,6 +604,8 @@ class GameHypervisor {
          */
         @JvmStatic
         fun cm_exit() {
+            if (invalidCall(REQ_IN_GAME, THROW("cm not accessable whilst not in game."))) return;
+
             //cm_showStateCaps(false)
             cm_active = false
             client!!.fadeScreen(gameRenderer!!)
@@ -665,6 +675,7 @@ class GameHypervisor {
          */
         @JvmStatic
         fun dispose() {
+            Server.shutdown()
             inGame = false
             StageWindow.unPostAll()
             gameRenderer?.dispose()
@@ -689,6 +700,8 @@ class GameHypervisor {
             cm_exit()
             dispose()
             if (!DEBUG_MODE) Spotify.pause()
+
+            inGame = false
             client!!.fadeScreen(MainMenu())
         }
 

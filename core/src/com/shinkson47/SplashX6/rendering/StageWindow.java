@@ -737,9 +737,11 @@ public abstract class StageWindow extends Window implements TurnHook {
         }
     }
 
+
     public static class LambdaChangeListener extends ChangeListener {
         private Consumer<ChangeListener> c;
         public ChangeEvent event;
+
 
         public LambdaChangeListener(Consumer<ChangeListener> consumer) {
             c = consumer;

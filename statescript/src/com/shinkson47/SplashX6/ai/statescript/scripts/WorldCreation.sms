@@ -1,0 +1,177 @@
+/**
+
+	State machine scripture for X6's
+	loading screen. Manages the state
+	of the screen for network connecting,
+	hosting, configuring, & generating behaviours.
+
+
+	Note:
+	Whist this file compiles to java,
+	it is written to be used in kotlin.
+
+	It's java output will not compile.
+
+*/
+
+
+name = WorldCreationScreenController;
+description = "Controlls the behaviour of the game loading screen.";
+default = GameConfigure;
+
+import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.badlogic.gdx.Gdx;
+import com.shinkson47.SplashX6.Client;
+import com.shinkson47.SplashX6.network.Server;
+import com.shinkson47.SplashX6.network.NetworkClient;
+
+// Note : This machine will be ran every frame,
+// 		  as it's used on a screen; thus it's
+//		  behaviours are framely.
+
+
+/**
+
+The state in which the user is presented
+a window, and configures the game's settings.
+
+*/
+state GameConfigure {
+	enter {
+	    chooser.show(stage);
+        Gdx.input.inputProcessor = stage;
+	}
+
+	exit {
+		if (isConnecting) {
+			constructConnectingText();
+		} else if (isDeserializing | isLoading) {
+			constructDeserializingText();
+		} else {
+			constructGeneratingText();
+		}
+	}
+}
+
+state GameLoad {
+	enter {
+		addw(chooser);
+	}
+}
+switch from GameConfigure to GameLoad if (isLoading);
+
+
+/**
+
+The state which renders a loading screen
+before any loading takes place.
+
+This is required, because the engine is single
+threaded and rendering cannot be parallel.
+
+*/
+code {
+	private int framebuffer = 0;
+}
+state PreRender {
+	behaviour {
+		framebuffer++;
+	}
+}
+
+
+/**
+
+The state in which the screen is not rendering,
+but the game is creating the world.
+
+*/
+state GeneratingWorld {
+	enter {
+		GameHypervisor.doNewGameCallback();
+	}
+}
+
+
+/**
+
+A state prior to PreRender which starts the
+multiplayer environment.
+
+*/
+state LanInit {
+	enter {
+		Server.INSTANCE.boot();
+	}
+}
+
+
+
+/**
+
+State in which the user has opted to host the game.
+
+The world has been generated, and the server is alive.
+
+*/
+state LanConfigure {
+	enter {
+		// TODO shouldn't need to do this.
+		Gdx.input.inputProcessor = stage;
+
+		stage.getActors().removeValue(loadingContainer, true);
+		addw(W_NetworkConnect());
+	}
+}
+
+
+code {
+	private boolean isDeserializing = false;
+}
+state Deserializing {
+	enter {
+		if (isLoading)
+			GameHypervisor.load(Gdx.files.external(chooser.result.path()).file());
+	}
+}
+
+
+
+state Complete {
+	enter {
+		GameHypervisor.doNewGameFINAL();
+	}
+}
+
+
+/**
+
+ State for clients that are connecting to a
+ host.
+
+*/
+state LanConnecting {
+	enter {
+		NetworkClient.connect();
+	}
+}
+
+
+switch from GameConfigure to PreRender if (Client.DEBUG_MODE | isConnecting);
+
+switch from PreRender to Deserializing if (framebuffer >= 3 && isDeserializing );
+switch from PreRender to GeneratingWorld if (framebuffer >= 3 && !isConnected() && !isDeserializing );
+switch from PreRender to LanConnecting if (framebuffer >= 3 && isConnecting);
+
+// If the server failed to start server, return to GameConfiguration.
+// TODO notify user.
+switch from LanInit to GameConfigure if (!Server.INSTANCE.getAlive());
+switch from LanInit to PreRender if (Server.INSTANCE.getAlive());
+
+switch from GeneratingWorld to LanConfigure if (Server.INSTANCE.getAlive());
+switch from GeneratingWorld to Complete if (!Server.INSTANCE.getAlive());
+
+switch from LanConnecting to Complete if (GameHypervisor.inGame);
+
+switch from Deserializing to Complete;
+// TODO I'd really like to add an 'else' case to these switch statements.

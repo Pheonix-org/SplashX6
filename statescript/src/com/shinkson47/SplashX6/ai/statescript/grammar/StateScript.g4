@@ -14,8 +14,7 @@ DESCRIPTION	: 'description';
 FROM 		: 'from';
 TO 			: 'to';
 
-
-// This rule ignores whitespace.
+// ignore whitespace & comments.
 WS : (' ' | '\t' | '\n')+ -> skip;
 CMT: COMMENT -> channel(HIDDEN);
 
@@ -34,7 +33,6 @@ code:
 	;
 
 switchState: SWITCH FROM Identifier TO Identifier (IF parExpression)? SEMI;
-
 
 state: STATE Identifier
 	LBRACE

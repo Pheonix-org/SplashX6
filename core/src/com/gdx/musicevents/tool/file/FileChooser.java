@@ -313,7 +313,7 @@ public class FileChooser extends Dialog {
                 }
 
                 final boolean success = (Boolean) object;
-                resultListener.result(success, getResult());
+                resultListener.result(success, (success) ? getResult() : null);
             }
         }.setOkButtonText("Select");
 

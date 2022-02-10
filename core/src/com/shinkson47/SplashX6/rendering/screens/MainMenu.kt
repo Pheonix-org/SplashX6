@@ -9,6 +9,7 @@ import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.LoadGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.network.NetworkClient
@@ -37,7 +38,7 @@ class MainMenu : ScalingScreenAdapter() {
     //private val stage = Stage(ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
     private var menuWindow: Window? = null
     private val bg = Animation(0.1333333333f, Assets.menuBG.regions, Animation.PlayMode.LOOP)
-    val chooser = FileChooser.createPickDialog("Choose save file", SKIN, Gdx.files.external("/"))
+
     @Volatile private var animationStateTime = 0f
     private val optionsWindow = W_Options(this)
 
@@ -57,17 +58,9 @@ class MainMenu : ScalingScreenAdapter() {
                     Label("PRE-ALPHA 0.0.2", SKIN)
             ).padBottom(50f).row()
 
-            addButton("generic.game.new") { NewGame() }
-            addButton("generic.game.load") { chooser.show(stage) }
-            addButton("connect") {
-                try {
-                    NetworkClient.connect()
-                } catch (e : Exception) {
-                    e.printStackTrace()
-                    dialog("!Failed to connect!", "!${e.javaClass.simpleName}\n${e.message}")
-                }
-                ConnectGame()
-            }
+            addButton("generic.game.new")  { NewGame() }
+            addButton("generic.game.load") { LoadGame() }
+            addButton("connect") { ConnectGame() }
             addButton("generic.any.options") { optionsWindow.isVisible = true; optionsWindow.toFront() }
             addButton("specific.menu.credits") { client!!.fadeScreen(CreditsScreen()) }
             addButton("generic.game.exit") { Gdx.app.exit() }
@@ -114,15 +107,6 @@ class MainMenu : ScalingScreenAdapter() {
         stage.addActor(optionsWindow)
 
 
-        chooser.setResultListener { success, result ->
-            if (success) {
-                GameHypervisor.load(Gdx.files.external(result.path()).file())
-            }
-            true
-        }
-        chooser.setOkButtonText("Load")
-        chooser.setFilter { file -> file.path.matches(Regex("(.*(?:X6))")) || (file.isDirectory && !file.name.startsWith(".")) }
-        chooser.isResizable = true
 
         // Set the stage to handle key and mouse input
         MouseHandler.configureGameInput(stage)
