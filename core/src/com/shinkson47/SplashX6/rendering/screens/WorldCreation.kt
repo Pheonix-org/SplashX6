@@ -226,7 +226,9 @@ class WorldCreation(
                     .padTop(30f)
             )
 
-            span(addButton("generic.game.new") { userFinished = true })
+            span(addButton("generic.game.new") {
+                controller.switchState(2)
+            })
             row()
             span(addButton("!LAN") {
                 if (Server.boot())
