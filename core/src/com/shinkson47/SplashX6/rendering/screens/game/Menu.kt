@@ -9,8 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.EndGame
 import com.shinkson47.SplashX6.game.cities.Production
 import com.shinkson47.SplashX6.game.units.UnitClass
+import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
@@ -87,17 +90,19 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
                 MenuSubItem("generic.game.quickload")   { GameHypervisor.quickload() } ,
                 MenuSubItem("generic.game.save")        { chooser.show(stage) } ,
                 MenuSubItem("generic.game.quicksave")   { GameHypervisor.quicksave() } ,
-                MenuSubItem("generic.game.end")         { GameHypervisor.EndGame() }
+                MenuSubItem("!Rejoin")   { if (NetworkClient.isConnected()) { EndGame(); ConnectGame(); } } ,
+                MenuSubItem("generic.game.end")         { EndGame() }
         )
 
         addMenuItem(this, "!Help", WindowAction(W_Help()))
 
         addMenuItem(this, "!Debug", WindowAction(DebugWindow()),
                 MenuSubItem("!Defog All") { GameData.world!!.removeFogOfWar() },
+                MenuSubItem("!Hard reset server") { Server.shutdown(); Server.boot() },
                 MenuSubItem("!Reload Help Text") { W_Help.reload() },
                 MenuSubItem("!World Generation", WindowAction(TerrainGenerationEditor())),
                 MenuSubItem("!Publish Game") {Server.boot()},
-                MenuSubItem("!Connect Locally") {com.shinkson47.SplashX6.network.NetworkClient.connect()},
+                MenuSubItem("!Connect Locally") { NetworkClient.connect() },
                 MenuSubItem("!Notify Start") {Server.sendToAllClients(Packet(PacketType.Start, GameData))},
                 MenuSubItem("!Show a message") { message("Everything is fine :)")},
                 MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},

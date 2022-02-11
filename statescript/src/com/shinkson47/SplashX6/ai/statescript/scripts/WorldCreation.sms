@@ -74,6 +74,18 @@ code {
 	private int framebuffer = 0;
 }
 state PreRender {
+	enter {
+		framebuffer = 0;
+
+		if (isConnecting) {
+			constructConnectingText();
+		} else if (isConnecting ||isDeserializing || isLoading) {
+			constructDeserializingText();
+		} else {
+			constructGeneratingText();
+		}
+	}
+
 	behaviour {
 		framebuffer++;
 	}
@@ -133,6 +145,10 @@ state Deserializing {
 		if (isLoading)
 			GameHypervisor.load(Gdx.files.external(chooser.result.path()).file());
 	}
+
+	exit {
+		isDeserializing = true;
+	}
 }
 
 
@@ -160,7 +176,7 @@ state LanConnecting {
 switch from GameConfigure to PreRender if (Client.DEBUG_MODE | isConnecting);
 
 switch from PreRender to Deserializing if (framebuffer >= 3 && isDeserializing );
-switch from PreRender to GeneratingWorld if (framebuffer >= 3 && !isConnected() && !isDeserializing );
+switch from PreRender to GeneratingWorld if (framebuffer >= 3 && !isConnecting && !isDeserializing );
 switch from PreRender to LanConnecting if (framebuffer >= 3 && isConnecting);
 
 // If the server failed to start server, return to GameConfiguration.
@@ -171,7 +187,7 @@ switch from LanInit to PreRender if (Server.INSTANCE.getAlive());
 switch from GeneratingWorld to LanConfigure if (Server.INSTANCE.getAlive());
 switch from GeneratingWorld to Complete if (!Server.INSTANCE.getAlive());
 
-switch from LanConnecting to Complete if (GameHypervisor.inGame);
+switch from LanConnecting to PreRender if (GameHypervisor.inGame);
 
 switch from Deserializing to Complete;
 // TODO I'd really like to add an 'else' case to these switch statements.

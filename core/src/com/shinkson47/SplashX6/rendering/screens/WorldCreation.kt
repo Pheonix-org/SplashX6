@@ -17,8 +17,8 @@ import com.shinkson47.SplashX6.game.GameHypervisor.Companion.inGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.cities.CityType
+import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.NetworkClient.connect
-import com.shinkson47.SplashX6.network.NetworkClient.isConnected
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
@@ -46,13 +46,14 @@ class WorldCreation(
     /**
      * # A label that will display game tips whilst loading
      */
-    private val tipLabel = Label("", SKIN)
+    private lateinit var tipLabel: Label
 
     /**
      * Used to ensure that the loading screen has been rendered
      * before starting the loading. Ensures there's something
      * displayed.
      */
+    private lateinit var loadingContainer: Table
     private var loadingScreenRendered = false
 
     /**
@@ -139,10 +140,18 @@ class WorldCreation(
     private fun nextTip() = tipLabel.setText(Assets.TIPS[MathUtils.random(Assets.TIPS.size - 1)])
 
     fun constructGeneratingText() = constructText("specific.gamecreation.generating")
-    fun constructDeserializingText() = constructText("!Loading existing world. Please wait.")
-    fun constructConnectingText() = constructText("!Waiting for host to start game.")
+    fun constructDeserializingText() = constructText("!Loading world. Please wait.")
+    fun constructConnectingText() = constructText("!Waiting for host")
     private fun constructText(key: String) {
+        with(stage) {
+            this.actors.clear()
+            loadingContainer = Table()
+            this.addActor(loadingContainer)
+        }
+
         with(loadingContainer) {
+            children.clear()
+
             setFillParent(true)
 
             StageWindow
@@ -150,10 +159,9 @@ class WorldCreation(
                 .padBottom(50f)
                 .row()
 
+            tipLabel = Label("", SKIN)
             nextTip()
-
             add(tipLabel)
-                .row()
         }
 
         //table.add(Label("WIDTH : " + WorldTerrain.DEFAULT_WIDTH, Assets.SKIN)).left().row()
@@ -257,7 +265,7 @@ class WorldCreation(
      */
     inner class WorldCreationScreenController : StateMachine("WorldCreationScreenController") {
         private var framebuffer = 0
-        private val isDeserializing = false
+        private var isDeserializing = false
 
 
         init {
@@ -270,15 +278,7 @@ class WorldCreation(
                     addw(gameCreationWindow)
                     Gdx.input.inputProcessor = stage
                 },
-                {
-                    if (isConnecting) {
-                        constructConnectingText()
-                    } else if (isDeserializing or isLoading) {
-                        constructDeserializingText()
-                    } else {
-                        constructGeneratingText()
-                    }
-                }
+                null
             ))
             // State : GameLoad
             addState(
@@ -300,7 +300,17 @@ class WorldCreation(
                     "PreRender",
                     { framebuffer++ },
                     this,
-                    null,
+                    {
+                        framebuffer = 0
+
+                        if (isConnecting && !isDeserializing) {
+                            constructConnectingText()
+                        } else if (isConnecting or isDeserializing or isLoading) {
+                            constructDeserializingText()
+                        } else {
+                            constructGeneratingText()
+                        }
+                    },
                     null
                 )
             )
@@ -347,6 +357,8 @@ class WorldCreation(
                     {
                         if (isLoading)
                             load(Gdx.files.external(chooser.result.path()).file())
+                        else
+                            NetworkClient.postUpdate()
                     },
                     null
                 )
@@ -367,18 +379,21 @@ class WorldCreation(
                     "LanConnecting",
                     {},
                     this,
-                    { connect() },
+                    {
+                        connect()
+                        isDeserializing = true
+                    },
                     null
                 )
             )
             // Switch : from GameConfigure to PreRender
             registerSwitchCondition(0, 2) { Client.DEBUG_MODE or isConnecting }
             // Switch : from PreRender to Deserializing
-            registerSwitchCondition(2, 6) { framebuffer >= 3 && isLoading }
+            registerSwitchCondition(2, 6) { framebuffer >= 3 && isDeserializing }
             // Switch : from PreRender to GeneratingWorld
-            registerSwitchCondition(2, 3) { framebuffer >= 3 && !isConnected() && !isLoading }
+            registerSwitchCondition(2, 3) { framebuffer >= 3 && !isConnecting && !isLoading }
             // Switch : from PreRender to LanConnecting
-            registerSwitchCondition(2, 8) { framebuffer >= 3 && isConnecting }
+            registerSwitchCondition(2, 8) { framebuffer >= 11 && isConnecting }
             // Switch : from LanInit to GameConfigure
             registerSwitchCondition(4, 0) { !alive }
             // Switch : from LanInit to PreRender
@@ -387,8 +402,8 @@ class WorldCreation(
             registerSwitchCondition(3, 5) { alive }
             // Switch : from GeneratingWorld to Complete
             registerSwitchCondition(3, 7) { !alive }
-            // Switch : from LanConnecting to Complete
-            registerSwitchCondition(8, 7) { GameHypervisor.inGame }
+            // Switch : from LanConnecting to PreRender
+            registerSwitchCondition(8, 2) { true }
             // Switch : from Deserializing to Complete
             registerSwitchCondition(6, 7) { true }
             defaultState(0)

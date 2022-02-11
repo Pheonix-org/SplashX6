@@ -17,27 +17,23 @@ object NetworkClient {
     lateinit var _clientOutput : ObjectOutputStream
     private lateinit var socketListener: NetworkClientListener
 
-    var isWaiting = false
-
     var lastState: Packet? = null
 
     fun connect() {
         socket = Socket("localhost",25565)
         _clientOutput = ObjectOutputStream(socket!!.getOutputStream())
         _clientInput  = ObjectInputStream (socket!!.getInputStream())
+                //TODO
+        //GameData.networkSet(status.gameState!!)
+    }
 
-
-        lastState = read()
+    fun postUpdate () {
+        statusUpdate(read())
         send(Packet(PacketType.Ack))
-        isWaiting = true
 
         socketListener = NetworkClientListener()
         val thread = Thread(socketListener)
         socketListener.host = thread
-        thread.start()
-
-        //TODO
-        //GameData.networkSet(status.gameState!!)
     }
 
     private class NetworkClientListener() : Runnable {

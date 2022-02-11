@@ -1,6 +1,8 @@
 package com.shinkson47.SplashX6.network
 
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.net.BindException
@@ -68,7 +70,10 @@ object Server {
          * # Sends the status of the game to the client.
          */
         fun status() {
-            send(Packet(PacketType.Status, GameData))
+            if (GameHypervisor.inGame)
+                send(Packet(PacketType.Start, GameData))
+            else
+                send(Packet(PacketType.Status, GameData))
         }
 
         fun send(packet: Packet) {
