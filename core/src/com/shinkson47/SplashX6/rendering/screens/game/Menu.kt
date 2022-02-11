@@ -101,11 +101,12 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
                 MenuSubItem("!Hard reset server") { Server.shutdown(); Server.boot() },
                 MenuSubItem("!Reload Help Text") { W_Help.reload() },
                 MenuSubItem("!World Generation", WindowAction(TerrainGenerationEditor())),
-                MenuSubItem("!Publish Game") {Server.boot()},
+                MenuSubItem("!Publish Game") { Server.boot() },
                 MenuSubItem("!Connect Locally") { NetworkClient.connect() },
                 MenuSubItem("!Notify Start") {Server.sendToAllClients(Packet(PacketType.Start, GameData))},
                 MenuSubItem("!Show a message") { message("Everything is fine :)")},
                 MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},
+            MenuSubItem("!Reload UI") { GameHypervisor.gameRenderer!!.let { it.stage.clear(); it.createUI() }  },
 
                 MenuSubItem("!Add a production project") { GameData.player!!.cities[0].production.queue(Production.UnitProductionProject(UnitClass.chariot)) }
         )
@@ -205,7 +206,15 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         /**
          * # A list view used to hold and show the items.
          */
-        val l = List<MenuSubItem>(SKIN)
+        val l = object : List<MenuSubItem>(SKIN) {
+            override fun getMinHeight(): Float {
+                return 23f * this.items.size
+            }
+
+            override fun getMaxWidth(): Float {
+                return prefWidth
+            }
+        }
 
         init {
             add(l)
@@ -228,6 +237,11 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
             l.items.clear()
             i.forEach { l.items.add(it) }
             invalidate()
+
+            l.invalidate()
+            width = l.minWidth
+
+            pack()
         }
 
         /**
@@ -237,18 +251,9 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
             set(subActions)
 
             isVisible = true
-            //setSize(minWidth, minHeight)
-            setSize(200f, 200f)
-            //pack()
-            // This shit doesn't work. Let's make a work around.
+            pack()
 
-            // Attempted to workaround by simulating a resize, since they
-            // cause it to resize correctly. It made no difference.
-//            this.listeners.forEach {
-//                if(it is InputListener)
-//                    it.touchDragged(null,0f,0f,0)
-//            }
-
+            isResizable = false
             setPosition(menuItem.x, this@Menu.y - this.height)
         }
 
