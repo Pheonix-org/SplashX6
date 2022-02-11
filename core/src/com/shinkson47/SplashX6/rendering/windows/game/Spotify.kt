@@ -385,13 +385,4 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
             )
         }
     }
-
-    /**
-     * Initalises spotify api when this window is created
-     * (Which is when the game is created) and dispatches the 5 second updater thread.
-     */
-    init {
-        //Spotify.create();
-        //Utility.DispatchDaemonThread("Spotify Update Thread", seekRunnable)
-    }
 }
