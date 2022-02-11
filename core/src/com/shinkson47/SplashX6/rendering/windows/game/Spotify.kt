@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.rendering.windows.game
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.scenes.scene2d.ui.*
@@ -132,6 +133,8 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
      * > whilst updating the ui. This may effect other async threads accessing [Spotify]
      */
     @Synchronized private fun update() {
+        if (!isVisible) return
+
         // Attempt to fetch the current state of playback.
         playbackState = Spotify.info()
 
@@ -362,7 +365,7 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
     }
 
     private fun spotifyConnect() {
-        GraphicalConfig.fullscreen = false
+        Gdx.app.postRunnable {GraphicalConfig.fullscreen = false }
         if (Spotify.create()) // TODO this needs to be localised.
             dialog("", "specific.windows.music.alreadyConnected", "", "", null)
         else {
