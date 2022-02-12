@@ -31,7 +31,7 @@ public class Debug {
     private static final List<String> Dumps = new ArrayList<>();
 
     // FIXME : This alias is dumb, and becomes out of sync with Client.debug_mode.
-    private static boolean debugMode = Client.DEBUG_MODE;
+    public static boolean debugMode = Client.DEBUG_MODE;
 
     public static boolean enabled() { return debugMode; }
 

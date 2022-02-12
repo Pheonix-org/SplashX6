@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.audio.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.utility.Debug;
 import com.shinkson47.SplashX6.utility.TurnHook;
 import com.shinkson47.SplashX6.utility.Utility;
 import com.shinkson47.SplashX6.utility.UtilityK;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import static com.shinkson47.SplashX6.Client.DEBUG_MODE;
 import static com.shinkson47.SplashX6.audio.AudioController.GUI_SOUND;
 import static com.shinkson47.SplashX6.utility.Assets.SKIN;
 import static com.shinkson47.SplashX6.utility.Utility.local;
@@ -219,6 +221,7 @@ public abstract class StageWindow extends Window implements TurnHook {
         setResizable(resizable);
         setVisible(visible);
         updateColSpans();
+        if (com.shinkson47.SplashX6.utility.Debug.debugMode) debugAll();
         GameHypervisor.turn_hook(this);
         post(this); // TODO no consideration for posting on other stages on creation. We might not want a window on the game screen.
     }

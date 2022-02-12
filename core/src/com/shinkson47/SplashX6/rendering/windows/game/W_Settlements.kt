@@ -15,6 +15,7 @@ import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
 import com.shinkson47.SplashX6.utility.Utility.local
+import javax.swing.event.ChangeListener
 
 /**
  * # Displays and manages the player's settlements and thier prouction within
@@ -35,22 +36,33 @@ class W_Settlements : StageWindow("generic.game.settlements") {
     private val lblCityProductionPower : Label
     private val lblCost                = Label("0", SKIN)
     private val lblCompleteIn          = Label("0", SKIN)
+    private val lblCityProductionPowerLevel = Label("100", SKIN)
 
 
     init {
+        padLeft(5f)
+
         queue.selection.required = false
         production.selection.required = false
 
+        production.addListener { production.selected?.let { refreshCost(it); true}; false}
+        queue.addListener { queue.selected?.let { refreshCost(it); true}; false}
+        
         setPosition(0f, Gdx.graphics.height.toFloat())
+
+        label("specific.windows.settlements.cities")
+            .fill()
+            .actor.setAlignment(Align.left)
 
         cities.addListener(LambdaChangeListener { refresh() })
         add(cities)
-            .colspan(3)
+            .colspan(2)
             .fillX()
             .expandX()
             .row()
 
         label("specific.windows.settlements.productionPower").also { lblCityProductionPower = it.actor }
+        add(lblCityProductionPowerLevel)
         row()
 
         label("specific.windows.settlements.available")
@@ -84,6 +96,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
 
         v.addActor(Label(local("specific.windows.settlements.completeIn"), SKIN))
         v.addActor(lblCompleteIn)
+
         v.addActor(TextButton(local("generic.any.remove"), SKIN))
         expandfill(add(v))
 
@@ -97,18 +110,28 @@ class W_Settlements : StageWindow("generic.game.settlements") {
     }
 
     override fun refresh() {
-        cities.setItems(CollectionToGDXArray(GameData.player!!.cities))
+        cities.items = CollectionToGDXArray(GameData.player!!.cities)
 
         cities.selected?.let { refresh(queue.items, it.production.queue) }
-
         queue.selection.validate()
 
         cities.selected?.let { refresh(production.items, it.production.producable()) }
         production.selection.validate()
+
+        cities.selected?.let { lblCityProductionPowerLevel.setText(it.production.productionPower) }
     }
+
+    private fun refreshCost(it : Production.ProductionProject?) {
+        lblCost.setText(if (it == null) "0" else "${it.cost}")
+        lblCompleteIn.setText(if (it == null) "0" else "${it.cost / cities.selected.production.productionPower}")
+    }
+
+
+
 
     private fun <T> refresh(list :  com.badlogic.gdx.utils.Array<T>, data : Collection<T>) {
         list.clear()
         list.addAll(CollectionToGDXArray(data))
     }
+
 }
