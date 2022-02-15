@@ -27,7 +27,7 @@ class Production(val forCity: City) : TurnHook, Serializable {
      */
     val queue :  ArrayList<ProductionProject> = arrayListOf()
 
-    var productionPower : Int = BASE_PRODUCTION_POWER
+    var productionPower : Int = BASE_PRODUCTION_POWER * forCity.population
         private set
 
     fun queue(project : ProductionProject) {

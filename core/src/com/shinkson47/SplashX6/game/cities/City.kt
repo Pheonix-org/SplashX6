@@ -35,8 +35,8 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
     /**
      * # The size of the city's population
      */
-    private var population : Int = 0
-        set(value) {
+    var population : Int = 0
+        private set(value) {
             field = value
             checkSpriteUpdate()
         }
@@ -58,6 +58,8 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
      */
     @Transient private lateinit var sprite : Sprite
     private fun spriteLateInit() { setSprite() }
+
+    fun getPosition() : Vector3 = Vector3(sprite.x, sprite.y, 0f)
 
     val production = Production(this)
 

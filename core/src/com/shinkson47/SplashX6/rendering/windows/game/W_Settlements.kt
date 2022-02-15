@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.utils.Align
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.cities.City
 import com.shinkson47.SplashX6.game.cities.Production
 import com.shinkson47.SplashX6.game.units.Unit
@@ -54,7 +55,10 @@ class W_Settlements : StageWindow("generic.game.settlements") {
             .fill()
             .actor.setAlignment(Align.left)
 
-        cities.addListener(LambdaChangeListener { refresh() })
+        cities.addListener(LambdaChangeListener {
+            cities.selected?.let { GameHypervisor.camera_focusOn(it) }
+            refresh()
+        })
         add(cities)
             .colspan(2)
             .fillX()
