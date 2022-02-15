@@ -85,10 +85,11 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         )
 
         var v : WidgetGroup = VerticalGroup()
-        v.addActor(TextButton(local("generic.any.add"), SKIN).also { it.addListener(LambdaClickListener {
+        v.addActor(TextButton(local("generic.any.add"), SKIN).apply { addListener(LambdaClickListener {
             production.selected?.let { cities.selected?.production!!.queue(it) }
             refresh()
-        } )})
+            true
+        })})
 
 
         v.addActor(Label(local("specific.windows.settlements.cost"), SKIN))
@@ -97,7 +98,11 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         v.addActor(Label(local("specific.windows.settlements.completeIn"), SKIN))
         v.addActor(lblCompleteIn)
 
-        v.addActor(TextButton(local("generic.any.remove"), SKIN))
+        v.addActor(TextButton(local("generic.any.remove"), SKIN).apply { addListener(LambdaClickListener {
+            queue.selected?.let { cities.selected?.production!!.queue.remove(it) }
+            refresh()
+            true
+        })})
         expandfill(add(v))
 
         expandfill(add(ScrollPane(queue, SKIN))
