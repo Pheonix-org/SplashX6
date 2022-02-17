@@ -1,6 +1,6 @@
 package com.shinkson47.SplashX6.game.world.generation.stages
 
-import com.shinkson47.SplashX6.game.world.FastNoiseLite
+import com.auburn.fastnoiselite.FastNoiseLite
 import com.shinkson47.SplashX6.game.world.Tile
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.generation.BaseGenerationStage

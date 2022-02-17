@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.world.FastNoiseLite
+import com.auburn.fastnoiselite.FastNoiseLite
 import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion
 import com.shinkson47.SplashX6.game.world.generation.Generator
 import com.shinkson47.SplashX6.rendering.StageWindow

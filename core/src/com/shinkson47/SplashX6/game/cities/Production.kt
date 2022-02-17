@@ -27,14 +27,20 @@ class Production(val forCity: City) : TurnHook, Serializable {
      */
     val queue :  ArrayList<ProductionProject> = arrayListOf()
 
-    var productionPower : Int = BASE_PRODUCTION_POWER * forCity.population
+    var productionPower : Int = BASE_PRODUCTION_POWER + (BASE_PRODUCTION_POWER * forCity.population)
         private set
+        get() {
+            field = BASE_PRODUCTION_POWER + (BASE_PRODUCTION_POWER * forCity.population)
+            return field
+        }
 
     fun queue(project : ProductionProject) {
-        if (queue.size >= QUEUE_LIMIT) return
+        if (isQueuefull()) return
         queue.add(project)
         project.assign(this)
     }
+
+    fun isQueuefull() = queue.size >= QUEUE_LIMIT
 
     fun evaluateCitiesProductionPower () {}
 

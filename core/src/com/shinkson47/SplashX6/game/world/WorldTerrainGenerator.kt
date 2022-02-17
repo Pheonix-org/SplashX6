@@ -1,5 +1,6 @@
 package com.shinkson47.SplashX6.game.world
 
+import com.auburn.fastnoiselite.FastNoiseLite
 import com.badlogic.gdx.math.MathUtils
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.DEFAULT_HEIGHT
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.DEFAULT_WIDTH
@@ -30,9 +31,9 @@ object WorldTerrainGenerator {
 
     private var BiomeHeatmap: FastNoiseLite? = null
 
-    private var HeightHeatmap:FastNoiseLite? = null
+    private var HeightHeatmap: FastNoiseLite? = null
 
-    private var FoliageNoise:FastNoiseLite? = null
+    private var FoliageNoise: FastNoiseLite? = null
 
     private var worldInProgress : WorldTerrain? = null
 

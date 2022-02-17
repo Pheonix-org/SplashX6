@@ -1,11 +1,15 @@
 package com.shinkson47.SplashX6.network
 
 import com.badlogic.gdx.Gdx
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.update
 import com.shinkson47.SplashX6.utility.Utility.warnDev
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.io.OptionalDataException
+import java.io.StreamCorruptedException
+import java.lang.Exception
 import java.net.Socket
 
 /**
@@ -17,28 +21,39 @@ object NetworkClient {
     lateinit var _clientOutput : ObjectOutputStream
     private lateinit var socketListener: NetworkClientListener
 
+    var hasStarted: Boolean = false
+
     var lastState: Packet? = null
+        private set
 
     fun connect() {
+        hasStarted = false
         socket = Socket("localhost",25565)
         _clientOutput = ObjectOutputStream(socket!!.getOutputStream())
         _clientInput  = ObjectInputStream (socket!!.getInputStream())
                 //TODO
         //GameData.networkSet(status.gameState!!)
+
+        socketListener = NetworkClientListener()
+        val thread = Thread(socketListener)
+        socketListener.host = thread.apply { start() }
+    }
+
+    fun resetConnection() {
+        println("Connection reset.")
+        socketListener.host.interrupt()
+        socketListener.host.stop()
+        connect()
     }
 
     fun postUpdate () {
         statusUpdate(read())
-        send(Packet(PacketType.Ack))
-
-        socketListener = NetworkClientListener()
-        val thread = Thread(socketListener)
-        socketListener.host = thread
     }
 
     private class NetworkClientListener() : Runnable {
         lateinit var host : Thread
         override fun run() {
+            while (!this::host.isInitialized);
             while (!host.isInterrupted) {
                 val pkt = read()
                 when (pkt.type) {
@@ -55,7 +70,20 @@ object NetworkClient {
     }
 
     fun send(packet: Packet) = Packet.send(packet, _clientInput, _clientOutput)
-    fun read() = _clientInput.readObject() as Packet
+    fun read() : Packet {
+        while (true) {
+            try {
+                return _clientInput.readObject() as Packet
+            } catch (e: Exception) {
+                if (e is StreamCorruptedException)
+                    resetConnection();
+                println("Failed to read a packet. Requesting resend. ${e.message}")
+                send (Packet(PacketType.Resend))
+            }
+            send(Packet(PacketType.Ack))
+            // TODO implement a max retry count.
+        }
+    }
 
     fun isConnected() : Boolean = socket?.isConnected == true
 
@@ -68,7 +96,7 @@ object NetworkClient {
 
         with (lastState!!.gameState!!) {
             if (pkt.type == PacketType.Start)
-                Gdx.app.postRunnable { load(this) }
+                hasStarted = true
             else
                 Gdx.app.postRunnable { update(this) }
         }

@@ -1,7 +1,7 @@
 package com.shinkson47.SplashX6.game.world.generation
 
 import com.badlogic.gdx.math.MathUtils
-import com.shinkson47.SplashX6.game.world.FastNoiseLite
+import com.auburn.fastnoiselite.FastNoiseLite
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 
 /**

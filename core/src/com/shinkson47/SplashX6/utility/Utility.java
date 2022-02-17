@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameHypervisor;
-import com.shinkson47.SplashX6.game.world.FastNoiseLite;
+import com.auburn.fastnoiselite.FastNoiseLite;
 import com.shinkson47.SplashX6.rendering.windows.MessageWindow;
 
 import java.util.MissingResourceException;

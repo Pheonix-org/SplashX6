@@ -2,87 +2,135 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>t_s_s_s</key><integer>1</integer>
-
-  <key>unit.armor</key>			<integer>1</integer>
-  <key>unit.howitzer</key>		<integer>2</integer>
-  <key>unit.battleship</key>		<integer>3</integer>
-  <key>unit.bomber</key>			<integer>4</integer>
-  <key>unit.cannon</key>			<integer>5</integer>
-  <key>unit.caravan</key>		<integer>6</integer>
-  <key>unit.carrier</key>		<integer>7</integer>
-  <key>unit.catapult</key>		<integer>8</integer>
-  <key>unit.horsemen</key>		<integer>9</integer>
-  <key>unit.chariot</key>		<integer>10</integer>
-  <key>unit.cruiser</key>		<integer>11</integer>
-  <key>unit.diplomat</key>		<integer>12</integer>
-  <key>unit.fighter</key>		<integer>13</integer>
-  <key>unit.frigate</key>		<integer>14</integer>
-  <key>unit.ironclad</key>		<integer>15</integer>
-  <key>unit.knights</key>		<integer>16</integer>
-  <key>unit.legion</key>			<integer>17</integer>
-  <key>unit.mech_inf</key>		<integer>18</integer>
-  <key>unit.warriors</key>		<integer>19</integer>
-  <key>unit.musketeers</key>		<integer>20</integer>
-  <key>unit.nuclear</key>		<integer>21</integer>
-  <key>unit.phalanx</key>		<integer>22</integer>
-  <key>unit.riflemen</key>		<integer>23</integer>
-  <key>unit.caravel</key>		<integer>24</integer>
-  <key>unit.settlers</key>		<integer>25</integer>
-  <key>unit.submarine</key>		<integer>26</integer>
-  <key>unit.transport</key>		<integer>27</integer>
-  <key>unit.trireme</key>		<integer>28</integer>
-  <key>unit.archers</key>		<integer>29</integer>
-  <key>unit.cavalry</key>		<integer>30</integer>
-  <key>unit.cruise_missile</key>	<integer>31</integer>
-  <key>unit.destroyer</key>		<integer>32</integer>
-  <key>unit.dragoons</key>		<integer>33</integer>
-  <key>unit.explorer</key>		<integer>34</integer>
-  <key>unit.freight</key>		<integer>35</integer>
-  <key>unit.galleon</key>		<integer>36</integer>
-  <key>unit.partisan</key>		<integer>37</integer>
-  <key>unit.pikemen</key>		<integer>38</integer>
-  <key>unused</key>			<integer>39</integer>
-  <key>unused</key>				<integer>40</integer>
-  <key>unit.marines</key>		<integer>41</integer>
-  <key>unit.spy</key>			<integer>42</integer>
-  <key>unit.engineers</key>		<integer>43</integer>
-  <key>unit.artillery</key>		<integer>44</integer>
-  <key>unit.helicopter</key>		<integer>45</integer>
-  <key>unit.alpine_troops</key>	<integer>46</integer>
-  <key>unit.stealth_bomber</key>	<integer>47</integer>
-  <key>unit.stealth_fighter</key><integer>48</integer>
-  <key>unit.aegis_cruiser</key>	<integer>49</integer>
-  <key>unit.paratroopers</key>	<integer>50</integer>
-  <key>unit.elephants</key>		<integer>51</integer>
-  <key>unit.crusaders</key>		<integer>52</integer>
-  <key>unit.fanatics</key>		<integer>53</integer>
-  <key>unit.awacs</key>			<integer>54</integer>
-  <key>worker</key>			<integer>55</integer>
-  <key>unused</key>			<integer>56</integer>
-  <key>unused</key>			<integer>57</integer>
-  <key>unused</key>			<integer>58</integer>
-  <key>unused</key>			<integer>59</integer>
-  <key>unused</key>			<integer>60</integer>
-  <key>unit.vet_1</key>	    <integer>61</integer>
-  <key>unit.vet_2</key>		<integer>62</integer>
-  <key>unit.vet_3</key>		<integer>63</integer>
-  <key>unit.vet_4</key>		<integer>64</integer>
-  <key>unit.vet_5</key>		<integer>65</integer>
-  <key>unit.vet_6</key>		<integer>66</integer>
-  <key>unit.vet_7</key>		<integer>67</integer>
-  <key>unit.vet_8</key>		<integer>68</integer>
-  <key>unit.vet_9</key>		<integer>69</integer>
-  <key>unused</key>			<integer>70</integer>
-  <key>unused</key>			<integer>71</integer>
-  <key>unit.tired</key> 	<integer>72</integer>
-  <key>unused</key>			<integer>73</integer>
-  <key>unused</key>			<integer>74</integer>
-  <key>unused</key>			<integer>75</integer>
-  <key>unused</key>			<integer>76</integer>
-  <key>unused</key>			<integer>77</integer>
-  <key>unused</key>			<integer>78</integer>
-  <key>unused</key>			<integer>79</integer>
-  <key>unused</key>			<integer>80</integer>
-	</dict>
+	<key>t_s_s_s</key>
+	<integer>1</integer>
+	<key>unit.armor</key>
+	<integer>1</integer>
+	<key>unit.howitzer</key>
+	<integer>2</integer>
+	<key>unit.battleship</key>
+	<integer>3</integer>
+	<key>unit.bomber</key>
+	<integer>4</integer>
+	<key>unit.cannon</key>
+	<integer>5</integer>
+	<key>unit.caravan</key>
+	<integer>6</integer>
+	<key>unit.carrier</key>
+	<integer>7</integer>
+	<key>unit.catapult</key>
+	<integer>8</integer>
+	<key>unit.horsemen</key>
+	<integer>9</integer>
+	<key>unit.chariot</key>
+	<integer>10</integer>
+	<key>unit.cruiser</key>
+	<integer>11</integer>
+	<key>unit.diplomat</key>
+	<integer>12</integer>
+	<key>unit.fighter</key>
+	<integer>13</integer>
+	<key>unit.frigate</key>
+	<integer>14</integer>
+	<key>unit.ironclad</key>
+	<integer>15</integer>
+	<key>unit.knights</key>
+	<integer>16</integer>
+	<key>unit.legion</key>
+	<integer>17</integer>
+	<key>unit.mech_inf</key>
+	<integer>18</integer>
+	<key>unit.warriors</key>
+	<integer>19</integer>
+	<key>unit.musketeers</key>
+	<integer>20</integer>
+	<key>unit.nuclear</key>
+	<integer>21</integer>
+	<key>unit.phalanx</key>
+	<integer>22</integer>
+	<key>unit.riflemen</key>
+	<integer>23</integer>
+	<key>unit.caravel</key>
+	<integer>24</integer>
+	<key>unit.settlers</key>
+	<integer>25</integer>
+	<key>unit.submarine</key>
+	<integer>26</integer>
+	<key>unit.transport</key>
+	<integer>27</integer>
+	<key>unit.trireme</key>
+	<integer>28</integer>
+	<key>unit.archers</key>
+	<integer>29</integer>
+	<key>unit.cavalry</key>
+	<integer>30</integer>
+	<key>unit.cruise_missile</key>
+	<integer>31</integer>
+	<key>unit.destroyer</key>
+	<integer>32</integer>
+	<key>unit.dragoons</key>
+	<integer>33</integer>
+	<key>unit.explorer</key>
+	<integer>34</integer>
+	<key>unit.freight</key>
+	<integer>35</integer>
+	<key>unit.galleon</key>
+	<integer>36</integer>
+	<key>unit.partisan</key>
+	<integer>37</integer>
+	<key>unit.pikemen</key>
+	<integer>38</integer>
+	<key>unused</key>
+	<integer>80</integer>
+	<key>unit.marines</key>
+	<integer>41</integer>
+	<key>unit.spy</key>
+	<integer>42</integer>
+	<key>unit.engineers</key>
+	<integer>43</integer>
+	<key>unit.artillery</key>
+	<integer>44</integer>
+	<key>unit.helicopter</key>
+	<integer>45</integer>
+	<key>unit.alpine_troops</key>
+	<integer>46</integer>
+	<key>unit.stealth_bomber</key>
+	<integer>47</integer>
+	<key>unit.stealth_fighter</key>
+	<integer>48</integer>
+	<key>unit.aegis_cruiser</key>
+	<integer>49</integer>
+	<key>unit.paratroopers</key>
+	<integer>50</integer>
+	<key>unit.elephants</key>
+	<integer>51</integer>
+	<key>unit.crusaders</key>
+	<integer>52</integer>
+	<key>unit.fanatics</key>
+	<integer>53</integer>
+	<key>unit.awacs</key>
+	<integer>54</integer>
+	<key>worker</key>
+	<integer>55</integer>
+	<key>unit.vet_1</key>
+	<integer>61</integer>
+	<key>unit.vet_2</key>
+	<integer>62</integer>
+	<key>unit.vet_3</key>
+	<integer>63</integer>
+	<key>unit.vet_4</key>
+	<integer>64</integer>
+	<key>unit.vet_5</key>
+	<integer>65</integer>
+	<key>unit.vet_6</key>
+	<integer>66</integer>
+	<key>unit.vet_7</key>
+	<integer>67</integer>
+	<key>unit.vet_8</key>
+	<integer>68</integer>
+	<key>unit.vet_9</key>
+	<integer>69</integer>
+	<key>unit.tired</key>
+	<integer>72</integer>
+</dict>
 </plist>

@@ -20,6 +20,7 @@ enum class PacketType : Serializable {
     Pong,
 
     Ack,
+    Resend,
 
     // Messages / requests
     Status,      // Request a copy of the game data
@@ -36,6 +37,7 @@ abstract class PacketHandler {
     abstract fun handle(packet : Packet) : Packet?
 }
 
+//TODO forgot that i made these.
 /**
  * # [PacketHandler] for a server
  * Responds to client packets
@@ -52,6 +54,7 @@ object ServerPacketHandler : PacketHandler() {
             PacketType.Start    -> null
             PacketType.Pong     -> null
             PacketType.Ack      -> null
+            PacketType.Resend   -> null
         }
     }
 }
@@ -77,6 +80,7 @@ object ClientPacketHandler : PacketHandler() {
             PacketType.Start    -> null
             PacketType.End      -> null
             PacketType.Disconnect-> null
+            PacketType.Resend   -> null
         }
     }
 }

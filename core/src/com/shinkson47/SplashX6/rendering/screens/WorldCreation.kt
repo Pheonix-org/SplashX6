@@ -359,8 +359,10 @@ class WorldCreation(
                     {
                         if (isLoading)
                             load(Gdx.files.external(chooser.result.path()).file())
-                        else
+                        else {
                             NetworkClient.postUpdate()
+                            Gdx.app.postRunnable { NetworkClient.lastState!!.gameState?.let { load(it) } }
+                        }
                     },
                     null
                 )
@@ -391,7 +393,9 @@ class WorldCreation(
             // Switch : from GameConfigure to PreRender
             registerSwitchCondition(0, 2) { Client.DEBUG_MODE or isConnecting }
             // Switch : from PreRender to Deserializing
-            registerSwitchCondition(2, 6) { framebuffer >= 3 && isDeserializing }
+            registerSwitchCondition(2, 6) { framebuffer >= 3 && isDeserializing && NetworkClient.hasStarted }
+            // Switch : from PreRender to Deserializing
+            registerSwitchCondition(2, 6) { framebuffer >= 3 && isLoading }
             // Switch : from PreRender to GeneratingWorld
             registerSwitchCondition(2, 3) { framebuffer >= 3 && !isConnecting && !isLoading }
             // Switch : from PreRender to LanConnecting
@@ -405,7 +409,7 @@ class WorldCreation(
             // Switch : from GeneratingWorld to Complete
             registerSwitchCondition(3, 7) { !alive }
             // Switch : from LanConnecting to PreRender
-            registerSwitchCondition(8, 2) { true }
+            registerSwitchCondition(8, 2) { NetworkClient.hasStarted }
             // Switch : from Deserializing to Complete
             registerSwitchCondition(6, 7) { true }
             defaultState(0)

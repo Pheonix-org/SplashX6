@@ -144,6 +144,10 @@ state Deserializing {
 	enter {
 		if (isLoading)
 			GameHypervisor.load(Gdx.files.external(chooser.result.path()).file());
+		else {
+			NetworkClient.postUpdate();
+			if (NetworkClient.INSTANCE.getLastState().getGameState() == null)Gdx.app.postRunnable { load(NetworkClient.INSTANCE.getLastState().getGameState()); }
+		}
 	}
 
 	exit {
