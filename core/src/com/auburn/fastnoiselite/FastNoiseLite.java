@@ -1,4 +1,4 @@
-package com.shinkson47.SplashX6.game.world;// MIT License
+package com.auburn.fastnoiselite;// MIT License
 //
 // Copyright(c) 2020 Jordan Peck (jordan.me2@gmail.com)
 // Copyright(c) 2020 Contributors
