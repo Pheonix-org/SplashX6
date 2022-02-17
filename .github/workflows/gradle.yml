@@ -96,6 +96,6 @@ jobs:
       - name: Notify Discord
         uses: fateyan/action-discord-notifier@v1.2.0
         with:
-          webhook: https://discord.com/api/webhooks/940239198441598976/TAiqBf40maPNW6hti5PI5OLZZ_k7MlX3aO2ftDW3Cqn8Ef3pHe5PCv5ATKXXjdwVi9Gt
+          webhook: https://discord.com/api/webhooks/943985984415080538/UMegUUa_BK7-dxAGELziSoFyIH6XTRjln48ydyPNUf-fvKs810zmbcxsa6IWMMO964_h
           # Message title
           message-title: '@here a new build is available on the master.'
