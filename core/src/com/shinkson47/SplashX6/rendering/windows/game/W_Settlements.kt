@@ -137,7 +137,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
     }
     
     private fun listListener(l: List<Production.ProductionProject>): Boolean {
-        l.selected?.let { refreshCost(it); return true }
+        l.addListener(LambdaClickListener { l.selected?.let { refreshCost(it);}})
         return false
     }
 
