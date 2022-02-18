@@ -386,9 +386,12 @@ public abstract class StageWindow extends Window implements TurnHook {
     public static void dialog(Actor actor, String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler,
         Actor... actors
     ) {
-        if (actor.getStage() == null)
-            throw new NullPointerException("Tried to show a dialog, but the caller was not on a stage.");
+        dialog(actor.getStage(), titleKey, textKey, positive, negative, resultHandler, actors);
+    }
 
+    public static void dialog (Stage s, String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler,
+        Actor... actors
+    ) {
         // Construct dialog, that gives the result to the handler
         Dialog dialog = new Dialog("", SKIN) {
             protected void result(Object object) {
@@ -415,7 +418,7 @@ public abstract class StageWindow extends Window implements TurnHook {
         if (!negative.equals(""))
             dialog.button(negative, false);
 
-        dialog.show(actor.getStage());
+        dialog.show(s);
     }
 
     /**

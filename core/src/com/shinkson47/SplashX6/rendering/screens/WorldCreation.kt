@@ -24,6 +24,9 @@ import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.UtilityK.getIP
+import java.io.InvalidClassException
+import java.net.ConnectException
+import java.util.function.Consumer
 
 /**
  * # Provides the user a place to configure the game and world generation
@@ -332,7 +335,10 @@ class WorldCreation(
                     "LanInit",
                     {},
                     this,
-                    { boot() },
+                    {
+                        if (!boot())
+                            dialog("!Failed to start the server.", "!Is another server already running on this computer?", null)
+                    },
                     null
                 )
             )
@@ -357,9 +363,19 @@ class WorldCreation(
                     {},
                     this,
                     {
-                        if (isLoading)
-                            load(Gdx.files.external(chooser.result.path()).file())
-                        else {
+                        if (isLoading) {
+                            try {
+                                load(Gdx.files.external(chooser.result.path()).file())
+                            } catch (e : InvalidClassException) {
+                                constructText("!This save file is incompatable with this version of X6.")
+                                this@WorldCreation.dialog("!Unable to load", "!This save file is incompatable with this version of X6.") { GameHypervisor.EndGame() }
+                                switchState(1)
+                            } catch (e : Exception) {
+                                constructText("!Unable to load")
+                                this@WorldCreation.dialog("!Unable to load", "!Encountered some error whilst loading that save : \n ${e.message}") { GameHypervisor.EndGame() }
+                                switchState(1)
+                            }
+                        } else {
                             NetworkClient.postUpdate()
                             Gdx.app.postRunnable { NetworkClient.lastState!!.gameState?.let { load(it) } }
                         }
@@ -384,7 +400,11 @@ class WorldCreation(
                     {},
                     this,
                     {
-                        connect()
+                        try {
+                            connect()
+                        } catch (e: ConnectException) {
+                                this@WorldCreation.dialog("!Unable to connect", "!Failed to connect. Check there's another client hosting.") { GameHypervisor.EndGame() }
+                        }
                         isDeserializing = true
                     },
                     null

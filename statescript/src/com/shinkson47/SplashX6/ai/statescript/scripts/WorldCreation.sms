@@ -24,6 +24,7 @@ import com.badlogic.gdx.Gdx;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.network.Server;
 import com.shinkson47.SplashX6.network.NetworkClient;
+import java.net.ConnectException
 
 // Note : This machine will be ran every frame,
 // 		  as it's used on a screen; thus it's
@@ -143,6 +144,17 @@ code {
 state Deserializing {
 	enter {
 		if (isLoading)
+			try {
+				load(Gdx.files.external(chooser.result.path()).file());
+			} catch (InvalidClassException e) {
+				constructText("!This save file is incompatable with this version of X6.");
+				WorldCreation.this.dialog("!Unable to load", "!This save file is incompatable with this version of X6.") { GameHypervisor.EndGame() };
+				switchState(1);
+			} catch (Exception e) {
+				constructText("!Unable to load");
+				WorldCreation.this.dialog("!Unable to load", "!Encountered some error whilst loading that save : \n ${e.message}") { GameHypervisor.EndGame() };
+				switchState(1);
+			}
 			GameHypervisor.load(Gdx.files.external(chooser.result.path()).file());
 		else {
 			NetworkClient.postUpdate();
@@ -172,6 +184,12 @@ state Complete {
 */
 state LanConnecting {
 	enter {
+		try {
+			connect()
+		} catch (ConnectException e) {
+				WorldCreation.this.dialog("!Unable to connect", "!Failed to connect. Check there's another client hosting.") { GameHypervisor.EndGame() };
+				switchState(1);
+		}
 		NetworkClient.connect();
 	}
 }

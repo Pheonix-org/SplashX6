@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.utility.GraphicalConfig
+import java.util.function.Consumer
 
 /**
  * A screen adapter that contains a stage for scaling UI according t
@@ -19,6 +20,9 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
 
     private val view = ScalingViewport(GraphicalConfig.scalingMode, width, height)
     @JvmField val stage = Stage(view)
+
+    fun dialog(titleKey: String, textKey: String, handler: Consumer<Boolean>?) =
+        StageWindow.dialog(stage, titleKey, textKey, "", "", handler)
 
     init {
         //stage.isDebugAll = Client.DEBUG_MODE
