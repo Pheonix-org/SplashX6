@@ -60,7 +60,7 @@ class MainMenu : ScalingScreenAdapter() {
 
             addButton("generic.game.new")  { NewGame() }
             addButton("generic.game.load") { LoadGame() }
-            addButton("connect") { ConnectGame() }
+            addButton("!Connect") { ConnectGame() }
             addButton("generic.any.options") { optionsWindow.isVisible = true; optionsWindow.toFront() }
             addButton("specific.menu.credits") { client!!.fadeScreen(CreditsScreen()) }
             addButton("generic.game.exit") { Gdx.app.exit() }
