@@ -17,7 +17,7 @@ class W_Help : StageWindow("!Help") {
         fun reload() = readStruct()
         fun readStruct() {
             map = Plist.fromXml(Gdx.files.internal("lang/helptext.plist").readString())
-            tree.children.clear()
+            tree.clearChildren()
             readStruct(RootNode(""), map.get("en") as Map<String, *>).children.items.clone().forEach {
                     it?.let {
                         tree.add(it as RootNode)
@@ -51,14 +51,14 @@ class W_Help : StageWindow("!Help") {
 
     private val l : TextArea =  object : TextArea("Select something to display!", SKIN) {
         override fun getPrefHeight(): Float {
-            height = getLines() * getStyle().font.getLineHeight()
-            return height
+            return lines * style.font.lineHeight
         }
     }
 
 
     init {
         reload()
+        l.isDisabled = true
         val scrollPane = ScrollPane(l, SKIN)
         val sp = SplitPane(tree, scrollPane, false, SKIN)
         sp.splitAmount = 0.2f
@@ -71,15 +71,53 @@ class W_Help : StageWindow("!Help") {
         pack()
         tree.addListener( LambdaChangeListener {
             try {
-                l.setText(StringOf(tree.selectedNode) as String)
-                //TODO this still doesn't work. Scroll bar doesn't update as expected.
-                scrollPane.invalidate()
-                scrollPane.validate()
+                // This right here is the art of the bodge.
 
-                scrollPane.invalidate()
-                scrollPane.validate()
+                // Text area does not update it's cached 'last text' or
+                // recalculate any text metadata when the text is changed.
+                // Because of this, it would resize to the last known text,
+                // not the new text.
+                // This bodge forces it to recalculate it's cache so we can
+                // have it correctly resize.
 
-            } catch (e : ClassCastException) {
+                // Set the text. Does not update cache.
+                l.text = StringOf(tree.selectedNode) as String
+
+                // Invoke the protected 'size changed' method
+                // in order to raise the flag that the cache must
+                // be re-calculated.
+                l.sizeBy(0.1f)
+
+                // Sizing methods have no effect if there is no size
+                // differece, so it cannot be called with 0.
+                // Instead, we must alter the size and return it back
+                // to what it was.
+                l.sizeBy(-0.1f)
+
+                // force re-draw the text area.
+                // This causes it to call the protected 'calculateoffsets'
+                // method, which notices the flag we raised earlier, and
+                // actually updates the text cache.
+                // We don't actually care about drawing it.
+
+                // This would automatically be done on the next frame,
+                // but we want it done now.
+                stage.batch.begin()
+                l.draw(stage.batch, 0f)
+                stage.batch.end()
+
+                // Now that the cache has been recalculated,
+                // we can trigger scroll pane to
+                // recalculate it's sizing.
+
+                // Raise the flag to indicate that the sizes are invalid and in need
+                // of re-calculating.
+                scrollPane.invalidate()
+
+                // validate layout, and calculate sizing.
+                scrollPane.layout()
+
+            } catch (e : Exception) {
                 l.text = "Select something to display!"
             } } )
 
