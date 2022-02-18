@@ -4,10 +4,10 @@
 <dict>
 	<key>en</key>
 	<dict>
-		<key>Basics</key>
+		<key>A. Basics</key>
 		<dict>
-		<key>Welcome</key>
-		<string>Welcome to splash X6! 
+			<key>A. Welcome</key>
+			<string>Welcome to splash X6! 
 
 Your adventure in this world is just beginning.
 As you play, you&apos;ll learn to produce and control an
@@ -15,7 +15,7 @@ army of units to use at your disposal.
 
 Use them to defend, attack and explore as you
 build your civilisation and research.</string>
-			<key>Movement</key>
+			<key>B. Movement</key>
 			<string>Your units will move and explore as you command.
 
 The warroom allows you to use your mouse cursor
@@ -31,7 +31,7 @@ location, and the path that they will take to get there.
 
 A red line indicates that they are not able to travel there,
 i.e they are blocked by mountains or water.	</string>
-			<key>Menu Bar</key>
+			<key>C. Menu Bar</key>
 			<string>The menu bar, located at the top of the screen,
 provides access to all the tools and windows
 you will need to play the game.
@@ -48,9 +48,9 @@ options that appear before letting go.
 Click an option in the menu or the menu button again to hide
 the drop-down.</string>
 		</dict>
-		<key>Sytems</key>
+		<key>B. Sytems</key>
 		<dict>
-			<key>Production</key>
+			<key>A. Production</key>
 			<dict/>
 		</dict>
 	</dict>

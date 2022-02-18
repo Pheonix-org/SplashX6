@@ -11,19 +11,24 @@ import xmlwise.Plist
 class W_Help : StageWindow("!Help") {
 
     companion object {
-        private var map : Map<String, Any> = Plist.fromXml(Gdx.files.internal("lang/helptext.plist").readString())
+        private var map : HashMap<String, Any> = Plist.fromXml(Gdx.files.internal("lang/helptext.plist").readString()) as HashMap<String, Any>
         private val tree : Tree<RootNode, String> = Tree(SKIN)
+        private const val LANG = "en"
 
         fun reload() = readStruct()
         fun readStruct() {
-            map = Plist.fromXml(Gdx.files.internal("lang/helptext.plist").readString())
+            map = Plist.fromXml(Gdx.files.internal("lang/helptext.plist").readString()) as HashMap<String, Any>
+
             tree.clearChildren()
-            readStruct(RootNode(""), map.get("en") as Map<String, *>).children.items.clone().forEach {
+            readStruct(RootNode(""), map[LANG] as Map<String, *>).children.items.clone().forEach {
                     it?.let {
                         tree.add(it as RootNode)
                     }
                 }
         }
+
+
+
         fun readStruct(parent: RootNode, m : Map<String, *>): RootNode {
             m.keys.forEach {
                 val pwdNode = RootNode("!$it")
@@ -60,7 +65,7 @@ class W_Help : StageWindow("!Help") {
         reload()
         l.isDisabled = true
         val scrollPane = ScrollPane(l, SKIN)
-        val sp = SplitPane(tree, scrollPane, false, SKIN)
+        val sp = SplitPane(ScrollPane(tree, SKIN), scrollPane, false, SKIN)
         sp.splitAmount = 0.2f
         expandfill(
             add(sp)
