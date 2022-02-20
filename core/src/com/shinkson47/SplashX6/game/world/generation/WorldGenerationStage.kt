@@ -115,6 +115,12 @@ internal object GenerationCompanion {
     @JvmField var fractalType = FastNoiseLite.FractalType.FBm
     @JvmField var cellularDistanceFunction = FastNoiseLite.CellularDistanceFunction.Euclidean
 
+    @JvmStatic var SEED : Int = 0
+        get() = if (field == 0) {
+            MathUtils.random(25565)
+        } else {
+            field
+        }
 
     /**
      * # Creates a new OpenSimplex2 perlin noise generator with a random seed.
@@ -135,7 +141,7 @@ internal object GenerationCompanion {
 
         l.SetFractalPingPongStrength(pingPongStrength)
 
-        l.SetSeed(MathUtils.random(25565))
+        l.SetSeed(SEED)
         return l
     }
 }

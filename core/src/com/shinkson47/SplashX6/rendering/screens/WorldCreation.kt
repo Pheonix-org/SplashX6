@@ -214,6 +214,14 @@ class WorldCreation(
             //      Advanced terrain
             addButton("specific.gamecreation.terrainSettings", true, true) { stage.addActor(TerrainGenerationEditor()) }
 
+            label("!Seed").left()
+
+            add(TextField("seed", SKIN)
+                .apply { addListener { GenerationCompanion.SEED = text.hashCode(); true } }
+            )
+
+            hsep()
+
             row()
             label("specific.gamecreation.civtype")
 
