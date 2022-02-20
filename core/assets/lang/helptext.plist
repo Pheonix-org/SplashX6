@@ -10,48 +10,121 @@
 			<string>Welcome to splash X6! 
 
 Your adventure in this world is just beginning.
-As you play, you&apos;ll learn to produce and control an
-army of units to use at your disposal.
+As you play, you&apos;ll learn to produce and control an army of units to use at your disposal.
 
-Use them to defend, attack and explore as you
-build your civilisation and research.</string>
-			<key>B. Movement</key>
+Use them to defend, attack and explore as you build your civilisation and research.</string>
+			<key>B. Getting started</key>
+			<string>Your game starts with a single settler.
+
+This unit has the power to create home to life in your civilisation.
+
+Since he is your only unit at the start, he is selected by default. This allows you to start using him right away.
+
+Press &apos;space&apos; to start selecting a destination, and &apos;space&apos; again to lock in that destination.
+
+Press &apos;e&apos; to end your turn, and a few turns later the unit will arive.
+
+Pressing &apos;x&apos; will open up more controls for the unit. Change his action from &apos;travel&apos; to &apos;settle&apos;.
+
+Now, when you end your turn once more he will create a new city!
+
+You&apos;ll note that by doing so, that settler is now spent, and despawns. Worry not, as your new found settlement can help!
+
+Under the warroom menu, select &apos;settlements&apos; to open the settlements window. This window gives you access and control over your settlements, and thier production.
+
+On the left, select a settler, and click &apos;add&apos; to add him to the production queue. The window will tell you exactly how many turns it will take in order to produce him.
+
+A few turns later, you&apos;ll see a new settler spawn at your settlement!
+
+In order to use him, you&apos;ll need to select him. You can do so by opening the &apos;units&apos; window, found in the &apos;warroom&apos; menu, and selecting the unit.</string>
+			<key>C. Key Bindings</key>
+			<string>Global key bindings (Active everywhere)
+
+Game Screen bindings
+
+WASD / Arrow keys = Move Camera
+
+E = End turn
+C = Focus camera on selected unit
+X = Open management window for selected unit
+
+Space = Unit destination selection (See movement)
+
+` (Grave) = Remove all windows
+
+Left Shift = Boost camera movement speed
+Escape = End Game
+
+
+F11 = Toggle Exclusive Fullscreen
+
+F1 = Enter Warroom
+F2 = Exit Warroom
+F5 = New Game
+
+TAB = Enter Warroom
+
+
+
+(Developer&apos;s Debug Mode Only)
+Numpad + = Raise the camera
+Numpad - = Lower the camera
+
+
+
+Warroom Bindings 
+
+E = End turn
+TAB = Warroom
+WASD = Move camera
+
+
+
+Main Menu
+
+Escape = Quit to desktop
+
+
+</string>
+			<key>D. Movement</key>
 			<string>Your units will move and explore as you command.
 
-The warroom allows you to use your mouse cursor
-to direct your units with a right-click, but you can
-also quickly set a destination in the main game view 
-by pressing space and moving the camera.
+To move a unit:
+    - Start selecting a destination (see below)
+    - Move cursor to a desired destination
+    - The pathfinding line will indicate the path the unit will take to the desired location.
+    - A red pathfinding line indicates inability to travel to destination.
+    - Finalise destination selection (see below)
 
-Whichever method you choose to enter &apos;destination selection
-mode&apos;, you&apos;ll notice a line appearing, leading to the selection.
+There are two ways to enter destination selection.
 
-A purple line indicates the unit may travel to this
-location, and the path that they will take to get there.
+The warroom allows you to use your mouse cursor to direct your units, entering and finalising with a right-click. 
 
-A red line indicates that they are not able to travel there,
-i.e they are blocked by mountains or water.	</string>
-			<key>C. Menu Bar</key>
-			<string>The menu bar, located at the top of the screen,
-provides access to all the tools and windows
-you will need to play the game.
+Alternatively, you may more quickly access this same eature by pressing &apos;space&apos; in the main game view by pressing space and moving the camera&apos;s reticle to point.
 
-Each of the items on the menu may act as a button, 
-a menu, or both.
+A unit may fail to pathfind to a destination under conditions such as water or high terrain blocking it&apos;s path.
+Different units have different travel restrictions.</string>
+			<key>E. Menu Bar</key>
+			<string>The menu bar, located at the top of the screen, provides access to all the tools and windows you will need to play the game.
 
-Menus are indicated by the handle in the lower right
-of the button. Explore thier options by clicking
-and holding down the mouse on a button to open the
-drop-down menu, and dragging the curser over the
-options that appear before letting go.
+Each of the items on the menu may act as a button, a menu, or both.
 
-Click an option in the menu or the menu button again to hide
-the drop-down.</string>
+Menus are indicated by the handle in the lower right of the button. Explore thier options by clicking and holding down the mouse on a button to open the drop-down menu, and dragging the curser over the options that appear before letting go.
+
+Click an option in the menu or the menu button again to hide the drop-down.</string>
 		</dict>
 		<key>B. Sytems</key>
 		<dict>
-			<key>A. Production</key>
-			<dict/>
+			<key>A. Unit Management</key>
+			<string>Under the warroom tab in the menu, you&apos;ll find all the tool you need to manage your units.
+
+The &apos;Units&apos; window gives you a quick overview of your entire fleet. Double clicking a unit in this list will open another window providing control over that unit.
+
+Certain units will have some actions that others do not, primarily at present the settler who can settle new city.
+
+Units may also be disbanded from here, but note that the window controlling a unit does not close after the unit no longer exists.</string>
+			<key>B. Production</key>
+			<string></string>
 		</dict>
 	</dict>
 </dict>

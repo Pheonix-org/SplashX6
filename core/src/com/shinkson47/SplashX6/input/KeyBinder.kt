@@ -87,7 +87,6 @@ object KeyBinder : InputAdapter() {
             // Function keys.
             bind(this, Input.Keys.F1) { cm_enter() }
             bind(this, Input.Keys.F2) { cm_exit()  }
-            bind(this, Input.Keys.F3) { GameHypervisor.gameRenderer!!.stage.addActor(TerrainGenerationEditor())  }
             bind(this, Input.Keys.F5) { NewGame()  }
 
             // Numbers toggle active tool window.
@@ -113,7 +112,6 @@ object KeyBinder : InputAdapter() {
             bind(this, Input.Keys.SHIFT_LEFT,
                 Release = { GameHypervisor.gameRenderer?.cam!!.boost(false) },
                 Action =  { GameHypervisor.gameRenderer?.cam!!.boost(true) })
-
         }
 
         // ========================================
@@ -146,7 +144,7 @@ object KeyBinder : InputAdapter() {
 
         with (GameScreen::class.java) {
             // Camera control
-            val camera = GameHypervisor.gameRenderer!!.cam!!
+            val camera = GameHypervisor.gameRenderer!!.cam
             bind(this, Input.Keys.W, true) { camera.up() }
             bind(this, Input.Keys.S, true) { camera.down() }
             bind(this, Input.Keys.D, true) { camera.right() }
@@ -160,9 +158,6 @@ object KeyBinder : InputAdapter() {
             bind(this, Input.Keys.X, false) { GameData.selectedUnit?.let { StageWindow.post(W_Unit(it)) } }
             bind(this, Input.Keys.GRAVE, false) { StageWindow.unPostAll() }
             bind(this, Input.Keys.SPACE, false) { GameHypervisor.cm_destinationSelect() }
-
-
-            bind(this, Input.Keys.NUMPAD_ADD, true) { camera.desiredPosition.desired.z += 20 }
         }
 
         with (Warroom::class.java) {
