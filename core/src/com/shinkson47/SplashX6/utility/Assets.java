@@ -164,6 +164,7 @@ public class Assets {
           NATION_DATA   = Plist.fromXml(Gdx.files.internal("data/nationdata.plist").readString());
           hitTest = ImageIO.read(Gdx.files.internal("tsdata/hittest.png").read());
       } catch (XmlParseException | IOException ignored) {
+          ignored.printStackTrace();
           throw new Error("Unable to load assets.");
       }
 

@@ -454,9 +454,18 @@ class GameHypervisor {
         }
 
         private fun doEndTurn_Async(){
-            TURN_ASYNC_TASKS.forEach { it.run() }
+            TURN_ASYNC_TASKS.forEach { impldoEndTurn_Async(it) }
             TURN_ASYNC_TASKS.clear()
-            TURN_HOOKS.forEach { it.run() }
+            TURN_HOOKS.forEach { impldoEndTurn_Async(it) }
+        }
+
+        private fun impldoEndTurn_Async(r: Runnable) {
+            try {
+                r.run()
+            } catch (e : Exception) {
+                Utility.warnPlayer("A turn hook failed! Notify the developers!\n${e.message}")
+                //Utility.warnDev("$")
+            }
         }
 
         //========================================================================
