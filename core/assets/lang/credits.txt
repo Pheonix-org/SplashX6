@@ -46,6 +46,9 @@ XMLWise : Lerno : MIT
 LibGDX : LibGDX : Apache 2.0
 Spotify Wrapper : michaelthelin : MIT
 Pathfinding : xaguzman : Apache 2.0
+FastNoiseLite : Jordan Peck : MIT
+FileChooser : Olli-Pekka Valtonen : MIT
+
 
 /------------------------\
 META : ASSETS NOT INCLUDED
@@ -66,6 +69,7 @@ Tiled
 Ezgif
 Google Translate
 
+ANTLR
 Kotlin
 Java
 
@@ -85,4 +89,3 @@ Splash X6 ©2021 https://shinkson47.in/SplashX6
 
 Press ESC to return.
 
-TODO gdx musicevents tool file filechooser

@@ -383,5 +383,1194 @@ in the 7th century BCE by the ancestral Emperor Jimmu.</string>
 		<string>Urbana-Champaign </string>
 	</array>
 	</dict>
+
+
+
+	<key>aztec</key>
+	<dict>
+		<key>citytype</key>
+		<string>tropical</string>
+		<key>legend</key>
+		<string>The Azteca, a Nahuatl speaking people from the Sonoran desert,
+ seized control of the Toltec-derived civilizations of Central Mexico
+ during the 15th century, reviving the practice of human sacrifice.
+ They were conquered by the Spanish under Cortés in 1521.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Motecuhzoma</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Mexihco Tenochtitlan</string>
+		<string>Tetzcoco</string>
+		<string>Tlacopan</string>
+		<string>Tlatelulco</string>
+		<string>Azcapotzalco</string>
+		<string>Iztapallapan</string>
+		<string>Cuauhnanahuac</string>
+		<string>Tlachco</string>
+		<string>Tollocan</string>
+		<string>Chapoltepec</string>
+		<string>Coyohuacan</string>
+		<string>Culhuacan</string>
+		<string>Huitzilipochco</string>
+		<string>Mexihcatzinco</string>
+		<string>Cuauhtitlan</string>
+		<string>Coacalco</string>
+		<string>Mixcoac</string>
+		<string>Petlacalco</string>
+		<string>Otompan</string>
+		<string>Malinalco</string>
+		<string>Chalco</string>
+		<string>Xochimilco</string>
+		<string>Coatlichan</string>
+		<string>Teloloapan</string>
+		<string>Cuauhtinchan</string>
+		<string>Tochpan</string>
+		<string>Xiuhcoac</string>
+		<string>Huaxtepec</string>
+		<string>Xicotepec</string>
+		<string>Tzompanco</string>
+		<string>Tlatauhquitepec</string>
+		<string>Cuitlahuac</string>
+		<string>Xico</string>
+		<string>Ahuilizapan</string>
+		<string>Cuetlaxtlan</string>
+		<string>Xaltocan</string>
+		<string>Tenayuca</string>
+		<string>Tepeyacac</string>
+		<string>Tochtepec</string>
+		<string>Coaixtlahuacan</string>
+		<string>Tepozcolollan</string>
+		<string>Ixtapallocan</string>
+		<string>Tillantonco</string>
+		<string>Nonohualco</string>
+		<string>Huaxyacac</string>
+		<string>Tizapan</string>
+		<string>Mictlan</string>
+		<string>Ehecatepec</string>
+		<string>Oztoman</string>
+		<string>Hueypochtlan</string>
+		<string>Tlalnepantlan</string>
+		<string>Chiconautlan</string>
+		<string>Acolman</string>
+		<string>Coatlinchan</string>
+		<string>Naucalpan</string>
+		<string>Oxitipan</string>
+		<string>Xoconochco</string>
+		<string>Cihuatlan</string>
+		<string>Tlaxquiauhco</string>
+		<string>Huexotla</string>
+		<string>Tziuhcoac</string>
+		<string>Ocuillan</string>
+		<string>Axocopan</string>
+		<string>Nopallan</string>
+	</array>
+	</dict>
+
+	<key>babylon</key>
+	<dict>
+		<key>citytype</key>
+		<string>babylonain</string>
+		<key>legend</key>
+		<string>Babylon was the dominant city of Mesopotamia from the 18th to
+7th centuries BC under a succession of peoples including Amorites,
+Kassites, Assyrians and Chaldeans.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Hammurabi</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Babilum</string>
+		<string>Lagash</string>
+		<string>Nibbur</string>
+		<string>Ur</string>
+		<string>Kish</string>
+		<string>Shuruppa</string>
+		<string>Kisurra</string>
+		<string>Kutha</string>
+		<string>Adab</string>
+		<string>Umma</string>
+		<string>Akkad</string>
+		<string>Ea</string>
+		<string>Larsa</string>
+		<string>Borsippa</string>
+		<string>Sippar</string>
+		<string>Ninua</string>
+		<string>Assur</string>
+		<string>Kalakh</string>
+		<string>Karkar</string>
+		<string>Hamath</string>
+		<string>Upija</string>
+		<string>Urum</string>
+		<string>Arbela</string>
+		<string>Nisibis</string>
+		<string>Harranu</string>
+		<string>Seleukei</string>
+		<string>Kasfia</string>
+		<string>Sattagu</string>
+		<string>Uruk</string>
+		<string>Apameia</string>
+	</array>
+	</dict>
+
+		<key>china</key>
+	<dict>
+		<key>citytype</key>
+		<string>babylonain</string>
+		<key>legend</key>
+		<string>China is the oldest major civilization that is still in
+ existence today, with written records dating back over 3,500 years.
+ After first being unified by the Qin dynasty in 221 BC, China alternated
+ between periods of unity and disunity, and was occasionally conquered by
+ external ethnicities. Today, the People's Republic of China, established
+ by the Communists in 1949, occupies the mainland, while the former
+ Nationalist government of the Republic of China governs the island of
+ Taiwan.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Mao Zedong</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Beijing</string>
+		<string>Shanghai</string>
+		<string>Guangzhou</string>
+		<string>Tianjin</string>
+		<string>Nanjing</string>
+		<string>Xi'an</string>
+		<string>Chongqing</string>
+		<string>Chengdu</string>
+		<string>Jinan</string>
+		<string>Shijiazhuang</string>
+		<string>Taiyuan</string>
+		<string>Zhengzhou</string>
+		<string>Wuhan</string>
+		<string>Changsha</string>
+		<string>Nanchang</string>
+		<string>Hangzhou</string>
+		<string>Fuzhou</string>
+		<string>Hefei</string>
+		<string>Guiyang</string>
+		<string>Lanzhou</string>
+		<string>Kunming</string>
+		<string>Xining</string>
+		<string>Nanning</string>
+		<string>Yinchuan</string>
+		<string>Shenyang</string>
+		<string>Changchun</string>
+		<string>Harbin</string>
+		<string>Luoyang</string>
+		<string>Kaifeng</string>
+		<string>Qingdao</string>
+		<string>Suzhou</string>
+		<string>Wuxi</string>
+		<string>Xiamen</string>
+		<string>Haikou</string>
+		<string>Hong Kong</string>
+		<string>Datong</string>
+		<string>Anyang</string>
+		<string>Shangqiu</string>
+		<string>Nanyang</string>
+		<string>Dengfeng</string>
+		<string>Handan</string>
+		<string>Baoding</string>
+		<string>Chengde</string>
+		<string>Tangshan</string>
+		<string>Zhangjiakou</string>
+		<string>Yantai</string>
+		<string>Zibo</string>
+		<string>Jining</string>
+		<string>Dezhou</string>
+		<string>Qinhuangdao</string>
+		<string>Changshu</string>
+		<string>Gaoyou</string>
+		<string>Nantong</string>
+		<string>Zhenjiang</string>
+		<string>Lianyungang</string>
+		<string>Yangzhou</string>
+		<string>Xuzhou</string>
+		<string>Changzhou</string>
+		<string>Wenzhou</string>
+		<string>Huzhou</string>
+		<string>Shaoxing</string>
+		<string>Jiaxing</string>
+		<string>Ningbo</string>
+		<string>Zhangzhou</string>
+		<string>Quanzhou</string>
+		<string>Shantou</string>
+		<string>Foshan</string>
+		<string>Shenzhen</string>
+		<string>Zhuhai</string>
+		<string>Zhongshan</string>
+		<string>Huizhou</string>
+		<string>Chaozhou</string>
+		<string>Ganzhou</string>
+		<string>Jiujiang</string>
+		<string>Jingdezhen</string>
+		<string>Zhanjiang</string>
+		<string>Liuzhou</string>
+		<string>Beihai</string>
+		<string>Guilin</string>
+		<string>Yichang</string>
+		<string>Xiangtan</string>
+		<string>Zhuzhou</string>
+		<string>Shaoyang</string>
+		<string>Hengyang</string>
+		<string>Yueyang</string>
+		<string>Mianyang</string>
+		<string>Zigong</string>
+		<string>Xianyang</string>
+		<string>Baoji</string>
+		<string>Gejiu</string>
+		<string>Tianshui</string>
+		<string>Jiuquan</string>
+		<string>Baiyin</string>
+		<string>Dunhuang</string>
+		<string>Jiayuguan</string>
+		<string>Dalian</string>
+		<string>Anshan</string>
+		<string>Fushun</string>
+		<string>Jilin</string>
+		<string>Mudanjiang</string>
+		<string>Liaoyang</string>
+		<string>Dandong</string>
+		<string>Baotou</string>
+		<string>Heihe</string>
+		<string>Bengbu</string>
+		<string>Wuhu</string>
+		<string>Anqing</string>
+		<string>Ma'anshan</string>
+	</array>
+	</dict>
+
+
+	<key>egypt</key>
+	<dict>
+		<key>citytype</key>
+		<string>babylonain</string>
+		<key>legend</key>
+		<string>Egypt was the second-oldest of the world's civilizations. Since
+ancient times it has been unusually urbanized, supporting a large
+population on silt deposited by the annual floodings of the Nile.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Ramesses II</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Waset</string>
+		<string>Ineb-Hedj</string>
+		<string>Yunu</string>
+		<string>Suentet</string>
+		<string>Sheresi</string>
+		<string>Per-Bastet</string>
+		<string>Rakote</string>
+		<string>Behdet</string>
+		<string>Sa</string>
+		<string>Hardai</string>
+		<string>This</string>
+		<string>Ipu</string>
+		<string>Djeuka</string>
+		<string>Yuni</string>
+		<string>Khem</string>
+		<string>Henen-Nesut</string>
+		<string>Per-Medjed</string>
+		<string>Per-Usiri</string>
+		<string>Imu</string>
+		<string>Itji-Tawi</string>
+		<string>Sauti</string>
+		<string>Akhet-Aton</string>
+		<string>Chaswu</string>
+		<string>Pi-Rameses</string>
+		<string>Abdju</string>
+		<string>Djanenet</string>
+		<string>Per-Banebdjedet</string>
+		<string>Tjeb-Neter</string>
+		<string>Anpet-Djedet</string>
+		<string>Gebtiu</string>
+		<string>Taminhor</string>
+		<string>Pelusium</string>
+		<string>Canopus</string>
+		<string>Naucratis</string>
+		<string>Aphroditopolis</string>
+		<string>Ammonium</string>
+		<string>Acoris</string>
+		<string>Timonepsis</string>
+		<string>Nilopolis</string>
+		<string>Ibiu</string>
+		<string>Andropolis</string>
+		<string>Sele</string>
+		<string>Antiphrae</string>
+		<string>Apis</string>
+	</array>
+	</dict>
+
+		<key>france</key>
+	<dict>
+		<key>citytype</key>
+		<string>caltic</string>
+		<key>legend</key>
+		<string>France has long been a major power in Europe. French conquerors
+like Emperor Napoleon and King Charlemagne united large parts of
+Europe under the French flag.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Napoléon Bonaparte</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Paris</string>
+		<string>Lyon</string>
+		<string>Marseille</string>
+		<string>Lille</string>
+		<string>Toulouse</string>
+		<string>Nice</string>
+		<string>Bordeaux</string>
+		<string>Nantes</string>
+		<string>Strasbourg</string>
+		<string>Toulon</string>
+		<string>Rennes</string>
+		<string>Rouen</string>
+		<string>Grenoble</string>
+		<string>Montpellier</string>
+		<string>Metz</string>
+		<string>Nancy</string>
+		<string>Clermont-Ferrand</string>
+		<string>Valenciennes</string>
+		<string>Tours</string>
+		<string>Caen</string>
+		<string>Orléans</string>
+		<string>Angers</string>
+		<string>Dijon</string>
+		<string>Saint-Étienne</string>
+		<string>Brest</string>
+		<string>Le Havre</string>
+		<string>Le Mans</string>
+		<string>Reims</string>
+		<string>Avignon</string>
+		<string>Mulhouse</string>
+		<string>Amiens</string>
+		<string>Béthune</string>
+		<string>Dunkerque</string>
+		<string>Perpignan</string>
+		<string>Limoges</string>
+		<string>Besançon</string>
+		<string>Nîmes</string>
+		<string>Pau</string>
+		<string>Bayonne</string>
+		<string>Annemasse</string>
+		<string>Poitiers</string>
+		<string>Annecy</string>
+		<string>Lorient</string>
+		<string>Montbéliard</string>
+		<string>Saint-Denis</string>
+		<string>Troyes</string>
+		<string>Saint-Nazaire</string>
+		<string>La Rochelle</string>
+		<string>Valence</string>
+		<string>Thionville</string>
+		<string>Angoulême</string>
+		<string>Boulogne-sur-Mer</string>
+		<string>Chambéry</string>
+		<string>Chalon-sur-Saône</string>
+		<string>Chartres</string>
+		<string>Saint-Pierre</string>
+		<string>Niort</string>
+		<string>Calais</string>
+		<string>Béziers</string>
+		<string>Arras</string>
+		<string>Bourges</string>
+		<string>Lens</string>
+		<string>Saint-Brieuc</string>
+		<string>Quimper</string>
+		<string>Vannes</string>
+		<string>Cherbourg</string>
+		<string>Maubeuge</string>
+		<string>Aix-en-Provence</string>
+		<string>Blois</string>
+		<string>Colmar</string>
+		<string>Tarbes</string>
+		<string>Compiègne</string>
+		<string>Charleville-Mézières</string>
+		<string>Belfort</string>
+		<string>Roanne</string>
+		<string>Forbach</string>
+		<string>Saint-Quentin</string>
+		<string>Laval</string>
+		<string>Bourg-en-Bresse</string>
+		<string>Beauvais</string>
+		<string>Nevers</string>
+		<string>Villeurbanne</string>
+		<string>Boulogne</string>
+		<string>Not in most inhabited cities</string>
+		<string>Ajaccio</string>
+		<string>Pointe-à-Pitre</string>
+		<string>Cayenne</string>
+		<string>Fort-de-France</string>
+		<string>Saint-Denis</string>
+	</array>
+	</dict>
+
+	<key>germany</key>
+	<dict>
+		<key>citytype</key>
+		<string>modern</string>
+		<key>legend</key>
+		<string>Germany was united in 1871 by the Prussian military
+force. After World War I it became a republic, but fell into
+Nazism in 1933 and started World War II. After the war it was split
+into two states, which reunited in 1990 at the end of the Cold War.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Friedrich II</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Berlin</string>
+		<string>Hamburg</string>
+		<string>München</string>
+		<string>Köln</string>
+		<string>Frankfurt am Main</string>
+		<string>Essen</string>
+		<string>Dortmund</string>
+		<string>Stuttgart</string>
+		<string>Düsseldorf</string>
+		<string>Bremen</string>
+		<string>Duisburg</string>
+		<string>Hannover</string>
+		<string>Nürnberg</string>
+		<string>Leipzig</string>
+		<string>Dresden</string>
+		<string>Bochum</string>
+		<string>Wuppertal</string>
+		<string>Bielefeld</string>
+		<string>Mannheim</string>
+		<string>Bonn</string>
+		<string>Halle/Saale</string>
+		<string>Gelsenkirchen</string>
+		<string>Chemnitz</string>
+		<string>Karlsruhe</string>
+		<string>Wiesbaden</string>
+		<string>Magdeburg</string>
+		<string>Münster</string>
+		<string>Mönchengladbach</string>
+		<string>Augsburg</string>
+		<string>Braunschweig</string>
+		<string>Krefeld</string>
+		<string>Kiel</string>
+		<string>Aachen</string>
+		<string>Rostock</string>
+		<string>Oberhausen</string>
+		<string>Lübeck</string>
+		<string>Hagen</string>
+		<string>Kassel</string>
+		<string>Erfurt</string>
+		<string>Freiburg im Breisgau</string>
+		<string>Saarbrücken</string>
+		<string>Mainz</string>
+		<string>Hamm</string>
+		<string>Herne</string>
+		<string>Mülheim an der Ruhr</string>
+		<string>Ludwigshafen</string>
+		<string>Osnabrück</string>
+		<string>Solingen</string>
+		<string>Leverkusen</string>
+		<string>Neuss</string>
+		<string>Oldenburg</string>
+		<string>Darmstadt</string>
+		<string>Heidelberg</string>
+		<string>Potsdam</string>
+		<string>Bremerhaven</string>
+		<string>Paderborn</string>
+		<string>Würzburg</string>
+		<string>Göttingen</string>
+		<string>Cottbus</string>
+		<string>Wolfsburg</string>
+		<string>Recklinghausen</string>
+		<string>Regensburg</string>
+		<string>Remscheid</string>
+		<string>Gera</string>
+		<string>Heilbronn</string>
+		<string>Schwerin</string>
+		<string>Bottrop</string>
+		<string>Salzgitter</string>
+		<string>Pforzheim</string>
+		<string>Offenbach am Main</string>
+		<string>Ulm</string>
+		<string>Siegen</string>
+		<string>Koblenz</string>
+		<string>Ingolstadt</string>
+		<string>Fürth</string>
+		<string>Zwickau</string>
+		<string>Reutlingen</string>
+		<string>Moers</string>
+		<string>Hildesheim</string>
+		<string>Witten</string>
+		<string>Bergisch Gladbach</string>
+		<string>Erlangen</string>
+		<string>Kaiserslautern</string>
+		<string>Jena</string>
+		<string>Trier</string>
+		<string>Frankfurt/Oder</string>
+		<string>Fulda</string>
+		<string>Bamberg</string>
+		<string>Marburg</string>
+		<string>Wittenberg</string>
+		<string>Weimar</string>
+		<string>Baden-Baden</string>
+		<string>Passau</string>
+		<string>Verden</string>
+		<string>Wismar</string>
+		<string>Nördlingen</string>
+		<string>Stralsund</string>
+		<string>Mansfeld</string>
+		<string>Donauwörth</string>
+		<string>Dessau</string>
+		<string>Worms</string>
+		<string>Wittstock</string>
+		<string>Mühlberg</string>
+		<string>Speyer</string>
+		<string>Kleve</string>
+		<string>Landau in der Pfalz</string>
+		<string>Rosheim</string>
+		<string>Schmalkalden</string>
+		<string>Lutter</string>
+		<string>Wiesloch</string>
+		<string>Rosslau</string>
+		<string>Minden</string>
+		<string>Sinsheim</string>
+		<string>Gotha</string>
+		<string>Philippsburg</string>
+		<string>Halberstadt</string>
+		<string>Bad Hersfeld</string>
+		<string>Altenburg</string>
+	</array>
+	</dict>
+
+	<key>greece</key>
+	<dict>
+		<key>citytype</key>
+		<string>classical</string>
+		<key>legend</key>
+		<string>The ancient Greeks, between Mycenae and the Roman conquest.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Megas Alexandros</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Athinai</string>
+		<string>Sparti</string>
+		<string>Thivai</string>
+		<string>Korinthos</string>
+		<string>Konstandinoupolis</string>
+		<string>Militos</string>
+		<string>Efesos</string>
+		<string>Peiraiefs</string>
+		<string>Argos</string>
+		<string>Megalopolis</string>
+		<string>Elefsis</string>
+		<string>Chalkis</string>
+		<string>Eretreia</string>
+		<string>Thessaloniki</string>
+		<string>Edessa</string>
+		<string>Nikopolis</string>
+		<string>Nafpaktos</string>
+		<string>Patrai</string>
+		<string>Olymbia</string>
+		<string>Pylos</string>
+		<string>Nafplion</string>
+		<string>Mykinai</string>
+		<string>Epidavros</string>
+		<string>Avlis</string>
+		<string>Orchomenos</string>
+		<string>Marathon</string>
+		<string>Delfoi</string>
+		<string>Thermopylai</string>
+		<string>Faliron</string>
+		<string>Nikaia</string>
+		<string>Iraklion</string>
+		<string>Potidaia</string>
+		<string>Stagira</string>
+		<string>Olynthos</string>
+		<string>Kolofon</string>
+		<string>Fokaia</string>
+		<string>Amfissa</string>
+		<string>Atalanti</string>
+		<string>Oropos</string>
+		<string>Livadeia</string>
+		<string>Larisa</string>
+		<string>Iolkos</string>
+		<string>Amfiklaia</string>
+		<string>Kyzikos</string>
+		<string>Alikarnassos</string>
+		<string>Pergamos</string>
+		<string>Pydna</string>
+		<string>Filadelfeia</string>
+		<string>Thermi</string>
+		<string>Amfipolis</string>
+		<string>Kerkyra</string>
+		<string>Ithaki</string>
+		<string>Thira</string>
+		<string>Panormos</string>
+		<string>Ortygia</string>
+		<string>Milos</string>
+		<string>Lykosoura</string>
+		<string>Amyklai</string>
+		<string>Klazomenai</string>
+		<string>KynosKefalai</string>
+		<string>Distomon</string>
+		<string>Smyrni</string>
+		<string>Alexandreia</string>
+		<string>Nikomideia</string>
+		<string>Trapezous</string>
+		<string>Chania</string>
+		<string>Knossos</string>
+		<string>Pafos</string>
+		<string>Mitylini</string>
+		<string>Chios</string>
+		<string>Sinopi</string>
+		<string>Rodos</string>
+		<string>Adrianoupolis</string>
+		<string>Volos</string>
+		<string>Neapolis</string>
+		<string>Ammostochos</string>
+		<string>Arta</string>
+		<string>Serrai</string>
+		<string>Katerini</string>
+		<string>Trikala</string>
+		<string>Lamia</string>
+		<string>Agrinion</string>
+		<string>Xanthi</string>
+		<string>Veroia</string>
+		<string>Drama</string>
+		<string>Komotini</string>
+		<string>Troia</string>
+		<string>Kozani</string>
+		<string>Karditsa</string>
+		<string>Samos</string>
+		<string>Pirgos</string>
+		<string>Tripolis</string>
+		<string>Rethymnon</string>
+		<string>Kastoria</string>
+		<string>Ioannina</string>
+		<string>Florina</string>
+		<string>Preveza</string>
+		<string>Kilkis</string>
+		<string>AyiosNikolaos</string>
+		<string>Zakynthos</string>
+		<string>Igoumenotsa</string>
+		<string>Mesolongion</string>
+		<string>Lefkosia</string>
+		<string>Grevena</string>
+		<string>Argostolion</string>
+		<string>Karpenisi</string>
+		<string>Lefkas</string>
+		<string>Militos</string>
+		<string>Polygyros</string>
+		<string>Kalamai</string>
+		<string>Kariai</string>
+		<string>Ermoupolis</string>
+		<string>Ydra</string>
+		<string>Kavala</string>
+		<string>Alexandroupolis</string>
+		<string>Tembi</string>
+	</array>
+	</dict>
+
+	<key>india</key>
+	<dict>
+		<key>citytype</key>
+		<string>asian</string>
+		<key>legend</key>
+		<string>The cradle of Ancient Indian civilization lay in the Indus river\
+valley in modern-day Pakistan.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Mohandas Gandhi</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Delhi</string>
+		<string>Mumbai</string>
+		<string>Chennai</string>
+		<string>Bangalore</string>
+		<string>Kolkata</string>
+		<string>Ahmedabad</string>
+		<string>Kanpur</string>
+		<string>Hyderabad</string>
+		<string>Lucknow</string>
+		<string>Varanasi</string>
+		<string>Chandigarh</string>
+		<string>Madurai</string>
+		<string>Coimbatore</string>
+		<string>Kozhikode</string>
+		<string>Thiruvananthapuram</string>
+		<string>Nagpur</string>
+		<string>Amritsar</string>
+		<string>Srinagar</string>
+		<string>Agra</string>
+		<string>Bhopal</string>
+		<string>Patna</string>
+		<string>Surat</string>
+		<string>Jaipur</string>
+		<string>Varanasi</string>
+		<string>Allahabad</string>
+		<string>Indore</string>
+		<string>Mysore</string>
+		<string>Raipur</string>
+		<string>Gaya</string>
+		<string>Kanpur</string>
+		<string>Pune</string>
+		<string>Ranchi</string>
+		<string>Bhubaneswar</string>
+		<string>Thiruvananthapuram</string>
+		<string>Tiruchirappalli</string>
+		<string>Dehradun</string>
+		<string>Aizawl</string>
+		<string>Gandhinagar</string>
+		<string>Imphal</string>
+		<string>Thane</string>
+		<string>Ludhiana</string>
+		<string>Pimpri-Chinchwad</string>
+		<string>Nashik</string>
+		<string>Vadodara</string>
+		<string>Faridabad</string>
+		<string>Ghaziabad</string>
+		<string>Rajkot</string>
+		<string>Meerut</string>
+		<string>Kalyan-Dombivali</string>
+		<string>Navi Mumbai</string>
+		<string>Aurangabad</string>
+		<string>Solapur</string>
+		<string>Jabalpur</string>
+		<string>Visakhapatnam</string>
+		<string>Howrah</string>
+		<string>Jodhpur</string>
+		<string>Guwahati</string>
+		<string>Vijayawada</string>
+		<string>Mira-Bhayandar</string>
+		<string>Gwalior</string>
+		<string>Hubballi-Dharwad</string>
+	</array>
+	</dict>
+
+		<key>mongolia</key>
+	<dict>
+		<key>citytype</key>
+		<string>asian</string>
+		<key>legend</key>
+		<string>In the centuries after their unification by Chinggis Khan, the
+ Mongols conquered the largest empire in human history, encompassing most
+ of the continent of Asia. They became notorious for their utter
+ ruthlessness in warfare.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Chinggis</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Karakorum</string>
+		<string>Ulaanbaatar</string>
+		<string>Sainshand</string>
+		<string>Ulaangom</string>
+		<string>Khovd</string>
+		<string>Tsetserleg</string>
+		<string>Altanbulag</string>
+		<string>Zuunmod</string>
+		<string>Bayankhongor</string>
+		<string>Dalanzadgad</string>
+		<string>Choibalsan</string>
+		<string>Erdenet</string>
+		<string>Mandalgovi</string>
+		<string>Mörön</string>
+		<string>Sükhbaatar</string>
+		<string>Züünkharaa</string>
+		<string>Öndörkhaan</string>
+		<string>Ölgii</string>
+		<string>Arvaikheer</string>
+		<string>Bulgan</string>
+		<string>Altai</string>
+		<string>Baruun-Urt</string>
+		<string>Choir</string>
+		<string>Darkhan</string>
+		<string>Bayan-Uul</string>
+		<string>Nalaikh</string>
+		<string>Zamyn-Üüd</string>
+		<string>Khatgal</string>
+		<string>Uliastai</string>
+		<string>Khuld</string>
+	</array>
+	</dict>
+
+	<key>rome</key>
+	<dict>
+		<key>citytype</key>
+		<string>classical</string>
+		<key>legend</key>
+		<string>Rome was, in legend, founded by Romulus in 753 BC. At its
+height, Rome controlled nearly all of Europe, northern Africa and
+Mesopotamia.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Caesar</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Roma</string>
+		<string>Capua</string>
+		<string>Veii</string>
+		<string>Beneventum</string>
+		<string>Corfinium</string>
+		<string>Ancona</string>
+		<string>Tarentum</string>
+		<string>Brundisium</string>
+		<string>Ravenna</string>
+		<string>Pisa</string>
+		<string>Genova</string>
+		<string>Mediolanum</string>
+		<string>Aquileia</string>
+		<string>Florentia</string>
+		<string>Bononia</string>
+		<string>Verona</string>
+		<string>Ostia</string>
+		<string>Agrigentum</string>
+		<string>Syracusae</string>
+		<string>Neapolis</string>
+		<string>Pompeii</string>
+		<string>Salernum</string>
+		<string>Tarraco</string>
+		<string>Carthago</string>
+		<string>Barcino</string>
+		<string>Bracara</string>
+		<string>Carthago Nova</string>
+		<string>Baiae</string>
+		<string>Noviomagus</string>
+		<string>Vindobona</string>
+		<string>Atuatuca</string>
+		<string>Caesarea</string>
+		<string>Ierusalem</string>
+		<string>Trapezus</string>
+		<string>Durocortorum</string>
+		<string>Lutetia</string>
+		<string>Burdigala</string>
+		<string>Portus Namnetum</string>
+		<string>Utica</string>
+		<string>Lugdunum</string>
+		<string>Londinium</string>
+		<string>Aquae Sulis</string>
+		<string>Camulodunum</string>
+		<string>Dubris</string>
+		<string>Eburacum</string>
+		<string>Coriovallum</string>
+		<string>Perusia</string>
+		<string>Leptis Magna</string>
+		<string>Corduba</string>
+		<string>Edessa</string>
+		<string>Ariminum</string>
+		<string>Narbo Martius</string>
+		<string>Pergamum</string>
+		<string>Vienna</string>
+		<string>Hispalis</string>
+		<string>Salonae</string>
+		<string>Cyrenae</string>
+		<string>Dyrrachium</string>
+		<string>Luni</string>
+		<string>Noreia</string>
+		<string>Ephesus</string>
+		<string>Panoramus</string>
+		<string>Ancyra</string>
+		<string>Caralis</string>
+		<string>Patavium</string>
+		<string>Petra</string>
+		<string>Tolosa</string>
+		<string>Pisae</string>
+		<string>Palmyra</string>
+		<string>Tyrus</string>
+		<string>Cortona</string>
+		<string>Arenate</string>
+		<string>Brigantium</string>
+		<string>Lix</string>
+		<string>Sala</string>
+		<string>Berytus</string>
+		<string>Naissus</string>
+		<string>Nicomedia</string>
+		<string>Berenice</string>
+		<string>Sabrata</string>
+		<string>Attalea</string>
+		<string>Sinope</string>
+		<string>Hippo Regius</string>
+		<string>Gesoriacum</string>
+		<string>Velia</string>
+		<string>Segesta</string>
+		<string>Gaza</string>
+		<string>Aleria</string>
+		<string>Colonia Agrippina</string>
+		<string>Agentoracum</string>
+		<string>Moguntiacum</string>
+		<string>Arretium</string>
+		<string>Thapsus</string>
+		<string>Altinum</string>
+		<string>Tarsus</string>
+	</array>
+	</dict>
+
+		<key>russia</key>
+	<dict>
+		<key>citytype</key>
+		<string>european</string>
+		<key>legend</key>
+		<string>According to legend, Slavic and Finnic tribes of Novgorod
+invited in the year 862 the Varangian (Viking) king Rurik to bring order
+to their land. Rurik established Kievan Rus' in this realm, the first
+Russian state. By the 11th century, Kievan Rus' had disintegrated into
+lesser princedoms, which were once again united into one state by Ivan
+III in the 15th century. After decisive victory over Sweden and large
+territorial gains, Peter I pronounced the Russian Empire in 1721. The
+Russian Empire lasted until 1917 when a socialist revolution dethroned
+the last Russian emperor. After USSR dissolution in 1991 Russia appeared
+on world map again, now as a federative republic.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Iosif Stalin</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Moskva</string>
+		<string>Sankt-Peterburg</string>
+		<string>Tver</string>
+		<string>Velikiy Novgorod</string>
+		<string>Yekaterinburg</string>
+		<string>Samara</string>
+		<string>Pskov</string>
+		<string>Ryazan</string>
+		<string>Vladimir</string>
+		<string>Yaroslavl</string>
+		<string>Novosibirsk</string>
+		<string>Smolensk</string>
+		<string>Briansk</string>
+		<string>Oriel</string>
+		<string>Voronezh</string>
+		<string>Saransk</string>
+		<string>Perm</string>
+		<string>Ufa</string>
+		<string>Saratov</string>
+		<string>Volgograd</string>
+		<string>Tomsk</string>
+		<string>Petrozavodsk</string>
+		<string>Rostov</string>
+		<string>Omsk</string>
+		<string>Chelyabinsk</string>
+		<string>Irkutsk</string>
+		<string>Vladivostok</string>
+		<string>Khabarovsk</string>
+		<string>Krasnoyarsk</string>
+		<string>Vologda</string>
+		<string>Murmansk</string>
+		<string>Arkhangelsk</string>
+		<string>Krasnodar</string>
+		<string>Stavropol</string>
+		<string>Murom</string>
+		<string>Kaluga</string>
+		<string>Tula</string>
+		<string>Kursk</string>
+		<string>Tambov</string>
+		<string>Lipetsk</string>
+		<string>Belgorod</string>
+		<string>Nizhny Novgorod</string>
+		<string>Kostroma</string>
+		<string>Izhevsk</string>
+		<string>Astrakhan</string>
+		<string>Orenburg</string>
+		<string>Kurgan</string>
+		<string>Tyumen</string>
+		<string>Kemerovo</string>
+		<string>Yakutsk</string>
+		<string>Chita</string>
+		<string>Magadan</string>
+		<string>Norilsk</string>
+		<string>Novokuznetsk</string>
+	</array>
+	</dict>
+
+	<key>zulu</key>
+	<dict>
+		<key>citytype</key>
+		<string>tropical</string>
+		<key>legend</key>
+		<string>The Zulus are a warlike Bantu people who migrated from
+west-central Africa into southern Africa beginning in the early 1700s,
+conquering the native Khoisan peoples and clashing with European settlers.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Shaka kaSenzangakhona</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Zimbabwe</string>
+		<string>Ulundi</string>
+		<string>Ethekwini</string>
+		<string>Tshwane</string>
+		<string>Harare</string>
+		<string>Maputo</string>
+		<string>Bulaweyo</string>
+		<string>Mzizima</string>
+		<string>Luanda</string>
+		<string>Umgungundlovu</string>
+		<string>Matola</string>
+		<string>Benoni</string>
+		<string>Gabarone</string>
+		<string>Beira</string>
+		<string>Tembisa</string>
+		<string>Nampula</string>
+		<string>Chitungwiza</string>
+		<string>Mbabane</string>
+		<string>Arusha</string>
+		<string>Mbeya</string>
+		<string>Huambo</string>
+		<string>Molepolole</string>
+		<string>Epumalanga</string>
+		<string>Ladysmtih</string>
+		<string>KwaDukuza</string>
+		<string>Eshowe</string>
+		<string>Hlobane</string>
+		<string>Esikhawini</string>
+		<string>Empangeni</string>
+		<string>Nongoma</string>
+		<string>Magudu</string>
+		<string>Mondlo</string>
+		<string>Endumeni</string>
+		<string>Mtunzini</string>
+		<string>Tongati</string>
+	</array>
+	</dict>
+
+		<key>barbarian</key>
+	<dict>
+		<key>citytype</key>
+		<string>european</string>
+		<key>legend</key>
+		<string>Since the dawn of civilization, barbarians have been a threat to
+ cultured peoples everywhere.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Genseric</string>
+
+				<key>sex</key>
+				<string>Male</string>
+
+				<key>name</key>
+				<string>Alaric</string>
+
+				<key>sex</key>
+				<string>Male</string>
+
+				<key>name</key>
+				<string>Theodoric</string>
+
+				<key>sex</key>
+				<string>Male</string>
+
+				<key>name</key>
+				<string>Stilicho</string>
+
+				<key>sex</key>
+				<string>Male</string>
+
+				<key>name</key>
+				<string>Attila</string>
+
+				<key>sex</key>
+				<string>Male</string>
+
+				<key>name</key>
+				<string>Boadicea</string>
+
+				<key>sex</key>
+				<string>Female</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Barbaricum</string>
+	</array>
+	</dict>
 </dict>
 </plist>

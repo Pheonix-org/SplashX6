@@ -44,6 +44,18 @@ class Civilisation(var nationType: NationType) : Serializable {
 
 enum class NationType{
     england,
+    zulu,
+    greece,
     america,
-    japan
+    barbarian,
+    babylon,
+    mongolia,
+    russia,
+    germany,
+    egypt,
+    china,
+    france,
+    japan,
+    aztec,
+    rome,
 }
