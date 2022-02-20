@@ -154,7 +154,7 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
         setSprite()
     }
 
-    override fun toString(): String = "$CITY_TYPE at $isoVec"
+    override fun toString(): String = name
 
     // ============================================================
     // endregion functions
