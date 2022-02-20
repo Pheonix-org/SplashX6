@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>england</key>
+	<dict>
+		<key>citytype</key>
+		<string>european</string>
+		<key>legend</key>
+		<string>England was unified by Alfred the Great of Wessex in the late
+9th century, only to be conquered by William of Normandy a century
+later, in the last successful invasion of the country.</string>
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Elizabeth I</string>
+				<key>sex</key>
+				<string>Female</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Alfred the Great</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>William the Conqueror</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Richard Lionheart</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Henry II</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Oliver Cromwell</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>John Lackland</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Mary Tudor</string>
+				<key>sex</key>
+				<string>Female</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Edward Longshanks</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+		<key>cities</key>
+		<array>
+			<string>London</string>
+			<string>Westminster</string>
+			<string>Birmingham</string>
+			<string>Liverpool</string>
+			<string>Manchester</string>
+			<string>Leeds</string>
+			<string>York</string>
+			<string>Newcastle</string>
+			<string>Canterbury</string>
+			<string>Bradford</string>
+			<string>Derby</string>
+			<string>Southampton</string>
+			<string>Middlesbrough</string>
+			<string>Sheffield</string>
+			<string>Nottingham</string>
+			<string>Coventry</string>
+			<string>Bath</string>
+			<string>Bristol</string>
+			<string>Brighton</string>
+			<string>Portsmouth</string>
+			<string>Hull</string>
+			<string>Leicester</string>
+			<string>Plymouth</string>
+			<string>Bournemouth</string>
+			<string>Sunderland</string>
+			<string>Stoke-on-Trent</string>
+			<string>Bolton</string>
+			<string>Norwich</string>
+			<string>Oxford</string>
+			<string>Colchester</string>
+			<string>Reading</string>
+			<string>Cambridge</string>
+			<string>Gloucester</string>
+			<string>Blackpool</string>
+			<string>Stratford-upon-Avon</string>
+			<string>Durham</string>
+			<string>Eastleigh</string>
+			<string>Winchester</string>
+			<string>Folkestone</string>
+			<string>Dover</string>
+			<string>Huntingdon</string>
+			<string>Hereford</string>
+			<string>Ipswich</string>
+			<string>Kettering</string>
+			<string>King&apos;s Lynn</string>
+			<string>Kidderminster</string>
+			<string>Leek</string>
+			<string>Lincoln</string>
+			<string>Lutterworth</string>
+			<string>Macclesfield</string>
+			<string>Market Bosworth</string>
+			<string>Market Harborough</string>
+			<string>Melton Mowbray</string>
+			<string>Nuneaton</string>
+			<string>Oakham</string>
+			<string>Peterborough</string>
+			<string>Pickering</string>
+			<string>Preston</string>
+			<string>Poole</string>
+			<string>Rochester</string>
+			<string>Ramsgate</string>
+			<string>Southend</string>
+			<string>Stevenage</string>
+			<string>Ashford</string>
+			<string>Swindon</string>
+			<string>Torquay</string>
+			<string>Wolverhampton</string>
+			<string>Weymouth</string>
+			<string>Yeovil</string>
+			<string>Halifax</string>
+			<string>Oldham</string>
+			<string>Rochdale</string>
+			<string>Blackburn</string>
+			<string>Burnley</string>
+			<string>Lancaster</string>
+			<string>Northampton</string>
+			<string>Salisbury</string>
+			<string>Cowe</string>
+		</array>
+	</dict>
+	<key>japan</key>
+	<dict>
+		<key>citytype</key>
+		<string>asian</string>
+		<key>legend</key>
+		<string>According to traditional Japanese mythology, Japan was founded
+in the 7th century BCE by the ancestral Emperor Jimmu.</string>
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Jimmu</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Mutsuhito</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Hirohito</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Oda Nobunaga</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Tokugawa Ieyasu</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Suiko</string>
+				<key>sex</key>
+				<string>Female</string>
+			</dict>
+		</array>
+		<key>cities</key>
+		<array>
+			<string>Tokyo</string>
+			<string>Osaka</string>
+			<string>Kyoto</string>
+			<string>Nara</string>
+			<string>Sapporo</string>
+			<string>Nagoya</string>
+			<string>Fukuoka</string>
+			<string>Kobe</string>
+			<string>Hiroshima</string>
+			<string>Sendai</string>
+			<string>Kawasaki</string>
+			<string>Kokura</string>
+			<string>Saitama</string>
+			<string>Yokohama</string>
+			<string>Chiba</string>
+			<string>Shizuoka</string>
+			<string>Niigata</string>
+			<string>Matsuyama</string>
+			<string>Kanazawa</string>
+			<string>Sakai</string>
+			<string>Sagamihara</string>
+			<string>Hachioji</string>
+			<string>Nagano</string>
+			<string>Kumamoto</string>
+			<string>Okayama</string>
+			<string>Kagoshima</string>
+			<string>Hamamatsu</string>
+			<string>Akita</string>
+			<string>Himeji</string>
+			<string>Nagasaki</string>
+			<string>Yokosuka</string>
+			<string>Oita</string>
+			<string>Gifu</string>
+			<string>Wakayama</string>
+			<string>Iwaki</string>
+			<string>Asahikawa</string>
+			<string>Takamatsu</string>
+			<string>Kochi</string>
+			<string>Toyama</string>
+			<string>Naha</string>
+			<string>Aomori</string>
+			<string>Hakodate</string>
+			<string>Maebashi</string>
+			<string>Morioka</string>
+			<string>Otsu</string>
+			<string>Tokushima</string>
+			<string>Yamagata</string>
+			<string>Fukui</string>
+			<string>Matsumoto</string>
+			<string>Kofu</string>
+			<string>Funabashi</string>
+			<string>Utsunomiya</string>
+			<string>Miyazaki</string>
+			<string>Fukuyama</string>
+			<string>Toyota</string>
+			<string>Tokorozawa</string>
+			<string>Fukushima</string>
+			<string>Yokkaichi</string>
+			<string>Shimonoseki</string>
+			<string>Koganei</string>
+			<string>Hachinohe</string>
+			<string>Mito</string>
+			<string>Sasebo</string>
+			<string>Matsue</string>
+			<string>Kawaguchi</string>
+			<string>Kushiro</string>
+			<string>Chofu</string>
+			<string>Fuse</string>
+			<string>Kumagaya</string>
+			<string>Amagasaki</string>
+			<string>Ichikawa</string>
+			<string>Saga</string>
+			<string>Machida</string>
+			<string>Tottori</string>
+			<string>Toyonaka</string>
+			<string>Fujisawa</string>
+			<string>Kurume</string>
+			<string>Toyohashi</string>
+			<string>Kawagoe</string>
+			<string>Tsu</string>
+		</array>
+	</dict>
+	<key>america</key>
+	<dict>
+		<key>citytype</key>
+		<string>modern</string>
+		<key>legend</key>
+		<string>Formally named the United States of America.  Independent from Great Britain after a revolution in 1776-1783 AD.</string>
+
+		<key>leaders</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>Eleanor Roosevelt</string>
+				<key>sex</key>
+				<string>Female</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>Abraham Lincoln</string>
+				<key>sex</key>
+				<string>Male</string>
+			</dict>
+		</array>
+	<key>cities</key>
+	<array>
+		<string>Washington</string>
+		<string>New York</string>
+		<string>Boston</string>
+		<string>Philadelphia</string>
+		<string>Los Angeles</string>
+		<string>Atlanta</string>
+		<string>Chicago</string>
+		<string>St. Louis</string>
+		<string>Detroit</string>
+		<string>New Orleans</string>
+		<string>Baltimore</string>
+		<string>Denver</string>
+		<string>Cincinnati</string>
+		<string>Dallas</string>
+		<string>Houston</string>
+		<string>San Antonio</string>
+		<string>San Francisco</string>
+		<string>Fresno</string>
+		<string>Seattle</string>
+		<string>Portland</string>
+		<string>Miami</string>
+		<string>Las Vegas</string>
+		<string>Cleveland</string>
+		<string>Toledo</string>
+		<string>Pittsburgh</string>
+		<string>Salt Lake City</string>
+		<string>San Diego</string>
+		<string>Phoenix</string>
+		<string>Minneapolis</string>
+		<string>St. Paul</string>
+		<string>Kansas City</string>
+		<string>Buffalo</string>
+		<string>Syracuse</string>
+		<string>Wichita</string>
+		<string>Indianapolis</string>
+		<string>Orlando</string>
+		<string>Omaha</string>
+		<string>Baton Rouge</string>
+		<string>Milwaukee</string>
+		<string>Honolulu</string>
+		<string>Boise</string>
+		<string>Fargo</string>
+		<string>Springfield</string>
+		<string>Nashville</string>
+		<string>Hartford</string>
+		<string>Charlotte</string>
+		<string>Raleigh</string>
+		<string>Charleston</string>
+		<string>Savannah</string>
+		<string>Mobile</string>
+		<string>El Paso</string>
+		<string>Anchorage</string>
+		<string>Fairbanks</string>
+		<string>Spokane</string>
+		<string>Tacoma</string>
+		<string>Fort Worth</string>
+		<string>Austin</string>
+		<string>Sacramento</string>
+		<string>Oklahoma City</string>
+		<string>Jacksonville</string>
+		<string>Sioux Falls</string>
+		<string>Madison</string>
+		<string>Lubbock</string>
+		<string>Amarillo</string>
+		<string>Little Rock</string>
+		<string>Tucson</string>
+		<string>Erie</string>
+		<string>Flint</string>
+		<string>Trenton</string>
+		<string>Newark</string>
+		<string>Richmond</string>
+		<string>Reno</string>
+		<string>Santa Fe</string>
+		<string>San Jose</string>
+		<string>Tulsa</string>
+		<string>Annapolis</string>
+		<string>Akron</string>
+		<string>Urbana-Champaign </string>
+	</array>
+	</dict>
+</dict>
+</plist>
