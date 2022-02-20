@@ -23,6 +23,8 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
     // region fields
     // ============================================================
 
+    lateinit var name: String
+
     /**
      * # Does this city have a wall built?
      */

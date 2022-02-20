@@ -17,8 +17,6 @@ import com.badlogic.gdx.maps.MapRenderer
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector3
-import com.shinkson47.SplashX6.Client
-import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_isSelectingDestination
@@ -148,7 +146,7 @@ class GameScreen : ScalingScreenAdapter() {
         sr.circle(v.x, v.y, 10f)
 
         // Draw another in the center of the screen.
-        sr.projectionMatrix = hUDBatch.projectionMatrix
+        sr.projectionMatrix = HUDBatch.projectionMatrix
         sr.circle(centerx, centery, 5f)
         sr.end()
         renderSprites()
@@ -171,7 +169,11 @@ class GameScreen : ScalingScreenAdapter() {
 
         // Render cities
         GameData.player!!.cities.forEach(
-            Consumer { city: City -> city.draw(worldBatch) }
+            Consumer {
+                    city: City -> city.draw(worldBatch)
+                    font.draw(worldBatch, city.name, city.getPosition().x, city.getPosition().y)
+                    font.draw(worldBatch, "Population : ${city.population}", city.getPosition().x, city.getPosition().y - 15)
+            }
         )
         GameData.player!!.units.forEach(
             Consumer { sprite: Unit ->
@@ -265,8 +267,8 @@ class GameScreen : ScalingScreenAdapter() {
     /**
      * <h2>Returns the GUI batch</h2>
      */
-    val hUDBatch: Batch
-        get() = stage.getBatch()
+    val HUDBatch: Batch
+        get() = stage.batch
 
     fun getR(): MapRenderer? {
         return r

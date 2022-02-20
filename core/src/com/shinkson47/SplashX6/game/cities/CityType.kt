@@ -9,5 +9,13 @@ package com.shinkson47.SplashX6.game.cities
  */
 enum class CityType {
     asian,
+    babylonain,
+    celtic,
+    classical,
+    electricage,
+    european,
+    industrial,
+    modern,
+    postmodern,
     tropical
 }

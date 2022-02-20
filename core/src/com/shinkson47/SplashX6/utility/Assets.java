@@ -112,7 +112,9 @@ public class Assets {
   public static final Map<String, Object>
           TILESET_MAP,
           SPRITES_MAP,
-          playlists;
+          playlists,
+          NATION_DATA
+    ;
   //#endregion World
 
   //#region audio
@@ -159,6 +161,7 @@ public class Assets {
           TILESET_MAP = Plist.fromXml(Gdx.files.internal("tmx/tsdata.plist").readString());
           SPRITES_MAP = Plist.fromXml(Gdx.files.internal("tmx/sprites.plist").readString());
           playlists   = Plist.fromXml(Gdx.files.internal("audio/data/playlists.plist").readString());
+          NATION_DATA   = Plist.fromXml(Gdx.files.internal("data/nationdata.plist").readString());
           hitTest = ImageIO.read(Gdx.files.internal("tsdata/hittest.png").read());
       } catch (XmlParseException | IOException ignored) {
           throw new Error("Unable to load assets.");

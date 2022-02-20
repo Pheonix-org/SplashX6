@@ -17,7 +17,6 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
-import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
@@ -27,7 +26,6 @@ import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
-import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_CLIENT_CONNECTED
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_UNIT_SELECTED
@@ -291,7 +289,7 @@ class GameHypervisor {
             GameData.player!!.units.add(s)
         }
 
-        fun civ_new(civType: CityType): Civilisation {
+        fun civ_new(civType: NationType): Civilisation {
             val c = Civilisation(civType)
             GameData.civilisations.add(c)
             return c
@@ -473,7 +471,7 @@ class GameHypervisor {
          * Unit is disbanded after.
          */
         fun settle(it : Unit) {
-            settle(it.isoVec.cpy(), GameData.player!!.civType)
+            settle(it.isoVec.cpy())
 
             unit_select(it)
             unit_disband()
@@ -482,8 +480,8 @@ class GameHypervisor {
         /**
          * # Creates a size 0 settlement at [x],[y] with the provided style.
          */
-        fun settle(pos: Vector3, type : CityType) {
-            GameData.player!!.cities.add(City(pos, type))
+        fun settle(pos: Vector3) {
+            GameData.player!!.settle(pos)
         }
 
 

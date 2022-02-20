@@ -5,10 +5,7 @@ import com.shinkson47.SplashX6.utility.Assets
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.Window
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameData
@@ -17,6 +14,9 @@ import com.shinkson47.SplashX6.game.GameHypervisor.Companion.inGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.cities.CityType
+import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion
+import com.shinkson47.SplashX6.game.world.generation.Generator
+import com.shinkson47.SplashX6.game.world.generation.WorldGenerationStage
 import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.NetworkClient.connect
 import com.shinkson47.SplashX6.network.Server
@@ -223,14 +223,23 @@ class WorldCreation(
             hsep()
 
             row()
-            label("specific.gamecreation.civtype")
+            label("specific.gamecreation.civtype").left()
 
-            val x = SelectBox<CityType>(SKIN)
-            x.setItems(*CityType.values())
+            val x = SelectBox<NationType>(SKIN)
+            x.setItems(*NationType.values())
             x.selected = x.items.first()
             add(x)
 
-            x.addListener(LambdaChangeListener { GameData.pref_civType = x.selected })
+            row();
+            val lblLegend = label("!" + Civilisation.legend(GameData.pref_civType)).actor as Label
+
+            //TODO i don't like this varialbe thingy
+            x.addListener(LambdaChangeListener {
+                GameData.pref_civType = x.selected
+                lblLegend.setText(Civilisation.legend(x.selected))
+                pack()
+                centerStage()
+            })
 
             span(
                 hsep()
@@ -238,6 +247,7 @@ class WorldCreation(
             )
 
             span(addButton("generic.game.new") {
+                GameData.pref_civType = x.selected
                 controller.switchState(2)
             })
             row()

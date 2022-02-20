@@ -40,7 +40,7 @@ class _GameData : PartiallySerializable {
     // ======================================
     // New game preferences
     // ======================================
-    var pref_civType = CityType.asian
+    var pref_civType = NationType.values().first()
 
 
 
