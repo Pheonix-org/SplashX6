@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Statistic">
+    <option name="excludedDirectories">
+      <list>
+        <option value="$PROJECT_DIR$/statescript/src/gen" />
+        <option value="$PROJECT_DIR$/statescript/src/com/shinkson47/SplashX6/ai/statescript/antlr" />
+        <option value="$PROJECT_DIR$/core/assets" />
+        <option value="$PROJECT_DIR$/free civ data" />
+        <option value="$PROJECT_DIR$/gradle" />
+        <option value="$PROJECT_DIR$/core/src/com/gdx" />
+        <option value="$PROJECT_DIR$/core/src/com/ray3k" />
+        <option value="$PROJECT_DIR$/core/src/com/auburn" />
+      </list>
+    </option>
+  </component>
+</project>

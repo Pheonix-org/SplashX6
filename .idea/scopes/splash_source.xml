@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="splash source" pattern="src[SplashX6.desktop.main]:com.shinkson47.SplashX6.desktop..*||src[SplashX6.statescript.main]:com.shinkson47.SplashX6.ai.statescript.*||src[SplashX6.core.main]:com.shinkson47.SplashX6..*" />
+</component>
