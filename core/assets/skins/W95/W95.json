@@ -63,7 +63,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Window_inactive_10: {
 		region: Window_Header_Inactive
@@ -83,7 +82,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Button_Inactive_10: {
 		region: Windows_Button_Inactive
@@ -103,7 +101,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Button_Pressed_10: {
 		region: Windows_Button_Pressed
@@ -123,7 +120,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Button_hover_10: {
 		region: Windows_Button_Pressed_Outlined
@@ -143,7 +139,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Window_Base_10: {
 		region: Window_Base
@@ -163,7 +158,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Slider_Background_10: {
 		region: Windows_Slider_Background
@@ -183,7 +177,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Inner_Frame_Inverted_10: {
 		region: Windows_Inner_Frame_Inverted
@@ -203,7 +196,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Toggle_Active_10: {
 		region: Windows_Toggle_Active
@@ -223,7 +215,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Combo_Closed_10: {
 		region: Windows_Combo_Closed
@@ -243,7 +234,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Combo_Open_10: {
 		region: Windows_Combo_Open
@@ -263,7 +253,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_SideBar_Underside_10: {
 		region: Windows_SideBar_Underside
@@ -283,7 +272,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Windows_Tooltip: {
 		region: Windows_SideBar_Underside
@@ -305,7 +293,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	tiledtex: {
 		region: Windows_SideBar_Underside
@@ -325,7 +312,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	widet10: {
 		region: Windows_Toggle_Active
@@ -345,7 +331,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Window_Header_Resizable_Inactive_10: {
 		region: Window_Header_Resizable_Inactive
@@ -365,7 +350,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Window_Header_Resizable_10: {
 		region: Window_Header_Resizable
@@ -385,7 +369,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Message_Normal_10: {
 		region: Message_Normal
@@ -405,7 +388,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 	Message_Error_10: {
 		region: Message_Error
@@ -425,7 +407,6 @@ com.ray3k.tenpatch.TenPatchDrawable: {
 		frameDuration: 0.03
 		regions: []
 		playMode: 2
-		crushMode: 0
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
