@@ -77,13 +77,10 @@ abstract class ModifyingGenerationStage : WorldGenerationStage()
 abstract class MiscellaneousGenerationStage : WorldGenerationStage()
 
 internal object GenerationCompanion {
-    
 
-    /**
-     * FastNoiseLite noise frequency for height generation.
-     */
     @JvmField var heightFrequency = 0.08f
-
+    @JvmField var HILL_LEVEL = 0.48f
+    @JvmField var MOUNTAIN_LEVEL = 0.729f
     @JvmField var fractalGain = 0.5f
     @JvmField var fractalLacunarity = 2.0f
     @JvmField var fractalFrequency = 0.01f

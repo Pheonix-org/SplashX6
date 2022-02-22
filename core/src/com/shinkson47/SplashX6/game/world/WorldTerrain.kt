@@ -387,10 +387,6 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
          */
         const val SEA_LEVEL = 0f
 
-        @JvmField var HILL_LEVEL = 0.48f
-
-        @JvmField var MOUNTAIN_LEVEL = 0.729f
-
         /**
          * # The smallest permitted world width
          */
