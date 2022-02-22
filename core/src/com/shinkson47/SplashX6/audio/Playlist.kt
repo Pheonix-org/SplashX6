@@ -29,72 +29,80 @@
  ░                                                                                                                                                                                ░
  ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
+package com.shinkson47.SplashX6.audio
 
-package com.shinkson47.SplashX6.game.world;
+import com.badlogic.gdx.audio.Music
+import com.shinkson47.SplashX6.audio.AudioController.nextSong
+import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Utility
+import java.util.ArrayList
+
+/**
+ * # A List of songs that [AuioController] can plan in game.
+ *
+ * @author Jordan Gray
+ * @version 2.0
+ * @since PRE-ALPHA 0.0.2
+ */
+class Playlist(initialSongs : ArrayList<Music>) : ArrayList<Music>(initialSongs) {
+
+    // Fields
+
+    /**
+     * ## Represents the index of the current song to be played in the playlist.
+     */
+    private var playingIndex = 0
 
 
-import java.util.Random;
-
-public class Voronoi {
-    static double p = 3;
-    static int px[], py[], cells = 100, size = 500;
-    static Biome BiomeGrid[][], biome[];
-    public static boolean generated = false;
-    private static long seed;
-
-    static Random rnd = new Random(seed);
-
-    public static void Generate(int sz, long Seed) {
-        seed = Seed;
-        rnd = new Random(Seed);
-        generated = false;
-        size = sz + 1;
-        cells = size /* / Game.CurrentMap.BScale */;
-        int n = 0;
-        BiomeGrid = new Biome[size][size];
-        px = new int[cells];
-        py = new int[cells];
-        biome = new Biome[cells];
-        for (int i = 0; i < cells; i++) {
-            px[i] = rnd.nextInt(size);
-            py[i] = rnd.nextInt(size);
-            biome[i] = getBiome();
+    // Methods
+    /**
+     * @return The Music representing the current song.
+     */
+    val currentSong: Music
+        get() {
+            return get(playingIndex).apply { setOnCompletionListener { music: Music? -> nextSong() } }
         }
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                n = 0;
-                for (int i = 0; i < cells; i++) {
-                    if (distance(px[i], x, py[i], y) < distance(px[n], x, py[n], y)) {
-                        n = i;
-                    }
-                }
-                BiomeGrid[x][y] = biome[n];
-            }
-        }
-        generated = true;
+
+    /**
+     * ## Skips the currently playing song within the playlist.
+     *
+     * By increasing the playback index, and returning [currentSong]
+     *
+     * > Note that this is circular.
+     *
+     * @return The song playing after skipping the current song.
+     */
+    operator fun next(): Music {
+        playingIndex = Utility.IncrementClampBoundary(playingIndex, 0, size - 1)
+        return currentSong
     }
 
-    static double distance(int x1, int x2, int y1, int y2) {
-        double d;
-        d = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-        return d;
+    /**
+     * ## Skips to the previous song
+     * by decrementing [playingIndex], and returning [currentSong].
+     *
+     * > Note that this is circular.
+     *
+     * @return The song playing after skipping to the previous song.
+     */
+    fun previous(): Music {
+        playingIndex = Utility.DecrementClampBoundary(playingIndex, size - 1, 0)
+        return currentSong
     }
 
-    public static Biome eval(int x, int y) {
-        return BiomeGrid[x][y];
+    /**
+     * # Resets the back to the first song.
+     * by forcing [playingIndex] to 0, and returning the [currentSong]
+     *
+     * @return The currently playing song.
+     */
+    fun reset(): Music {
+        playingIndex = 0
+        return currentSong
     }
 
-    public static Biome getBiome() {
-        Biome biomes[] = Biome.values();
-        Biome biome;
-        try
-        {
-            biome = biomes[(int) (rnd.nextLong() % (long)biomes.length)];
-        }
-        catch (Throwable var2)
-        {
-            biome = Biome.g;
-        }
-        return biome;
+
+    companion object {
+        val DEFAULT_PLAYLIST = Playlist(Assets.SONGS)
     }
 }

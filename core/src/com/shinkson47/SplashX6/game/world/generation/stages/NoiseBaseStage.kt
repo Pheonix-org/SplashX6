@@ -56,7 +56,7 @@ class NoiseBaseStage : BaseGenerationStage() {
     override fun execute(it: WorldTerrain) {
         noise = createNoiseGenerator()
 
-        it.putEachTile { x: Int, y: Int, ignored -> generateBaseTile(x,y) }
+        it.putEachTile { x: Int, y: Int, _ -> generateBaseTile(x,y) }
     }
 
     private var f : Float = 0f

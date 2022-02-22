@@ -82,7 +82,7 @@ class Client : Game() {
      */
     private fun debugStart() {
         Assets.Create()
-        AudioController.muteAudio()             // Mute music
+        AudioController.isMuted = true
         setScreen(WorldCreation())              // Skip to world creation
         GraphicalConfig.exitFullscreen()        // Exit fullscreen so we can access the ide.
     }

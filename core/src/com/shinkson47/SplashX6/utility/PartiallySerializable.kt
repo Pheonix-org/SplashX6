@@ -33,12 +33,29 @@
 package com.shinkson47.SplashX6.utility
 
 import java.io.Serializable
+import java.util.function.Predicate
 
 /**
  * # A serializable class with transient properties.
- * A deserialization method is provided for handling the transient properties.
+ *
+ * For use when you want to serialize a class which
+ * contains things that are not serializable.
+ *
+ * Provides a deserialization method to reconstruct transient properties.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 03/02/2022
  */
 interface PartiallySerializable : Serializable{
     fun deserialize()
+}
+
+
+/**
+ * # A predicate which can be serialized.
+ *
+ * @param T
+ * @property z
+ * @constructor Create [SerializablePredicate]
+ */
+class SerializablePredicate <T>(val z : ((T) -> Boolean)) : Predicate<T>, Serializable {
+    override fun test(t: T): Boolean = z(t)
 }

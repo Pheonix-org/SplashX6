@@ -37,10 +37,9 @@ import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
-import com.shinkson47.SplashX6.audio.GamePlaylist
+import com.shinkson47.SplashX6.audio.Playlist
 import com.shinkson47.SplashX6.audio.Spotify
 import com.shinkson47.SplashX6.game.cities.City
-import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.WorldTerrain
@@ -73,7 +72,7 @@ import java.io.*
 import java.lang.Thread.sleep
 
 /**
- * # The main overseer for a game.
+ * # The main overseer and API for the game.
  *
  * Manages and handles all interactions with the current game from the client.
  *
@@ -208,7 +207,8 @@ class GameHypervisor {
             KeyBinder.createGameBinds()
 
             if (!DEBUG_MODE) Spotify.pause()      // If possible, stop spotify.
-            AudioController.playPlaylist(GamePlaylist());
+
+            AudioController.playPlaylist(Playlist.DEFAULT_PLAYLIST)
             switchToGameScreen()
 
             if (Server.alive)
@@ -321,8 +321,8 @@ class GameHypervisor {
             GameData.player!!.units.add(s)
         }
 
-        fun civ_new(civType: NationType): Civilisation {
-            val c = Civilisation(civType)
+        fun civ_new(civType: NationType): Nation {
+            val c = Nation(civType)
             GameData.civilisations.add(c)
             return c
         }
@@ -376,7 +376,7 @@ class GameHypervisor {
         @JvmStatic
         fun unit_viewDestination() {
             if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't view a unit's destination if no unit selected!"))) return
-            camera_moveToTile(GameData.selectedUnit!!.destX, GameData.selectedUnit!!.destY)
+            camera_moveToTile(GameData.selectedUnit!!.destination!!.first, GameData.selectedUnit!!.destination!!.second)
         }
 
 
@@ -537,7 +537,7 @@ class GameHypervisor {
          * # Focusses the camera on the provided unit.
          */
         @JvmStatic
-        fun camera_focusOn(city: City) = camera_focusOn(city.getPosition())
+        fun camera_focusOn(city: City) = camera_focusOn(city.cartesianPosition())
 
         /**
          * # Focusses the camera on the provided unit.

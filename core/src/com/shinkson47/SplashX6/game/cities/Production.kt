@@ -32,19 +32,24 @@
 
 package com.shinkson47.SplashX6.game.cities
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.utility.TurnHook
-import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.UtilityK.tryOrNull
 import java.io.Serializable
 
 /**
- * # Defines the behaviour of a cities' production.
+ * # A cities ability to produce things with it's production power.
  */
-class Production(val forCity: City) : TurnHook, Serializable {
+class Production(
+
+    /**
+     * ## The city that this production is for.
+     */
+    val forCity: City
+
+    ) : TurnHook, Serializable {
 
     init { GameHypervisor.turn_hook(this) }
     companion object {
@@ -55,10 +60,18 @@ class Production(val forCity: City) : TurnHook, Serializable {
     /**
      * The queue of projects to be worked on.
      *
-     * *Do not modify contents*.
+     * > ***Do not modify contents directly***
+     * @see [queue]
      */
     val queue :  ArrayList<ProductionProject> = arrayListOf()
 
+    /**
+     * A figure representing the city's ability to produce.
+     *
+     * For now, scales with the [forCity.population].
+     *
+     * Updates on access.
+     */
     var productionPower : Int = BASE_PRODUCTION_POWER + forCity.population
         private set
         get() {
@@ -66,73 +79,154 @@ class Production(val forCity: City) : TurnHook, Serializable {
             return field
         }
 
+    /**
+     * ## Queues a production project for the city to work on.
+     * Has no effect if [queueIsFull] is true.
+     *
+     * @param project Project to be added to the queue
+     */
     fun queue(project : ProductionProject) {
-        if (isQueuefull()) return
-        queue.add(project)
-        project.assign(this)
+        if (queueIsFull()) return
+        project.let {
+            queue.add(it)
+            it.assign(this)
+        }
     }
 
-    fun isQueuefull() = queue.size >= QUEUE_LIMIT
+    /**
+     * ## Evaluates if the [queue] is full
+     * by comparing [queue.size] to [QUEUE_LIMIT].
+     *
+     * @return true if [queue.size] is greater or equal to [QUEUE_LIMIT]
+     */
+    fun queueIsFull() = queue.size >= QUEUE_LIMIT
 
+    /**
+     * ## Evaluate a cities [productionPower]
+     *
+     * This will use the resources and buildings available to the city
+     * to calculate the city's production power.
+     */
     fun evaluateCitiesProductionPower () {}
 
+    /**
+     * ## Evaluates a list of all production projects that are currently available for this city.
+     *
+     * @return [Collection]
+     */
+    fun evaluateProducable(): Collection<ProductionProject> = UnitClass.values().map {  UnitProductionProject(it)  }
+
+
+    /**
+     * ## Turn hook which processes the production projects.
+     * @see recurseContribution
+     */
     override fun onTurn() = recurseContribution(productionPower)
 
     /**
-     * TODO doc & test. don't trust it.
+     * ## Recursively applies n [power] towards the queue of projects.
      *
-     * FIXME this will allow multiple projects to be completed on one turn
-     *      if production is high enough. that can't happen.
+     * Each project consumes x quantity of n power,
+     * and any remaining power is put towards the next
+     * project.
+     *
+     * i.e
+     *
+     * project 1 = 10 cost
+     *
+     * project 2 = 20 cost
+     *
+     * project 3 = 20 cost
+     *
+     * production contributed by city = 30
+     *
+     * result :
+
+     * project 1 = complete
+     *
+     * project 2 = 10 cost
+     *
+     * project 2 = 20 cost
+     *
      */
     private fun recurseContribution(power : Int) {
         //TODO this happens multiple times, when i think it shouldn't.
-        with (getWorkingOn()) {
-            if (this == null) return
-            val overflow = contribute(power)
 
-            if (isComplete) {
-                removeWorkingOn()
-                recurseContribution(overflow)
+        with (getWorkingOn()) {
+            if (this == null) return // There are no more projects in queue.
+
+            // Contribute n towards current project.
+            contribute(power).let {
+                // it = remainder
+                if (isComplete) {
+                    // Move to next project
+                    removeWorkingOn()
+
+                    // Contribute remainder to next project.
+                    recurseContribution(it)
+                }
             }
         }
     }
 
     /**
-     * # Returns the [ProductionProject] currently being worked on.
+     * ## Returns the [ProductionProject] that this city is currently working on.
      */
     fun getWorkingOn() : ProductionProject? = tryOrNull { queue.first() }
 
     /**
-     * # Remove the item currently being worked on.
+     * ## Remove the item currently being worked on.
      *
      * Either because it's cancelled, or completed.
      */
     fun removeWorkingOn() = queue.removeAt(0)
 
-    fun producable(): Collection<ProductionProject> = UnitClass.values().map {  UnitProductionProject(it)  }
-
 
     /**
-     * # A project that can be completed by a city.
+     * # A project that can be completed by a city's production power.
      */
     abstract class ProductionProject(
+
+        /**
+         * The quantity of production power required to complete.
+         */
         val cost: Int = MathUtils.random(1, 20),
+
+        /**
+         * The quantity of production power that has been contributed towards
+         */
         var progress: Int = 0
     ) {
 
+        /**
+         * Flag which is raised when progress matches cost.
+         */
         var isComplete = false
             private set
 
+        /**
+         * Flag which is raised when the product of a completed project is claimed.
+         *
+         * i.e a unit has been spawned, or a structure has been built.
+         *
+         * Prevents the same project from being claimed more than once.
+         */
         var isClaimed = false
             private set
 
+        /**
+         * Assigns the project to a given project, indicating that
+         * it is being worked on.
+         *
+         * @param to The city production which is working on the project.
+         */
         fun assign(to: Production) { production = to }
         lateinit var production: Production
             private set
 
 
         /**
-         * Contributes the given production power towards this
+         * Contributes the *n* production power towards this
          * production project.
          *
          * If complete with remainder, returns the remainder.
@@ -155,10 +249,11 @@ class Production(val forCity: City) : TurnHook, Serializable {
         }
 
         /**
-         * Tries to claim the product, If completed will trigger the end of production
-         * result.
+         * # Tries to claim the product of this project.
          *
-         * i.e this may spawn a unit, or place a new structure.
+         * If this project is completed, and has not yet been claimed,
+         * then [doClaim] will be called.
+         *
          */
         fun tryClaim() {
             if (!isComplete || isClaimed) return
@@ -166,9 +261,18 @@ class Production(val forCity: City) : TurnHook, Serializable {
             doClaim()
         }
 
+        /**
+         * # Claims the result of this project.
+         * i.e this may spawn a unit, or place a new structure.
+         */
         abstract fun doClaim()
     }
 
+    /**
+     * # A project that produces a unit.
+     *
+     * @property type The type of unit this project produces.
+     */
     class UnitProductionProject(val type : UnitClass) : Production.ProductionProject() {
         override fun doClaim() = GameHypervisor.spawn(production.forCity.isoVec, type)
 

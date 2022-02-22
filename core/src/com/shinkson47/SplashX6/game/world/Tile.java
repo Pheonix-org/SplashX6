@@ -1,3 +1,4 @@
+
 /*░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
  ░ FOSS 2022. The Splash Project.                                                                                                                                                 ░
  ░ https://www.shinkson47.in/SplashX6                                                                                                                                             ░
@@ -27,7 +28,6 @@
  ░         \::/    /                                         \::/    /        \::/    /                \::/    /                \::/    /                       |::|___|          ░
  ░          \/____/                                           \/____/          \/____/                  \/____/                  \/____/                         ~~               ░
  ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
 package com.shinkson47.SplashX6.game.world;
@@ -39,7 +39,7 @@ import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
 
 /**
  * <h1>Pre GDX tile data.</h1>
- * Stores a tile and it's data prior to converting data into a
+ * Represents a tile and it's data prior to converting data into a
  * gdx compatable TiledMapTile for use in game.
  *
  * This will later act as a saveable container for data regarding a tile,

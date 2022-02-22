@@ -44,16 +44,31 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.utility.Assets.unitSprites
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 import org.xguzm.pathfinding.grid.GridCell
-import java.io.Serializable
 
 /**
  * # A controllable in-game character
  * That may be owned and controlled by a human or AI player.
+ *
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 19/05/2021
  * @since PRE-ALPHA 0.0.1
  * @version 1
  */
-open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSprites.createSprite(unitClass.toString())), PartiallySerializable {
+open class Unit(
+
+    /**
+     * ## The type of unit
+     *
+     * Determines the sprites and behaviour of the unit.
+     */
+    val unitClass: UnitClass,
+
+    /**
+     * ## The isometric position of the unit
+     */
+    var isoVec: Vector3
+
+    ) : Sprite(unitSprites.createSprite(unitClass.toString())), PartiallySerializable {
+
     constructor(unitClass: UnitClass, _x: Int, _y: Int) : this(unitClass, Vector3(_x.toFloat(), _y.toFloat(), 0f))
 
     // =============================================
@@ -61,41 +76,39 @@ open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSpri
     // =============================================
 
     /**
-     * # A user friendly name of this unit.
+     * ## A user friendly name of this unit.
      * For now, is just the [unitClass]
      */
     val displayName = unitClass.toString()
 
     /**
-     * # The unit's destination
-     * Marks where the unit is travelling to.
+     * ## The unit's destination
+     * the x, y that the unit desires to travel to,
+     * if there is a destination set.
      */
-    var destX = -1
+    var destination: Pair<Int, Int>? = null
         private set
-    var destY = -1
-        private set
+
+    /**
+     * A list of cells in the world, defines the path
+     * this unit is trying to take to reach [destination]
+     */
+    var pathNodes : List<GridCell>? = null
 
     // TODO these need to be dictionary based values, depending on the unit's class.
     var viewDistance = 10;
     var travelDistance = 3;
 
     /**
-     * # The actions that this unit can perform.
+     * ## The actions that this unit is able to perform.
      * Fetched from [UnitActionDictionary], which defines what each class is able to do.
      */
     val actions: Array<UnitAction> = UnitActionDictionary[unitClass]
 
     /**
-     * # [UnitAction] that this unit will perform on the next turn.
+     * ## [UnitAction] that this unit will perform on the next turn.
      */
     var onTurnAction: UnitAction? = null
-
-    /**
-     * A list of cells in the world.
-     *
-     * Defines the path this unit is trying to take.
-     */
-    var pathNodes : List<GridCell>? = null
 
     // =============================================
     // endregion fields
@@ -148,18 +161,23 @@ open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSpri
      */
     fun setLocation(_pos : Vector3): Vector3 = setLocation(_pos.x, _pos.y)
 
+    /**
+     * # Sets the location of this unit.
+     */
     @Deprecated("This call shouldn't use floats. See sister method.")
     fun setLocation(x: Float, y: Float) : Vector3 = setLocation(x.toInt(), y.toInt())
 
     /**
      * # Moves this unit to the specified tile.
-     * Also updates the position of the underlying sprite to match the new location
-     * and removes any fog-of-war surrounding the unit.
+     * by updating the position of the underlying sprite.
+     *
+     * This method will clamp the position to within the bounds of the world.
+     *
+     * After the move, defogs area around new position.
      */
     fun setLocation(x: Int, y: Int) : Vector3 {
         val x = MathUtils.clamp(x, 0, GameData.world!!.width - 1)
         val y = MathUtils.clamp(y, 0, GameData.world!!.height - 1)
-
 
         isoVec.set(x.toFloat(),y.toFloat(),0f)
 
@@ -175,37 +193,50 @@ open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSpri
         return pos
     }
 
+    /**
+     * # Sets a desired destination
+     * and calculates the pathfinding required to reach it.
+     *
+     * @param x X Isometric x position of the destination
+     * @param y Y Isometric y position of the destination
+     */
     fun setDestination(x: Int, y: Int) {
         val x = MathUtils.clamp(x, 0, GameData.world!!.width - 1)
         val y = MathUtils.clamp(y, 0, GameData.world!!.height - 1)
 
-        if (x == destX && y == destY) return // don't pathfind if destination is same.
+        if (x == destination?.first && y == destination?.second) return // don't pathfind if destination is same.
 
-        destX = x; destY = y;
+        destination = Pair(x,y)
         calculatePath()
     }
 
+    fun clearDestination() { destination = null }
+
+    /**
+     * # Performs A* pathfinding to determine a path to the destination.
+     * Has no effect if destination is null
+     */
     private fun calculatePath() {
+        if (destination == null) return
+
         with(GameData.world!!) {
-            pathNodes = pathfinder.findPath(isoVec.x.toInt(), isoVec.y.toInt(), destX, destY, navigationLayer)
+            pathNodes = pathfinder.findPath(isoVec.x.toInt(), isoVec.y.toInt(), destination!!.first, destination!!.second, navigationLayer)
         }
     }
 
 
     /**
      * # Moves this sprite by a x and y tiles.
+     * then invokes [setLocation] to update the sprite and whatnot.
      */
     fun deltaPosition(deltaX: Int, deltaY: Int): Vector3 {
         isoVec.x += deltaX
-        isoVec.x += deltaY
+        isoVec.y += deltaY
         return setLocation(isoVec)
     }
 
 
-
-    override fun toString(): String {
-        return "$displayName (X${isoVec.x}, Y${isoVec.y})"
-    }
+    override fun toString() = "$displayName (X${isoVec.x}, Y${isoVec.y})"
 
     // =============================================
     // endregion functions
@@ -215,11 +246,11 @@ open class Unit(val unitClass: UnitClass, var isoVec: Vector3) : Sprite(unitSpri
     /**
      * # Performs this unit's [onTurnAction], if there is one.
      */
-    fun doTurn(){ onTurnAction?.run(this) }
+    fun doTurn() { onTurnAction?.run(this) }
 
     /**
      * # Removes [onTurnAction]
-     * prevnting this unit from performing any action
+     * preventing this unit from performing any action
      * on each turn.
      */
     fun cancelAction() { onTurnAction = null }

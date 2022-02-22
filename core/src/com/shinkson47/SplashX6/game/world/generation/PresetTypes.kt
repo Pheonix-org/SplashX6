@@ -32,6 +32,7 @@
 
 package com.shinkson47.SplashX6.game.world.generation
 
+// TODO map of preset world generation values.
 enum class PresetTypes {
     DenseManhattan,
     SparseManhattan,

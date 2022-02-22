@@ -165,7 +165,6 @@ open class StateMachine : Runnable {
      */
     protected fun defaultState(state : State) {
         if (_currentState == null) {
-
             if (!states.contains(state))
                 throw IllegalArgumentException()
 

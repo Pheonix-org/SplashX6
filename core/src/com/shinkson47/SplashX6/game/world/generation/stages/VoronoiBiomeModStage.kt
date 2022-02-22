@@ -32,8 +32,9 @@
 
 package com.shinkson47.SplashX6.game.world.generation.stages
 
-import com.badlogic.gdx.math.MathUtils
+import com.rosettacode.voronoi.Voronoi
 import com.shinkson47.SplashX6.game.world.*
+import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion.SEED
 import com.shinkson47.SplashX6.game.world.generation.ModifyingGenerationStage
 
 /**
@@ -48,7 +49,7 @@ class VoronoiBiomeModStage() : ModifyingGenerationStage() {
 
 
     override fun execute(it: WorldTerrain) {
-        Voronoi.Generate(500, it.seed)
+        Voronoi.Generate(500, SEED.toLong())
 
         it.putEachTile { x, y, tile ->
             if (tile != null && tile.isLand)

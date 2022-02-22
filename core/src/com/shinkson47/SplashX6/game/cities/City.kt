@@ -41,24 +41,44 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.utility.Assets.citySprites
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 import com.shinkson47.SplashX6.utility.TurnHook
-import java.io.Serializable
 
 /**
- * # A settlement city.
+ * # A settlement in a nation.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 02/06/2021
  * @since PRE-ALPHA 0.0.2
- * @version 1.2
+ * @version 1.2.1
  */
-class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallySerializable {
+class City(
+        /**
+         * ## The isometric position of the city.
+         * Is used to position the sprite.
+         */
+        val isoVec: Vector3,
+
+        /**
+         * ## The type of sprite used to represent the city.
+         */
+        var CITY_TYPE : CityType
+
+    ) : TurnHook, PartiallySerializable {
 
     // ============================================================
     // region fields
     // ============================================================
 
+    /**
+     * ## User facing name of this city.
+     * Determined data of the nation this city belongs to.
+     */
     lateinit var name: String
 
     /**
-     * # Does this city have a wall built?
+     * ## Does this city have a wall built?
+     * If true, '_wall' is appended to the sprite name,
+     * which *should* match a sprite with a wall built
+     * around it.
+     *
+     * Automatically updates sprite when updated.
      */
     private var wall : Boolean = false
         set(value) {
@@ -67,7 +87,9 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
         }
 
     /**
-     * # The size of the city's population
+     * ## The size of the city's population
+     *
+     * Automatically updates sprite when updated.
      */
     var population : Int = 0
         private set(value) {
@@ -76,7 +98,17 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
         }
 
     /**
-     * # The last known resource name of the underlying sprite
+     * ## The last known resource name of the underlying sprite
+     *
+     * format is :
+     * > citytype_size(_wall?)
+     *
+     * ### i.e
+     * > european_0
+     *
+     * or
+     *
+     * > european_0_wall
      *
      * Sets to [calcSpriteName] at init.
      */
@@ -84,47 +116,35 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
         private set
 
     /**
-     * # Underlying renderable for this city.
-     * Changes as this city mutates.
+     * # Underlying renderable sprite that represents this city.
+     * > ***DO NOT MODIFY***
+     * Autonomously updated as this city mutates.
      *
-     * Class does not extend Sprite 'cause it's
-     * massively easier to create new sprites instead of mutate them.
+     * This class does not extend a sprite, because they're not mutable.
+     *
+     * @see checkSpriteUpdate
      */
     @Transient private lateinit var sprite : Sprite
-    private fun spriteLateInit() { setSprite() }
 
-    fun getPosition() : Vector3 = Vector3(sprite.x, sprite.y, 0f)
+    /**
+     * ## Returns the cartesian coordinates of the sprite.
+     * > N.B: This does not match the world space co-ordinates.
+     *
+     * @return [Vector3] containing the cartesian coordinates of the sprite.
+     * @see isoVec
+     */
+    fun cartesianPosition() : Vector3 = Vector3(sprite.x, sprite.y, 0f)
 
+    /**
+     * ## The production manager of the city.
+     */
     val production = Production(this)
-
-
 
     // ============================================================
     // endregion fields
     // region functions
     // ============================================================
 
-    /**
-     * Calculates which sprite should be used to represent the state
-     * of this city, and returns the `city.atlas` resource name of it
-     *
-     * Format :
-     * > type_population(_wall)
-     *
-     * i.e `asian_0` or `asian_0_wall`
-     */
-    private fun calcSpriteName() : String {
-        val pop =
-            when {
-                population < 10      -> 0
-                population < 25      -> 4
-                population < 40      -> 8
-                population < 50      -> 12
-                else                 -> 16
-            }
-
-        return "${CITY_TYPE}_$pop${if (wall) "_wall" else ""}"
-    }
 
     /**
      * # Converts the [isoVec] to cartesian position for the sprite to use.
@@ -135,36 +155,38 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
     }
 
     /**
-     * # Sets [sprite] to the matching [cachedSpriteName]
-     * using the city sprite atlas to create a new sprite.
-     *
-     * New sprites are moved to [cachedSpriteY], [cachedSpriteX]
+     * ## Updates the [sprite] to match [cachedSpriteName]
+     * using the [citySprites] atlas to create a new sprite.
      */
-    fun setSprite() {
-        val tempSprite = citySprites.createSprite(cachedSpriteName)
-        val tempPos = calcSpritePos()
-        tempSprite.setPosition(tempPos.x, tempPos.y)
-        sprite = tempSprite
+    private fun updateSprite() {
+        sprite = citySprites.createSprite(cachedSpriteName).apply {
+            calcSpritePos().let { setPosition(it.x, it.y) }
+        }
     }
+
+    /**
+     * # alias for companion calcSpriteName
+     */
+    private fun calcSpriteName() = calcSpriteName(this)
 
 
     /**
      * # Checks if the sprite needs to be updated to match the state of this city
      * by [calcSpriteName], and comparing it to [cachedSpriteName].
      *
-     * If they differ, modifies caches new name and changes the sprite using [setSprite]
+     * If they differ, modifies caches new name and changes the sprite using [updateSprite]
      * thus it's only called if a new sprite is required.
      */
     private fun checkSpriteUpdate() {
         val tempName = calcSpriteName()
         if (tempName != cachedSpriteName) {
             cachedSpriteName = tempName
-            setSprite()
+            updateSprite()
         }
     }
 
     /**
-     * # Draws the underlying sprite of this city.
+     * # Draws the [sprite] which represents this city
      */
     fun draw(batch: SpriteBatch) = sprite.draw(batch)
 
@@ -177,18 +199,75 @@ class City(val isoVec: Vector3, val CITY_TYPE : CityType) : TurnHook, PartiallyS
         production.doOnTurn()
     }
 
+    // ============================================================
+    // endregion functions
+    // region meta
+    // ============================================================
+
     init {
-        spriteLateInit()
+        updateSprite()
         GameHypervisor.turn_hook(this)
     }
 
-    final override fun deserialize() {
-        setSprite()
+    override fun deserialize() {
+        updateSprite()
     }
 
     override fun toString(): String = name
 
     // ============================================================
-    // endregion functions
+    // endregion meta
     // ============================================================
+
+
+
+
+    companion object {
+        /**
+         * Determines the resource name to use to find the correct sprite
+         * to represent the given city.
+         *
+         * The resource name is intended for use in 'city.atlas'
+         *
+         * Format :
+         * > type_population(_wall?)
+         *
+         * i.e `asian_0` or `asian_0_wall`
+         */
+        private fun calcSpriteName(city: City): String {
+            with(city) {
+                val pop =
+                    when {
+                        population < 10      -> 0
+                        population < 25      -> 4
+                        population < 40      -> 8
+                        population < 50      -> 12
+                        else                 -> 16
+                    }
+
+                return "${CITY_TYPE}_$pop${if (wall) "_wall" else ""}"
+            }
+        }
+    }
+}
+
+
+/**
+ * # Classifications of cities
+ * Represents all the types of cities available within the cities sprite atlas.
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 02/06/2021
+ * @since PRE-ALPHA 0.0.2
+ * @version 1
+ */
+enum class CityType {
+    asian,
+    babylonain,
+    celtic,
+    classical,
+    electricage,
+    european,
+    industrial,
+    modern,
+    postmodern,
+    tropical
 }

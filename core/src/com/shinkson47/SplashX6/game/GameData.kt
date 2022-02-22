@@ -33,12 +33,10 @@
 package com.shinkson47.SplashX6.game
 
 
-import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.generation.Generator
 import com.shinkson47.SplashX6.utility.PartiallySerializable
-import java.io.Serializable
 
 /**
  * # Static container for all data of the game in progress.
@@ -57,7 +55,7 @@ class _GameData : PartiallySerializable {
      */
     @JvmField var world : WorldTerrain? = null
 
-    @JvmField var civilisations : ArrayList<Civilisation> = ArrayList()
+    @JvmField var civilisations : ArrayList<Nation> = ArrayList()
 
 
     // This client's data
@@ -66,7 +64,7 @@ class _GameData : PartiallySerializable {
      */
     @JvmField var selectedUnit : Unit? = null
 
-    @JvmField var player : Civilisation? = null
+    @JvmField var player : Nation? = null
 
 
     // ======================================

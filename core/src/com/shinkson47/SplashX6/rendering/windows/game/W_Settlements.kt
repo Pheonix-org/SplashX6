@@ -123,7 +123,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
                 .also {
                     it.addListener {
                         selectedProduction()?.let {
-                                if (it.isQueuefull())
+                                if (it.queueIsFull())
                                     message("!Queue for this city is full.")
                             }
                             false
@@ -181,7 +181,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         selectedCity()?.let { refresh(queue.items, it.production.queue) }
         queue.selection.validate()
 
-        selectedCity()?.let { refresh(production.items, it.production.producable()) }
+        selectedCity()?.let { refresh(production.items, it.production.evaluateProducable()) }
         production.selection.validate()
 
         selectedCity()?.let { lblCityProductionPowerLevel.setText(it.production.productionPower) }
@@ -198,7 +198,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
     private fun <T> refresh(list :  com.badlogic.gdx.utils.Array<T>, data : Collection<T>) {
         list.clear()
         list.addAll(CollectionToGDXArray(data))
-        selectedCity()?.let { btnAddButton.touchable = if (it.production.isQueuefull()) Touchable.disabled else Touchable.enabled }
+        selectedCity()?.let { btnAddButton.touchable = if (it.production.queueIsFull()) Touchable.disabled else Touchable.enabled }
     }
 
     private fun selectedInQueue(): Production.ProductionProject? =

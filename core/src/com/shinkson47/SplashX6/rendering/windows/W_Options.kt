@@ -86,7 +86,7 @@ class W_Options(val parent : ScalingScreenAdapter) : StageWindow("generic.any.op
                     RootNode(
                         "generic.sound.volume",
                             SliderNode<Float>(AudioController, "musicVolume", "generic.sound.musicVolume", 0f, 1f, 0.1f),
-                            SliderNode<Float>(AudioController, "buttonVolume", "generic.sound.sfxVolume", 0f, 1f, 0.1f), // TODO audio controller channel need updating. this isn't for buttons.
+                            SliderNode<Float>(AudioController, "SFXVolume", "generic.sound.sfxVolume", 0f, 1f, 0.1f), // TODO audio controller channel need updating. this isn't for buttons.
                             CheckboxNode(AudioController, "isMuted", "generic.sound.mute"),
                     ),
             ),

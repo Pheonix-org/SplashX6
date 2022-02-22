@@ -35,6 +35,7 @@ package com.shinkson47.SplashX6.utility
 /**
  * # A runnable script which can be executed on every turn.
  */
+//TODO is it possible to have this automatically hook on init?
 interface TurnHook : Runnable {
 
     @Deprecated("Run should not be directly invoked on a TurnHook.", ReplaceWith("OnTurn()"))

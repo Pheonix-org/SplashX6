@@ -35,7 +35,6 @@ package com.shinkson47.SplashX6.game.world.generation.stages
 import com.badlogic.gdx.math.MathUtils
 import com.shinkson47.SplashX6.game.world.Tile
 import com.shinkson47.SplashX6.game.world.WorldTerrain
-import com.shinkson47.SplashX6.game.world.WorldTerrainGenerator
 import com.shinkson47.SplashX6.game.world.generation.ModifyingGenerationStage
 
 /**

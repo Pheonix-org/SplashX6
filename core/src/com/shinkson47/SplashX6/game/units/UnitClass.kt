@@ -33,8 +33,8 @@
 package com.shinkson47.SplashX6.game.units
 
 /**
- * # Types of units available.
- * Names match the title of the corresponding sprite
+ * # Classes of units that are available.
+ * Names match the title of the corresponding sprite in the units atlas.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 02/06/2021
  * @since PRE-ALPHA 0.0.1
  * @version 1
@@ -93,5 +93,5 @@ enum class UnitClass {
     transport,
     trireme,
     warrior,
-    worker,
+    worker
 }

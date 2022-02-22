@@ -170,7 +170,7 @@ class GameScreen : ScalingScreenAdapter() {
             )
         }
 
-        if (cm_isSelectingDestination || GameData.selectedUnit?.destX != -1)
+        if (cm_isSelectingDestination || GameData.selectedUnit?.destination?.first != -1)
             renderDestinationLine()
 
         var v = mouse_focusOnTile()
@@ -203,8 +203,8 @@ class GameScreen : ScalingScreenAdapter() {
         GameData.player!!.cities.forEach(
             Consumer {
                     city: City -> city.draw(worldBatch)
-                    font.draw(worldBatch, city.name, city.getPosition().x, city.getPosition().y)
-                    font.draw(worldBatch, "Population : ${city.population}", city.getPosition().x, city.getPosition().y - 15)
+                    font.draw(worldBatch, city.name, city.cartesianPosition().x, city.cartesianPosition().y)
+                    font.draw(worldBatch, "Population : ${city.population}", city.cartesianPosition().x, city.cartesianPosition().y - 15)
             }
         )
         GameData.player!!.units.forEach(
