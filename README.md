@@ -8,7 +8,7 @@ X6 is a work-in-progress turn based 4X settlement strategy game heavily inspired
 
 The foundation of this project started around 2017, where I started to learn how to hack together game prototypes in various languages. Through five itterations, the series has resulted in X6.
 
-This particular installation was developed as a university driven development project, forming my final dissertation project, landing my into the world of development.
+This particular installation was developed as a university driven development project, forming my final dissertation project, landing me ultimately into the world of development.
 
 ## Any good?
 Depends on who you ask.
