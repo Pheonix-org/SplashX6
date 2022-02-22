@@ -57,6 +57,8 @@ class W_Help : StageWindow("!Help") {
                         tree.add(it as RootNode)
                     }
                 }
+
+            tree.nodes.first().isExpanded = true
         }
 
 
@@ -98,7 +100,7 @@ class W_Help : StageWindow("!Help") {
         l.isDisabled = true
         val scrollPane = ScrollPane(l, SKIN)
         val sp = SplitPane(ScrollPane(tree, SKIN), scrollPane, false, SKIN)
-        sp.splitAmount = 0.2f
+        sp.splitAmount = 0.3f
         expandfill(
             add(sp)
                 .minHeight(300f)
