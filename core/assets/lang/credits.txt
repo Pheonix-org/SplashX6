@@ -48,7 +48,9 @@ Spotify Wrapper : michaelthelin : MIT
 Pathfinding : xaguzman : Apache 2.0
 FastNoiseLite : Jordan Peck : MIT
 FileChooser : Olli-Pekka Valtonen : MIT
+Voronoi : Rosetta Code : GFDL
 
+TODO the game must include a copy of each of these licenses.
 
 /------------------------\
 META : ASSETS NOT INCLUDED
