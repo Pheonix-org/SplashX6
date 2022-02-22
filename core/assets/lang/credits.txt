@@ -28,6 +28,7 @@ FreeLand tileset : FreeCiv : GPL
 [ SPRITES ]
 
 FreeLand Sprites : FreeCiv : GPL
+Keyboard key : Cazwolf : CC by 4.0
 
 [ AUDIO ]
 

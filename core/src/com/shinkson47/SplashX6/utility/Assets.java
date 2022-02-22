@@ -114,6 +114,7 @@ public class Assets {
           spotifyFail;
 
   public static final TextureAtlas
+          keySprites,
           unitSprites,
           citySprites,
           menuBG;
@@ -180,6 +181,7 @@ public class Assets {
   static{
       unitSprites = new TextureAtlas("sprites/units.atlas");
       citySprites = new TextureAtlas("sprites/cities.atlas");
+      keySprites = new TextureAtlas("sprites/keysprites.atlas");
       menuBG = new TextureAtlas("sprites/menu_bg.atlas");
       spotifyFail = new Texture("sprites/spotify_fail.png");
 
