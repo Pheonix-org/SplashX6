@@ -284,7 +284,7 @@ public abstract class StageWindow extends Window implements TurnHook {
             // Use plain upper, with 'title' style class (which wraps in '[]' and opaque bg to cover window border.)
             label = new Label(local(key).toUpperCase(), SKIN, "title");
         } else {
-            label = new Label(local(key).toUpperCase(), SKIN); // TODO this text needs to be white. Not sure why it isn't atm.
+            label = new Label(local(key).toUpperCase(), SKIN, "white");
             w.getTitleTable().add(label).expandX();
 
             // IMPLEMENT a way for the user to configure which side the buttons are placed on.

@@ -132,21 +132,21 @@ Windows_Inner_Frame_Inverted
   index: -1
 Windows_IsOpen_Icon
   rotate: false
-  xy: 78, 402
+  xy: 509, 807
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Windows_Open_Icon
   rotate: false
-  xy: 51, 380
+  xy: 559, 857
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Windows_Progress_Fill
   rotate: false
-  xy: 509, 807
+  xy: 609, 907
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -174,7 +174,7 @@ Windows_Ratio_Selected
   index: -1
 Windows_SideBar_Underside
   rotate: false
-  xy: 559, 857
+  xy: 1, 302
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -195,14 +195,14 @@ Windows_Slider_Handle
   index: -1
 Windows_Toggle_Active
   rotate: false
-  xy: 609, 907
+  xy: 51, 380
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 Windows_Toggle_Selected
   rotate: false
-  xy: 1, 302
+  xy: 78, 402
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

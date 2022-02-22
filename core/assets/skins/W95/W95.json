@@ -436,6 +436,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: Serif
 		fontColor: Black
 	}
+	white: {
+		font: Serif
+		fontColor: White
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
@@ -559,6 +563,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: Window_10
 		titleFont: Serif
+		titleFontColor: White
 	}
 	Message: {
 		background: Message_Normal_10
