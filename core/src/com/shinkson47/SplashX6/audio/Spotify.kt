@@ -116,7 +116,7 @@ object Spotify {
      * If no credentials are saved, or they are not / no longer valid then returns false.
      */
     fun createFromExisting(): Boolean =
-        (Assets.preferences.getString("SPOTIFY_AUTH_CODE") != "" && loadToken())
+        (Assets.REF_PREFERENCES.getString("SPOTIFY_AUTH_CODE") != "" && loadToken())
             .also { if (it) build() }
 
 
@@ -448,13 +448,13 @@ object Spotify {
         loadExpiryLast().plusSeconds(loadExpiresIn().toLong()).isBefore(LocalDateTime.now())
 
     private fun loadExpiryLast() : LocalDateTime =
-        LocalDateTime.ofEpochSecond(Assets.preferences.getLong("SPOTIFY_REFRESH_LAST", 0), 0, ZoneOffset.UTC)
+        LocalDateTime.ofEpochSecond(Assets.REF_PREFERENCES.getLong("SPOTIFY_REFRESH_LAST", 0), 0, ZoneOffset.UTC)
 
     private fun loadExpiresIn() : Int =
-        Assets.preferences.getInteger("SPOTIFY_REFRESH_LENGTH", 0)
+        Assets.REF_PREFERENCES.getInteger("SPOTIFY_REFRESH_LENGTH", 0)
 
     private fun saveExpiry(lastRefresh : Long, expiresIn : Int) {
-        with (Assets.preferences) {
+        with (Assets.REF_PREFERENCES) {
             putLong("SPOTIFY_REFRESH_LAST", lastRefresh)
             putInteger("SPOTIFY_REFRESH_LENGTH", expiresIn)
             flush()
@@ -465,7 +465,7 @@ object Spotify {
      * # Stores the tokens on disk via [com.badlogic.gdx.Preferences].
      */
     private fun saveToken(accessToken: String, refreshToken: String) {
-        with (Assets.preferences) {
+        with (Assets.REF_PREFERENCES) {
             putString("SPOTIFY_ACCESS_TOKEN", accessToken)
             putString("SPOTIFY_REFRESH_TOKEN", refreshToken)
             putString("SPOTIFY_AUTH_CODE", cachedOTP)
@@ -481,7 +481,7 @@ object Spotify {
      * If data is not valid, cached tokes are deleted.
      */
     private fun loadToken() : Boolean {
-        with (Assets.preferences) {
+        with (Assets.REF_PREFERENCES) {
             cacheToken(getString("SPOTIFY_ACCESS_TOKEN"), getString("SPOTIFY_REFRESH_TOKEN"))
             cachedOTP = getString("SPOTIFT_AUTH_CODE")
         }

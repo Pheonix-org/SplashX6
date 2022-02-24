@@ -1,7 +1,0 @@
-Press 'E' to end your turn.
-Press 'C' to center the camera on the selected unit.
-Press 'X' to quickly open the unit window for the selected unit.
-Press 'TAB' to toggle between 3D and 2D camera modes.
-A City's population will grow as the game progresses.
-The loading screen is surprisingly complex. (No, seriously.)
-Have you tried multiplayer?

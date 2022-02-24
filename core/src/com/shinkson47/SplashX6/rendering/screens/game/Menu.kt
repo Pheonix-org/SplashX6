@@ -57,16 +57,16 @@ import com.shinkson47.SplashX6.rendering.windows.game.W_Settlements
 import com.shinkson47.SplashX6.rendering.windows.game.Spotify
 import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
-import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Debug.DebugWindow
 import com.shinkson47.SplashX6.utility.Utility.*
 
 /**
  * # The menu bar used in-game to access tools, windows and more.
  */
-class Menu(val _parent : GameScreen) : Table(SKIN) {
+class Menu(val _parent : GameScreen) : Table(REF_SKIN_W95) {
 
-    val chooser = FileChooser.createSaveDialog("Choose save location", SKIN, Gdx.files.external("/"))
+    val chooser = FileChooser.createSaveDialog("Choose save location", REF_SKIN_W95, Gdx.files.external("/"))
     // TODO raise drop down to top
     companion object {
         /**
@@ -179,7 +179,7 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
      * but it also performs an action by itself.
      */
     // TODO image instead, tooltip, sub actions
-    class MenuItem(val parentMenu: Menu, key: String, val action: Runnable, vararg subActions: MenuSubItem) : TextButton(local(key), SKIN, if (subActions.isEmpty()) "MenuItem" else "MenuItemList") {
+    class MenuItem(val parentMenu: Menu, key: String, val action: Runnable, vararg subActions: MenuSubItem) : TextButton(local(key), REF_SKIN_W95, if (subActions.isEmpty()) "MenuItem" else "MenuItemList") {
         val subActions = subActions as Array<MenuSubItem>
 
         init {
@@ -238,7 +238,7 @@ class Menu(val _parent : GameScreen) : Table(SKIN) {
         /**
          * # A list view used to hold and show the items.
          */
-        val l = object : List<MenuSubItem>(SKIN) {
+        val l = object : List<MenuSubItem>(REF_SKIN_W95) {
             override fun getMinHeight(): Float {
                 return 23f * this.items.size
             }

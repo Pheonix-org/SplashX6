@@ -35,21 +35,20 @@ package com.shinkson47.SplashX6.rendering.screens
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Animation
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
-import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.LoadGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
-import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
+import com.shinkson47.SplashX6.utility.Assets.SPRITES_MENUBG
 import kotlin.math.roundToInt
 
 
@@ -69,7 +68,7 @@ class MainMenu : ScalingScreenAdapter() {
 
     //private val stage = Stage(ExtendViewport(Gdx.graphics.width.toFloat(), Gdx.graphics.height.toFloat()))
     private var menuWindow: Window? = null
-    private val bg = Animation(0.1333333333f, Assets.menuBG.regions, Animation.PlayMode.LOOP)
+    private val bg = Animation(0.1333333333f, Assets.get<TextureAtlas>(SPRITES_MENUBG).regions, Animation.PlayMode.LOOP)
 
     @Volatile private var animationStateTime = 0f
     private val optionsWindow = W_Options(this)
@@ -82,12 +81,12 @@ class MainMenu : ScalingScreenAdapter() {
         init {
 
             // Title label
-            add(Label("SPLASH X6", SKIN,"RetroNewVersion-Large", Color.BLACK))
+            add(Label("SPLASH X6", REF_SKIN_W95,"RetroNewVersion-Large", Color.BLACK))
 
                     .row()
 
             add(
-                    Label("PRE-ALPHA 0.0.2", SKIN)
+                    Label("PRE-ALPHA 0.0.2", REF_SKIN_W95)
             ).padBottom(50f).row()
 
             addButton("generic.game.new")  { NewGame() }

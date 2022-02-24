@@ -37,7 +37,6 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.windows.GameWindowManager
 import com.shinkson47.SplashX6.utility.Assets
 
 /**
@@ -48,7 +47,7 @@ import com.shinkson47.SplashX6.utility.Assets
  */
 class W_UnitsList : StageWindow("generic.game.units"){
 
-    private val list: List<Unit> = List(Assets.SKIN)
+    private val list: List<Unit> = List(Assets.REF_SKIN_W95)
 
     /**
      * A click listener for a list of units, that selects the unit clicked within the game engine.

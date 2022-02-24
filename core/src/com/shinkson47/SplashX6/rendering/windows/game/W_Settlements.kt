@@ -42,7 +42,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.cities.City
 import com.shinkson47.SplashX6.game.cities.Production
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Utility.*
 
 /**
@@ -56,15 +56,15 @@ class W_Settlements : StageWindow("generic.game.settlements") {
     /**
      * # The list of settlements displayed in this window
      */
-    private val cities: SelectBox<City>                         = SelectBox(SKIN)
-    private val queue: List<Production.ProductionProject>       = List(SKIN)
-    private val production: List<Production.ProductionProject>  = List(SKIN)
+    private val cities: SelectBox<City>                         = SelectBox(REF_SKIN_W95)
+    private val queue: List<Production.ProductionProject>       = List(REF_SKIN_W95)
+    private val production: List<Production.ProductionProject>  = List(REF_SKIN_W95)
 
     //private val lblCityProductionPower              = label("specific.windows.settlements.productionPower")
     private val lblCityProductionPower : Label
-    private val lblCost                = Label("0", SKIN)
-    private val lblCompleteIn          = Label("0", SKIN)
-    private val lblCityProductionPowerLevel = Label("100", SKIN)
+    private val lblCost                = Label("0", REF_SKIN_W95)
+    private val lblCompleteIn          = Label("0", REF_SKIN_W95)
+    private val lblCityProductionPowerLevel = Label("100", REF_SKIN_W95)
     private var btnAddButton: Button
 
 
@@ -113,13 +113,13 @@ class W_Settlements : StageWindow("generic.game.settlements") {
             .actor.setAlignment(Align.right)
         row()
 
-        expandfill(add(ScrollPane(production, SKIN))
+        expandfill(add(ScrollPane(production, REF_SKIN_W95))
             .minWidth(150f)
             .maxHeight(500f)
         )
 
         val midColumn : WidgetGroup = VerticalGroup()
-        midColumn.addActor(TextButton(local("generic.any.add"), SKIN)
+        midColumn.addActor(TextButton(local("generic.any.add"), REF_SKIN_W95)
                 .also {
                     it.addListener {
                         selectedProduction()?.let {
@@ -146,7 +146,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
 
 
         val localisedLabel: (key: String) -> Unit = {
-            midColumn.addActor(Label(local(it), SKIN))
+            midColumn.addActor(Label(local(it), REF_SKIN_W95))
         }
 
         localisedLabel("specific.windows.settlements.cost")
@@ -155,13 +155,13 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         localisedLabel("specific.windows.settlements.completeIn")
         midColumn.addActor(lblCompleteIn)
 
-        midColumn.addActor(TextButton(local("generic.any.remove"), SKIN).apply { addListener(LambdaClickListener {
+        midColumn.addActor(TextButton(local("generic.any.remove"), REF_SKIN_W95).apply { addListener(LambdaClickListener {
             selectedInQueue().let { selectedProduction()?.queue?.remove(it) }
             refresh()
         })})
         expandfill(add(midColumn))
 
-        expandfill(add(ScrollPane(queue, SKIN))
+        expandfill(add(ScrollPane(queue, REF_SKIN_W95))
             .minWidth(150f)
         )
 

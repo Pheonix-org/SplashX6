@@ -51,7 +51,9 @@ object LanguageSelectionListener {
     var locale : Languages = Languages.en
         set(value) {
             field = value
-            Assets.loadLanguage(value)
+
+
+            //Assets.loadLanguage(value)
         }
 }
 //    val currentLanguage : String

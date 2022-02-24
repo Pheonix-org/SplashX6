@@ -37,6 +37,7 @@ import com.shinkson47.SplashX6.game.cities.City
 import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.REF_NATION_DATA
 import java.io.Serializable
 
 class Nation(var nationType: NationType) : Serializable {
@@ -67,7 +68,7 @@ class Nation(var nationType: NationType) : Serializable {
 
     companion object {
         fun data(nationType: NationType) =
-            Assets.NATION_DATA.getOrDefault(nationType.toString(), Assets.NATION_DATA["england"]) as HashMap<String, *>
+            REF_NATION_DATA.getOrDefault(nationType.toString(), REF_NATION_DATA["england"]) as HashMap<String, *>
 
         fun legend(nationType: NationType) =
                 data(nationType)["legend"] as String

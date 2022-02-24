@@ -47,7 +47,7 @@ import java.util.MissingResourceException;
 import java.util.function.Function;
 
 import static com.badlogic.gdx.math.MathUtils.random;
-import static com.shinkson47.SplashX6.utility.Assets.LANG;
+import static com.shinkson47.SplashX6.utility.Assets.INSTANCE;
 
 /**
  * <h1>General static utility methods</h1>
@@ -147,10 +147,10 @@ public final class Utility {
      * Creates and shows a fullscreen modal dialog on the specified stage
      */
     public static void notImplementedDialog(Stage stage) {
-        Dialog dialog = new Dialog("", Assets.SKIN, "dialog-modal");
+        Dialog dialog = new Dialog("", Assets.INSTANCE.getREF_SKIN_W95(), "dialog-modal");
 
         dialog.getTitleTable().reset();
-        Label label = new Label("OOPS!", Assets.SKIN, "title");
+        Label label = new Label("OOPS!", Assets.INSTANCE.getREF_SKIN_W95(), "title");
         label.setAlignment(Align.bottom);
         dialog.getTitleTable().add(label).expand();
 
@@ -165,7 +165,7 @@ public final class Utility {
             return key.substring(1);
 
         try {
-            return LANG.get(key);
+            return Assets.INSTANCE.getREF_LANG().get(key);
         } catch (MissingResourceException e) {
             warnDev(e.getMessage());
             return "???" + key + "???";

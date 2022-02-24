@@ -34,6 +34,7 @@
 
 package com.shinkson47.SplashX6.game.world
 
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet
@@ -43,12 +44,15 @@ import com.shinkson47.SplashX6.game.GameHypervisor.Companion.spawn
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.generation.stages.NavigationDataMiscStage
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Assets.hitTest
+import com.shinkson47.SplashX6.utility.Assets.TEX_HITTEST
+import com.shinkson47.SplashX6.utility.Assets.TILED_TILESETS
+import com.shinkson47.SplashX6.utility.Assets.TILED_TILESETS_DATA
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 import com.shinkson47.SplashX6.utility.Utility
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer
 import org.xguzm.pathfinding.grid.GridCell
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder
+import java.awt.image.BufferedImage
 import java.io.Serializable
 import java.util.function.Consumer
 import kotlin.math.floor
@@ -204,7 +208,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
             tileSets.removeTileSet(o)
         })
         // Copy all tilesets over to the map.
-        Assets.TILESETS.tileSets.forEach(Consumer { o: TiledMapTileSet? ->
+        Assets.get<TiledMap>(TILED_TILESETS).tileSets.forEach(Consumer { o: TiledMapTileSet? ->
             tileSets.addTileSet(o)
         })
     }
@@ -231,7 +235,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
      */
     private fun createCell(tileName: String, x: Int, y: Int, layer: TiledMapTileLayer) {
         val c = TiledMapTileLayer.Cell()
-        c.tile = tileSets.getTile(Assets.TILESET_MAP[tileName] as Int)
+        c.tile = tileSets.getTile(Assets.get<HashMap<String, Any>>(TILED_TILESETS_DATA)[tileName] as Int)
         layer.setCell(x, y, c)
     }
 
@@ -413,6 +417,8 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
         const val FOLIAGE_QUANTITY_MAX = 50000
 
         private var hittestResult = 0
+        private val hitTest = Assets.get<BufferedImage>(TEX_HITTEST)
+
         /**
          * <h2>(Badly) Converts WORLD SPACE co-ordinates to map space co-ordinates</h2>
          * Look, he's trying his best - alright?

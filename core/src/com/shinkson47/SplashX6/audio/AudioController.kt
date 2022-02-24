@@ -33,10 +33,10 @@
 package com.shinkson47.SplashX6.audio
 
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.utility.Assets.MUSIC_MAIN_MENU
-import com.shinkson47.SplashX6.utility.Assets.SFX_BUTTON
+import com.shinkson47.SplashX6.utility.Assets
 
 /**
  * # Controller for in-built audio and music.
@@ -51,6 +51,8 @@ object AudioController {
     //#region Fields
     // ==================================================
 
+    var SONGS: ArrayList<Music> = ArrayList()
+
     /**
      * ## The default volume levels
      */
@@ -60,6 +62,10 @@ object AudioController {
      * Volume for SFX.
      */
     var SFXVolume = DEFAULT_VOLUME
+        set(value) {
+            field = value
+            playButtonSound()
+        }
 
     var musicVolume = DEFAULT_VOLUME
         set(value) {
@@ -90,7 +96,7 @@ object AudioController {
      * <h2>Pointer to the music resource that we are currently playing.</h2>
      * Should never be null.
      */
-    var nowPlaying = MUSIC_MAIN_MENU
+    var nowPlaying = Assets.get<Music>(Assets.AUDIO_MUSIC_MENU)
         private set(value) {
             field = value
             assertVolume()
@@ -121,9 +127,9 @@ object AudioController {
      */
     @JvmStatic
     fun playMainMenu() {
-        if (nowPlaying == MUSIC_MAIN_MENU && nowPlaying.isPlaying)
+        if (nowPlaying == Assets.get<Music>(Assets.AUDIO_MUSIC_MENU) && nowPlaying.isPlaying)
             return
-        playOnLoop(MUSIC_MAIN_MENU)
+        playOnLoop(Assets.get(Assets.AUDIO_MUSIC_MENU))
     }
 
     /**
@@ -132,7 +138,7 @@ object AudioController {
      * @return the ID of the new clip. If muted, returns -1 with no effect.
      */
     fun playButtonSound(): Long = if (isMuted) -1
-    else SFX_BUTTON.play(SFXVolume)
+    else Assets.get<Sound>(Assets.AUDIO_SFX_BUTTON).play(SFXVolume)
 
     // ==================================================
     //#endregion misc

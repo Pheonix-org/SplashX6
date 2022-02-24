@@ -35,7 +35,7 @@ package com.shinkson47.SplashX6.rendering.windows.game
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 
 // TODO - Display the currently playing track title, UI modifications
 /**
@@ -46,7 +46,7 @@ class Music : StageWindow("Music") {
 
     init {
         span(add(
-                Label("You can also control spotify!", Assets.SKIN)
+                Label("You can also control spotify!", REF_SKIN_W95)
         ).fillX().center())
 
         hsep()

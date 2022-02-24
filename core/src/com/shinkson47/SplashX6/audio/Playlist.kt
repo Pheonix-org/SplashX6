@@ -100,9 +100,4 @@ class Playlist(initialSongs : ArrayList<Music>) : ArrayList<Music>(initialSongs)
         playingIndex = 0
         return currentSong
     }
-
-
-    companion object {
-        val DEFAULT_PLAYLIST = Playlist(Assets.SONGS)
-    }
 }

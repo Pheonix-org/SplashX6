@@ -45,6 +45,8 @@ import com.shinkson47.SplashX6.audio.Spotify.SpotifySourceType
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
+import com.shinkson47.SplashX6.utility.Assets.SPRITES_SPOTIFY_FAIL
 import com.shinkson47.SplashX6.utility.GraphicalConfig
 import com.shinkson47.SplashX6.utility.Utility
 import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlayingContext
@@ -82,10 +84,10 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
 
     init {
         // Init alise objects
-        typeSelectBox = SelectBox<SpotifySourceType>(Assets.SKIN)
-        contentSelectBox = SelectBox<String>(Assets.SKIN)
-        seekSlider = Slider(0f, 100f, 1f, false, Assets.SKIN)
-        volumeSlider = Slider(0f, 100f, 1f, false, Assets.SKIN)
+        typeSelectBox = SelectBox<SpotifySourceType>(REF_SKIN_W95)
+        contentSelectBox = SelectBox<String>(REF_SKIN_W95)
+        seekSlider = Slider(0f, 100f, 1f, false, REF_SKIN_W95)
+        volumeSlider = Slider(0f, 100f, 1f, false, REF_SKIN_W95)
         albumArt = Image()
         albumArt.setScaling(Scaling.fit)
 
@@ -246,7 +248,7 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
                     }
 
                     override fun downloadFailed(t: Throwable?) {
-                        albumArt.drawable = TextureRegionDrawable(Assets.spotifyFail)
+                        albumArt.drawable = TextureRegionDrawable(Assets.get<Texture>(SPRITES_SPOTIFY_FAIL))
                     }
                 })
 
@@ -382,7 +384,7 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
      */
     private fun fail(text : String){
         songLabel.setText(text)
-        albumArt.drawable = TextureRegionDrawable(Assets.spotifyFail)
+        albumArt.drawable = TextureRegionDrawable(Assets.get<Texture>(SPRITES_SPOTIFY_FAIL))
         pack()
     }
 

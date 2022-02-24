@@ -32,13 +32,16 @@
 
 package com.shinkson47.SplashX6.game.cities
 
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.world.WorldTerrain
-import com.shinkson47.SplashX6.utility.Assets.citySprites
+import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 import com.shinkson47.SplashX6.utility.TurnHook
 
@@ -159,7 +162,7 @@ class City(
      * using the [citySprites] atlas to create a new sprite.
      */
     private fun updateSprite() {
-        sprite = citySprites.createSprite(cachedSpriteName).apply {
+        sprite = Assets.get<TextureAtlas>(Assets.SPRITES_CITIES).createSprite(cachedSpriteName).apply {
             calcSpritePos().let { setPosition(it.x, it.y) }
         }
     }

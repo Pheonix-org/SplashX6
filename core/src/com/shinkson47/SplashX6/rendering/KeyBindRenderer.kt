@@ -34,10 +34,14 @@ package com.shinkson47.SplashX6.rendering
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.scenes.scene2d.Event
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.FocusListener
 import com.badlogic.gdx.utils.Align
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 
 /**
  * # A HUD renderer which displays some key bindings.
@@ -68,6 +72,7 @@ class KeyBindRenderer : VerticalGroup() {
         this.align(Align.left)
 
         addActor(optionalTable)
+        optionalTable.isVisible = false
         with (optionalTable) {
             add(this, "w", Input.Keys.W, "Move camera north")
             add(this, "a", Input.Keys.A, "Move camera west")
@@ -86,8 +91,21 @@ class KeyBindRenderer : VerticalGroup() {
             add(this, "c", Input.Keys.C, "Focus camera on selected unit")
             add(this, "x", Input.Keys.X, "Control selected unit")
             add(this, "tab", Input.Keys.TAB, "Toggle warroom view")
-            add(this, "ctrl", Input.Keys.CONTROL_LEFT, "Show more key bindings")
         }
+
+        addListener(object : FocusListener() {
+            override fun handle(event: Event?): Boolean {
+                if (event == null) return false;
+
+                (event as InputEvent).let{
+                    return when (event.type) {
+                        InputEvent.Type.enter -> { optionalTable.isVisible = true; true}
+                        InputEvent.Type.exit -> { optionalTable.isVisible = false; true }
+                        else -> { super.handle(event) }
+                    }
+                }
+            }
+        })
 
         pack()
         setPosition(20f, 50f)
@@ -112,7 +130,7 @@ class KeyBindRenderer : VerticalGroup() {
             entries.add(this)
         }
 
-        t.add(Label(string, SKIN, "white").apply { setAlignment(Align.left) })
+        t.add(Label(string, REF_SKIN_W95, "white").apply { setAlignment(Align.left) })
             .fill()
             .padBottom(10f)
 
@@ -135,9 +153,6 @@ class KeyBindRenderer : VerticalGroup() {
                 it.imageCell.setActor(it.up)
         }
 
-        optionalTable.isVisible = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT)
-
-
         super.drawChildren(batch, parentAlpha)
     }
 
@@ -157,12 +172,12 @@ class KeyBindRenderer : VerticalGroup() {
         /**
          * ## The texture shown when [key] is pressed.
          */
-        val down: Image = Image(Assets.keySprites.findRegion("${spriteName}_down"))
+        val down: Image = Image(Assets.get<TextureAtlas>(Assets.SPRITES_KEYS).findRegion("${spriteName}_down"))
 
         /**
          * ## The texture shown when [key] is not pressed.
          */
-        val up: Image = Image(Assets.keySprites.findRegion(spriteName))
+        val up: Image = Image(Assets.get<TextureAtlas>(Assets.SPRITES_KEYS).findRegion(spriteName))
 
         /**
          * ## The table cell into which the appropriate texture will be displayed.

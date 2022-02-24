@@ -33,18 +33,17 @@
 package com.shinkson47.SplashX6.rendering.windows.game
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.Action
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.RootNode
-import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import xmlwise.Plist
 
 class W_Help : StageWindow("!Help") {
 
     companion object {
         private var map : HashMap<String, Any> = Plist.fromXml(Gdx.files.internal("lang/helptext.plist").readString()) as HashMap<String, Any>
-        private val tree : Tree<RootNode, String> = Tree(SKIN)
+        private val tree : Tree<RootNode, String> = Tree(REF_SKIN_W95)
         private const val LANG = "en"
 
         fun reload() = readStruct()
@@ -88,7 +87,7 @@ class W_Help : StageWindow("!Help") {
     }
 
 
-    private val l : TextArea =  object : TextArea("Select something to display!", SKIN) {
+    private val l : TextArea =  object : TextArea("Select something to display!", REF_SKIN_W95) {
         override fun getPrefHeight(): Float {
             return lines * style.font.lineHeight
         }
@@ -98,8 +97,8 @@ class W_Help : StageWindow("!Help") {
     init {
         reload()
         l.isDisabled = true
-        val scrollPane = ScrollPane(l, SKIN)
-        val sp = SplitPane(ScrollPane(tree, SKIN), scrollPane, false, SKIN)
+        val scrollPane = ScrollPane(l, REF_SKIN_W95)
+        val sp = SplitPane(ScrollPane(tree, REF_SKIN_W95), scrollPane, false, REF_SKIN_W95)
         sp.splitAmount = 0.3f
         expandfill(
             add(sp)

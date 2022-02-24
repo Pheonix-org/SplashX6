@@ -81,7 +81,7 @@ class Client : Game() {
      * Skips and configures things which annoy us when we're debugging.
      */
     private fun debugStart() {
-        Assets.Create()
+        Assets.finishLoading()
         AudioController.isMuted = true
         setScreen(WorldCreation())              // Skip to world creation
         GraphicalConfig.exitFullscreen()        // Exit fullscreen so we can access the ide.

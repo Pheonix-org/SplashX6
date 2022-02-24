@@ -53,10 +53,10 @@ import com.shinkson47.SplashX6.utility.Assets
  */
 class UnitsWindow : StageWindow("Units"), Runnable {
 
-    private val waiting: List<Unit> = List(Assets.SKIN)
-    private val busy: List<Unit> = List(Assets.SKIN)
+    private val waiting: List<Unit> = List(Assets.REF_SKIN_W95)
+    private val busy: List<Unit> = List(Assets.REF_SKIN_W95)
 
-    private val actions: List<UnitAction> = List(Assets.SKIN)
+    private val actions: List<UnitAction> = List(Assets.REF_SKIN_W95)
 
     /**
      * A click listener for a list of units, that selects the unit clicked within the game engine.

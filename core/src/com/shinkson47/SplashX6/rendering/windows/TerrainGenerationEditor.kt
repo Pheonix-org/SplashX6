@@ -42,7 +42,7 @@ import com.auburn.fastnoiselite.FastNoiseLite
 import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion
 import com.shinkson47.SplashX6.game.world.generation.Generator
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.utility.Assets.SKIN_KENNEY
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_KENNEY
 import com.shinkson47.SplashX6.utility.Utility
 
 /**
@@ -53,9 +53,9 @@ import com.shinkson47.SplashX6.utility.Utility
  */
 class TerrainGenerationEditor : StageWindow("Terrain Generation Editor") {
 
-    val buildButton = TextButton("Regenerate", SKIN_KENNEY)
-    val autoRebuild = CheckBox("Auto re-build", SKIN_KENNEY)
-    val fastBuild = CheckBox("Skip some parts of the world", SKIN_KENNEY)
+    val buildButton = TextButton("Regenerate", REF_SKIN_KENNEY)
+    val autoRebuild = CheckBox("Auto re-build", REF_SKIN_KENNEY)
+    val fastBuild = CheckBox("Skip some parts of the world", REF_SKIN_KENNEY)
 
     init {
         addDropFor("noiseType", FastNoiseLite.NoiseType.values().asIterable(), FastNoiseLite.NoiseType.OpenSimplex2)
@@ -93,26 +93,26 @@ class TerrainGenerationEditor : StageWindow("Terrain Generation Editor") {
     }
 
     private fun addSliderFor(fieldName: String, min: Float, max: Float, step: Float, default : Float) {
-        val x = Slider(min, max, step, false, SKIN_KENNEY)
+        val x = Slider(min, max, step, false, REF_SKIN_KENNEY)
         x.setValue(default)
 
-        val display = Label(default.toString(), SKIN_KENNEY)
+        val display = Label(default.toString(), REF_SKIN_KENNEY)
         x.addListener(floatEditor(fieldName, display))
 
-        add(Label(fieldName, SKIN_KENNEY))
+        add(Label(fieldName, REF_SKIN_KENNEY))
         add(x)
         add(display).row()
     }
 
     private fun <T : Enum<*>> addDropFor(fieldName: String, Values : Iterable<T>, default : T) {
-        val x = SelectBox<T>(SKIN_KENNEY)
+        val x = SelectBox<T>(REF_SKIN_KENNEY)
         x.setItems(Utility.CollectionToGDXArray(Values))
         x.selected = default
 
-        val display = Label(default.toString(), SKIN_KENNEY)
+        val display = Label(default.toString(), REF_SKIN_KENNEY)
         x.addListener(enumEditor<T>(fieldName, display))
 
-        add(Label(fieldName, SKIN_KENNEY))
+        add(Label(fieldName, REF_SKIN_KENNEY))
         add(x)
         add(display).row()
     }

@@ -41,7 +41,7 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.*
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGHT
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
-import com.shinkson47.SplashX6.utility.Assets.unitSprites
+import com.shinkson47.SplashX6.utility.Assets.REF_SPRITES_UNITS
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 import org.xguzm.pathfinding.grid.GridCell
 
@@ -67,7 +67,7 @@ open class Unit(
      */
     var isoVec: Vector3
 
-    ) : Sprite(unitSprites.createSprite(unitClass.toString())), PartiallySerializable {
+    ) : Sprite(REF_SPRITES_UNITS.createSprite(unitClass.toString())), PartiallySerializable {
 
     constructor(unitClass: UnitClass, _x: Int, _y: Int) : this(unitClass, Vector3(_x.toFloat(), _y.toFloat(), 0f))
 
@@ -260,7 +260,7 @@ open class Unit(
     // =============================================
 
     final override fun deserialize() {
-        set(unitSprites.createSprite(unitClass.toString()))
+        set(REF_SPRITES_UNITS.createSprite(unitClass.toString()))
         setLocation(isoVec)
     }
 }

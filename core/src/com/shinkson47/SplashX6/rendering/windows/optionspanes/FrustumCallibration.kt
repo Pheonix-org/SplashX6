@@ -55,14 +55,14 @@ class FrustumCallibration : StageWindow("Culling frustum calabration") {
      * <h2>Constructs the content to be displayed in this window</h2>
      */
     init {
-        add(Label("For when the rendered world does not fit the screen.", Assets.SKIN)).row()
+        add(Label("For when the rendered world does not fit the screen.", Assets.REF_SKIN_W95)).row()
         hsep().padTop(50f)
         add(
             Label(
                 """
                 Use the slider to adjust until no void is visible at
                 edges of screen. Test zoomed out, and dragging around.
-                """.trimIndent(), Assets.SKIN
+                """.trimIndent(), Assets.REF_SKIN_W95
             )
         ).row()
         add(
@@ -70,12 +70,12 @@ class FrustumCallibration : StageWindow("Culling frustum calabration") {
                 """
                 DO NOT extend further than nesacerry, 
                 as this will greatly effect cpu usage.
-                """.trimIndent(), Assets.SKIN
+                """.trimIndent(), Assets.REF_SKIN_W95
             )
         ).pad(20f).row()
         hsep().padTop(50f)
-        val l = Label("", Assets.SKIN)
-        val slider = Slider(-2500f, 2500f, 0.1f, false, Assets.SKIN)
+        val l = Label("", Assets.REF_SKIN_W95)
+        val slider = Slider(-2500f, 2500f, 0.1f, false, Assets.REF_SKIN_W95)
         slider.addListener { event: Event? ->
             l.setText(slider.value.toString() + "")
             FRUSTUM_WIDTH_MOD = slider.value
@@ -86,8 +86,8 @@ class FrustumCallibration : StageWindow("Culling frustum calabration") {
         add(l).row()
         add(button("Done!") {
             run {
-                Assets.preferences.putFloat("frustumWidthMod", FRUSTUM_WIDTH_MOD)
-                Assets.preferences.flush();
+                Assets.REF_PREFERENCES.putFloat("frustumWidthMod", FRUSTUM_WIDTH_MOD)
+                Assets.REF_PREFERENCES.flush();
                 toggleAll()
             }
         }).padTop(20f)

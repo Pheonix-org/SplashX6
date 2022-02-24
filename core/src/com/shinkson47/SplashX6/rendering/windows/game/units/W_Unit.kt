@@ -57,7 +57,7 @@ class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
      * Starts as a list of [UnitAction] from [UnitActionDictionary],
      * and may be mutated based on state.
      */
-    private val actions: List<UnitAction> = List(Assets.SKIN)
+    private val actions: List<UnitAction> = List(Assets.REF_SKIN_W95)
 
     init {
         addButton("specific.windows.units.view", false, true) { GameHypervisor.unit_view() }

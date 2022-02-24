@@ -32,6 +32,8 @@
 
 package com.shinkson47.SplashX6.rendering
 
+import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
@@ -378,8 +380,7 @@ class Camera: PerspectiveCamera() {
         deltaZoom(1f);
         AssertInBounds();
 
-        FRUSTUM_WIDTH_MOD = Assets.preferences.getFloat("frustumWidthMod", -500f)
-        //resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        FRUSTUM_WIDTH_MOD = Assets.get<Preferences>(Assets.PREFERENCES).getFloat("frustumWidthMod", -500f)
     }
 
     // ============================================================

@@ -36,7 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.utils.Align
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.utility.Assets.SKIN
+import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.local
 import kotlin.reflect.KMutableProperty
@@ -123,7 +123,7 @@ abstract class TitledNode<V, A : Actor>(C: Any, fieldName: String, key: String, 
             .fill()
             .align(Align.left)
 
-        actor.addActor(Label(local(key), SKIN))
+        actor.addActor(Label(local(key), REF_SKIN_W95))
         actor.addActor(_actor)
     }
 }
@@ -137,7 +137,7 @@ abstract class TitledNode<V, A : Actor>(C: Any, fieldName: String, key: String, 
 /**
  * # A node containing a label whose soul purpose is holding child nodes.
  */
-class RootNode(key : String, vararg children : Tree.Node<*,*,*>) : Tree.Node<Tree.Node<*, *, *>, Tree.Node<*, *, *>, Actor>(Label(local(key), SKIN)) {
+class RootNode(key : String, vararg children : Tree.Node<*,*,*>) : Tree.Node<Tree.Node<*, *, *>, Tree.Node<*, *, *>, Actor>(Label(local(key), REF_SKIN_W95)) {
     init {
         children.forEach { add(it) }
     }
@@ -148,7 +148,7 @@ class RootNode(key : String, vararg children : Tree.Node<*,*,*>) : Tree.Node<Tre
  *
  * Defaults to field's value, and alters it upon change using a [Stagewindow#LambdaChangeListener]
  */
-class CheckboxNode(C: Any, fieldName: String, key: String) : ReflectionNode<Boolean, CheckBox>(C, fieldName, CheckBox(local(key), SKIN)) {
+class CheckboxNode(C: Any, fieldName: String, key: String) : ReflectionNode<Boolean, CheckBox>(C, fieldName, CheckBox(local(key), REF_SKIN_W95)) {
     init {
         actor.isChecked = value()
 
@@ -168,7 +168,7 @@ class CheckboxNode(C: Any, fieldName: String, key: String) : ReflectionNode<Bool
  *
  * Throws [ClassCastException] on initalization if [Float] cannot be cast to [V].
  */
-class SliderNode<V : Number>(C : Any, fieldName: String, key : String, min : Float = 0f, max : Float = 100f, step : Float = 1f) : TitledNode<V, Slider>(C, fieldName, key, Slider(min, max, step, false, SKIN)) {
+class SliderNode<V : Number>(C : Any, fieldName: String, key : String, min : Float = 0f, max : Float = 100f, step : Float = 1f) : TitledNode<V, Slider>(C, fieldName, key, Slider(min, max, step, false, REF_SKIN_W95)) {
     init {
         // Evaluate V's ability to cast. Will throw exception if it's not a valid argument.
         try {
@@ -192,7 +192,7 @@ class SliderNode<V : Number>(C : Any, fieldName: String, key : String, min : Flo
  *
  * Displays [values] as items, and changes the field to the selected value.
  */
-class SelectNode<V>(C: Any, fieldName: String, key: String, vararg values : V) : TitledNode<V, SelectBox<V>>(C, fieldName, key, SelectBox<V>(SKIN)) {
+class SelectNode<V>(C: Any, fieldName: String, key: String, vararg values : V) : TitledNode<V, SelectBox<V>>(C, fieldName, key, SelectBox<V>(REF_SKIN_W95)) {
     init {
         _actor.items = com.badlogic.gdx.utils.Array(values)
         _actor.selected = value
@@ -203,7 +203,7 @@ class SelectNode<V>(C: Any, fieldName: String, key: String, vararg values : V) :
 /**
  * # A node with a button that executes a [Runnable] when clicked.
  */
-class ScriptNode(key: String, payload : Runnable) : Tree.Node<Tree.Node<*, *, *>, Runnable, TextButton>(TextButton(local(key), SKIN)) {
+class ScriptNode(key: String, payload : Runnable) : Tree.Node<Tree.Node<*, *, *>, Runnable, TextButton>(TextButton(local(key), REF_SKIN_W95)) {
     init {
         actor.addListener(StageWindow.LambdaClickListener {payload.run()})
     }

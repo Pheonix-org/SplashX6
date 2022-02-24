@@ -64,6 +64,7 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.WARN
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
+import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Debug
 import com.shinkson47.SplashX6.utility.TurnHook
 import com.shinkson47.SplashX6.utility.Utility
@@ -208,7 +209,7 @@ class GameHypervisor {
 
             if (!DEBUG_MODE) Spotify.pause()      // If possible, stop spotify.
 
-            AudioController.playPlaylist(Playlist.DEFAULT_PLAYLIST)
+            AudioController.playPlaylist(Assets.DEFAULT_PLAYLIST)
             switchToGameScreen()
 
             if (Server.alive)

@@ -32,10 +32,12 @@
 
 package com.shinkson47.SplashX6.game.world;
 
+import com.shinkson47.SplashX6.utility.Assets;
+
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Map;
 
-import static com.shinkson47.SplashX6.utility.Assets.TILESET_MAP;
 
 /**
  * <h1>Pre GDX tile data.</h1>
@@ -81,7 +83,7 @@ public class Tile implements Serializable {
         String[] tileNames = TileName.substring(TileName.indexOf(".") + 1).split("_");
 
         if (tileNames.length == 1)                              // only one section in name?
-            if (TILESET_MAP.get(TileName) != null)              // If exists in map,
+            if (Assets.INSTANCE.<Map<String, ?>>get(Assets.TILED_TILESETS_DATA).get(TileName) != null)              // If exists in map,
                init(TileName);                                  // create as single name
             else {                                              // create multi sector from a single segment
                 tileNames = new String[4];
