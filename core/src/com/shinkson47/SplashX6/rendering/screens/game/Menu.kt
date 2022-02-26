@@ -157,7 +157,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
         )
 
         addMenuItem(
-            this, "specific.menubar.warroom", { GameHypervisor.cm_toggle() },
+            this, "specific.menubar.warroom", NOTHING,
             MenuSubItem("generic.game.settlements") { W_Settlements() },
             MenuSubItem("generic.game.units") { W_UnitsList() },
             MenuSubItem("specific.windows.units.view") { GameHypervisor.unit_view() },
