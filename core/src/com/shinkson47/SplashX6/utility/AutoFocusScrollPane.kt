@@ -46,6 +46,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
  */
 class AutoFocusScrollPane(it : Actor) : ScrollPane(it, Assets.REF_SKIN_W95) {
     init {
+        fadeScrollBars = false
         addListener(object : InputListener() {
             override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
                 stage.scrollFocus = this@AutoFocusScrollPane
