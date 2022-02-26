@@ -33,11 +33,19 @@
 package com.shinkson47.SplashX6.rendering.windows.game
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.FocusListener
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.RootNode
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import xmlwise.Plist
+import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.InputEvent
+
+import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
+
 
 class W_Help : StageWindow("!Help") {
 
@@ -97,7 +105,7 @@ class W_Help : StageWindow("!Help") {
     init {
         reload()
         l.isDisabled = true
-        val scrollPane = ScrollPane(l, REF_SKIN_W95)
+        val scrollPane = AutoFocusScrollPane(l)
         val sp = SplitPane(ScrollPane(tree, REF_SKIN_W95), scrollPane, false, REF_SKIN_W95)
         sp.splitAmount = 0.3f
         expandfill(
