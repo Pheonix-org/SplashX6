@@ -131,8 +131,8 @@ class Client : Game() {
 
     override fun setScreen(screen: Screen?) {
         screen?.let {
-            super.setScreen(it)
             currentScreen = it
+            super.setScreen(it)
         }
     }
 

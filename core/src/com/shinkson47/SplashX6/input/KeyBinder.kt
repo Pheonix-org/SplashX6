@@ -8,6 +8,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor.Companion.EndGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_exit
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_toggle
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.turn_end
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.screens.Warroom
@@ -107,7 +108,7 @@ object KeyBinder : InputAdapter() {
             }
 
             bind(this, Input.Keys.E) { turn_end() }
-            bind(this, Input.Keys.TAB) { cm_enter() }
+            bind(this, Input.Keys.TAB) { cm_toggle() }
 
             bind(this, Input.Keys.SHIFT_LEFT,
                 Release = { GameHypervisor.gameRenderer?.cam!!.boost(false) },
@@ -121,7 +122,7 @@ object KeyBinder : InputAdapter() {
 
         with (Warroom::class.java) {
             bind(this, Input.Keys.E) { turn_end() }
-            bind(this, Input.Keys.TAB) { cm_exit() }
+            bind(this, Input.Keys.TAB) { cm_toggle() }
         }
 
 
