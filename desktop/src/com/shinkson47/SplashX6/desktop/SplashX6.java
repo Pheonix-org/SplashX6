@@ -116,7 +116,7 @@ public class SplashX6 {
 		// DO NOT COMMIT.
 		// ===========================
 		// Press F11, toggle in preferences, or use debug mode to disable fullscreen.
-		config.fullscreen = false;
+		config.fullscreen = true;
 		Client.CI_CD_FS = config.fullscreen;
 
 		// Add window icon. Note: Dock icon is set within the client's startup routine.
