@@ -33,14 +33,20 @@
 package com.shinkson47.SplashX6.rendering.windows
 
 import com.badlogic.gdx.scenes.scene2d.Actor
+import com.badlogic.gdx.scenes.scene2d.Event
+import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.local
+import java.awt.event.FocusListener
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.full.declaredMembers
+import java.awt.event.MouseEvent
+
 
 /**
  * When added to a variable, [ReflectionNode] will
@@ -140,6 +146,9 @@ abstract class TitledNode<V, A : Actor>(C: Any, fieldName: String, key: String, 
 class RootNode(key : String, vararg children : Tree.Node<*,*,*>) : Tree.Node<Tree.Node<*, *, *>, Tree.Node<*, *, *>, Actor>(Label(local(key), REF_SKIN_W95)) {
     init {
         children.forEach { add(it) }
+//        super.getChildren().sort(Comparator { o1: Tree.Node<*,*,*>, o2: Tree.Node<*,*,*> ->
+//            o1.name.compareTo(o2.name)
+//        })
     }
 }
 
@@ -206,6 +215,15 @@ class SelectNode<V>(C: Any, fieldName: String, key: String, vararg values : V) :
 class ScriptNode(key: String, payload : Runnable) : Tree.Node<Tree.Node<*, *, *>, Runnable, TextButton>(TextButton(local(key), REF_SKIN_W95)) {
     init {
         actor.addListener(StageWindow.LambdaClickListener {payload.run()})
+    }
+}
+
+class DoubleClickTreeListener(val tree: Tree<*,*>) : com.badlogic.gdx.scenes.scene2d.utils.FocusListener() {
+    override fun handle(event: Event?): Boolean {
+        return if (event is InputEvent && event.type == InputEvent.Type.touchDown) {
+            tree.overNode?.apply { isExpanded = !isExpanded }
+            true
+        } else false
     }
 }
 

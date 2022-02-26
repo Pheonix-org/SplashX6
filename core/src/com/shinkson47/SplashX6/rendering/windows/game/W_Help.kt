@@ -44,6 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 
 import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.shinkson47.SplashX6.rendering.windows.DoubleClickTreeListener
 import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
 
 
@@ -113,6 +114,9 @@ class W_Help : StageWindow("!Help") {
                 .minHeight(300f)
                 .minWidth(800f)
         )
+
+        tree.addListener(DoubleClickTreeListener(tree))
+
 
         pack()
         tree.addListener( LambdaChangeListener {

@@ -7,30 +7,31 @@
 		<key>A. Basics</key>
 		<dict>
 			<key>A. Welcome</key>
-			<string>Welcome to splash X6! 
+			<string>Welcome to splash X6!
+A FOSS turn-based 4X strategy game!
 
 Your adventure in this world is just beginning.
 As you play, you&apos;ll learn to produce and control an army of units to use at your disposal.
 
 Use them to defend, attack and explore as you build your civilisation and research.</string>
 			<key>B. Getting started</key>
-			<string>Your game starts with a single settler.
+			<string>This is a brief summary which walks you through the beginnings of a new game.
+More detail on all of these features and systems can be found in their respective help entries.
 
-This unit has the power to create home to life in your civilisation.
+Your game starts with a single settler, with the power to create home to life in your civilisation. Since he is your only unit at the start, he is already selected. Allowing you to start using him
+right away.
 
-Since he is your only unit at the start, he is selected by default. This allows you to start using him right away.
+Press &apos;space&apos; to start selecting a destination. Move the camera to point find a destination, and &apos;space&apos; again to lock in the decision.
 
-Press &apos;space&apos; to start selecting a destination, and &apos;space&apos; again to lock in that destination.
+Now, when you end your turn, the settler will move towards his destination.
 
-Press &apos;e&apos; to end your turn, and a few turns later the unit will arive.
-
-Pressing &apos;x&apos; will open up more controls for the unit. Change his action from &apos;travel&apos; to &apos;settle&apos;.
+When you arrive, &apos;x&apos; will open up more controls for the unit. Change his action from &apos;travel&apos; to &apos;settle&apos;.
 
 Now, when you end your turn once more he will create a new city!
 
-You&apos;ll note that by doing so, that settler is now spent, and despawns. Worry not, as your new found settlement can help!
+You&apos;ll note that by doing so, that settler is now spent, and de-spawns. Worry not, as your new found settlement can help!
 
-Under the warroom menu, select &apos;settlements&apos; to open the settlements window. This window gives you access and control over your settlements, and thier production.
+Open the &apos;manage&apos; menu and select &apos;settlements&apos;. This opens a window which gives you access and control over your settlements, and their production.
 
 On the left, select a settler, and click &apos;add&apos; to add him to the production queue. The window will tell you exactly how many turns it will take in order to produce him.
 
@@ -116,7 +117,7 @@ Click an option in the menu or the menu button again to hide the drop-down.</str
 		<key>B. Sytems</key>
 		<dict>
 			<key>A. Unit Management</key>
-			<string>Under the warroom tab in the menu, you&apos;ll find all the tool you need to manage your units.
+			<string>In the menu, under &apos;manage&apos; > &apos;units&apos;, you&apos;ll find all the tool you need to manage your units.
 
 The &apos;Units&apos; window gives you a quick overview of your entire fleet. Double clicking a unit in this list will open another window providing control over that unit.
 
@@ -124,7 +125,24 @@ Certain units will have some actions that others do not, primarily at present th
 
 Units may also be disbanded from here, but note that the window controlling a unit does not close after the unit no longer exists.</string>
 			<key>B. Production</key>
-			<string></string>
+			<string>The production of new units (and in the future, buildings n&apos; stuff) is the most crutial to building your empire.
+
+When you have at least one settlement, in the menu, open &apos;manage&apos; > &apos;settlements&apos;
+
+At the top, you&apos;ll see a list of your settlements. Select the one you wish to use to make your new unit.
+
+Directly below, you can see the quantity of &apos;Production Power&apos; that the city is producing, that it can put towards developing things. This determines how long it takes to develop your new unit.
+
+On the left it a list of all available units (Ignore &apos;_BASE&apos;. It needs to not be shown.). Select one to see how much production power is required to produce it, alongside an estimate of the number of turns it will take in order to complete production of the unit.
+
+Click &apos;add&apos; to add that selected unit to the queue. The queue contains units that are waiting to be produced.
+
+Every turn, the city will apply it&apos;s production power towards the first unit in the queue.
+
+Once the unit has been produced, it will appear on the city that produced it.
+
+That unit may now be selected from &apos;manage&apos; > &apos;units&apos;, and controlled.
+			</string>
 		</dict>
 	</dict>
 </dict>

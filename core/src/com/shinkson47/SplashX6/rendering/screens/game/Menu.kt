@@ -158,11 +158,11 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
         )
 
         addMenuItem(
-            this, "generic.game.units", NOTHING,
-            MenuSubItem("!War room view") { cm_toggle() },
+            this, "!Manage", NOTHING,
+            //MenuSubItem("!War room view") { cm_toggle() },
             MenuSubItem("generic.game.settlements") { W_Settlements() },
-            MenuSubItem("!View all units") { W_UnitsList() },
-            MenuSubItem("!") { W_Settlements() },
+            MenuSubItem("generic.game.units") { W_UnitsList() },
+            //MenuSubItem("!") { W_Settlements() },
 //            MenuSubItem("specific.windows.units.view") { GameHypervisor.unit_view() },
 //            MenuSubItem("specific.windows.units.viewDestination") { GameHypervisor.unit_viewDestination() },
 //            MenuSubItem("specific.windows.units.setDestination") { GameHypervisor.unit_setDestination() },
