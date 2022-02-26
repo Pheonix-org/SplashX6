@@ -33,19 +33,16 @@
 package com.shinkson47.SplashX6.rendering.screens
 
 import com.badlogic.gdx.ScreenAdapter
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_isSelectingDestination
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.rendering.Camera
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.utility.lerpDesire
-import org.xguzm.pathfinding.grid.GridCell
 
 /**
  * # Child to [GameScreen] which is used to show an orthograpghic overview of the game.

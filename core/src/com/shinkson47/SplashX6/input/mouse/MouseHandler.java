@@ -94,9 +94,10 @@ public class MouseHandler {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE))
             DragLogistics.MIDDLE.down();
 
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && GameHypervisor.getCm_active())
-                GameHypervisor.cm_destinationSelect();
-
+        if (GameHypervisor.getCm_active()) {
+            if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
+                GameHypervisor.unit_setDestination();
+        }
 
         // If down, then update camera's target with the mouse's movement
         if (DragLogistics.RIGHT.isDown())
