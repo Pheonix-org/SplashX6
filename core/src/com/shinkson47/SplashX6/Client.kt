@@ -126,6 +126,7 @@ class Client : Game() {
         //World.dispose()
         //AudioManager.dispose();
         Debug.dispose()
+        Assets.dispose()
     }
 
     override fun setScreen(screen: Screen?) {

@@ -51,6 +51,7 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.I18NBundle
 import com.shinkson47.SplashX6.audio.AudioController.SONGS
 import com.shinkson47.SplashX6.audio.Playlist
+import com.shinkson47.SplashX6.game.AdvancementTree
 import xmlwise.Plist
 import java.awt.image.BufferedImage
 import java.util.*
@@ -194,6 +195,11 @@ internal object Assets : AssetManager() {
      * - which sprites used to represent the cities
      */
     const val DATA_NATION = "$DIR_DATA${SEP}nationdata$PLIST"
+
+    /**
+     * [PLIST] containing information about the tech tree.
+     */
+    const val DATA_TECHS = "$DIR_DATA${SEP}techs$PLIST"
 
 
     // endregion Data
@@ -482,9 +488,17 @@ internal object Assets : AssetManager() {
      *
      * References to some of commonly ued the assets are provided above, prefaced with
      * 'REF_', for ease of use.
+     *
+     * TODO write document the map of files to types to make adding stuff easier.
      */
     private fun queueAssetsForLoad() {
+        // Misc
         load(PREFERENCES, Preferences::class.java)
+
+        load(DATA_TECHS, Map::class.java)
+        afterLoad {
+            val x = AdvancementTree(get(DATA_TECHS))
+        }
 
         // Textures
         load(SPRITES_UNITS, TextureAtlas::class.java)
@@ -595,6 +609,8 @@ internal object Assets : AssetManager() {
 
     /**
      * Creates a [Map] from a [Plist] xml document.
+     *
+     * > N.B : The root element of a plist ***MUST*** be a dictionary, not an array.
      */
     private class PlistLoader : X6Loader<Map<*, *>>() {
         override fun load(assetManager: AssetManager?, fileName: String?, file: FileHandle?, parameter: AssetLoaderParameters<Map<*, *>>?): Map<*, *> =

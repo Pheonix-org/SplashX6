@@ -50,6 +50,7 @@ import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.renderers.TechTreeRenderer
 import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.rendering.windows.game.Music
@@ -64,7 +65,7 @@ import com.shinkson47.SplashX6.utility.Utility.*
 /**
  * # The menu bar used in-game to access tools, windows and more.
  */
-class Menu(val _parent : GameScreen) : Table(REF_SKIN_W95) {
+class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
 
     val chooser = FileChooser.createSaveDialog("Choose save location", REF_SKIN_W95, Gdx.files.external("/"))
     // TODO raise drop down to top
@@ -126,9 +127,12 @@ class Menu(val _parent : GameScreen) : Table(REF_SKIN_W95) {
                 MenuSubItem("generic.game.end")         { EndGame() }
         )
 
-        addMenuItem(this, "!Help", WindowAction(W_Help()))
+        addMenuItem(this, "!Help", WindowAction(W_Help()),
+            MenuSubItem("!Toggle Key Binding HUD.") { GameHypervisor.gameRenderer!!.kbr.apply { isVisible = !isVisible }}
+        )
 
         addMenuItem(this, "!Debug", WindowAction(DebugWindow()),
+                MenuSubItem("!Tech Test", WindowAction(TechTreeRenderer())),
                 MenuSubItem("!Defog All") { GameData.world!!.removeFogOfWar() },
                 MenuSubItem("!Hard reset server") { Server.shutdown(); Server.boot() },
                 MenuSubItem("!Reload Help Text") { W_Help.reload() },

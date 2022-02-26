@@ -48,7 +48,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.maps.MapRenderer
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
@@ -57,8 +56,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.Camera
-import com.shinkson47.SplashX6.rendering.KeyBindRenderer
-import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.rendering.renderers.KeyBindRenderer
 import com.shinkson47.SplashX6.utility.Debug
 import org.xguzm.pathfinding.grid.GridCell
 import java.util.function.Consumer
@@ -90,6 +88,8 @@ class GameScreen : ScalingScreenAdapter() {
      * <h2>A renderer used to draw primative shapes</h2>
      */
     val sr: ShapeRenderer
+
+    val kbr = KeyBindRenderer()
 
     /**
      * <h2>A font used for direct screen drawing</h2>
@@ -140,7 +140,7 @@ class GameScreen : ScalingScreenAdapter() {
         with (stage) {
             addActor(Menu(this@GameScreen))
             addActor(StageWindow.getWINDOW_DOCK())
-            addActor(KeyBindRenderer())
+            addActor(kbr)
         }
     }
     //========================================================================

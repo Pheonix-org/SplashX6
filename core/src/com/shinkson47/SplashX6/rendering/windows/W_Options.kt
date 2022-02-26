@@ -35,6 +35,7 @@ package com.shinkson47.SplashX6.rendering.windows
 import com.badlogic.gdx.Graphics
 import com.badlogic.gdx.scenes.scene2d.ui.Tree
 import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.optionspanes.LanguageSelectionListener
