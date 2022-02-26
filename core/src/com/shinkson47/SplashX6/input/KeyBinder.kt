@@ -166,6 +166,7 @@ object KeyBinder : InputAdapter() {
             bind(this, Input.Keys.S, true) { GameHypervisor.gameRenderer!!.managementScreen.down() }
             bind(this, Input.Keys.D, true) { GameHypervisor.gameRenderer!!.managementScreen.right() }
             bind(this, Input.Keys.A, true) { GameHypervisor.gameRenderer!!.managementScreen.left() }
+            bind(this, Input.Keys.C, false) { GameHypervisor.unit_view() }
         }
 
 
