@@ -43,6 +43,7 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.EndGame
+import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_toggle
 import com.shinkson47.SplashX6.game.cities.Production
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.network.NetworkClient
@@ -157,13 +158,15 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
         )
 
         addMenuItem(
-            this, "specific.menubar.warroom", NOTHING,
+            this, "generic.game.units", NOTHING,
+            MenuSubItem("!War room view") { cm_toggle() },
             MenuSubItem("generic.game.settlements") { W_Settlements() },
-            MenuSubItem("generic.game.units") { W_UnitsList() },
-            MenuSubItem("specific.windows.units.view") { GameHypervisor.unit_view() },
-            MenuSubItem("specific.windows.units.viewDestination") { GameHypervisor.unit_viewDestination() },
-            MenuSubItem("specific.windows.units.setDestination") { GameHypervisor.unit_setDestination() },
-            MenuSubItem("specific.windows.units.disband") { GameHypervisor.unit_disband() },
+            MenuSubItem("!View all units") { W_UnitsList() },
+            MenuSubItem("!") { W_Settlements() },
+//            MenuSubItem("specific.windows.units.view") { GameHypervisor.unit_view() },
+//            MenuSubItem("specific.windows.units.viewDestination") { GameHypervisor.unit_viewDestination() },
+//            MenuSubItem("specific.windows.units.setDestination") { GameHypervisor.unit_setDestination() },
+//            MenuSubItem("specific.windows.units.disband") { GameHypervisor.unit_disband() },
         )
 
         addMenuItem(this, "generic.game.endTurn", { GameHypervisor.turn_end() })
