@@ -88,10 +88,48 @@ class AdvancementTree(data : HashMap<String, *>) : ArrayList<Advancement>() {
 }
 
 
-
 class Advancement(
     val name : String = "root",
     val parent : Advancement? = null,
     val requires : Array<Advancement> = Array(),
     val complete : Boolean = false
-)
+) {
+    companion object {
+        /**
+         * Determines if [a] is in the dependency tree of [that].
+         * @return true if it is, else false.
+         */
+        fun dependancyFor(a: Advancement, that: Advancement): Boolean {
+            if (that.requires.isEmpty) return false
+            if (that.requires.contains(a)) return true
+
+            var found = false
+            that.requires.forEach {
+                if (dependancyFor(a, it)) {
+                    found = true
+                    return@forEach
+                }
+            }
+            return found
+        }
+
+        /**
+         * Determines the number of advancements in the largest chain of dependencies.
+         *
+         * @param level The current level of depth. Used in the recursion. Starts at 0.
+         * @param i the advancement to process.
+         * @return In the tree of requirements, the length of the longest chain.
+         */
+        fun depth(i: Advancement, level: Int = 0): Int {
+            return if (i.requires.isEmpty)
+                level
+            else {
+                var depth = level
+                i.requires.forEach {
+                    depth = depth(it, level + 1).coerceAtLeast(depth)
+                }
+                depth
+            }
+        }
+    }
+}

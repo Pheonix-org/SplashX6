@@ -642,7 +642,7 @@ class GameHypervisor {
             //cm_showStateCaps(true)
             cm_active = true
             client!!.fadeScreen(gameRenderer!!.managementScreen)
-
+            cm_cancelDestinationSelect()
             return true
         }
 

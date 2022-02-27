@@ -29,218 +29,250 @@
  ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.rendering.renderers
+package com.shinkson47.SplashX6.rendering.windows.game
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
-import com.badlogic.gdx.scenes.scene2d.utils.FocusListener
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.Advancement
+import com.shinkson47.SplashX6.game.Advancement.Companion.dependancyFor
+import com.shinkson47.SplashX6.game.Advancement.Companion.depth
 import com.shinkson47.SplashX6.game.AdvancementTree
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.windows.DoubleClickTreeListener
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.DATA_TECHS
 import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
 
 /**
- * # TODO
+ * # Window for viewing and selecting advancements.
+ * this may be used for various kinds of tech trees.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 24/02/2022
- * @since v1
+ * @since PRE-ALPHA 0.0.2
  * @version 1
+ * @param advancementTree The advancement tree to be displayed.
+ * @param titleKey Localised text to be displayed in the title.
  */
-class TechTreeRenderer : StageWindow("!Techs") {
+abstract class W_Advancement(val advancementTree : AdvancementTree = Assets.get(DATA_TECHS), titleKey: String) : StageWindow(titleKey) {
 
     companion object {
-        val at = AdvancementTree(Assets.get(DATA_TECHS))
-        val highlightStyle = Label.LabelStyle(Label("", Assets.REF_SKIN_W95).style)
-        val regstyle = Label.LabelStyle(Label("", Assets.REF_SKIN_W95).style)
-
-
-        init {
-            highlightStyle.background = Assets.REF_SKIN_W95.getDrawable("Windows_Tooltip")
+        /**
+         * ## [Label.style] used to show selected and required advancements.
+         */
+        val highlightStyle = Label.LabelStyle(Label("", Assets.REF_SKIN_W95).style).apply {
+            background = Assets.REF_SKIN_W95.getDrawable("Windows_Tooltip")
         }
 
+        /**
+         * ## Regular label style used to clear a [Label] whose [Label.style] is [highlightStyle]
+         */
+        val regularStyle = Label.LabelStyle(Label("", Assets.REF_SKIN_W95).style)
     }
 
+    /**
+     * # The table used to contain all columns of the advancement trees.
+     */
+    val mainTable = Table()
 
-    val t = Table()
-    val sp = AutoFocusScrollPane(t)
+    /**
+     * # The scroll pane that contains [mainTable], allowing it to be scrolled.
+     */
+    val scrollPane = AutoFocusScrollPane(mainTable)
+
+    /**
+     * ## An array of all of the labels contained within the [mainTable], for easy reference and query.
+     */
     val allLabels = Array<Label>()
 
-//
-//    init {
-//        Tree<RootNode, Advancement>(Assets.REF_SKIN_W95).let { tree ->
-//            .apply {
-//                filter { it.requires.isEmpty }.forEach {
-//                    tree.add(recurse(this@apply, it, RootNode("!" + it.name)))
-//                }
-//            }
-//
-//            add(tree)
-//        }
-//    }
-//
-//    private fun recurse(at: AdvancementTree, root: Advancement, currentNode: RootNode): RootNode {
-//        at.filter { it.requires.contains(root) }.forEach {
-//                currentNode.add(
-//                   recurse(at, it, RootNode("!" + it.name))
-//                )
-//        }
-//
-//        return currentNode
-//    }
+    /**
+     * # The advancement that the user has clicked on.
+     */
+    lateinit var selected: Pair<Advancement, Label>
+        private set
 
+    /**
+     * # The vector pairs representing the lines to be drawn between requirements.
+     * May be empty if no item is selected.
+     *
+     * Contains [Pair]s of [Vector2], representing the x,y of both ends of the line.
+     *
+     * Order of the vectors in a pair does not matter.
+     */
+    private val dependencyLineVectors = Array<Pair<Vector2, Vector2>>()
 
     init {
-        debugAll()
-//        recurse(at.filter { it.requires.isEmpty })
-        add(sp)
-            .maxWidth(stage.height)
-            .maxWidth(stage.width - 10)
+        add(scrollPane)
+            .maxWidth(stage.width - 10) // -10 to account for window borders.
+            .padTop(10f)
+            .padBottom(10f)
 
-
-
-        val depths = HashMap<Advancement, Int>()
-        at.forEach {
-            depths[it] = depth(0, it)
-        }
-
-        var x = 0
-        while (true) {
-            val vg = VerticalGroup().apply { space(50f); align(Align.center) }
-
-            depths.keys.forEach {
-                if (depths[it] == x)
-                    vg.addActor(
-                        Label(it.name, Assets.REF_SKIN_W95).also {
-                            allLabels.add(it)
-                            it.addListener(
-                                object : ClickListener() {
-                                    override fun clicked(event: InputEvent?, x: Float, y: Float) {
-                                        if (event == null) return
-                                        onSelect(it)
-                                    }
-                                }
-                            )
-                        }
-                    )
-            }
-
-            if (vg.children.isEmpty)
-                break
-            else {
-                vg.debugAll()
-                t.add(vg).pad(50f).fill()
-                x++
-            }
-        }
+        populateTable()
 
         pack()
+        height += 20f
+        centerStage()
+        isMovable = false
     }
 
-    private lateinit var selected: Pair<Advancement, Label>
+    /**
+     * # Populates the table with columns of labels
+     * according to [advancementTree]
+     */
+    private fun populateTable() {
+
+        // Evaluate the longest number of chained requirements for each
+        // advancement, and cache it.
+        // This number of requirements determines what column the item
+        // will end up in.
+        val depths = HashMap<Advancement, Int>()
+        advancementTree.forEach {
+            depths[it] = depth(it)
+        }
+
+        var index = 0
+        while (true) {
+            // Create a column for every level in the tree.
+            val table = Table().apply { align(Align.center) }
+
+            // Find all advancements in the current col
+            depths.keys.filter { depths[it] == index }.forEach {
+                // then add a label for them.
+                table.add(
+                    Label(it.name, Assets.REF_SKIN_W95).also {
+                        allLabels.add(it)
+                        it.addListener(
+                            object : ClickListener() {
+                                override fun clicked(event: InputEvent?, x: Float, y: Float) {
+                                    if (event == null) return
+                                    onSelect(it)
+                                }
+                            }
+                        )
+                    }
+                )
+                    .padBottom(25f)
+                    .padTop(25f)
+                    .expandX()
+                    .fillX()
+                    .row()
+            }
+
+            // If there were no children in this column, then stop.
+            // Otherwise add columns and move to next.
+            if (table.children.isEmpty)
+                break
+            else {
+                mainTable.add(table).pad(50f)
+                index++
+            }
+        }
+    }
+
+    /**
+     * # Events performed when the user selects an advancement.
+     * Updates [selected] with the selected value, highlights both [a]
+     * and [a]'s requirements, then calculates and caches the vectors used to
+     * draw lines between the requirements.
+     *
+     * @param a The label that the user has selected.
+     * @see highlightRequirements
+     * @see calcAndCacheDependencyVecs
+     */
     private fun onSelect(a: Label) {
-        selected = Pair(at.getA(a.text.toString())!!, a)
+        selected = Pair(advancementTree.getA(a.text.toString())!!, a)
         highlightRequirements()
-        cacheVecs()
+        calcAndCacheDependencyVecs()
     }
 
-    val vecs = Array<Pair<Vector2, Vector2>>()
-    private fun cacheVecs() {
-        vecs.clear()
-        at.traverseDependancies(selected.first) { requiredBy, currentAdvancement ->
+    /**
+     * # Calculates the lines to be drawn between the selected advancement and it's dependencies
+     * and caches the results in [dependencyLineVectors], where they will be drawn on every frame.
+     *
+     * Traverses the dependency tree for [selected], and finds the labels for each dependency.
+     * Between any given [Advancement] and another which requires it is a line. The left of the line
+     * is determined by the right center side of the label of the requirement, and the right of the
+     * line by the left center side of the label of the dependant.
+     */
+    private fun calcAndCacheDependencyVecs() {
+        dependencyLineVectors.clear()
+        advancementTree.traverseDependancies(selected.first) { requiredBy, currentAdvancement ->
             if (requiredBy != null) {
-                vecs.add(
-
-
+                dependencyLineVectors.add(
                     Pair(
-                        screenspaceOf(labelFor(requiredBy), Align.left)!!.apply { Vector2(this.x, this.y) },
-                        screenspaceOf(labelFor(currentAdvancement), Align.right)!!.apply { Vector2(this.x, this.y) }
+                        screenspaceOf(labelFor(requiredBy), Align.left)!!,
+                        screenspaceOf(labelFor(currentAdvancement), Align.right)!!
                     )
                 )
             }
         }
     }
 
+    /**
+     * # Checks [allLabels] to see if they are a dependancy for [selected], and highlights the [Label]s with [highlightStyle] if they are.
+     */
     private fun highlightRequirements() {
         allLabels.forEach {
-                each ->
-            each.style = if (dependancyFor(at.getA(each.text.toString())!!, at.getA(selected.second.text.toString())!!))
-                highlightStyle else regstyle
+            it.style =
+                if (dependancyFor(advancementTree.getA(it.text.toString())!!, advancementTree.getA(selected.second.text.toString())!!))
+                    highlightStyle
+                else
+                    regularStyle
         }
 
         selected.second.style = highlightStyle
     }
 
-    private fun depth(level: Int, i: Advancement): Int {
-        if (i.requires.isEmpty)
-            return level
-        else {
-            var depth = level
-            i.requires.forEach {
-                depth = depth(level + 1, it).coerceAtLeast(depth)
-            }
 
-            return depth
-        }
-    }
 
-    private fun labelFor(a: Advancement): Label
+    /**
+     * # Locates the label associated with the given advancement.
+     *
+     * @param a The advancement to find the label for.
+     * @return [Label] The label used to represent that advancement.
+     * @throws NullPointerException if there is no matching label for [A]
+     */
+    fun labelFor(a: Advancement): Label
         = allLabels.find { it.textEquals(a.name) }!!
 
-    private fun dependancyFor(a: Advancement, that: Advancement): Boolean {
-        if (that.requires.isEmpty) return false
-        if (that.requires.contains(a)) return true
-
-        var found = false
-        that.requires.forEach {
-            if (dependancyFor(a, it)) {
-                found = true
-                return@forEach
-            }
-        }
-        return found
-    }
-
-
+    /**
+     * Extends the super to draw [dependencyLineVectors] between
+     * labels.
+     *
+     * Super is called first.
+     */
     override fun drawChildren(batch: Batch?, parentAlpha: Float) {
         super.drawChildren(batch, parentAlpha)
             with(GameHypervisor.gameRenderer!!.sr) {
-                vecs.forEach {
-                    val xoff = sp.scrollX
-                    val yoff = sp.scrollY
-
-                    begin(ShapeRenderer.ShapeType.Filled)
-                    color = Color.CYAN
-                    circle(it.first.x - xoff, stage.height - it.first.y + yoff, 5f)
-                    color = Color.RED
-                    circle(it.second.x - xoff, stage.height - it.second.y + yoff, 10f)
-
-
-                    end()
-                    begin(ShapeRenderer.ShapeType.Line)
-
-                    line(it.first.x - xoff, stage.height - it.first.y + yoff, it.second.x - xoff, stage.height - it.second.y + yoff)
-
-                    end()
+                val xOffset = scrollPane.visualScrollX
+                val yOffset = stage.height
+                color = Color.MAGENTA
+                begin(ShapeRenderer.ShapeType.Line)
+                dependencyLineVectors.forEach {
+                    line(it.first.x - xOffset, yOffset - it.first.y, it.second.x - xOffset, yOffset - it.second.y)
                 }
+                end()
         }
     }
 
-    private fun screenspaceOf(a: Actor, align: Int): Vector2? {
-        return stage!!.stageToScreenCoordinates(a.localToStageCoordinates(Vector2(a.getX(align), a.height * -0.5f))).apply { x += sp.scrollX }
-    }
-
-
-
+    /**
+     * Returns screen space co-ordinates of the provided label.
+     *
+     * By determining the horizontal point on the label according to [align],
+     * centering it vertically, then translating those local co-ordinates to
+     * x,y values that can be used in screen space to draw at the exact
+     * location of the label.
+     *
+     * @param a The actor to locate on screen.
+     * @param align The horizontal alignment of the co-ordinate. Left, right or center.
+     * @return [Vector2] or null
+     */
+    private fun screenspaceOf(a: Actor, align: Int): Vector2 =
+        stage!!.stageToScreenCoordinates(a.localToStageCoordinates(Vector2(a.getX(align), a.height * 0.5f))).apply { x += scrollPane.scrollX }
 }

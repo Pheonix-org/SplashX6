@@ -43,6 +43,7 @@ import com.shinkson47.SplashX6.game.cities.City
 import com.shinkson47.SplashX6.game.cities.Production
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
+import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
 import com.shinkson47.SplashX6.utility.Utility.*
 
 /**
@@ -113,7 +114,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
             .actor.setAlignment(Align.right)
         row()
 
-        expandfill(add(ScrollPane(production, REF_SKIN_W95))
+        expandfill(add(AutoFocusScrollPane(production))
             .minWidth(150f)
             .maxHeight(500f)
         )
@@ -161,7 +162,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         })})
         expandfill(add(midColumn))
 
-        expandfill(add(ScrollPane(queue, REF_SKIN_W95))
+        expandfill(add(AutoFocusScrollPane(queue))
             .minWidth(150f)
         )
 

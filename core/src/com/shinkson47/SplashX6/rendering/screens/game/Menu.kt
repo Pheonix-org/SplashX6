@@ -43,7 +43,6 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.EndGame
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_toggle
 import com.shinkson47.SplashX6.game.cities.Production
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.network.NetworkClient
@@ -51,7 +50,7 @@ import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.renderers.TechTreeRenderer
+import com.shinkson47.SplashX6.rendering.windows.game.W_Advancement
 import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.rendering.windows.game.Music
@@ -133,7 +132,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
         )
 
         addMenuItem(this, "!Debug", WindowAction(DebugWindow()),
-                MenuSubItem("!Tech Test", WindowAction(TechTreeRenderer())),
+                MenuSubItem("!Tech Test", WindowAction(W_Advancement())),
                 MenuSubItem("!Defog All") { GameData.world!!.removeFogOfWar() },
                 MenuSubItem("!Hard reset server") { Server.shutdown(); Server.boot() },
                 MenuSubItem("!Reload Help Text") { W_Help.reload() },

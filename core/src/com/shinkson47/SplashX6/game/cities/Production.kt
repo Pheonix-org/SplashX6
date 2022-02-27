@@ -114,7 +114,7 @@ class Production(
      *
      * @return [Collection]
      */
-    fun evaluateProducable(): Collection<ProductionProject> = UnitClass.values().map {  UnitProductionProject(it)  }
+    fun evaluateProducable(): Collection<ProductionProject> = UnitClass.values().drop(1).map {  UnitProductionProject(it)  }
 
 
     /**
