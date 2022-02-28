@@ -32,14 +32,13 @@
 
 package com.shinkson47.SplashX6.game.cities
 
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.production.CityProductionManager
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.PartiallySerializable
@@ -141,7 +140,7 @@ class City(
     /**
      * ## The production manager of the city.
      */
-    val production = Production(this)
+    val production = CityProductionManager(this)
 
     // ============================================================
     // endregion fields

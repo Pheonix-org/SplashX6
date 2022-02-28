@@ -43,7 +43,7 @@ import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.EndGame
-import com.shinkson47.SplashX6.game.cities.Production
+import com.shinkson47.SplashX6.game.production.UnitProductionProject
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.Packet
@@ -132,7 +132,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
         )
 
         addMenuItem(this, "!Debug", WindowAction(DebugWindow()),
-                MenuSubItem("!Tech Test", WindowAction(W_Advancement())),
+                MenuSubItem("!Tech Test", WindowAction(W_Advancement("!Techs"))),
                 MenuSubItem("!Defog All") { GameData.world!!.removeFogOfWar() },
                 MenuSubItem("!Hard reset server") { Server.shutdown(); Server.boot() },
                 MenuSubItem("!Reload Help Text") { W_Help.reload() },
@@ -144,7 +144,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
                 MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},
             MenuSubItem("!Reload UI") { GameHypervisor.gameRenderer!!.let { it.stage.clear(); it.createUI() }  },
 
-                MenuSubItem("!Add a production project") { GameData.player!!.cities[0].production.queue(Production.UnitProductionProject(UnitClass.chariot)) }
+                MenuSubItem("!Add a production project") { GameData.player!!.cities[0].production.queueProject(UnitProductionProject(UnitClass.chariot)) }
         )
 
 

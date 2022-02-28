@@ -60,7 +60,7 @@ import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
  * @param advancementTree The advancement tree to be displayed.
  * @param titleKey Localised text to be displayed in the title.
  */
-abstract class W_Advancement(val advancementTree : AdvancementTree = Assets.get(DATA_TECHS), titleKey: String) : StageWindow(titleKey) {
+open class W_Advancement(titleKey: String, val advancementTree : AdvancementTree = AdvancementTree(Assets.get(DATA_TECHS))) : StageWindow(titleKey) {
 
     companion object {
         /**

@@ -37,10 +37,12 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.cities.City
-import com.shinkson47.SplashX6.game.cities.Production
+import com.shinkson47.SplashX6.game.production.CityProductionManager
+import com.shinkson47.SplashX6.game.production.UnitProductionProject
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
@@ -58,8 +60,8 @@ class W_Settlements : StageWindow("generic.game.settlements") {
      * # The list of settlements displayed in this window
      */
     private val cities: SelectBox<City>                         = SelectBox(REF_SKIN_W95)
-    private val queue: List<Production.ProductionProject>       = List(REF_SKIN_W95)
-    private val production: List<Production.ProductionProject>  = List(REF_SKIN_W95)
+    private val queue: List<UnitProductionProject>       = List(REF_SKIN_W95)
+    private val production: List<UnitProductionProject>  = List(REF_SKIN_W95)
 
     //private val lblCityProductionPower              = label("specific.windows.settlements.productionPower")
     private val lblCityProductionPower : Label
@@ -124,7 +126,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
                 .also {
                     it.addListener {
                         selectedProduction()?.let {
-                                if (it.queueIsFull())
+                                if (it.isQueueFull())
                                     message("!Queue for this city is full.")
                             }
                             false
@@ -133,7 +135,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
                     it.addListener(LambdaClickListener {
                         var index = -1
                         selectedInAvailable()?.let {
-                            selectedProduction()?.queue(it)
+                            selectedProduction()?.queueProject(it)
                             index = production.selectedIndex
                         }
                         refresh()
@@ -157,7 +159,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         midColumn.addActor(lblCompleteIn)
 
         midColumn.addActor(TextButton(local("generic.any.remove"), REF_SKIN_W95).apply { addListener(LambdaClickListener {
-            selectedInQueue().let { selectedProduction()?.queue?.remove(it) }
+            selectedInQueue().let { selectedProduction()?.queue?.removeValue(it, true) }
             refresh()
         })})
         expandfill(add(midColumn))
@@ -171,7 +173,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         pack()
     }
     
-    private fun listListener(l: List<Production.ProductionProject>): Boolean {
+    private fun listListener(l: List<UnitProductionProject>): Boolean {
         l.addListener(LambdaClickListener { l.selected?.let { refreshCost(it);}})
         return false
     }
@@ -182,37 +184,35 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         selectedCity()?.let { refresh(queue.items, it.production.queue) }
         queue.selection.validate()
 
-        selectedCity()?.let { refresh(production.items, it.production.evaluateProducable()) }
+        selectedCity()?.let { refresh(production.items, it.production.evaluateProducible()) }
         production.selection.validate()
 
-        selectedCity()?.let { lblCityProductionPowerLevel.setText(it.production.productionPower) }
+        selectedCity()?.let { lblCityProductionPowerLevel.setText(it.production.contributionPower) }
     }
 
-    private fun refreshCost(it : Production.ProductionProject?) {
+    private fun refreshCost(it : UnitProductionProject?) {
         lblCost.setText(if (it == null) "0" else "${it.cost}")
-        lblCompleteIn.setText(if (it == null) "0" else "${it.cost / cities.selected.production.productionPower}")
+        lblCompleteIn.setText(if (it == null) "0" else "${it.cost / cities.selected.production.contributionPower}")
     }
 
 
 
 
-    private fun <T> refresh(list :  com.badlogic.gdx.utils.Array<T>, data : Collection<T>) {
+    private fun <T> refresh(list : Array<T>, data : Array<T>) {
         list.clear()
         list.addAll(CollectionToGDXArray(data))
-        selectedCity()?.let { btnAddButton.touchable = if (it.production.queueIsFull()) Touchable.disabled else Touchable.enabled }
+        selectedCity()?.let { btnAddButton.touchable = if (it.production.isQueueFull()) Touchable.disabled else Touchable.enabled }
     }
 
-    private fun selectedInQueue(): Production.ProductionProject? =
+    private fun selectedInQueue(): UnitProductionProject? =
         queue.selected
 
-    private fun selectedInAvailable(): Production.ProductionProject? =
+    private fun selectedInAvailable(): UnitProductionProject? =
         production.selected
 
     private fun selectedCity(): City? =
         cities.selected
 
-    private fun selectedProduction(): Production? =
+    private fun selectedProduction(): CityProductionManager? =
         selectedCity()?.production
-
-
 }
