@@ -50,7 +50,7 @@ import com.shinkson47.SplashX6.utility.TurnHook
  * @since PRE-ALPHA 0.0.2
  * @version 1.2.1
  */
-class City(
+class Settlement(
         /**
          * ## The isometric position of the city.
          * Is used to position the sprite.
@@ -93,11 +93,22 @@ class City(
      *
      * Automatically updates sprite when updated.
      */
-    var population : Int = 0
+    var size : Int = 0
         private set(value) {
             field = value
             checkSpriteUpdate()
         }
+
+    var trade = 2
+    var food = 5
+    var science = 1
+    var luxury = 0
+    var corrouption = 0
+    var waste       = 0
+    var culture     = 0
+    var pollution   = 0
+    var plaugeRisk  = 0
+
 
     /**
      * ## The last known resource name of the underlying sprite
@@ -196,9 +207,8 @@ class City(
      * # Temporary turn hook that grows the city's population by 1 on every turn.
      */
     override fun onTurn() {
-        population++
+        size++
         checkSpriteUpdate()
-        production.doOnTurn()
     }
 
     // ============================================================
@@ -236,14 +246,14 @@ class City(
          *
          * i.e `asian_0` or `asian_0_wall`
          */
-        private fun calcSpriteName(city: City): String {
+        private fun calcSpriteName(city: Settlement): String {
             with(city) {
                 val pop =
                     when {
-                        population < 10      -> 0
-                        population < 25      -> 4
-                        population < 40      -> 8
-                        population < 50      -> 12
+                        size < 10      -> 0
+                        size < 25      -> 4
+                        size < 40      -> 8
+                        size < 50      -> 12
                         else                 -> 16
                     }
 

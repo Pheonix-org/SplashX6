@@ -60,16 +60,16 @@ class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
     private val actions: List<UnitAction> = List(Assets.REF_SKIN_W95)
 
     init {
-        addButton("specific.windows.units.view", false, true) { GameHypervisor.unit_view() }
-        tooltip("specific.windows.units.ttView")
+//        addButton("specific.windows.units.view", false, true) { GameHypervisor.unit_view() }
+//        tooltip("specific.windows.units.ttView")
 
-        hsep()
-
-        addButton("specific.windows.units.viewDestination", false) { GameHypervisor.unit_viewDestination(); refresh() }
-        tooltip("specific.windows.units.ttViewDestination")
-        addButton("specific.windows.units.moveUnitToCursor") { if (!cm_enter()) GameHypervisor.cm_destinationSelect(); refresh() }
-        tooltip("specific.windows.units.ttMoveUnitToCursor")
-
+//        hsep()
+//
+//        addButton("specific.windows.units.viewDestination", false) { GameHypervisor.unit_viewDestination(); refresh() }
+//        tooltip("specific.windows.units.ttViewDestination")
+//        addButton("specific.windows.units.moveUnitToCursor") { if (!cm_enter()) GameHypervisor.cm_destinationSelect(); refresh() }
+//        tooltip("specific.windows.units.ttMoveUnitToCursor")
+//
         seperate("specific.windows.units.turnAction")
 
         actions.selection.required = false
@@ -86,9 +86,12 @@ class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
         addButton("specific.windows.units.cancleAction", false, true) { GameHypervisor.unit_selected()?.cancelAction(); refresh() }
         tooltip("specific.windows.units.ttCancelAction")
 
+        // TODO this is not specific to this unit.
         hsep()
         addButton("specific.windows.units.disband", false, true) { GameHypervisor.unit_disband(); refresh() }
         tooltip("specific.windows.units.ttDisband")
+
+        addButton("!OK", false, true) { super.close() }
 
         refresh()
 

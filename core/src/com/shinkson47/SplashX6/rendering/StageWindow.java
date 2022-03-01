@@ -290,12 +290,7 @@ public abstract class StageWindow extends Window implements TurnHook {
 
             if (close)
                 w.getTitleTable()
-                        .add(button("meta.pseudographic.close", o -> {
-                            if (w instanceof StageWindow && ((StageWindow)w).dontClose)
-                                ((StageWindow)w).toggleShown();
-                            else
-                                w.clear();
-                        }))
+                        .add(button("meta.pseudographic.close", o -> ((StageWindow)w).close() ))
                         .right();
 
             w.getTitleTable().row();
@@ -331,10 +326,12 @@ public abstract class StageWindow extends Window implements TurnHook {
      * @param name        The text to be displayed in the button
      * @return the button
      */
-    protected static TextButton tab(Cell contentCell, Table content, String name) {
+    protected static TextButton tab(StageWindow w, Cell contentCell, Table content, String name) {
         return button(name, e -> {
+            if (contentCell.getActor() == content) return;
             contentCell.setActor(content);
             contentCell.fill().expand().center();
+            w.pack();
         });
     }
 
@@ -534,16 +531,19 @@ public abstract class StageWindow extends Window implements TurnHook {
         int i = 0;
         for (Table t : tables) {
             expandfill(
-                    tabs.add(
-                            tab(contentCell, t, name.get(i)
-                            )
-                    ).bottom()
+                        tabs.add(tab(this, contentCell, t, name.get(i))
+                    ).bottom().left()
             ).maxHeight(50).minHeight(50);
             i++;
         }
 
         // Add the tab selector buttons to the top of the window.
-        getTitleTable().padTop(135).add(tabs);
+        //getTitleTable().row();
+        //getTitleTable().
+        row();
+        expandfill(add(tabs))
+                .padTop(20f)
+        ;
 
         // Expand and populate the content cell, using the first tab's content.
         expandfill(contentCell);
@@ -703,6 +703,13 @@ public abstract class StageWindow extends Window implements TurnHook {
      */
     protected void onClose() {}
 
+    public void close() {
+        if (dontClose)
+            toggleShown();
+        else
+            clear();
+    }
+
     /**
      * Inverts 'isVisible'.
      * <p>
@@ -710,7 +717,10 @@ public abstract class StageWindow extends Window implements TurnHook {
      */
     public void toggleShown() {
         setVisible(!isVisible());
+        if (isVisible()) show();
     }
+
+    protected void show() {}
 
     /**
      * Indicates that this window should not close, but instead just hide

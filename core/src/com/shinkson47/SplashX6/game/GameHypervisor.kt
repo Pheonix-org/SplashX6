@@ -37,9 +37,8 @@ import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
-import com.shinkson47.SplashX6.audio.Playlist
 import com.shinkson47.SplashX6.audio.Spotify
-import com.shinkson47.SplashX6.game.cities.City
+import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.WorldTerrain
@@ -397,7 +396,7 @@ class GameHypervisor {
         @JvmStatic
         fun unit_disband() {
             if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't disband a unit if no unit selected!"))) return
-            GameData.player!!.units.remove(GameData.selectedUnit)
+            GameData.player!!.units.removeValue(GameData.selectedUnit, true)
             GameData.selectedUnit = null
         }
 
@@ -487,7 +486,7 @@ class GameHypervisor {
         }
 
         private fun doEndTurn_Async(){
-            TURN_ASYNC_TASKS.forEach { impldoEndTurn_Async(it) }
+            TURN_ASYNC_TASKS.forEach { Gdx.app.postRunnable { impldoEndTurn_Async(it) } }
             TURN_ASYNC_TASKS.clear()
             TURN_HOOKS.forEach { impldoEndTurn_Async(it) }
         }
@@ -538,7 +537,7 @@ class GameHypervisor {
          * # Focusses the camera on the provided unit.
          */
         @JvmStatic
-        fun camera_focusOn(city: City) = camera_focusOn(city.cartesianPosition())
+        fun camera_focusOn(city: Settlement) = camera_focusOn(city.cartesianPosition())
 
         /**
          * # Focusses the camera on the provided unit.

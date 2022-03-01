@@ -27,80 +27,43 @@
  ░         \::/    /                                         \::/    /        \::/    /                \::/    /                \::/    /                       |::|___|          ░
  ░          \/____/                                           \/____/          \/____/                  \/____/                  \/____/                         ~~               ░
  ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.game
+package com.shinkson47.SplashX6.rendering.windows.game.settlements
 
-import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.shinkson47.SplashX6.game.cities.Settlement
-import com.shinkson47.SplashX6.game.cities.CityType
-import com.shinkson47.SplashX6.game.units.Unit
-import com.shinkson47.SplashX6.utility.Assets.REF_NATION_DATA
-import java.io.Serializable
+import com.shinkson47.SplashX6.rendering.StageWindow
 
 /**
- * # A container representing an entire nation.
- * Or since a player has control over one nation,
- * it can be interpreted that this container represents
- * all the data of a single player.
- *
- * @property nationType The type of nation.
+ * # TODO
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 28/02/2022
+ * @since v1
+ * @version 1
  */
-class Nation(val nationType: NationType) : Serializable {
+class SettlementStats()   : Table() {
+    val lblTrade        = label()
+    val lblFood         = label()
+    val lblScience      = label()
+    val lblLuxury       = label()
+    val lblcorrouption  = label()
+    val lblwaste        = label()
+    val lblculture      = label()
+    val lblpollution    = label()
+    val lblplaugeRisk   = label()
 
-    /**
-     * # List of all units in the world that belong to this nation.
-     */
-    var units : Array<Unit> = Array()
+    private fun label() = StageWindow.label("", this).apply { left(); row() }.actor
 
-    /**
-     * # List of all settlements in the world that belong to this nation.
-     */
-    val settlements : Array<Settlement> = Array()
-
-    /**
-     *
-     *
-     * @param position Position
-     */
-    fun settle(position: Vector3) {
-        settlements.add(
-            Settlement(position, cityType())
-                .apply {
-                    name = cityNames()[settlements.size]
-                }
-        )
+    fun refresh(forSettlement : Settlement) {
+        lblTrade      .setText("Trade : ${forSettlement.trade}")
+        lblFood       .setText("Food : ${forSettlement.food}")
+        lblScience    .setText("Science : ${forSettlement.science}")
+        lblLuxury     .setText("Luxury : ${forSettlement.luxury}")
+        lblcorrouption.setText("Corruption : ${forSettlement.corrouption}")
+        lblwaste      .setText("Waste : ${forSettlement.waste}")
+        lblculture    .setText("Culture : ${forSettlement.culture}")
+        lblpollution  .setText("Pollution : ${forSettlement.pollution}")
+        lblplaugeRisk .setText("Plague Risk : ${forSettlement.plaugeRisk}")
     }
-
-    fun cityType(): CityType = CityType.valueOf(data()["citytype"] as String)
-    fun cityNames(): ArrayList<String> = data()["cities"] as ArrayList<String>
-    fun data(): HashMap<String, *> = data(nationType)
-
-    companion object {
-        fun data(nationType: NationType) =
-            REF_NATION_DATA.getOrDefault(nationType.toString(), REF_NATION_DATA["england"]) as HashMap<String, *>
-
-        fun legend(nationType: NationType) =
-                data(nationType)["legend"] as String
-    }
-}
-
-enum class NationType{
-    england,
-    zulu,
-    greece,
-    america,
-    barbarian,
-    babylon,
-    mongolia,
-    russia,
-    germany,
-    egypt,
-    china,
-    france,
-    japan,
-    aztec,
-    rome,
 }

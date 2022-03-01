@@ -123,8 +123,6 @@ class Client : Game() {
     override fun dispose() {
         super.dispose()
         GameHypervisor.dispose()
-        //World.dispose()
-        //AudioManager.dispose();
         Debug.dispose()
         Assets.dispose()
     }

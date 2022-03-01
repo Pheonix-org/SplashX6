@@ -38,6 +38,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
 
 /**
  * # Displays a list of all units in a civilisation.
@@ -77,7 +78,8 @@ class W_UnitsList : StageWindow("generic.game.units"){
     }
 
     override fun refresh() {
-        list.setItems(*GameData.player!!.units.toTypedArray())
+        // TODO i hate this
+        list.setItems(CollectionToGDXArray(GameData.player!!.units.items.filterNotNull()))
         pack()
     }
 

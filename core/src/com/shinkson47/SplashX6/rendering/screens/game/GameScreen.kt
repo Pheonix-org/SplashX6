@@ -43,7 +43,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.game.world.WorldTerrain
-import com.shinkson47.SplashX6.game.cities.City
+import com.shinkson47.SplashX6.game.cities.Settlement
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.maps.MapRenderer
 import com.badlogic.gdx.Gdx
@@ -201,11 +201,11 @@ class GameScreen : ScalingScreenAdapter() {
         worldBatch.begin()
 
         // Render cities
-        GameData.player!!.cities.forEach(
+        GameData.player!!.settlements.forEach(
             Consumer {
-                    city: City -> city.draw(worldBatch)
+                    city: Settlement -> city.draw(worldBatch)
                     font.draw(worldBatch, city.name, city.cartesianPosition().x, city.cartesianPosition().y)
-                    font.draw(worldBatch, "Population : ${city.population}", city.cartesianPosition().x, city.cartesianPosition().y - 15)
+                    font.draw(worldBatch, "Population : ${city.size}", city.cartesianPosition().x, city.cartesianPosition().y - 15)
             }
         )
         GameData.player!!.units.forEach(

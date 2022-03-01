@@ -30,77 +30,76 @@
  ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.game
+package com.shinkson47.SplashX6.rendering.windows.game.settlements
 
-import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.utils.Array
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
+import com.badlogic.gdx.utils.Align
+import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.cities.Settlement
-import com.shinkson47.SplashX6.game.cities.CityType
-import com.shinkson47.SplashX6.game.units.Unit
-import com.shinkson47.SplashX6.utility.Assets.REF_NATION_DATA
-import java.io.Serializable
+import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
+import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Utility
 
 /**
- * # A container representing an entire nation.
- * Or since a player has control over one nation,
- * it can be interpreted that this container represents
- * all the data of a single player.
- *
- * @property nationType The type of nation.
+ * # A window that displays and manages the player's settlements and the production within
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 21/06/2021
+ * @since v1
+ * @version 0.0.3
  */
-class Nation(val nationType: NationType) : Serializable {
+class W_Settlements : StageWindow("generic.game.settlements") {
 
-    /**
-     * # List of all units in the world that belong to this nation.
-     */
-    var units : Array<Unit> = Array()
+    private val settlements: SelectBox<Settlement> = SelectBox(Assets.REF_SKIN_W95)
+    val productionTab = SettlementProduction()
+    val improvementsTab = SettlementProduction()
+    val statsTab = SettlementStats()
 
-    /**
-     * # List of all settlements in the world that belong to this nation.
-     */
-    val settlements : Array<Settlement> = Array()
+    init {
+        settlements.addListener(LambdaChangeListener {
+            settlements.selected?.let { GameHypervisor.camera_focusOn(it) }
+            refresh()
+        })
 
-    /**
-     *
-     *
-     * @param position Position
-     */
-    fun settle(position: Vector3) {
-        settlements.add(
-            Settlement(position, cityType())
-                .apply {
-                    name = cityNames()[settlements.size]
-                }
+        add(settlements)
+            .fillX()
+            .expandX()
+            .row()
+
+        val contentCell = add()
+
+        tabs(
+            contentCell,
+
+            listOf(
+                productionTab,
+                improvementsTab,
+                statsTab
+            ),
+
+            listOf(
+                "!Production",
+                "!Improvements",
+                "!Stats"
+            )
         )
+
+        GameHypervisor.turn_unhook(this)
+        GameHypervisor.turn_hook { GameHypervisor.turn_asyncTask(this) }
     }
 
-    fun cityType(): CityType = CityType.valueOf(data()["citytype"] as String)
-    fun cityNames(): ArrayList<String> = data()["cities"] as ArrayList<String>
-    fun data(): HashMap<String, *> = data(nationType)
+    override fun show() {
+        refresh()
 
-    companion object {
-        fun data(nationType: NationType) =
-            REF_NATION_DATA.getOrDefault(nationType.toString(), REF_NATION_DATA["england"]) as HashMap<String, *>
-
-        fun legend(nationType: NationType) =
-                data(nationType)["legend"] as String
+        invalidate()
+        pack()
+        height = 600f
     }
-}
 
-enum class NationType{
-    england,
-    zulu,
-    greece,
-    america,
-    barbarian,
-    babylon,
-    mongolia,
-    russia,
-    germany,
-    egypt,
-    china,
-    france,
-    japan,
-    aztec,
-    rome,
+    override fun refresh() {
+        settlements.items = Utility.CollectionToGDXArray(GameData.player!!.settlements)
+        if (settlements.selected == null) return
+        productionTab.refresh(settlements.selected.production)
+        statsTab.refresh(settlements.selected)
+    }
 }

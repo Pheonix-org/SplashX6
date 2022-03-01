@@ -54,7 +54,7 @@ import com.shinkson47.SplashX6.rendering.windows.game.W_Advancement
 import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.rendering.windows.game.Music
-import com.shinkson47.SplashX6.rendering.windows.game.W_Settlements
+import com.shinkson47.SplashX6.rendering.windows.game.settlements.W_Settlements
 import com.shinkson47.SplashX6.rendering.windows.game.Spotify
 import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
@@ -144,7 +144,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
                 MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},
             MenuSubItem("!Reload UI") { GameHypervisor.gameRenderer!!.let { it.stage.clear(); it.createUI() }  },
 
-                MenuSubItem("!Add a production project") { GameData.player!!.cities[0].production.queueProject(UnitProductionProject(UnitClass.chariot)) }
+                MenuSubItem("!Add a production project") { GameData.player!!.settlements[0].production.queueProject(UnitProductionProject(UnitClass.chariot)) }
         )
 
 
@@ -159,8 +159,8 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
         addMenuItem(
             this, "!Manage", NOTHING,
             //MenuSubItem("!War room view") { cm_toggle() },
-            MenuSubItem("generic.game.settlements") { W_Settlements() },
-            MenuSubItem("generic.game.units") { W_UnitsList() },
+            MenuSubItem("generic.game.settlements", WindowAction(W_Settlements())),
+            MenuSubItem("generic.game.units", WindowAction(W_UnitsList())),
             //MenuSubItem("!") { W_Settlements() },
 //            MenuSubItem("specific.windows.units.view") { GameHypervisor.unit_view() },
 //            MenuSubItem("specific.windows.units.viewDestination") { GameHypervisor.unit_viewDestination() },

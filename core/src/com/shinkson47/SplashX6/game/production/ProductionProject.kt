@@ -112,6 +112,7 @@ abstract class ProductionProject(
      * i.e this may spawn a unit, or place a new structure.
      */
     abstract fun doClaim()
+    fun progress(): Float = contributed.toFloat() / cost.toFloat()
 }
 
 

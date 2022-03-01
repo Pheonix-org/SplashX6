@@ -27,49 +27,49 @@
  ░         \::/    /                                         \::/    /        \::/    /                \::/    /                \::/    /                       |::|___|          ░
  ░          \/____/                                           \/____/          \/____/                  \/____/                  \/____/                         ~~               ░
  ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.rendering.windows.game
+package com.shinkson47.SplashX6.rendering.windows.game.settlements
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.List
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.cities.City
-import com.shinkson47.SplashX6.game.production.CityProductionManager
-import com.shinkson47.SplashX6.game.production.UnitProductionProject
+import com.shinkson47.SplashX6.game.cities.Settlement
+import com.shinkson47.SplashX6.game.production.ProductionManager
+import com.shinkson47.SplashX6.game.production.ProductionProject
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
+import com.shinkson47.SplashX6.rendering.StageWindow.label
+import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
-import com.shinkson47.SplashX6.utility.Utility.*
+import com.shinkson47.SplashX6.utility.Utility
+import kotlin.math.ceil
 
 /**
- * # Displays and manages the player's settlements and thier prouction within
- * @author [Jordan T. Gray](https://www.shinkson47.in) on 21/06/2021
+ * # TODO
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 28/02/2022
  * @since v1
- * @version 0.0.2
+ * @version 1
  */
-class W_Settlements : StageWindow("generic.game.settlements") {
+abstract class ProductionTab<T : ProductionProject, P : ProductionManager<T>>(
+    var productionManager : P? = null
+) : Table() {
 
-    /**
-     * # The list of settlements displayed in this window
-     */
-    private val cities: SelectBox<City>                         = SelectBox(REF_SKIN_W95)
-    private val queue: List<UnitProductionProject>       = List(REF_SKIN_W95)
-    private val production: List<UnitProductionProject>  = List(REF_SKIN_W95)
+    private val queue: List<T> = List(Assets.REF_SKIN_W95)
+    private val production: List<T> = List(Assets.REF_SKIN_W95)
 
-    //private val lblCityProductionPower              = label("specific.windows.settlements.productionPower")
     private val lblCityProductionPower : Label
-    private val lblCost                = Label("0", REF_SKIN_W95)
-    private val lblCompleteIn          = Label("0", REF_SKIN_W95)
-    private val lblCityProductionPowerLevel = Label("100", REF_SKIN_W95)
+    private val lblCost                = Label("0", Assets.REF_SKIN_W95)
+    private val lblCompleteIn          = Label("0", Assets.REF_SKIN_W95)
+    private val lblCityProductionPowerLevel = Label("100", Assets.REF_SKIN_W95)
+    private val lblWorkingOn = Label("Working On : ", Assets.REF_SKIN_W95)
+    private val lblWorkingOnProgress = Label("", Assets.REF_SKIN_W95)
+    private val progWorkingOn = ProgressBar(0f,1f, 0.001f, false, Assets.REF_SKIN_W95)
+    private val img = Image()
     private var btnAddButton: Button
-
 
     init {
         padLeft(5f)
@@ -82,33 +82,18 @@ class W_Settlements : StageWindow("generic.game.settlements") {
 
         setPosition(0f, Gdx.graphics.height.toFloat())
 
-        label("specific.windows.settlements.cities")
-            .fill()
-            .actor.setAlignment(Align.left)
-
-        cities.addListener(LambdaChangeListener {
-            selectedCity()?.let { GameHypervisor.camera_focusOn(it) }
-            refresh()
-        })
-
-        add(cities)
-            .colspan(2)
-            .fillX()
-            .expandX()
-            .row()
-
-        label("specific.windows.settlements.productionPower")
+        label("specific.windows.settlements.productionPower", this)
             .also { lblCityProductionPower = it.actor }
         add(lblCityProductionPowerLevel)
         row()
 
-        label("specific.windows.settlements.available")
+        label("specific.windows.settlements.available", this)
             .expandX()
             .fillX()
             .left()
             .actor.setAlignment(Align.left)
 
-        label("specific.windows.settlements.queue")
+        label("specific.windows.settlements.queue", this)
             .expandX()
             .fillX()
             .left()
@@ -116,40 +101,42 @@ class W_Settlements : StageWindow("generic.game.settlements") {
             .actor.setAlignment(Align.right)
         row()
 
-        expandfill(add(AutoFocusScrollPane(production))
+        add(AutoFocusScrollPane(production))
             .minWidth(150f)
-            .maxHeight(500f)
-        )
+            .expand()
+            .fill()
 
         val midColumn : WidgetGroup = VerticalGroup()
-        midColumn.addActor(TextButton(local("generic.any.add"), REF_SKIN_W95)
-                .also {
-                    it.addListener {
-                        selectedProduction()?.let {
-                                if (it.isQueueFull())
-                                    message("!Queue for this city is full.")
-                            }
-                            false
-                        }
-
-                    it.addListener(LambdaClickListener {
-                        var index = -1
-                        selectedInAvailable()?.let {
-                            selectedProduction()?.queueProject(it)
-                            index = production.selectedIndex
-                        }
-                        refresh()
-
-                        if (index != -1)
-                            production.selectedIndex = index
-                    })
-                    btnAddButton = it
+        midColumn.addActor(
+            TextButton(Utility.local("generic.any.add"), Assets.REF_SKIN_W95)
+            .also {
+                it.addListener {
+                    productionManager?.let {
+                        if (it.isQueueFull())
+                            Utility.message("!Queue is full.")
+                    }
+                    false
                 }
+
+                it.addListener(StageWindow.LambdaClickListener {
+                    var index = -1
+                    selectedInAvailable()?.let {
+                        productionManager?.queueProject(it)
+                        index = production.selectedIndex
+                    }
+                    refresh(null)
+
+                    if (index != -1)
+                        production.selectedIndex = index
+                })
+                btnAddButton = it
+            }
+
         )
 
 
         val localisedLabel: (key: String) -> Unit = {
-            midColumn.addActor(Label(local(it), REF_SKIN_W95))
+            midColumn.addActor(Label(Utility.local(it), Assets.REF_SKIN_W95))
         }
 
         localisedLabel("specific.windows.settlements.cost")
@@ -158,61 +145,89 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         localisedLabel("specific.windows.settlements.completeIn")
         midColumn.addActor(lblCompleteIn)
 
-        midColumn.addActor(TextButton(local("generic.any.remove"), REF_SKIN_W95).apply { addListener(LambdaClickListener {
-            selectedInQueue().let { selectedProduction()?.queue?.removeValue(it, true) }
-            refresh()
+        midColumn.addActor(TextButton(Utility.local("generic.any.remove"), Assets.REF_SKIN_W95).apply { addListener(StageWindow.LambdaClickListener {
+            selectedInQueue().let { productionManager?.queue?.removeValue(it, true) }
+            refresh(null)
         })})
-        expandfill(add(midColumn))
+        //expandfill(
+        add(midColumn)
+            .expand()
+            .fill()
 
-        expandfill(add(AutoFocusScrollPane(queue))
+        add(AutoFocusScrollPane(queue))
             .minWidth(150f)
-        )
+            .expand()
+            .fill()
+            .row()
 
-        isResizable = false
-        refresh()
-        pack()
+        add(img)
+            .size(100f)
+            .expand()
+            .fill()
+
+        add(VerticalGroup().apply {
+            addActor(lblWorkingOn)
+            addActor(lblWorkingOnProgress)
+            addActor(progWorkingOn)
+        }).colspan(2)
+
+        refresh(null)
     }
-    
-    private fun listListener(l: List<UnitProductionProject>): Boolean {
-        l.addListener(LambdaClickListener { l.selected?.let { refreshCost(it);}})
+
+    private fun listListener(l: List<T>): Boolean {
+        l.addListener(StageWindow.LambdaClickListener { l.selected?.let { refreshCost(it); } })
         return false
     }
 
-    override fun refresh() {
-        cities.items = CollectionToGDXArray(GameData.player!!.cities)
+    fun refresh(_productionManager: P?) {
+        _productionManager?.let{ productionManager = _productionManager }
+        if (productionManager == null)
+            return
 
-        selectedCity()?.let { refresh(queue.items, it.production.queue) }
+        productionManager?.let { refresh(queue.items, it.queue) }
         queue.selection.validate()
 
-        selectedCity()?.let { refresh(production.items, it.production.evaluateProducible()) }
+        productionManager?.let { refresh(production.items, it.evaluateProducible()) }
         production.selection.validate()
 
-        selectedCity()?.let { lblCityProductionPowerLevel.setText(it.production.contributionPower) }
+        productionManager?.let { lblCityProductionPowerLevel.setText( it.contributionPower) }
+
+        workingOn()?.let {
+            progWorkingOn.value = it.progress()
+            lblWorkingOn.setText("Working On : $it")
+            lblWorkingOnProgress.setText("Progress : ${it.contributed} / ${it.cost}")
+            setImage(it)
+        } ?: run {
+            progWorkingOn.value = 0f
+            lblWorkingOn.setText("Not working on anything")
+            lblWorkingOnProgress.setText("")
+            img.drawable = null
+        }
     }
 
-    private fun refreshCost(it : UnitProductionProject?) {
+    private fun setImage(it : T?) =
+            it?.let { img.drawable = getImage(it) } ?: run { img.drawable = null }
+
+    abstract fun getImage(it : T) : TextureRegionDrawable
+
+    private fun refreshCost(it : T?) {
         lblCost.setText(if (it == null) "0" else "${it.cost}")
-        lblCompleteIn.setText(if (it == null) "0" else "${it.cost / cities.selected.production.contributionPower}")
+        productionManager?.contributionPower?.let { i -> lblCompleteIn.setText(if (it == null) "0" else "${ceil(it.cost.toDouble() / i.toDouble()).toInt()}")}
+        it?.let { setImage(it) }
     }
-
-
-
 
     private fun <T> refresh(list : Array<T>, data : Array<T>) {
         list.clear()
-        list.addAll(CollectionToGDXArray(data))
-        selectedCity()?.let { btnAddButton.touchable = if (it.production.isQueueFull()) Touchable.disabled else Touchable.enabled }
+        list.addAll(Utility.CollectionToGDXArray(data))
+        productionManager?.let { btnAddButton.touchable = if (it.isQueueFull()) Touchable.disabled else Touchable.enabled }
     }
 
-    private fun selectedInQueue(): UnitProductionProject? =
+    private fun selectedInQueue(): T? =
         queue.selected
 
-    private fun selectedInAvailable(): UnitProductionProject? =
+    private fun selectedInAvailable(): T? =
         production.selected
 
-    private fun selectedCity(): City? =
-        cities.selected
-
-    private fun selectedProduction(): CityProductionManager? =
-        selectedCity()?.production
+    private fun workingOn(): T? =
+        productionManager?.getWorkingOn()
 }

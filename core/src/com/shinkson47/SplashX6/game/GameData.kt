@@ -114,7 +114,7 @@ class _GameData : PartiallySerializable {
 
         civilisations.forEach {
             it.units.forEach  { it.deserialize() }
-            it.cities.forEach { it.deserialize() }
+            it.settlements.forEach { it.deserialize() }
         }
     }
 }
