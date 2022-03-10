@@ -1,3 +1,26 @@
+//======================================================================
+// Run me to generate documentation for desktop.
+//======================================================================
+task generateDocumentation(){}
+//======================================================================
+apply plugin: "org.jetbrains.dokka"
+generateDocumentation.dependsOn dokkaGfm
+generateDocumentation.dependsOn dokkaHtml
+dokkaGfm {
+    outputDirectory.set(file("${project.rootDir}/docs/markdown/desktop"))
+}
+dokkaHtml {
+    outputDirectory.set(file("${project.rootDir}/docs/HTML/desktop"))
+}
+//======================================================================
+
+
+
+
+
+
+
+
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.resources.srcDirs = ["../core/assets"]
@@ -36,8 +59,6 @@ task dist(type: Jar) {
 jar {
     baseName 'Splash X6'
 }
-
-
 
 dist.dependsOn classes
 
