@@ -32,12 +32,14 @@
 
 package com.shinkson47.SplashX6.game
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.utility.Assets.REF_NATION_DATA
+import com.shinkson47.SplashX6.utility.TurnHook
 import java.io.Serializable
 
 /**
@@ -48,7 +50,7 @@ import java.io.Serializable
  *
  * @property nationType The type of nation.
  */
-class Nation(val nationType: NationType) : Serializable {
+class Nation(val nationType: NationType, val ai: Boolean = false) : Serializable, TurnHook {
 
     /**
      * # List of all units in the world that belong to this nation.
@@ -74,9 +76,26 @@ class Nation(val nationType: NationType) : Serializable {
         )
     }
 
+    init {
+        GameHypervisor.turn_hook(this)
+    }
+
+    override fun onTurn() {
+        if (ai) {
+            units.forEach { it.ai_update() }
+        }
+    }
+
+    fun addUnit(u:Unit) {
+        units.add(u)
+        if (ai) u.ai_init()
+    }
+
     fun cityType(): CityType = CityType.valueOf(data()["citytype"] as String)
     fun cityNames(): ArrayList<String> = data()["cities"] as ArrayList<String>
     fun data(): HashMap<String, *> = data(nationType)
+
+    override fun toString() = "${nationType}"
 
     companion object {
         fun data(nationType: NationType) =

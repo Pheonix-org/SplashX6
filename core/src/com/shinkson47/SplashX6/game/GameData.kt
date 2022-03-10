@@ -55,7 +55,7 @@ class _GameData : PartiallySerializable {
      */
     @JvmField var world : WorldTerrain? = null
 
-    @JvmField var civilisations : ArrayList<Nation> = ArrayList()
+    @JvmField var nations : ArrayList<Nation> = ArrayList()
 
 
     // This client's data
@@ -71,6 +71,7 @@ class _GameData : PartiallySerializable {
     // New game preferences
     // ======================================
     var pref_civType = NationType.values().first()
+    var pref_civCount = 3
 
 
 
@@ -88,33 +89,42 @@ class _GameData : PartiallySerializable {
         world = null
         player = null
         selectedUnit = null
-        civilisations.clear()
+        nations.clear()
     }
 
     /**
      * New game subroutines that creates data required for a new game
      */
     fun new() {
+        // Delete all data.
         clear()
-        player = GameHypervisor.civ_new(pref_civType)
+        System.gc()
+
+        // Create a new world
         world = Generator.doYourThing()
-        world!!.genPopulation()
+
+        // Create a new local player
+        player = GameHypervisor.nation_new(pref_civType)
+
+
     }
+
 
     fun networkSet(gameState: _GameData) {
         world = gameState.world
         GameHypervisor.gameRenderer!!.newRenderer()
 
-        civilisations = gameState.civilisations
+        nations = gameState.nations
         deserialize()
     }
 
     override fun deserialize() {
         world!!.deserialize()
 
-        civilisations.forEach {
+        nations.forEach {
             it.units.forEach  { it.deserialize() }
             it.settlements.forEach { it.deserialize() }
         }
     }
+
 }
