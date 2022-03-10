@@ -1,0 +1,8 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:com.shinkson47.SplashX6.desktop////PointingToDeclaration/desktop/com.shinkson47.SplashX6.desktop/index.html
+$dokka.location:com.shinkson47.SplashX6.desktop/SplashX6///PointingToDeclaration/desktop/com.shinkson47.SplashX6.desktop/-splash-x6/index.html
+$dokka.location:com.shinkson47.SplashX6.desktop/SplashX6/config/#/PointingToDeclaration/desktop/com.shinkson47.SplashX6.desktop/-splash-x6/config.html
+$dokka.location:com.shinkson47.SplashX6.desktop/SplashX6/main/#java.lang.String[]/PointingToDeclaration/desktop/com.shinkson47.SplashX6.desktop/-splash-x6/main.html
+com.shinkson47.SplashX6.desktop
+

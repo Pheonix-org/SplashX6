@@ -5,13 +5,11 @@
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
   <component name="JavadocGenerationManager">
-    <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Desktop/untitled folder" />
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/docs" />
     <option name="OPTION_SCOPE" value="private" />
   </component>
   <component name="LibGDXSkins">
-    <file url="file://$PROJECT_DIR$/core/assets/skins/C64/skin/uiskin.json" />
     <file url="file://$PROJECT_DIR$/core/assets/skins/W95/W95.json" />
-    <file url="file://$PROJECT_DIR$/core/assets/skins/x6/skin/x6.json" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="openjdk-16" project-jdk-type="JavaSDK" />
 </project>

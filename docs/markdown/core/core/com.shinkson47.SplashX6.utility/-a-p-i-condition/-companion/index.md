@@ -1,0 +1,40 @@
+//[core](../../../../index.md)/[com.shinkson47.SplashX6.utility](../../index.md)/[APICondition](../index.md)/[Companion](index.md)
+
+# Companion
+
+[jvm]\
+object [Companion](index.md)
+
+## Types
+
+| Name | Summary |
+|---|---|
+| [_THROW](_-t-h-r-o-w/index.md) | [jvm]<br>class [_THROW](_-t-h-r-o-w/index.md)(message: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) : [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)<br>internal class : onFail action that throws an [APIException](-a-p-i-exception/index.md) |
+| [_WARN_USER](_-w-a-r-n_-u-s-e-r/index.md) | [jvm]<br>class [_WARN_USER](_-w-a-r-n_-u-s-e-r/index.md)(message: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) : [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html) |
+| [APIException](-a-p-i-exception/index.md) | [jvm]<br>class [APIException](-a-p-i-exception/index.md)(text: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)) : [IllegalStateException](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html)<br>[IllegalStateException](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-illegal-state-exception/index.html) indicating a API call occoured in a state that it should not be possible to make this call. |
+
+## Functions
+
+| Name | Summary |
+|---|---|
+| [invalidCall](invalid-call.md) | [jvm]<br>@[JvmStatic](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html)<br>fun [invalidCall](invalid-call.md)(requiredState: [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt;, onIllegalState: [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html) |
+| [MSG_TRIED_EXCEPT](-m-s-g_-t-r-i-e-d_-e-x-c-e-p-t.md) | [jvm]<br>@[JvmStatic](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html)<br>fun [MSG_TRIED_EXCEPT](-m-s-g_-t-r-i-e-d_-e-x-c-e-p-t.md)(triedTo: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), except: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Shows a formatted message : Tried to $triedTo, but $except. |
+| [THROW](-t-h-r-o-w.md) | [jvm]<br>@[JvmStatic](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html)<br>fun [THROW](-t-h-r-o-w.md)(): [APICondition.Companion._THROW](_-t-h-r-o-w/index.md)<br>@[JvmStatic](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html)<br>fun [THROW](-t-h-r-o-w.md)(msg: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [APICondition.Companion._THROW](_-t-h-r-o-w/index.md)<br>Use if it's not worth telling off the user, AND |
+| [validateCall](validate-call.md) | [jvm]<br>@[JvmStatic](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html)<br>fun [validateCall](validate-call.md)(requiredState: [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt;, onIllegalState: [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html))<br>Whilst attempting to add minimal overhead to every call. |
+| [WARN](-w-a-r-n.md) | [jvm]<br>@[JvmStatic](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html)<br>fun [WARN](-w-a-r-n.md)(message: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)<br>to notify user before [THROW](-t-h-r-o-w.md)ing to prevent API call. Use if user is responsible for invalid call. |
+
+## Properties
+
+| Name | Summary |
+|---|---|
+| [DO_NOTHING](-d-o_-n-o-t-h-i-n-g.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [DO_NOTHING](-d-o_-n-o-t-h-i-n-g.md): [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html) |
+| [MSG_GENERIC](-m-s-g_-g-e-n-e-r-i-c.md) | [jvm]<br>@[JvmStatic](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html)<br>val [MSG_GENERIC](-m-s-g_-g-e-n-e-r-i-c.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)<br>Generic invalid call message. |
+| [MSG_NOT_IN_UCM](-m-s-g_-n-o-t_-i-n_-u-c-m.md) | [jvm]<br>@[JvmStatic](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-static/index.html)<br>val [MSG_NOT_IN_UCM](-m-s-g_-n-o-t_-i-n_-u-c-m.md): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) |
+| [REQ_CLIENT_CONNECTED](-r-e-q_-c-l-i-e-n-t_-c-o-n-n-e-c-t-e-d.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [REQ_CLIENT_CONNECTED](-r-e-q_-c-l-i-e-n-t_-c-o-n-n-e-c-t-e-d.md): [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt; |
+| [REQ_GAME_LOADING](-r-e-q_-g-a-m-e_-l-o-a-d-i-n-g.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [REQ_GAME_LOADING](-r-e-q_-g-a-m-e_-l-o-a-d-i-n-g.md): [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt; |
+| [REQ_IN_GAME](-r-e-q_-i-n_-g-a-m-e.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [REQ_IN_GAME](-r-e-q_-i-n_-g-a-m-e.md): [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt; |
+| [REQ_MAIN_MENU](-r-e-q_-m-a-i-n_-m-e-n-u.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [REQ_MAIN_MENU](-r-e-q_-m-a-i-n_-m-e-n-u.md): [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt; |
+| [REQ_NOT_IN_GAME](-r-e-q_-n-o-t_-i-n_-g-a-m-e.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [REQ_NOT_IN_GAME](-r-e-q_-n-o-t_-i-n_-g-a-m-e.md): [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt;<br>Doesn't matter where we are, so long as we're not in a game. |
+| [REQ_SERVER_HOSTING](-r-e-q_-s-e-r-v-e-r_-h-o-s-t-i-n-g.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [REQ_SERVER_HOSTING](-r-e-q_-s-e-r-v-e-r_-h-o-s-t-i-n-g.md): [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt; |
+| [REQ_UNIT_CONTROL_MODE](-r-e-q_-u-n-i-t_-c-o-n-t-r-o-l_-m-o-d-e.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [REQ_UNIT_CONTROL_MODE](-r-e-q_-u-n-i-t_-c-o-n-t-r-o-l_-m-o-d-e.md): [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt; |
+| [REQ_UNIT_SELECTED](-r-e-q_-u-n-i-t_-s-e-l-e-c-t-e-d.md) | [jvm]<br>@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)<br>val [REQ_UNIT_SELECTED](-r-e-q_-u-n-i-t_-s-e-l-e-c-t-e-d.md): [Predicate](https://docs.oracle.com/javase/8/docs/api/java/util/function/Predicate.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)?&gt; |
