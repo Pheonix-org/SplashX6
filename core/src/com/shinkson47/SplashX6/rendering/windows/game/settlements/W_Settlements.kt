@@ -33,12 +33,10 @@
 package com.shinkson47.SplashX6.rendering.windows.game.settlements
 
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
-import com.badlogic.gdx.utils.Align
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Utility
 
@@ -51,9 +49,9 @@ import com.shinkson47.SplashX6.utility.Utility
 class W_Settlements : StageWindow("generic.game.settlements") {
 
     private val settlements: SelectBox<Settlement> = SelectBox(Assets.REF_SKIN_W95)
-    val productionTab = SettlementProduction()
-    val improvementsTab = SettlementProduction()
-    val statsTab = SettlementStats()
+    val productionTab = UnitTab()
+    val improvementsTab = ImprovementsTab()
+    val statsTab = StatsTab()
 
     init {
         settlements.addListener(LambdaChangeListener {
@@ -99,7 +97,8 @@ class W_Settlements : StageWindow("generic.game.settlements") {
     override fun refresh() {
         settlements.items = Utility.CollectionToGDXArray(GameData.player!!.settlements)
         if (settlements.selected == null) return
-        productionTab.refresh(settlements.selected.production)
+        productionTab.refresh(settlements.selected.unitProduction)
+        improvementsTab.refresh(settlements.selected.improvementProduction)
         statsTab.refresh(settlements.selected)
     }
 }

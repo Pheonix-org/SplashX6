@@ -31,10 +31,17 @@
 
 package com.shinkson47.SplashX6.rendering.windows.game.settlements
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.shinkson47.SplashX6.game.cities.Settlement
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.shinkson47.SplashX6.game.production.CityProductionManager
+import com.shinkson47.SplashX6.game.production.ImprovementProductionManager
+import com.shinkson47.SplashX6.game.production.ImprovementProductionProject
+import com.shinkson47.SplashX6.game.production.UnitProductionProject
+import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.DATA_IMPROVEMENTS
+import com.shinkson47.SplashX6.utility.Assets.get
+import com.shinkson47.SplashX6.utility.Assets.SPRITES_UNITS
+import com.shinkson47.SplashX6.utility.Assets.SPRITES_BUILDINGS
 
 /**
  * # TODO
@@ -42,28 +49,23 @@ import com.shinkson47.SplashX6.rendering.StageWindow
  * @since v1
  * @version 1
  */
-class SettlementStats()   : Table() {
-    val lblTrade        = label()
-    val lblFood         = label()
-    val lblScience      = label()
-    val lblLuxury       = label()
-    val lblcorrouption  = label()
-    val lblwaste        = label()
-    val lblculture      = label()
-    val lblpollution    = label()
-    val lblplaugeRisk   = label()
+class UnitTab() : ProductionTab<UnitProductionProject, CityProductionManager>() {
+    override fun getImage(it: UnitProductionProject): TextureRegionDrawable =
+        TextureRegionDrawable(Assets.get<TextureAtlas>(SPRITES_UNITS).findRegion(it.type.toString()))
+}
 
-    private fun label() = StageWindow.label("", this).apply { left(); row() }.actor
 
-    fun refresh(forSettlement : Settlement) {
-        lblTrade      .setText("Trade : ${forSettlement.trade}")
-        lblFood       .setText("Food : ${forSettlement.food}")
-        lblScience    .setText("Science : ${forSettlement.science}")
-        lblLuxury     .setText("Luxury : ${forSettlement.luxury}")
-        lblcorrouption.setText("Corruption : ${forSettlement.corrouption}")
-        lblwaste      .setText("Waste : ${forSettlement.waste}")
-        lblculture    .setText("Culture : ${forSettlement.culture}")
-        lblpollution  .setText("Pollution : ${forSettlement.pollution}")
-        lblplaugeRisk .setText("Plague Risk : ${forSettlement.plaugeRisk}")
-    }
+/**
+ * # TODO
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 28/02/2022
+ * @since v1
+ * @version 1
+ */
+class ImprovementsTab() : ProductionTab<ImprovementProductionProject, ImprovementProductionManager>() {
+//    override fun getImage(it: UnitProductionProject): TextureRegionDrawable =
+//
+
+    override fun getImage(it: ImprovementProductionProject): TextureRegionDrawable =
+        TextureRegionDrawable(get<TextureAtlas>(SPRITES_BUILDINGS).findRegion((get<HashMap<String, *>>(DATA_IMPROVEMENTS)[it.name] as HashMap<String, *>)["graphic"] as String))
+
 }

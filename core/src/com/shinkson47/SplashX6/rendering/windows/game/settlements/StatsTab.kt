@@ -31,27 +31,10 @@
 
 package com.shinkson47.SplashX6.rendering.windows.game.settlements
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
-import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.scenes.scene2d.Touchable
-import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.ui.List
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.shinkson47.SplashX6.game.cities.Settlement
-import com.shinkson47.SplashX6.game.production.CityProductionManager
-import com.shinkson47.SplashX6.game.production.UnitProductionProject
 import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.StageWindow.label
-import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Assets.SPRITES_UNITS
-import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
-import com.shinkson47.SplashX6.utility.Utility
-import kotlin.math.ceil
 
 /**
  * # TODO
@@ -59,7 +42,28 @@ import kotlin.math.ceil
  * @since v1
  * @version 1
  */
-class SettlementProduction() : ProductionTab<UnitProductionProject, CityProductionManager>() {
-    override fun getImage(it: UnitProductionProject): TextureRegionDrawable =
-        TextureRegionDrawable(Assets.get<TextureAtlas>(SPRITES_UNITS).findRegion(it.type.toString()))
+class StatsTab()   : Table() {
+    val lblTrade        = label()
+    val lblFood         = label()
+    val lblScience      = label()
+    val lblLuxury       = label()
+    val lblcorrouption  = label()
+    val lblwaste        = label()
+    val lblculture      = label()
+    val lblpollution    = label()
+    val lblplaugeRisk   = label()
+
+    private fun label() = StageWindow.label("", this).apply { left(); row() }.actor
+
+    fun refresh(forSettlement : Settlement) {
+        lblTrade      .setText("Trade : ${forSettlement.trade}")
+        lblFood       .setText("Food : ${forSettlement.food}")
+        lblScience    .setText("Science : ${forSettlement.science}")
+        lblLuxury     .setText("Luxury : ${forSettlement.luxury}")
+        lblcorrouption.setText("Corruption : ${forSettlement.corrouption}")
+        lblwaste      .setText("Waste : ${forSettlement.waste}")
+        lblculture    .setText("Culture : ${forSettlement.culture}")
+        lblpollution  .setText("Pollution : ${forSettlement.pollution}")
+        lblplaugeRisk .setText("Plague Risk : ${forSettlement.plaugeRisk}")
+    }
 }
