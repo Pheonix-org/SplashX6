@@ -25,7 +25,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = "gdxtest"
-        gdxVersion = '1.9.14'
+        gdxVersion = '1.9.15-SNAPSHOT'
         roboVMVersion = '2.3.12'
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.3'
@@ -61,8 +61,6 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java-library"
-
-
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
