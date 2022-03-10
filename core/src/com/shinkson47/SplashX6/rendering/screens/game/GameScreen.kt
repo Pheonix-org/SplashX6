@@ -32,35 +32,33 @@
 
 package com.shinkson47.SplashX6.rendering.screens.game
 
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.mouse_focusOnTile
-import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.inGame
-import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
-import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.shinkson47.SplashX6.rendering.screens.Warroom
-import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.game.world.WorldTerrain
-import com.shinkson47.SplashX6.game.cities.Settlement
-import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.maps.MapRenderer
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.maps.MapRenderer
+import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_isSelectingDestination
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
+import com.shinkson47.SplashX6.game.GameHypervisor.cm_isSelectingDestination
+import com.shinkson47.SplashX6.game.GameHypervisor.inGame
+import com.shinkson47.SplashX6.game.GameHypervisor.mouse_focusOnTile
+import com.shinkson47.SplashX6.game.GameHypervisor.unit_selected
+import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.units.Unit
+import com.shinkson47.SplashX6.game.world.WorldTerrain
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.Camera
+import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
+import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.renderers.KeyBindRenderer
-import com.shinkson47.SplashX6.utility.Console
+import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.utility.Debug
 import org.xguzm.pathfinding.grid.GridCell
-import java.util.function.Consumer
 
 /**
  * <h1>The screen used to display and interact with the game</h1>

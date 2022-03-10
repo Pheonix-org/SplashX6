@@ -41,8 +41,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.EndGame
+import com.shinkson47.SplashX6.game.GameHypervisor.ConnectGame
+import com.shinkson47.SplashX6.game.GameHypervisor.EndGame
 import com.shinkson47.SplashX6.game.production.UnitProductionProject
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.network.NetworkClient

@@ -37,9 +37,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
+import com.shinkson47.SplashX6.game.GameHypervisor.camera_focusOn
+import com.shinkson47.SplashX6.game.GameHypervisor.cm_enter
+import com.shinkson47.SplashX6.game.GameHypervisor.unit_selected
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.StageWindow

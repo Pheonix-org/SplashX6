@@ -40,9 +40,9 @@ import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_view
+import com.shinkson47.SplashX6.game.GameHypervisor.camera_focusOn
+import com.shinkson47.SplashX6.game.GameHypervisor.unit_selected
+import com.shinkson47.SplashX6.game.GameHypervisor.unit_view
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.rendering.Camera
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen

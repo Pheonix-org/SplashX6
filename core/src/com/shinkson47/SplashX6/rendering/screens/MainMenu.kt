@@ -39,9 +39,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.ConnectGame
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.LoadGame
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.NewGame
+import com.shinkson47.SplashX6.game.GameHypervisor.ConnectGame
+import com.shinkson47.SplashX6.game.GameHypervisor.LoadGame
+import com.shinkson47.SplashX6.game.GameHypervisor.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.StageWindow
@@ -49,7 +49,6 @@ import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Assets.SPRITES_MENUBG
-import com.shinkson47.SplashX6.utility.Console
 import kotlin.math.roundToInt
 
 

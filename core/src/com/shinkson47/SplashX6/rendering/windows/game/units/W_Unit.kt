@@ -34,7 +34,6 @@ package com.shinkson47.SplashX6.rendering.windows.game.units
 
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.cm_enter
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.game.units.UnitActionDictionary

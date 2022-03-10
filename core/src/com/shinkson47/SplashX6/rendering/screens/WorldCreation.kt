@@ -43,6 +43,9 @@ import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.ai.StateMachine
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.GameHypervisor.doNewGameCallback
+import com.shinkson47.SplashX6.game.GameHypervisor.load
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.doNewGameCallback
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.Nation
