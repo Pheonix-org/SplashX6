@@ -331,7 +331,7 @@ public abstract class StageWindow extends Window implements TurnHook {
             if (contentCell.getActor() == content) return;
             contentCell.setActor(content);
             contentCell.fill().expand().center();
-            w.pack();
+            //w.pack();
         });
     }
 

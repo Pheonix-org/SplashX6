@@ -38,13 +38,14 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.utils.Align
 import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.ai.StateMachine
-import com.shinkson47.SplashX6.game.Nation
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.doNewGameCallback
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
+import com.shinkson47.SplashX6.game.Nation
 import com.shinkson47.SplashX6.game.NationType
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
 import com.shinkson47.SplashX6.game.cities.CityType
@@ -127,6 +128,8 @@ class WorldCreation(
     //#endregion actors
     //==========================================
 
+    val controller = WorldCreationScreenController()
+
     //==========================================
     //#endregion fields
     //#region operations
@@ -169,6 +172,8 @@ class WorldCreation(
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             cancel()
+
+        super.render(delta)
     }
 
     /**
@@ -248,37 +253,54 @@ class WorldCreation(
             //      Advanced terrain
             addButton("specific.gamecreation.terrainSettings", true, true) { stage.addActor(TerrainGenerationEditor()) }
 
-            label("!Seed").left()
+            label("!Seed")
 
-            add(TextField("seed", REF_SKIN_W95)
-                .apply { addListener { GenerationCompanion.SEED = text.hashCode(); true } }
-            )
+
+            expandfill(add(TextField("seed", REF_SKIN_W95))).apply {
+                addListener { GenerationCompanion.SEED = actor.text.hashCode(); true }
+            }
+
 
             hsep()
 
             row()
-            label("specific.gamecreation.civtype").left()
+
+            label("specific.gamecreation.civtype")
 
             val x = SelectBox<NationType>(REF_SKIN_W95)
             x.setItems(*NationType.values())
             x.selected = x.items.first()
-            add(x)
+            expandfill(add(x))
+            row()
 
-            row();
-            val lblLegend = label("!" + Nation.legend(GameData.pref_civType)).actor as Label
+            label("!Number of opponents")
+            with (expandfill(add(TextField(GameData.pref_civCount.toString(), REF_SKIN_W95)))) {
+                actor.addListener(LambdaChangeListener {
+                        try {
+                            GameData.pref_civCount = Integer.valueOf(actor.text)
+                        } catch (e : NumberFormatException) {
+                            actor.text = GameData.pref_civCount.toString()
+                        }
+                })
+            }
+            row()
 
-            //TODO i don't like this varialbe thingy
+            val lblLegend = expandfill(label("!" + Nation.legend(GameData.pref_civType)))
+                .colspan(2)
+                .padLeft(5f)
+                .padRight(5f)
+                .actor as Label
+
+
             x.addListener(LambdaChangeListener {
                 GameData.pref_civType = x.selected
                 lblLegend.setText(Nation.legend(x.selected))
+                    .also { align(Align.center) }
                 pack()
                 centerStage()
             })
 
-            span(
-                hsep()
-                    .padTop(30f)
-            )
+            span(hsep().padTop(30f))
 
             span(addButton("generic.game.new") {
                 GameData.pref_civType = x.selected

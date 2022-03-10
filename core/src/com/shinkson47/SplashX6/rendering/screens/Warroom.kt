@@ -32,11 +32,13 @@
 
 package com.shinkson47.SplashX6.rendering.screens
 
+import com.badlogic.gdx.Game
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.camera_focusOn
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.unit_selected
@@ -69,10 +71,10 @@ class Warroom(val parent : GameScreen) : ScreenAdapter() {
         if (Client.client!!.currentScreen == this) return
         // Set orthographic view with current viewport state.
         camera.setToOrtho(false,parent.cam.viewportWidth,parent.cam.viewportHeight)
-
+        GameData.world!!.rayHandler.setCombinedMatrix(camera)
         // In case we swap screens mid-frame. Sometimes the semaphore was left open.
         parent.sr.end()
-        updateView()
+        updateView()    
     }
 
     override fun render(delta: Float) {
@@ -97,6 +99,7 @@ class Warroom(val parent : GameScreen) : ScreenAdapter() {
 
             sr.end()
         }
+        GameData.world!!.rayHandler.updateAndRender()
     }
 
 

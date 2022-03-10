@@ -36,6 +36,7 @@ import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScalingViewport
 import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.utility.Console
 import com.shinkson47.SplashX6.utility.GraphicalConfig
 import java.util.function.Consumer
 
@@ -68,5 +69,13 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
         stage.viewport.update(width, height)
 
         doResize(this.width.toInt(), this.height.toInt())
+    }
+
+    override fun show() {
+        Console.resetInputProcessing()
+    }
+
+    override fun render(delta: Float) {
+        Console.draw()
     }
 }
