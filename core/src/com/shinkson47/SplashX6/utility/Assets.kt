@@ -51,7 +51,6 @@ import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.I18NBundle
 import com.shinkson47.SplashX6.audio.AudioController.SONGS
 import com.shinkson47.SplashX6.audio.Playlist
-import com.shinkson47.SplashX6.game.AdvancementTree
 import xmlwise.Plist
 import java.awt.image.BufferedImage
 import java.util.*
@@ -195,6 +194,7 @@ internal object Assets : AssetManager() {
      * - which sprites used to represent the cities
      */
     const val DATA_NATION = "$DIR_DATA${SEP}nationdata$PLIST"
+    const val DATA_IMPROVEMENTS = "$DIR_DATA${SEP}buildingdata$PLIST"
 
     /**
      * [PLIST] containing information about the tech tree.
@@ -269,6 +269,8 @@ internal object Assets : AssetManager() {
      */
     const val SPRITES_CITIES      = "${DIR_SPRITES}cities$ATLAS"
 
+    const val SPRITES_BUILDINGS      = "${DIR_SPRITES}buildings$ATLAS"
+
     /**
      * [TextureAtlas] containing keyboard key sprites for [KeyBindRenderer]
      */
@@ -298,7 +300,7 @@ internal object Assets : AssetManager() {
      *
      * TODO not too sure the tilsets in here are still in use.
      */
-    const val DIR_TILESET_DATA  = "tsdata$SEP"
+    const val DIR_TILESET_DATA  = "${DIR_TILEMAPS}tiledata$SEP"
 
     /**
      * [PNG] image used in [WorldTerrain.cartesianToIso] conversion
@@ -325,14 +327,14 @@ internal object Assets : AssetManager() {
      * The order of tilesets can be viewed and changed within the [TILED_TILESETS_DATA].[TMX] file.
      * Tilesets can be viewed in their [TSX] file.
      */
-    const val TILED_TILESETS_DATA = "${DIR_TILEMAPS}tsdata$PLIST"
+    const val TILED_TILESETS_DATA = "${DIR_TILESET_DATA}tileindex$PLIST"
 
     /**
      * [PLIST] mapping a unit's resource name to the index of the corresponding tile in the tilset.
      *
      * i.e unit.fighter -> 13.
      */
-    const val TILED_SPRITES_DATA  = "${DIR_TILEMAPS}sprites$PLIST"
+    const val TILED_SPRITES_DATA  = "${DIR_TILESET_DATA}sprites$PLIST"
 
     /**
      * # A blank [TiledMap] containing every tileset.
@@ -495,15 +497,16 @@ internal object Assets : AssetManager() {
         // Misc
         load(PREFERENCES, Preferences::class.java)
 
+        // Data
+        load(DATA_IMPROVEMENTS, Map::class.java)
+        load(DATA_NATION, Map::class.java)
         load(DATA_TECHS, Map::class.java)
-        afterLoad {
-            val x = AdvancementTree(get(DATA_TECHS))
-        }
 
-        // Textures
+        // Textures & Sprites
         load(SPRITES_UNITS, TextureAtlas::class.java)
         load(SPRITES_CITIES, TextureAtlas::class.java)
         load(SPRITES_MENUBG, TextureAtlas::class.java)
+        load(SPRITES_BUILDINGS, TextureAtlas::class.java)
         load(SPRITES_KEYS, TextureAtlas::class.java)
         load(SPRITES_SPOTIFY_FAIL, Texture::class.java)
         load(TEX_HITTEST, BufferedImage::class.java)
@@ -515,7 +518,6 @@ internal object Assets : AssetManager() {
         load(TILED_SPRITES_DATA, Map::class.java)
 
         // Audio
-        load(DATA_NATION, Map::class.java)
         load(AUDIO_PLAYLIST_DATA, Map::class.java)
         load(AUDIO_MUSIC_GAME_DEFAULT, Music::class.java)
         load(AUDIO_MUSIC_MENU, Music::class.java)
@@ -559,11 +561,17 @@ internal object Assets : AssetManager() {
      *
      * @return true if loading is entirely complete.
      */
-    override fun update(delta: Int): Boolean =
-        super.update(delta).also {
-            if (it)
-                onLoadingComplete()
+    override fun update(delta: Int): Boolean {
+        return try {
+            super.update(delta).also {
+                if (it)
+                    onLoadingComplete()
+            }
+        } catch (e : Throwable) {
+            Utility.fatal("Failed to load assets!", e)
+            false
         }
+    }
 
     /**
      * Used on debug boots to skip the loading screen.

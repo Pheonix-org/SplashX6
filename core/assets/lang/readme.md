@@ -1,0 +1,1 @@
+# Plain text and language bundles used to display text in game.

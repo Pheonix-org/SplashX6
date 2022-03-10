@@ -1,0 +1,1491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>Aqueduct</key>
+	<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Construction", "Player"
+		} -->
+<key>graphic</key>
+<string>aqueduct</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>120</integer>
+<key>upkeep</key>
+<integer>2</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>aqueduct</string>
+<key>helptext</key>
+<string>
+	Allows a city to grow larger than size 10.
+
+	An Aqueduct also eliminates a city's risk of plague causing loss of
+	population, and of fire causing loss of buildings.
+	
+	</string>
+</dict>
+
+<key>Bank</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Banking", "Player"
+		 "Building", "Marketplace", "City"
+		} -->
+<key>graphic</key>
+<string>bank</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>120</integer>
+<key>upkeep</key>
+<integer>3</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>bank</string>
+<key>helptext</key>
+<string>
+	Together with the Marketplace improvement, a Bank increases the
+	luxury and tax production within a city by 100%.
+
+	</string>
+</dict>
+
+<key>Barracks</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		} -->
+<key>graphic</key>
+<string>barracks_i</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		"Tech", "Gunpowder", "Player"
+		} -->
+<key>cost</key>
+<integer>40</integer>
+<key>upkeep</key>
+<integer>1</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>barracks_i</string>
+<key>helptext</key>
+<string>
+	With a Barracks, each new unit built in a city will
+	automatically have Veteran status, which means that its attack and
+	defense strengths are increased by 50%.
+
+	Barracks also prevent stored food and goods in coastal cities being
+	lost to piracy.
+	
+	</string>
+</dict>
+
+<key>Barracks II</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Gunpowder", "Player"
+		} -->
+<key>graphic</key>
+<string>barracks_ii</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		"Tech", "Combustion", "Player"
+		} -->
+<key>cost</key>
+<integer>40</integer>
+<key>upkeep</key>
+<integer>2</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>barracks_ii</string>
+<key>helptext</key>
+<string>
+	With a Barracks, each new unit built in a city will
+	automatically have Veteran status, which means that its attack and
+	defense strengths are increased by 50%.
+
+	Barracks also prevent stored food and goods in coastal cities being
+	lost to piracy.
+	
+	</string>
+</dict>
+
+<key>Barracks III</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Combustion", "Player"
+		} -->
+<key>graphic</key>
+<string>barracks_iii</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>40</integer>
+<key>upkeep</key>
+<integer>3</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>barracks_iii</string>
+<key>helptext</key>
+<string>
+	With a Barracks, each new unit built in a city will
+	automatically have Veteran status, which means that its attack and
+	defense strengths are increased by 50%.
+
+	Barracks also prevent stored food and goods in coastal cities being
+	lost to piracy.
+	
+	</string>
+</dict>
+
+<key>Cathedral</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Religion", "Player"
+		} -->
+<key>graphic</key>
+<string>cathedral</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>160</integer>
+<key>upkeep</key>
+<integer>3</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>cathedral</string>
+<key>helptext</key>
+<string>
+	A Cathedral makes 4 unhappy citizens content in a city, making it
+	easier to maintain order in that city; however, it does not affect
+	citizens made unhappy by military activity.
+
+	</string>
+</dict>
+
+<key>City Walls</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+	<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Masonry", "Player"
+		} -->
+<key>graphic</key>
+<string>city_walls</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>120</integer>
+<key>upkeep</key>
+<integer>2</integer>
+<key>sabotage</key>
+<integer>50</integer>
+<key>sound</key>
+<string>city_walls</string>
+<key>helptext</key>
+<string>
+	City Walls make it easier to defend a city.  They triple the defense
+	strength of units within the city. They are ineffective against
+	Artillery and Bombers.
+	City Walls also prevent the loss of population which
+	occurs when a defending unit is destroyed by a land unit.
+
+	For cities near rivers, City Walls also eliminate the risk of population
+	loss from flooding.
+	
+	</string>
+</dict>
+
+<key>Colosseum</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Construction", "Player"
+		} -->
+<key>graphic</key>
+<string>colosseum</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>100</integer>
+<key>upkeep</key>
+<integer>4</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>colosseum</string>
+<key>helptext</key>
+<string>
+	Entertains the citizens of a city, making 3 unhappy citizens content. 
+	However, it does not affect citizens made unhappy by military activity.
+
+	</string>
+</dict>
+
+<key>Courthouse</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Code of Laws", "Player"
+		} -->
+<key>graphic</key>
+<string>courthouse</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>80</integer>
+<key>upkeep</key>
+<integer>1</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>courthouse</string>
+<key>helptext</key>
+<string>
+	Reduces the corruption in a city by 50%. Has no effect in your capital
+	city.
+
+	</string>
+</dict>
+
+<key>Factory</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Industrialization", "Player"
+		} -->
+<key>graphic</key>
+<string>factory</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>200</integer>
+<key>upkeep</key>
+<integer>4</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>factory</string>
+<key>helptext</key>
+<string>
+	Increases the shield production in a city by 50%.  This increase may
+	also contribute significantly to pollution.
+
+	</string>
+</dict>
+
+<key>Granary</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Pottery", "Player"
+		} -->
+<key>graphic</key>
+<string>granary</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>60</integer>
+<key>upkeep</key>
+<integer>1</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>granary</string>
+<key>helptext</key>
+<string>
+	The amount of stored food will be set to half full whenever a city
+	with a Granary shrinks or grows. This helps a city to grow faster
+	and more easily withstand famine.
+
+	Famine can occur when food stock reaches zero due to a food deficit
+	(which a Granary merely delays), in which case it leads to the loss
+	of any Settlers consuming food, or of city population if there are
+	none. Famine can also occur at any time due to random crop failure,
+	in which case it causes loss of population and all stored food;
+	a Granary eliminates this risk.
+	</string>
+</dict>
+
+<key>Hydro Plant</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Electronics", "Player" "Extra", "River", "Adjacent"
+		"Building", "Factory", "City"
+		}--> 
+	<key>graphic</key>
+<string>hydro_plant</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>240</integer>
+<key>upkeep</key>
+<integer>4</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>hydro_plant</string>
+<key>helptext</key>
+<string>
+	Reduces the amount of pollution generated by production in a city
+	by 50%.  It also
+	increases the shield production of a Factory or Mfg. Plant in the
+	city: a Factory and a Hydro Plant together give a 100% production
+	bonus, and a Factory, Mfg. Plant and Hydro Plant together give
+	a 150% production bonus.
+
+	A city can only have one Hydro Plant, Power Plant, or
+	Nuclear Plant.  A city can only build a Hydro Plant if it is next
+	to (or on) a River tile.
+	</string>
+</dict>
+
+<key>Library</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Writing", "Player"
+		} -->
+<key>graphic</key>
+<string>library</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>80</integer>
+<key>upkeep</key>
+<integer>1</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>library</string>
+<key>helptext</key>
+<string>
+	Increases the science output in a city by 50%.
+
+	</string>
+</dict>
+
+<key>Marketplace</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Currency", "Player"
+		} -->
+<key>graphic</key>
+<string>marketplace</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>80</integer>
+<key>upkeep</key>
+<integer>1</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>marketplace</string>
+<key>helptext</key>
+<string>
+	Increases the luxury and tax output in a city by 50%.
+
+	</string>
+</dict>
+
+<key>Mass Transit</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Mass Production", "Player"
+		} -->
+<key>graphic</key>
+<string>mass_transit</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>160</integer>
+<key>upkeep</key>
+<integer>4</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>mass_transit</string>
+<key>helptext</key>
+<string>
+	Neutralizes the pollution generated by the population. 
+	The population simply has no effect on the pollution generated in
+	the city.
+
+	</string>
+</dict>
+
+<key>Mfg. Plant</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Robotics", "Player" "Building", "Factory", "City"
+		} -->
+	<key>graphic</key>
+<string>mfg_plant</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>320</integer>
+<key>upkeep</key>
+<integer>6</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>mfg_plant</string>
+<key>helptext</key>
+<string>
+	Together with a Factory, a Manufacturing Plant increases the shield
+	production in a city by 100%.
+
+	</string>
+</dict>
+
+<key>Nuclear Plant</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Nuclear Power", "Player"  "Building", "Factory", "City"
+		} -->
+	<key>graphic</key>
+<string>nuclear_plant</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>240</integer>
+<key>upkeep</key>
+<integer>2</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>nuclear_plant</string>
+<key>helptext</key>
+<string>
+	Reduces the amount of pollution generated by production in a city
+	by 50%.  It also
+	increases the shield production of a Factory or Mfg. Plant in
+	the city: a Factory and a Nuclear Plant together give a 100%
+	production bonus, and a Factory, Mfg. Plant and Nuclear Plant
+	together give a 150% production bonus.
+
+	A city can only have one Hydro Plant, Power Plant, or
+	Nuclear Plant.
+	</string>
+</dict>
+
+<key>Palace</key>
+<dict>
+<key>genus</key>
+<string>SmallWonder</string>
+	<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Masonry", "Player"
+		} -->
+<key>graphic</key>
+<string>palace</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>200</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>palace</string>
+<key>helptext</key>
+<string>
+	Makes a city the capital and the center of your government.
+	Corruption in other cities is related to how far away from the
+	capital they are, except when the government is Democracy or
+	Communism. On top of this, corruption in your capital itself is
+	half of what it would otherwise be (as if it had a Courthouse).
+
+	The cost to enemy Diplomats of inciting a revolt in a city also
+	depends upon the city's distance from the capital (under all
+	forms of government). Your capital city itself cannot be incited
+	to revolt, and enjoys a bonus when enemy agents try to evade your
+	own agents stationed in the city, or sabotage your buildings.
+	
+	Take good care of your capital, as its loss may result in your
+	empire plunging into civil war. Losing your current palace also
+	results in losing whatever spaceship you might have.
+	
+	If the capital is in a dangerous location, or a more central capital
+	would give a better corruption distribution, you can move your palace
+	by rebuilding it in another city.
+	</string>
+</dict>
+
+<key>Power Plant</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Refining", "Player"  "Building", "Factory", "City"
+		}-->
+	<key>graphic</key>
+<string>power_plant</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>160</integer>
+<key>upkeep</key>
+<integer>4</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>power_plant</string>
+<key>helptext</key>
+<string>
+	Increases the shield production of a Factory or Mfg. Plant in a
+	city: a Factory and a Power Plant together give a 100% production
+	bonus, and a Factory, Mfg. Plant and Power Plant together give
+	a 150% production bonus.  The extra production may lead to the city
+	generating more pollution.
+
+	A city can only have one Hydro Plant, Power Plant, or
+	Nuclear Plant.
+	
+	</string>
+</dict>
+
+<key>Recycling Center</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Recycling", "Player"
+		} -->
+<key>graphic</key>
+<string>recycling_center</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>200</integer>
+<key>upkeep</key>
+<integer>2</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>recycling_center</string>
+<key>helptext</key>
+<string>
+	Building a Recycling Center reduces the amount of pollution
+	generated by production in a city by 66%.
+
+	</string>
+</dict>
+
+<key>SDI Defense</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Superconductors", "Player"
+		} -->
+<key>graphic</key>
+<string>sdi_defense</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>200</integer>
+<key>upkeep</key>
+<integer>4</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>sdi_defense</string>
+<key>helptext</key>
+<string>
+	Protects a city and its environs (up to 2 tiles away) from attacks
+	by other nations' Nuclear units. A Nuclear unit not owned by you or a
+	teammate which attacks a city with SDI Defense, or attacks a unit (or is
+	deliberately exploded) within range, is shot down and simply has no effect.
+
+	</string>
+</dict>
+
+<key>Space Component</key>
+<dict>
+<key>genus</key>
+<string>Special</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Plastics", "Player"
+		} -->
+<key>graphic</key>
+<string>space_component</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>160</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>space_component</string>
+<key>helptext</key>
+<string>
+	Space Components can be differentiated into Propulsion and Fuel
+	Components.  Each pair of them reduces your spaceship's travel
+	time.  You can build up to 8 pairs.
+
+	Before you can build any spaceship parts, the Apollo Program wonder
+	must have been built by any player.
+	
+	</string>
+</dict>
+
+<key>Space Module</key>
+<dict>
+<key>genus</key>
+<string>Special</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Robotics", "Player"
+		} -->
+<key>graphic</key>
+<string>space_modules</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>320</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>space_module</string>
+<key>helptext</key>
+<string>
+	Space Modules are the most expensive parts of spaceships.  There
+	are three different types of Space Module:
+
+	- Habitation Module: provides living space for 10,000 people.
+
+	- Life Support Module: provides food and water for the population of
+	one Habitation Module.
+	
+	- Solar Panels: provides the energy needed for any two of the other
+	Modules.
+
+	You can build up to 4 Space Modules of each kind.
+
+	Before you can build any spaceship parts, the Apollo Program wonder
+	must have been built by any player.
+	</string>
+</dict>
+
+<key>Space Structural</key>
+<dict>
+<key>genus</key>
+<string>Special</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Space Flight", "Player"
+		} -->
+<key>graphic</key>
+<string>space_structural</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>80</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>space_structural</string>
+<key>helptext</key>
+<string>
+	Space Structurals form the base of your spaceship.  All other
+	spaceship parts need to be connected to Structurals in order to
+	function.  You can build up to 32 Space Structurals.
+
+	Before you can build any spaceship parts, the Apollo Program wonder
+	must have been built by any player.
+	
+	</string>
+</dict>
+
+<key>Temple</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Ceremonial Burial", "Player"
+		} -->
+<key>graphic</key>
+<string>temple</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>40</integer>
+<key>upkeep</key>
+<integer>1</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>temple</string>
+<key>helptext</key>
+<string>
+	Makes one unhappy citizen content.  The Mysticism advance doubles
+	this effect, as does the Oracle wonder.  With both Mysticism and the Oracle,
+	4 citizens are made content.  Does not affect citizens made unhappy by military
+	activity.
+
+	A Temple in a city near mountains additionally prevents population loss
+	from volcanic activity.
+	
+	</string>
+</dict>
+
+<key>University</key>
+<dict>
+<key>genus</key>
+<string>Improvement</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "University", "Player"  "Building", "Library", "City"
+		}-->
+	<key>graphic</key>
+<string>university</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>160</integer>
+<key>upkeep</key>
+<integer>3</integer>
+<key>sabotage</key>
+<integer>100</integer>
+<key>sound</key>
+<string>university</string>
+<key>helptext</key>
+<string>
+	Together with a Library, a University increases the science
+	production of a city by 100%.
+
+	</string>
+</dict>
+
+<key>Apollo Program</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Space Flight", "Player"
+		} -->
+<key>graphic</key>
+<string>apollo_program</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>600</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>helptext</key>
+<string>
+	TODO corroupt
+	the player always has up-to-date knowledge of all tiles with cities
+	despite fog-of-war. It allows all players to start building
+	spaceship parts (assuming they have researched the necessary
+	technologies).
+	</string>
+</dict>
+
+<key>Colossus</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Bronze Working", "Player"
+		} -->
+<key>graphic</key>
+<string>colossus</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Electricity", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>200</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>colossus</string>
+<key>helptext</key>
+<string>
+	Each tile around the city where this wonder is built that is already
+	generating some trade produces one extra trade resource.
+
+	</string>
+</dict>
+
+<key>Copernicus' Observatory</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Astronomy", "Player"
+		} -->
+<key>graphic</key>
+<string>copernicus_observatory</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Automobile", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>300</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>copernicus_observatory</string>
+<key>helptext</key>
+<string>
+	Boosts science production by 50% in the city where it is built.
+
+	</string>
+</dict>
+
+<key>Cure For Cancer</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Genetic Engineering", "Player"
+		} -->
+<key>graphic</key>
+<string>cure_for_cancer</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>600</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>cure_for_cancer</string>
+<key>helptext</key>
+<string>
+	This stunning technological achievement makes one unhappy
+	citizen content in each of your cities (including citizens unhappy
+	about military activity).
+
+	</string>
+</dict>
+
+<key>Darwin's Voyage</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Railroad", "Player"
+		} -->
+<key>graphic</key>
+<string>darwins_voyage</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>300</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>darwins_voyage</string>
+<key>helptext</key>
+<string>
+	Charles Darwin's voyage sparked the discovery of the evolution
+	of the species, which inspired greater confidence in science.
+	Gives two immediate technology advances.
+
+	</string>
+</dict>
+
+<key>Great Library</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Literacy", "Player"
+		} -->
+<key>graphic</key>
+<string>great_library</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Electronics", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>300</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>great_library</string>
+<key>helptext</key>
+<string>
+	The civilization which builds the Great Library gets every advance
+	that at least two other teams have achieved.
+
+	</string>
+</dict>
+
+<key>Great Wall</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Masonry", "Player"
+		} -->
+<key>graphic</key>
+<string>great_wall</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Gunpowder", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>300</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>great_wall</string>
+<key>helptext</key>
+<string>
+	Works as a City Wall in all your cities.
+	</string>
+</dict>
+
+<key>Hanging Gardens</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Pottery", "Player"
+		} -->
+<key>graphic</key>
+<string>hanging_gardens</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Invention", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>300</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>hanging_gardens</string>
+<key>helptext</key>
+<string>
+	Makes one content citizen happy in every city. In the unlikely event
+	where there are no content citizens to get the effect of Hanging
+	Gardens, the wonder applies to unhappy citizens instead (including
+	those unhappy about military activity), making each content.
+
+	</string>
+</dict>
+
+<key>Hoover Dam</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Electronics", "Player"
+		} -->
+<key>graphic</key>
+<string>hoover_dam</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>600</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>hoover_dam</string>
+<key>helptext</key>
+<string>
+	Works as if you had a Hydro Plant in every city
+	on the same continent where the wonder is built. 
+	(This reduces pollution and increases the effects of
+	Factories and Mfg. Plants.)
+
+	</string>
+</dict>
+
+<key>Isaac Newton's College</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Theory of Gravity", "Player"
+		} -->
+<key>graphic</key>
+<string>isaac_newtons_college</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Nuclear Fission", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>400</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>isaac_newtons_college</string>
+<key>helptext</key>
+<string>
+	Boosts science production by 100% in the city where it is built.
+
+	</string>
+</dict>
+
+<key>J.S. Bach's Cathedral</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Religion", "Player"
+		} -->
+<key>graphic</key>
+<string>js_bachs_cathedral</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>400</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>js_bachs_cathedral</string>
+<key>helptext</key>
+<string>
+	Makes two unhappy citizens content in every city of yours
+	on the same continent where the wonder is built (including citizens
+	unhappy about military activity).
+
+	</string>
+</dict>
+
+<key>Lighthouse</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Map Making", "Player"
+		} -->
+<key>graphic</key>
+<string>lighthouse</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Magnetism", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>200</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>lighthouse</string>
+<key>helptext</key>
+<string>
+	Gives all your sea units 1 additional movement point.
+
+	</string>
+</dict>
+
+<key>Magellan's Expedition</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Navigation", "Player"
+		} -->
+<key>graphic</key>
+<string>magellans_expedition</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>400</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>magellans_expedition</string>
+<key>helptext</key>
+<string>
+	Gives all sea units 1 additional movement point.
+
+	</string>
+</dict>
+
+<key>Manhattan Project</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Nuclear Fission", "Player"
+		} -->
+<key>graphic</key>
+<string>manhattan_project</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>600</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>manhattan_project</string>
+<key>helptext</key>
+<string>
+	TODO this is set in client/helpdata.c:helptext_wonder()
+	</string>
+</dict>
+
+<key>Michelangelo's Chapel</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Religion", "Player"
+		} -->
+<key>graphic</key>
+<string>michelangelos_chapel</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Communism", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>300</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>michelangelos_chapel</string>
+<key>helptext</key>
+<string>
+	Double effects of Cathedrals, in all cities.
+
+	</string>
+</dict>
+
+<key>Oracle</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Mysticism", "Player"
+		} -->
+<key>graphic</key>
+<string>oracle</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Religion", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>300</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>oracle</string>
+<key>helptext</key>
+<string>
+	Doubles the effect of a Temple in every city.
+	Does not affect citizens made unhappy by military activity.
+
+	</string>
+</dict>
+
+<key>Pyramids</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Masonry", "Player"
+		} -->
+<key>graphic</key>
+<string>pyramids</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Communism", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>300</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>pyramids</string>
+<key>helptext</key>
+<string>
+	Allows you to choose any government, including those that have not yet
+	been researched by your civilization, and without the transition
+	period of Anarchy.
+
+	</string>
+</dict>
+
+<key>SETI Program</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Computers", "Player"
+		} -->
+<key>graphic</key>
+<string>seti_program</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>600</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>seti_program</string>
+<key>helptext</key>
+<string>
+	Boosts science production in each city by 50%.
+
+	</string>
+</dict>
+
+<key>Shakespeare's Theater</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Medicine", "Player"
+		} -->
+<key>graphic</key>
+<string>shakespeares_theatre</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range", "survives"
+		"Tech", "Electronics", "World", TRUE
+		} -->
+<key>cost</key>
+<integer>400</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>shakespeares_theatre</string>
+<key>helptext</key>
+<string>
+	Makes all angry and unhappy citizens content in the city where it
+	is located, including citizens unhappy about military activity.
+
+	</string>
+</dict>
+
+<key>United Nations</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Communism", "Player"
+		} -->
+<key>graphic</key>
+<string>united_nations</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>600</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>united_nations</string>
+<key>helptext</key>
+<string>
+	Allows you to choose any government, including those that have not yet
+	been researched by your civilization, and without the transition
+	period of Anarchy.
+	</string>
+
+	
+</dict>
+<key>Women's Suffrage</key>
+<dict>
+<key>genus</key>
+<string>GreatWonder</string>
+<!-- reqs	=
+		{ "type", "name", "range"
+		"Tech", "Industrialization", "Player"
+		} -->
+<key>graphic</key>
+<string>womens_suffrage</string>
+<!-- obsolete_by	=
+		{ "type", "name", "range"
+		} -->
+<key>cost</key>
+<integer>600</integer>
+<key>upkeep</key>
+<integer>0</integer>
+<key>sabotage</key>
+<integer>0</integer>
+<key>sound</key>
+<string>womens_suffrage</string>
+<key>helptext</key>
+<string>
+	In all cities, the unhappiness effect of every unit is reduced by 1.
+	This means that in a Republic, units do not cause unhappiness, and in
+	a Democracy, aggressive units cause only 1 unhappy citizen each.
+	</string>
+</dict>
+</dict>
+</plist>
+
+<!-- ; reqs		= requirements to build the building (see effects.ruleset
+	;		  and README.effects for help on requirements)
+	; flags         = special flag strings
+	;
+	; ** Building flags **
+	; "VisibleByOthers"  = Anyone who can see your city knows whether it has
+	;                      this improvement. (Great and small wonders are
+	;                      always visible.)
+	; "SaveSmallWonder"  = If you lose the city with this building in, and the
+	;                      "savepalace" server setting is enabled, another will
+	;                      be built for free in a random city.
+	;                      Should only be used with genus "SmallWonder".
+	; "Gold"             = Not a real building; production turned into gold
+	;                      indefinitely (capitalization/coinage).
+	;                      Genus should be "Convert".
+	; "DisasterProof"    = Disasters never destroy this building. Is meaningful
+	;                      only for genus "Improvement" buildings as others are
+	;                      automatically disaster proof.
+	;
+	; -->

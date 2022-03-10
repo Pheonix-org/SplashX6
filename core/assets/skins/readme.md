@@ -1,0 +1,1 @@
+# Visual assets for UI created with Stage2D.ui in the engine.

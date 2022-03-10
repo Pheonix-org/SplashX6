@@ -1,0 +1,2 @@
+# World generation tile set data.
+Contains Property List XML files mapping resource names with positions within `tsx` tilesets. Used in world generation to locate tiles in the tilesets from thier resource name.
