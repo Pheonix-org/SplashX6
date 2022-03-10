@@ -27,69 +27,67 @@
  ░         \::/    /                                         \::/    /        \::/    /                \::/    /                \::/    /                       |::|___|          ░
  ░          \/____/                                           \/____/          \/____/                  \/____/                  \/____/                         ~~               ░
  ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.ai
+package com.shinkson47.SplashX6.rendering.windows
 
-import com.badlogic.gdx.math.MathUtils
-import com.badlogic.gdx.math.Vector3
-import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.units.UnitActionDictionary
-import com.shinkson47.SplashX6.game.units.UnitClass
+import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import com.shinkson47.SplashX6.ai.StateMachine
+import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.SKIN_W95
+import com.shinkson47.SplashX6.utility.Utility
 
 /**
- * A [StateMachine] test, which encompasses a unit which will
- * travel for a bit before settling.
- *
- * @author [Jordan T. Gray](https://www.shinkson47.in) on 05/08/2021
- * @since PRE-ALPHA 0.0.3
+ * # TODO
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 07/03/2022
+ * @since v1
  * @version 1
  */
-class testUnit(unitClass: UnitClass, isoVec: Vector3) : com.shinkson47.SplashX6.game.units.Unit(unitClass, isoVec) {
+class W_StateMachines : StageWindow("!State Machines") {
 
-    private var destsReached = 0
-    private val travelCount = MathUtils.random(3)
-    val ai = object : StateMachine(this::class.simpleName!!) {
-        init {
-            // Move
-            addState(State({ UnitActionDictionary.TRAVEL.run(this@testUnit) }, this))
+    private val sb_statemachines = SelectBox<StateMachine>(Assets.get<Skin>(SKIN_W95))
+    private val sb_states = SelectBox<StateMachine.State>(Assets.get<Skin>(SKIN_W95))
 
-            // Choose new destination. Exit script returns to move state.
-            addState(State({ moveOrSettle() }, this, enterScript = { destsReached++; }))
+    init {
+        label("!State machines")
+        add(sb_statemachines)
+        row()
 
-            // Once we've reached our destination, switch to second state.
-            registerSwitchCondition(0, 1) { pathNodes?.size == 0 }
-            registerSwitchCondition(1, 0) { true }
+        sb_statemachines.addListener(LambdaChangeListener {
+            refresh()
+        })
 
-            // Start in travel state.
-            defaultState(1)
+        label("!States")
+        add(sb_states)
+        row()
+
+        add(button("!Panic"){selectedMachine()?.forceDefault(); refresh() })
+            .expandX()
+            .fillX()
+
+        tooltip("!Resets the state machine to the default state.")
+
+        add(button("!Force into"){selectedMachine()?.switchState(sb_states.selected); refresh()})
+            .expandX()
+            .fillX()
+
+        tooltip("!Force the state machine to switch to the selected state")
+
+        pack()
+        refresh()
+    }
+
+    fun selectedMachine() = sb_statemachines.selected
+
+    override fun refresh() {
+        sb_statemachines.items = Utility.CollectionToGDXArray(StateMachine.activeMachines)
+        selectedMachine()?.let{
+
+            sb_states.setItems(Utility.CollectionToGDXArray(it.states))
+            sb_states.selected = it.currentState
         }
-    }
 
-    /**
-     * Moves to [travelCount] number of destinations.
-     *
-     * Once traveled enough, will settle.
-     */
-    private fun moveOrSettle() {
-        if (destsReached >= travelCount)
-            UnitActionDictionary.SETTLE.run(this)
-        else
-            chooseNewDestination()
     }
-
-    /**
-     * Finds a new reachable destination that is on land.
-     */
-    private fun chooseNewDestination() {
-        do {
-            val dest = GameData.world!!.randomPointOnLand()
-            setDestination(dest.x.toInt(), dest.y.toInt())
-        } while (pathNodes.isNullOrEmpty()) // keep looking for destinations untill we find one that we're able to travel to.
-    }
-    // TODO Unit calls:
-    // - Can reach destination?
-    // - Choose random destination
-
 }
