@@ -320,7 +320,7 @@ open class Unit(
 
 
 
-    override fun toString() = "$displayName (X${isoVec.x}, Y${isoVec.y})"
+    override fun toString() = "$displayName $isoVec"
 
     // =============================================
     // endregion functions

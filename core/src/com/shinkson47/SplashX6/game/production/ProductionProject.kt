@@ -33,6 +33,7 @@ package com.shinkson47.SplashX6.game.production
 
 import com.badlogic.gdx.math.MathUtils
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 
 /**
@@ -51,7 +52,7 @@ import com.shinkson47.SplashX6.game.units.UnitClass
  * @property production The production system that this project belongs to.
  * @property isClaimed If the project has been completed, and the result has been claimed, then true.
  */
-abstract class ProductionProject(
+abstract class ProductionProject<T>(
     val cost : Int = MathUtils.random(1, 20),
     var contributed : Int = 0,
     var production : ProductionManager<*>? = null, // TODO unknown type.
@@ -111,7 +112,7 @@ abstract class ProductionProject(
      * # Claims the result of this project.
      * i.e this may spawn a unit, or place a new structure.
      */
-    abstract fun doClaim()
+    abstract fun doClaim(): T
     fun progress(): Float = contributed.toFloat() / cost.toFloat()
 }
 
@@ -126,24 +127,8 @@ abstract class ProductionProject(
  *
  * @property type The type of unit this project produces.
  */
-class UnitProductionProject(val type : UnitClass) : ProductionProject() {
+class UnitProductionProject(val type : UnitClass) : ProductionProject<Unit>() {
     override fun doClaim() = GameHypervisor.spawn((production!! as CityProductionManager).forCity.isoVec, type)
 
     override fun toString(): String = type.toString()
-}
-
-class BuildingProductionProject : ProductionProject() {
-    override fun doClaim() { TODO("Not yet implemented") }
-}
-
-class AdvancementProductionProject : ProductionProject() {
-    override fun doClaim() { TODO("Not yet implemented") }
-}
-
-class TechAdvancementProductionProject : ProductionProject() {
-    override fun doClaim() { TODO("Not yet implemented") }
-}
-
-class CivicAdvancementProductionProject : ProductionProject() {
-    override fun doClaim() { TODO("Not yet implemented") }
 }

@@ -43,14 +43,25 @@ import com.shinkson47.SplashX6.utility.Assets
  * @since v1
  * @version 1
  */
-class ImprovementProductionManager(forCity: Settlement) : ProductionManager<ImprovementProductionProject>() {
-    override fun evaluateProducible(): Array<ImprovementProductionProject> {
-        return Array<ImprovementProductionProject>(0).apply {
+class ImprovementProductionManager(val forCity: Settlement) : ProductionManager<ImprovementProductionProject>() {
+
+    // TODO This is a pretty damn taxing operation.
+    override fun evaluateProducible(): Array<ImprovementProductionProject> =
+        Array<ImprovementProductionProject>(0).apply {
             Assets.get<Map<String, *>>(Assets.DATA_IMPROVEMENTS).forEach {
-                add(ImprovementProductionProject(it.key))
+
+                if ( // This guard rejects improvements that are already completed or in the queue.
+                    forCity.improvements.find { y -> y.name == it.key } == null
+                &&  queue.find { y -> y.name == it.key } == null ) {
+                        ImprovementProductionProject(it.key).apply {
+                            if (doClaim().reqsMet(this@ImprovementProductionManager.forCity)) {
+                                forCity = this@ImprovementProductionManager.forCity
+                                add(this)
+                            }
+                        }
+                }
             }
         }
-    }
 
     override fun evaluatePower(): Int {
         TODO("Not yet implemented")
@@ -58,9 +69,10 @@ class ImprovementProductionManager(forCity: Settlement) : ProductionManager<Impr
 }
 
 class ImprovementProductionProject(
-    val name: String
-) : ProductionProject() {
-    override fun doClaim() {
+    val name: String,
+    var forCity: Settlement? = null
+) : ProductionProject<Improvement>() {
+    override fun doClaim() =
         with (Assets.get<Map<String, *>>(Assets.DATA_IMPROVEMENTS)[name] as HashMap<String, *>) {
             Improvement(
                 name,
@@ -68,10 +80,14 @@ class ImprovementProductionProject(
                 this["cost"] as Int,
                 this["upkeep"] as Int,
                 this["sabotage"] as Int,
-                this["sound"] as String,
-            )
+                this["sound"] as String?,
+                this["reqs"] as ArrayList<HashMap<String, String>>?
+            ).also { y -> forCity?.let { y.claim(it) } } // Add to city.
+
+
         }
-    }
+
+
 
     override fun toString() = name
 }

@@ -62,7 +62,7 @@ import java.io.Serializable
  * @param basePower The quantity of power that this
  * @param queueSizeLimit The maximum number of projects that may be backlogged. TODO no limit.
  */
-abstract class ProductionManager<PT : ProductionProject> (
+abstract class ProductionManager<PT : ProductionProject<*>> (
 
     /**
      * The quantity of power that this production system starts with.

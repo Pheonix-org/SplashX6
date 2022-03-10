@@ -308,6 +308,16 @@ object Console : GUIConsole() {
             console.log(parseUnitIndex(nationIndex, cityIndex).toString())
         }
 
+        @ConsoleDoc(description = "Shows what unit is selected.")
+        fun peekSelected() {
+            GameData.selectedUnit.apply {
+                console.log(
+                    if (this == null) "No unit is selected."
+                    else "$this, ${ownedBy()}"
+                )
+            }
+        }
+
         @ConsoleDoc(description = "Selects any unit in the game, regardless of what nation they belong to.",
                     paramDescriptions = [
                     "The index ID of the nation to look at. See 'peekNations'",
@@ -321,7 +331,7 @@ object Console : GUIConsole() {
 
         @ConsoleDoc(description = "Disbands the selected unit.")
         fun disband() {
-            console.log("Disbanded ${GameHypervisor.unit_disband_global()}.")
+            console.log("Disbanded ${GameHypervisor.unit_disband()}.")
         }
 
         @ConsoleDoc(description = "Focusses the camera on the given isometric co-ordinate.",

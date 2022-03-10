@@ -54,7 +54,7 @@ import kotlin.math.ceil
  * @since v1
  * @version 1
  */
-abstract class ProductionTab<T : ProductionProject, P : ProductionManager<T>>(
+abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>(
     var productionManager : P? = null
 ) : Table() {
 
@@ -126,7 +126,7 @@ abstract class ProductionTab<T : ProductionProject, P : ProductionManager<T>>(
                     }
                     refresh(null)
 
-                    if (index != -1)
+                    if (index != -1 && index < production.items.size - 1)
                         production.selectedIndex = index
                 })
                 btnAddButton = it

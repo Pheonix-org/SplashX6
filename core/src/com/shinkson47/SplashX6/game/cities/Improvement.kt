@@ -31,6 +31,8 @@
 
 package com.shinkson47.SplashX6.game.cities
 
+import xmlwise.XmlParseException
+
 /**
  * # TODO
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 09/03/2022
@@ -43,10 +45,29 @@ class Improvement(
     val cost: Int,
     val upkeep: Int,
     val sabotage: Int,
-    val sound: String,
+    val sound: String?,
+    val reqs: ArrayList<HashMap<String, String>>?
 ) {
-    fun claim(city: Settlement) {
+    fun claim(city: Settlement) =
+        city.improvements.add(this)
 
+    /**
+     * Determines if the given city meets the requirement to contain this
+     * improvement.
+     *
+     * @param city City to test this against.
+     */
+    fun reqsMet(city: Settlement): Boolean {
+        reqs?.forEach { requrement ->
+            return when (requrement["type"]) {
+                "Building" -> city.improvements.find { it.name == requrement["name"] } != null
+                "Tech"     -> false // TODO match against researched techs.
+                else -> { throw XmlParseException("Requirement '${requrement[name]}' for improvement '$name' had the type of '${requrement["type"]}', which is not valid.") }
+            }
+        }
+
+        // Had no requirements.
+        return true
     }
 }
 

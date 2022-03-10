@@ -297,7 +297,7 @@ public final class Utility {
     }
     
     public static void warnPlayer(String message, String title) {
-        message(title, message, true);
+        message(message, title, true);
     }
 
     public static void message(String message) {

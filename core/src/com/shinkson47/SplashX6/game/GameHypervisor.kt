@@ -294,9 +294,8 @@ class GameHypervisor {
          * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
          */
         @JvmStatic
-        fun spawn(pos: Vector3, spriteName: UnitClass) {
+        fun spawn(pos: Vector3, spriteName: UnitClass) =
             spawn(pos.x.toInt(), pos.y.toInt(), spriteName)
-        }
 
         //TODO these shouldn't be in this region.
         /**
@@ -330,7 +329,7 @@ class GameHypervisor {
         fun nation_dissolve(nation: Nation) {
             nation.settlements.clear()
 
-            nation.units.forEach { unit_disband(it, nation) }
+            nation.units.forEach { unit_disband(it) }
             nation.units.clear()
 
             GameData.nations.remove(nation)
@@ -406,24 +405,12 @@ class GameHypervisor {
         fun unit_disband() {
             if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't disband a unit if no unit selected!"))) return
             unit_disband(unit_selected()!!)
-            GameData.selectedUnit = null
         }
 
         @JvmStatic
-        fun unit_disband(unit: Unit, nation: Nation = GameData.player!!) {
-            if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't disband a unit if no unit selected!"))) return
-            nation.units.removeValue(unit, true)
-        }
-
-        fun unit_disband_global() {
-            unit_disband_global(GameData.selectedUnit!!)
-            GameData.selectedUnit = null
-        }
-
-        fun unit_disband_global(it: Unit) {
-            it.ownedBy()?.apply {
-                this.units.removeValue(it, true)
-            }
+        fun unit_disband(unit: Unit) {
+            if (GameData.selectedUnit == unit) GameData.selectedUnit = null
+            unit.ownedBy()?.units?.removeValue(unit, true)
         }
 
         @JvmStatic
@@ -540,7 +527,7 @@ class GameHypervisor {
         fun settle(it : Unit) {
             it.ownedBy()!!.settle(it.isoVec.cpy())
             
-            unit_disband_global(it)
+            unit_disband(it)
         }
 
         /**
