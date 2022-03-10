@@ -37,3 +37,5 @@ build/
 free civ data/
 
 statescript/src/gen/
+
+**/bin/
