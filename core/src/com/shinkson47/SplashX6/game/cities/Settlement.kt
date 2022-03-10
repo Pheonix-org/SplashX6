@@ -37,12 +37,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.production.CityProductionManager
+import com.shinkson47.SplashX6.game.production.ImprovementProductionManager
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 import com.shinkson47.SplashX6.utility.TurnHook
+import kotlin.math.cos
+import kotlin.math.sin
 
 /**
  * # A settlement in a nation.
@@ -99,6 +104,8 @@ class Settlement(
             checkSpriteUpdate()
         }
 
+
+
     var trade = 2
     var food = 5
     var science = 1
@@ -108,6 +115,8 @@ class Settlement(
     var culture     = 0
     var pollution   = 0
     var plaugeRisk  = 0
+
+    val improvements = ArrayList<Improvement>()
 
 
     /**
@@ -151,10 +160,88 @@ class Settlement(
     /**
      * ## The production manager of the city.
      */
-    val production = CityProductionManager(this)
+    val unitProduction = CityProductionManager(this)
+    val improvementProduction = ImprovementProductionManager(this)
+
+
 
     // ============================================================
     // endregion fields
+    // region border
+    // ============================================================
+
+
+    private val saughtRadius = 2
+    private val ownedLand = Array<Vector2>()
+    private val borderVectors = Array<Vector2>()
+
+    init { initOwnedLand() }
+
+    /**
+     * # Determines what land the city owns when it is created.
+     */
+    private fun initOwnedLand() {
+        val left = isoVec.x - saughtRadius
+        val right = isoVec.x + saughtRadius
+        val top = isoVec.y + saughtRadius
+        val bottom = isoVec.y - saughtRadius
+        for (x in left.toInt() until right.toInt() + 1)
+            for (y in bottom.toInt() until top.toInt() + 1)
+                ownedLand.add(
+                    rotate_point(isoVec.x, isoVec.y, Vector2(x.toFloat(),y.toFloat()))
+                )
+    }
+
+//    private val traverseBorder(f: (Int, Int))
+
+
+    private val cachedSine = sin(41f)
+    private val cachedCoSine = cos(41f)
+    /**
+     * # Rotates a co-ordinate about a point.
+     *
+     * TODO test and move somewhere else.
+     */
+    private fun rotate_point(cx: Float, cy: Float, p: Vector2): Vector2 {
+
+        // translate point back to origin:
+        p.x -= cx
+        p.y -= cy
+
+        // rotate point
+        val xnew: Float = p.x * cachedCoSine - p.y * cachedSine
+        val ynew: Float = p.x * cachedSine + p.y * cachedCoSine
+
+        // translate point back:
+        p.x = xnew + cx
+        p.y = ynew + cy
+
+        return p
+    }
+
+    fun evaluateBorderVectors() {
+
+    }
+
+    /**
+     * Returns true if the given iso vector is within the boundary.
+     *
+     * In other words, returns true if this city owns that tile.
+     *
+     * The boundary (border) between land that is and isn't owned by this
+     * settlement is determined by the [isoVec] of this settlement,
+     * and [radius] which defines the gap between settlement and the border.
+     */
+    fun isInCityBoundary(vec : Vector2)
+        = ownedLand.contains(vec, false)
+
+
+    fun isInCityBoundary(x: Float, y: Float)
+        = isInCityBoundary(Vector2(x,y))
+
+
+    // ============================================================
+    // endregion border
     // region functions
     // ============================================================
 
@@ -201,7 +288,22 @@ class Settlement(
     /**
      * # Draws the [sprite] which represents this city
      */
-    fun draw(batch: SpriteBatch) = sprite.draw(batch)
+    fun draw(batch: SpriteBatch) {
+
+        sprite.draw(batch)
+
+        ownedLand.forEach {
+            WorldTerrain.isoToCartesian(it.x.toInt(), it.y.toInt()).apply {
+                sprite.setPosition(x,y)
+            }
+
+            sprite.draw(batch)
+        }
+
+        WorldTerrain.isoToCartesian(isoVec.x.toInt(), isoVec.y.toInt()).apply {
+            sprite.setPosition(x,y)
+        }
+    }
 
     /**
      * # Temporary turn hook that grows the city's population by 1 on every turn.
@@ -219,13 +321,14 @@ class Settlement(
     init {
         updateSprite()
         GameHypervisor.turn_hook(this)
+        GameData.world!!.staticLight(isoVec)
     }
 
     override fun deserialize() {
         updateSprite()
     }
 
-    override fun toString(): String = name
+    override fun toString(): String = "$name $isoVec"
 
     // ============================================================
     // endregion meta
