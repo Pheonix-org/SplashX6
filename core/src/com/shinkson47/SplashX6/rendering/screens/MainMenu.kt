@@ -49,6 +49,7 @@ import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Assets.SPRITES_MENUBG
+import com.shinkson47.SplashX6.utility.Console
 import kotlin.math.roundToInt
 
 
@@ -114,6 +115,7 @@ class MainMenu : ScalingScreenAdapter() {
 
         stage.act()
         stage.draw()
+        super.render(delta)
     }
 
     override fun doResize(width: Int, height: Int) {
@@ -122,8 +124,6 @@ class MainMenu : ScalingScreenAdapter() {
             makeEven((super.height * 0.5f) - (menuWindow!!.height * 0.5f))
         )
     }
-
-
 
     private fun makeEven(f: Float): Float {
         return (f / 2f).roundToInt() * 2f

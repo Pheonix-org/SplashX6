@@ -33,6 +33,8 @@
 package com.shinkson47.SplashX6.utility;
 
 
+
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -41,13 +43,15 @@ import com.badlogic.gdx.utils.Array;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.auburn.fastnoiselite.FastNoiseLite;
+import com.shinkson47.SplashX6.rendering.screens.CreditsScreen;
 import com.shinkson47.SplashX6.rendering.windows.MessageWindow;
+import com.strongjoshua.console.LogLevel;
 
+import java.util.Arrays;
 import java.util.MissingResourceException;
 import java.util.function.Function;
 
 import static com.badlogic.gdx.math.MathUtils.random;
-import static com.shinkson47.SplashX6.utility.Assets.INSTANCE;
 
 /**
  * <h1>General static utility methods</h1>
@@ -278,7 +282,7 @@ public final class Utility {
      * that is otherwise silent.
      */
     public static void warnDev(String message, String title) {
-        System.err.println("Warning for SplashX6 developers : " + message);
+        Console.INSTANCE.log(message, LogLevel.ERROR);
         if (Client.DEBUG_MODE && GameHypervisor.getInGame())
             warnPlayer(message, title);
     }
@@ -311,4 +315,23 @@ public final class Utility {
     public static String AssertEndsWith(String s, String suffix) {
         return (s.endsWith(suffix)) ? s : s + suffix;
     }
+
+    public static void fatal(String string, Throwable e) {
+        Console.INSTANCE.log(e);
+        Console.INSTANCE.log(string, LogLevel.ERROR);
+
+        CreditsScreen x = new CreditsScreen(PrebootAssets.getPB_SKIN().getFont("Serif"), Arrays.asList((
+                        "!!! A fatal problem has occurred !!!\n\n\n"
+                        + string + "\n" +
+                        e.getMessage() + "\n" +
+                        "\n\n\nQuit the game." +
+                        "\n\nALT + F4 on PC\nCMD + OPT + ESC on Mac\n\n\n\n\n(F12 to show console to copy and report.)"
+        ).split("\n")), false);
+        x.getFont().setColor(Color.WHITE);
+        x.setLineIndex(x.getLines().size() - 1);
+        x.setLineIndex(x.getLines().get((int) x.getLineIndex()).length() - 1);
+
+        Client.client.fadeScreen(x);
+    }
+
 }

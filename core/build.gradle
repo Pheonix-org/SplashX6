@@ -15,4 +15,5 @@ dependencies {
     compile "com.github.xaguzman:pathfinding-gdx-bridge:0.2.6"      // Wrapper for above to create pathfinding data automatically from tiledmap
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2"
+    compile "com.strongjoshua:libgdx-inGameConsole:1.0.0"
 }

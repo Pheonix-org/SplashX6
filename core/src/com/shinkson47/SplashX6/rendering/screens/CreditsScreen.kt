@@ -54,12 +54,11 @@ import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
  * @since v1
  * @version 1
  */
-open class CreditsScreen(
+open class CreditsScreen (
     val font : BitmapFont = REF_SKIN_W95.getFont("Vecna"),
-    var lines : List<String> = Assets.get<String>(Assets.LANG_CREDITS).split("\n")
+    var lines : List<String> = Assets.get<String>(Assets.LANG_CREDITS).split("\n"),
+    var renderBG: Boolean = true
 ) : ScalingScreenAdapter() {
-
-    protected var renderBG = true;
 
 
     /**
@@ -93,12 +92,12 @@ open class CreditsScreen(
      * Once reaches [maxLines], stops incrementing. Instead, the first line of [lines] is removed
      * to create the scrolling effect.
      */
-    private var lineIndex = 0f
+    var lineIndex = 0f
 
     /**
      * # The index of character last stamped in the current line
      */
-    private var charIndex = 0
+    var charIndex = 0
 
     /**
      * # The time to wait between each charater stamp.
@@ -123,7 +122,7 @@ open class CreditsScreen(
      * Renders the credits screen in the current state.
      *
      *
-     * Will wait [DELAY] before increasing [charIndex] to
+     * Will wait [delay] before increasing [charIndex] to
      * render one more character of the current line. Thus after x frames
      * one more character is drawn than the last.
      *
@@ -191,6 +190,7 @@ open class CreditsScreen(
         }
 
         batch.end() // end GL semaphore
+        super.render(delta)
     }
 
     /**
@@ -208,4 +208,7 @@ open class CreditsScreen(
         calcMaxLines(height)
     }
 
+    override fun show() {
+        if(batch.isDrawing) batch.end()
+    }
 }

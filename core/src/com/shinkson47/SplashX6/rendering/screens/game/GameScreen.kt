@@ -57,6 +57,7 @@ import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.Camera
 import com.shinkson47.SplashX6.rendering.renderers.KeyBindRenderer
+import com.shinkson47.SplashX6.utility.Console
 import com.shinkson47.SplashX6.utility.Debug
 import org.xguzm.pathfinding.grid.GridCell
 import java.util.function.Consumer
@@ -152,7 +153,6 @@ class GameScreen : ScalingScreenAdapter() {
      * <h2>Renders the next frame</h2>
      */
     override fun render(delta: Float) {
-
         // Render the world
         r!!.render()
 
@@ -181,9 +181,15 @@ class GameScreen : ScalingScreenAdapter() {
         // Draw another in the center of the screen.
         sr.projectionMatrix = HUDBatch.projectionMatrix
         sr.circle(centerx, centery, 5f)
+
         sr.end()
+
         renderSprites()
 
+        // Lighting
+
+        GameData.world!!.rayHandler.setCombinedMatrix(cam.combined)
+        GameData.world!!.rayHandler.updateAndRender()
 
         // META : Draw FPS as 10x, 10y in the world
         //font.draw(worldBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), 10, 10);
@@ -192,24 +198,20 @@ class GameScreen : ScalingScreenAdapter() {
         // Update the UI (listen for inputs, etc)
         stage.act(delta)
 
+
+
         // Draw the UI
         stage.draw()
         Debug.update()
+        super.render(delta)
     }
 
     fun renderSprites() {
         worldBatch.begin()
 
-        // Render cities
-        GameData.player!!.settlements.forEach(
-            Consumer {
-                    city: Settlement -> city.draw(worldBatch)
-                    font.draw(worldBatch, city.name, city.cartesianPosition().x, city.cartesianPosition().y)
-                    font.draw(worldBatch, "Population : ${city.size}", city.cartesianPosition().x, city.cartesianPosition().y - 15)
-            }
-        )
-        GameData.player!!.units.forEach(
-            Consumer { sprite: Unit ->
+        GameData.nations.forEach {
+
+            it.units.forEach { sprite: Unit ->
                 // META : This draws a gl rect over the true area where sprites are rendered, so you can see where the sprites boundaries are.
 //                    if (Debug.enabled()) {
 //                        sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -217,7 +219,15 @@ class GameScreen : ScalingScreenAdapter() {
 //                        sr.end();
 //                    }
                 sprite.draw(worldBatch)
-            })
+            }
+
+            it.settlements.forEach {
+                    city: Settlement -> city.draw(worldBatch)
+                font.draw(worldBatch, city.name, city.cartesianPosition().x, city.cartesianPosition().y)
+                font.draw(worldBatch, "Population : ${city.size}", city.cartesianPosition().x, city.cartesianPosition().y - 15)
+            }
+        }
+
         worldBatch.end()
     }
 
@@ -308,7 +318,9 @@ class GameScreen : ScalingScreenAdapter() {
     }
 
     override fun show() {
+        super.show()
         sr.end()
+
     } //#endregion
 
     //========================================================================
@@ -323,7 +335,6 @@ class GameScreen : ScalingScreenAdapter() {
         newRenderer()
 
         //r.setView(camera.getCam());
-
 
         // Configure UI
         resize(Gdx.graphics.width, Gdx.graphics.height)

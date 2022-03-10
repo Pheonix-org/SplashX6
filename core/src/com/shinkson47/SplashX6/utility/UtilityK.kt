@@ -32,7 +32,10 @@
 
 package com.shinkson47.SplashX6.utility
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager
+import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.rendering.screens.CreditsScreen
 import com.shinkson47.SplashX6.rendering.windows.NodeInfo
 import com.shinkson47.SplashX6.utility.Assets.REF_PREFERENCES
 import java.net.InetAddress
@@ -79,4 +82,7 @@ object UtilityK {
         }
 
     fun getIP(): InetAddress = InetAddress.getLocalHost()
+
+    fun <T> random(values: Array<T>) : T =
+        values[MathUtils.random(0, values.size - 1)]
 }

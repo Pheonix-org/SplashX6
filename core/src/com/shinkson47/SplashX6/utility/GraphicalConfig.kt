@@ -155,7 +155,8 @@ object GraphicalConfig  {
      *
      * These can be used in [x] to define how the image is scaled within the window.
      */
-    fun getScalingModes() = Scaling.values()
+    // TODO This was changed in an engine update. This used to be an enum, but now it's object oriented.
+    //fun getScalingModes() = Scaling.values()
 
     /**
      * Absolute minimum render size.

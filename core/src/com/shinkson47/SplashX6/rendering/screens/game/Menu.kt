@@ -53,6 +53,7 @@ import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.game.W_Advancement
 import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
+import com.shinkson47.SplashX6.rendering.windows.W_StateMachines
 import com.shinkson47.SplashX6.rendering.windows.game.Music
 import com.shinkson47.SplashX6.rendering.windows.game.settlements.W_Settlements
 import com.shinkson47.SplashX6.rendering.windows.game.Spotify
@@ -134,6 +135,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
         addMenuItem(this, "!Debug", WindowAction(DebugWindow()),
                 MenuSubItem("!Tech Test", WindowAction(W_Advancement("!Techs"))),
                 MenuSubItem("!Defog All") { GameData.world!!.removeFogOfWar() },
+                MenuSubItem("!Manage State Machines", WindowAction(W_StateMachines())),
                 MenuSubItem("!Hard reset server") { Server.shutdown(); Server.boot() },
                 MenuSubItem("!Reload Help Text") { W_Help.reload() },
                 MenuSubItem("!World Generation", WindowAction(TerrainGenerationEditor())),
@@ -144,7 +146,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
                 MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},
             MenuSubItem("!Reload UI") { GameHypervisor.gameRenderer!!.let { it.stage.clear(); it.createUI() }  },
 
-                MenuSubItem("!Add a production project") { GameData.player!!.settlements[0].production.queueProject(UnitProductionProject(UnitClass.chariot)) }
+                MenuSubItem("!Add a production project") { GameData.player!!.settlements[0].unitProduction.queueProject(UnitProductionProject(UnitClass.chariot)) }
         )
 
 
