@@ -67,7 +67,7 @@ class W_Options(val parent : ScalingScreenAdapter) : StageWindow("generic.any.op
             RootNode(
                     "specific.preferences.graphics.graphics",
                     SelectNode<Graphics.DisplayMode>(GraphicalConfig, "displayMode", "specific.preferences.graphics.displayMode", *GraphicalConfig.getDisplayModes() + GraphicalConfig.displayMode),
-                    SelectNode(GraphicalConfig, "scalingMode", "specific.preferences.graphics.scalingMode", *GraphicalConfig.getScalingModes()),
+                    //TODO SelectNode(GraphicalConfig, "scalingMode", "specific.preferences.graphics.scalingMode", *GraphicalConfig.getScalingModes()),
                     CheckboxNode(GraphicalConfig, "fullscreen", "specific.preferences.graphics.fullscreen"),
                     ScriptNode("specific.preferences.graphics.frustum") { GraphicalConfig.callibrateCullingFrustum(this) }
             ),

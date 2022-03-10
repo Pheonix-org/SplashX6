@@ -36,6 +36,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.strongjoshua.console.LogLevel
 
 /**
  * # TODO
@@ -48,7 +49,7 @@ object TestScript : Runnable {
 
     private var _fail : Boolean = false
     private fun log(Name: String, m: String, fail: Boolean) {
-        Gdx.app.log("TEST ${if (fail) "FAILED" else "PASSED"} : ($Name) ", m)
+        Console.log("[TEST ${if (fail) "FAILED" else "PASSED"} : ($Name) ] $m", if(fail) LogLevel.ERROR else LogLevel.SUCCESS)
         if (fail) _fail = true
     }
 

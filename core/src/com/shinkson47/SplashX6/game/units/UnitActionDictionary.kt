@@ -101,6 +101,12 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     val SETTLE   =  UnitAction("Settle", ALWAYS_AVAILABLE, SerializablePredicate<Unit> { GameHypervisor.turn_asyncTask { GameHypervisor.settle(it) } })
 
 
+    /**
+     * # Invokes an update to a unit's AI.
+     */
+    val AI_UPDATE   =  UnitAction("AI", ALWAYS_AVAILABLE, SerializablePredicate { it.ai_update(); true; })
+
+
     //==================================================
     //                    MAP
     //==================================================
@@ -110,6 +116,8 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
      */
     init {
             put(UnitClass._BASE,   arrayOf(TRAVEL))
+
+
             put(UnitClass.settler, arrayOf(SETTLE))
     }
 

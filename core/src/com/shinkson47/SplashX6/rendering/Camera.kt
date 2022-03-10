@@ -161,7 +161,7 @@ class Camera: PerspectiveCamera() {
     /**
      * # Desired degrees of fov
      */
-    val desiredZoom: lerpDesire<Float> = lerpDesire(ZOOM_MINIMUM, zoomSpeed)
+    val desiredZoom: lerpDesire<Float> = lerpDesire(ZOOM_MAXIMUM, zoomSpeed)
 
 
 
@@ -280,6 +280,7 @@ class Camera: PerspectiveCamera() {
      * # Moves the camera from it's current position to the [desiredPosition].
      */
     private fun updateMove(){
+        if(!enableMove) return
         // TODO these two lines shouldn't happen every frame, they're pretty heavy
 
 
@@ -366,6 +367,10 @@ class Camera: PerspectiveCamera() {
         desiredPosition.desired.x += TRUE_SPEED
     }
 
+    var enableMove = true
+    fun toggleMovement() {
+        enableMove = !enableMove
+    }
 
 
     // ============================================================

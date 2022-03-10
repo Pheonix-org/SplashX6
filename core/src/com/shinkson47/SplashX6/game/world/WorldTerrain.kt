@@ -5,43 +5,43 @@
  ░                                                                                                                                                                                ░
  ░                                                                                                                                                                                ░
  ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
- ░                                                                                                                                                                                ░
- ░   ____           ___                  ___             ____      ___    ,6P                                                                                                     ░
- ░  6MMMMb\         `MM                  `MM             `MM(      )M'  6MM'                                                                                                      ░
- ░ 6M'    `          MM                   MM              `MM.     d'  6M'                                                                                                        ░
- ░ MM      __ ____   MM    ___     ____   MM  __           `MM.   d'  6M ____                                                                                                     ░
- ░ YM.     `M6MMMMb  MM  6MMMMb   6MMMMb\ MM 6MMb           `MM. d'   MMMMMMMb                                                                                                    ░
- ░  YMMMMb  MM'  `Mb MM 8M'  `Mb MM'    ` MMM9 `Mb           `MMd     MM'   `Mb                                                                                                   ░
- ░      `Mb MM    MM MM     ,oMM YM.      MM'   MM            dMM.    MM     MM                                                                                                   ░
- ░       MM MM    MM MM ,6MM9'MM  YMMMMb  MM    MM           d'`MM.   MM     MM                                                                                                   ░
- ░       MM MM    MM MM MM'   MM      `Mb MM    MM          d'  `MM.  MM     MM                                                                                                   ░
- ░ L    ,M9 MM.  ,M9 MM MM.  ,MM L    ,MM MM    MM         d'    `MM. YM.   ,M9                                                                                                   ░
- ░ MYMMMM9  MMYMMM9 _MM_`YMMM9'YbMYMMMM9 _MM_  _MM_      _M(_    _)MM_ YMMMMM9                                                                                                    ░
- ░          MM                                                                                                                                                                    ░
- ░          MM                                                                                                                                                                    ░
- ░         _MM_                                                                                                                                                                   ░
- ░                                                                                                                                                                                ░
+ ░           _____                    _____                    _____            _____                    _____                    _____                                           ░
+ ░          /\    \                  /\    \                  /\    \          /\    \                  /\    \                  /\    \                         ______           ░
+ ░         /::\    \                /::\    \                /::\____\        /::\    \                /::\    \                /::\____\                       |::|   |          ░
+ ░        /::::\    \              /::::\    \              /:::/    /       /::::\    \              /::::\    \              /:::/    /                       |::|   |          ░
+ ░       /::::::\    \            /::::::\    \            /:::/    /       /::::::\    \            /::::::\    \            /:::/    /                        |::|   |          ░
+ ░      /:::/\:::\    \          /:::/\:::\    \          /:::/    /       /:::/\:::\    \          /:::/\:::\    \          /:::/    /                         |::|   |          ░
+ ░     /:::/__\:::\    \        /:::/__\:::\    \        /:::/    /       /:::/__\:::\    \        /:::/__\:::\    \        /:::/____/                          |::|   |          ░
+ ░     \:::\   \:::\    \      /::::\   \:::\    \      /:::/    /       /::::\   \:::\    \       \:::\   \:::\    \      /::::\    \                          |::|   |          ░
+ ░   ___\:::\   \:::\    \    /::::::\   \:::\    \    /:::/    /       /::::::\   \:::\    \    ___\:::\   \:::\    \    /::::::\    \   _____                 |::|   |          ░
+ ░  /\   \:::\   \:::\    \  /:::/\:::\   \:::\____\  /:::/    /       /:::/\:::\   \:::\    \  /\   \:::\   \:::\    \  /:::/\:::\    \ /\    \          ______|::|___|___ ____  ░
+ ░ /::\   \:::\   \:::\____\/:::/  \:::\   \:::|    |/:::/____/       /:::/  \:::\   \:::\____\/::\   \:::\   \:::\____\/:::/  \:::\    /::\____\        |:::::::::::::::::|    | ░
+ ░ \:::\   \:::\   \::/    /\::/    \:::\  /:::|____|\:::\    \       \::/    \:::\  /:::/    /\:::\   \:::\   \::/    /\::/    \:::\  /:::/    /        |:::::::::::::::::|____| ░
+ ░  \:::\   \:::\   \/____/  \/_____/\:::\/:::/    /  \:::\    \       \/____/ \:::\/:::/    /  \:::\   \:::\   \/____/  \/____/ \:::\/:::/    /          ~~~~~~|::|~~~|~~~       ░
+ ░   \:::\   \:::\    \               \::::::/    /    \:::\    \               \::::::/    /    \:::\   \:::\    \               \::::::/    /                 |::|   |          ░
+ ░    \:::\   \:::\____\               \::::/    /      \:::\    \               \::::/    /      \:::\   \:::\____\               \::::/    /                  |::|   |          ░
+ ░     \:::\  /:::/    /                \::/____/        \:::\    \              /:::/    /        \:::\  /:::/    /               /:::/    /                   |::|   |          ░
+ ░      \:::\/:::/    /                  ~~               \:::\    \            /:::/    /          \:::\/:::/    /               /:::/    /                    |::|   |          ░
+ ░       \::::::/    /                                     \:::\    \          /:::/    /            \::::::/    /               /:::/    /                     |::|   |          ░
+ ░        \::::/    /                                       \:::\____\        /:::/    /              \::::/    /               /:::/    /                      |::|   |          ░
+ ░         \::/    /                                         \::/    /        \::/    /                \::/    /                \::/    /                       |::|___|          ░
+ ░          \/____/                                           \/____/          \/____/                  \/____/                  \/____/                         ~~               ░
  ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-
-
 package com.shinkson47.SplashX6.game.world
 
-import com.badlogic.gdx.graphics.Texture
+import box2dLight.PointLight
+import box2dLight.RayHandler
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.spawn
-import com.shinkson47.SplashX6.game.units.UnitClass
+import com.badlogic.gdx.physics.box2d.World
+import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.world.generation.stages.NavigationDataMiscStage
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.TEX_HITTEST
@@ -53,7 +53,6 @@ import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer
 import org.xguzm.pathfinding.grid.GridCell
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder
 import java.awt.image.BufferedImage
-import java.io.Serializable
 import java.util.function.Consumer
 import kotlin.math.floor
 
@@ -127,6 +126,7 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
     //#region navigation
 
 
+
     /**
      * # Pathfinder
      * Usage : pathfinder.find(fromx, fromy, tox, toy, [WorldTerrain.navigationLayer]).
@@ -142,6 +142,25 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
     @Transient lateinit var navigationLayer : NavigationTiledMapLayer
 
     //#endregion navigation
+    //#region lighting
+    val world = World(Vector2(0f,0f),false)
+    val rayHandler = RayHandler(world).also { it.setCulling(false); }
+
+
+    fun staticLight(vector3: Vector3, radius: Float = 400f) =
+        staticLight(vector3.x, vector3.y, radius)
+
+    fun staticLight(vector2: Vector2, radius: Float = 400f) =
+        staticLight(vector2.x, vector2.y, radius)
+
+    fun staticLight(x: Float, y: Float, radius: Float = 400f, rays: Int = 10): PointLight {
+        isoToCartesian(x.toInt(),y.toInt()).apply {
+           return PointLight(rayHandler, rays, Color.WHITE, radius, this.x, this.y)
+        }
+    }
+
+
+    //#region
 
     //==============================================
     //#region fields
@@ -272,7 +291,8 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
      * <br></br><br></br>That's what this method is for, it corrects for this stagger offset such that [x+1][y+1] would always return the tile which can be seen to the north east side of another.
      * @return if on an odd row, tile at raw array position [x - 1][y], if even at [x][y].
      */
-    fun getStaggeredTile(x: Int, y: Int, source : Array<Array<Tile?>> = worldTiles): Tile? = getTile(x + if (x != 0) if (y % 2 == 0) -1 else 0 else 0, y, source)
+    fun getStaggeredTile(x: Int, y: Int, source : Array<Array<Tile?>> = worldTiles): Tile? = getStaggeredISO(x,y).let{ getTile(it.x.toInt(), it.y.toInt(), source) }
+
 
     /**
      * <h2>
@@ -281,8 +301,9 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
      */
     fun removeFogOfWar() {
         defog(width / 2, height / 2, Math.max(width, height))
+        rayHandler.removeAll()
+        rayHandler.setAmbientLight(Color.WHITE)
     }
-
 
     /**
      * <h2>
@@ -325,9 +346,10 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
         }
     }
 
-    fun genPopulation() {
-        spawn(randomPointOnLand(), UnitClass.settler)
-    }
+    fun isInWorld(vec: Vector3) = isInWorld(vec.x.toInt(), vec.y.toInt())
+    fun isInWorld(vec: Vector2) = isInWorld(vec.x.toInt(), vec.y.toInt())
+    fun isInWorld(x: Int, y: Int) = x in 0..width && y in 0..height
+
 
     /**
      * # Iterates through y then x in [worldTiles], performing [action] on each tile.
@@ -361,6 +383,8 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
     }
 
     companion object {
+        fun getStaggeredISO(x: Int, y: Int): Vector2 = Vector2((x + if (x != 0) if (y % 2 == 0) -1 else 0 else 0).toFloat(), y.toFloat())
+        init { RayHandler.useDiffuseLight(true) }
         /**
          * # Width of tiles in pixels
          */
@@ -404,17 +428,17 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
         /**
          * # The default world width
          */
-        const val DEFAULT_WIDTH = 500
+        const val DEFAULT_WIDTH = 100
 
         /**
          * # The smallest permitted world size
          */
-        const val DEFAULT_HEIGHT = 500
+        const val DEFAULT_HEIGHT = 100
 
         /**
          * # The smallest permitted world size
          */
-        const val FOLIAGE_QUANTITY_MAX = 50000
+        const val FOLIAGE_QUANTITY_MAX = 400
 
         private var hittestResult = 0
         private val hitTest = Assets.get<BufferedImage>(TEX_HITTEST)
