@@ -24,7 +24,7 @@ import com.badlogic.gdx.Gdx;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.network.Server;
 import com.shinkson47.SplashX6.network.NetworkClient;
-import java.net.ConnectException
+import java.net.ConnectException;
 
 // Note : This machine will be ran every frame,
 // 		  as it's used on a screen; thus it's
@@ -75,6 +75,10 @@ code {
 	private int framebuffer = 0;
 }
 state PreRender {
+	behaviour {
+		framebuffer++;
+	}
+
 	enter {
 		framebuffer = 0;
 
@@ -85,10 +89,6 @@ state PreRender {
 		} else {
 			constructGeneratingText();
 		}
-	}
-
-	behaviour {
-		framebuffer++;
 	}
 }
 

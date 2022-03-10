@@ -1,0 +1,50 @@
+/**
+	A state machine intended to operate within a unit.
+*/
+
+name = UnitAI;
+description = "A simple random movement ai";
+default = Wander;
+
+import com.shinkson47.SplashX6.game.GameData;
+import com.badlogic.gdx.math.MathUtils;
+
+/**
+	Configure the unit to now update the ai with every turn.
+*/
+code {
+	{
+		onTurnAction = UnitActionDictionary.AI_UPDATE;
+	}
+
+	private Boolean isWandering = true;
+}
+
+
+/**
+	A state in which the unit will randomly pick a new destination
+	and travel to it.
+*/
+state Wander {
+	behaviour {
+		// And travel towards to.
+		UnitActionDictionary.TRAVEL.run(Unit.this);
+	}
+
+	enter {
+		// Find a location on land that we can travel to.
+		// TODO this causes an infinite loop when a unit spawns on water.
+		while (destination == null)
+			setDestination(GameData.world.randomPointOnLand());
+	}
+}
+
+switch from Wander to Wander if (destination == null);
+
+state Settle {
+	enter {
+		UnitActionDictionary.SETTLE.run(Unit.this);
+	}
+}
+
+switch from Wander to Settle if (destination == null && unitClass == UnitClass.settler && MathUtils.randomBoolean());
