@@ -49,7 +49,7 @@ In game the `help` window, located on the menu bar at the top of the screen, can
 ## Wiki
 > Help for players & contributors
 
-More detailed and technical information about the engine and the various game systems can be found [here]()
+More detailed and technical information about the engine and the various game systems can be found [here](https://github.com/Shinkson47/UniX6/wiki)
 
 ## Dokka
 > Help for contributors
