@@ -46,12 +46,18 @@ import com.shinkson47.SplashX6.utility.Utility.warnDev
 import java.util.function.Predicate
 
 /**
- * # TODO
+ * # A validation system for checking common predicates on [GameHypervisor] api calls.
+ * Checks that a call to the hypervisor was made in a state were that call can be made.
+ *
+ * If in an unsupported state, some other action happens.
+ *
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 15/05/2021
  * @since v1
  * @version 1
  */
 class APICondition @JvmOverloads constructor() {
+
+    // TODO lazy message support.
 
     companion object {
 
@@ -69,12 +75,16 @@ class APICondition @JvmOverloads constructor() {
         @JvmStatic
         fun invalidCall(requiredState : Predicate<Any?>, onIllegalState : Runnable): Boolean {
             try {
-                validateCall(requiredState, onIllegalState)
+                if (!requiredState.test(null))
+                    throw APIException("")
             } catch (ignored: APIException) {
+                try {
+                    onIllegalState.run()
+                } catch (doubleignored : APIException) {}
                 Gdx.app.log("API Validation warning", "An API call failed to meet call condition, but the exception will be ignored.")
                 return true
             }
-            return false;
+            return false
         }
 
         /**

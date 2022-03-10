@@ -34,6 +34,8 @@ package com.shinkson47.SplashX6.test
 
 import com.badlogic.gdx.Application.LOG_ERROR
 import com.badlogic.gdx.Gdx
+import com.shinkson47.SplashX6.utility.Console
+import com.strongjoshua.console.LogLevel
 import kotlin.AssertionError
 import kotlin.system.exitProcess
 
@@ -102,7 +104,7 @@ abstract class Tester : Runnable {
         // If the assertion was not true, and we have not yet failed,
         // record failure. Any other state has no effect.
         if (!it) {
-            System.err.println("[TESTER] ✗ [## FAIL ##]  : $failMessage")
+            Console.log("[TESTER] ✗ [## FAIL ##]  : $failMessage", LogLevel.ERROR)
 
             failed = true
             AssertionError("[TEST FAILURE] : $failMessage").printStackTrace()
@@ -110,7 +112,7 @@ abstract class Tester : Runnable {
         }
 
         if (passMessage != "")
-            println("[TESTER] ✔ [PASS]  : $passMessage")
+            Console.log("[TESTER] ✔ [PASS]  : $passMessage", LogLevel.SUCCESS)
 
         return !it
     }
