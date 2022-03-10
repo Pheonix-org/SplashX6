@@ -33,7 +33,9 @@
 package com.shinkson47.SplashX6.game;
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
+import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -55,6 +57,7 @@ import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
+import com.shinkson47.SplashX6.utility.*
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_NOT_IN_GAME
@@ -64,9 +67,6 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.WARN
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Debug
-import com.shinkson47.SplashX6.utility.TurnHook
-import com.shinkson47.SplashX6.utility.Utility
 import java.io.*
 
 import java.lang.Thread.sleep
@@ -92,6 +92,12 @@ class GameHypervisor {
          */
         @JvmStatic
         var gameRenderer: GameScreen? = null; private set
+
+        @Deprecated("Debug use only.")
+        fun newGameRenderer() {
+            gameRenderer = GameScreen()
+            client!!.fadeScreen(gameRenderer!!)
+        }
 
         /**
          * # Are we in a game? i.e is a game currently loaded and playable?
@@ -152,21 +158,13 @@ class GameHypervisor {
          */
         @JvmStatic
         fun doNewGameCallback() {
-            GameData.new() // create game data. Must be before game screen is created.
             doGameLoadCallback()
         }
 
         fun doGameLoadCallback() {
-            Gdx.graphics.isContinuousRendering = false
-
             doNewGamePRE()
             inGame = true
-
             doNewGamePOST()
-
-            doNewGameFINAL()
-
-            Gdx.graphics.isContinuousRendering = true
         }
 
         /**
@@ -175,6 +173,10 @@ class GameHypervisor {
          * Contains calls which do not require a game to be loaded.
          */
         private fun doNewGamePRE() {
+            // create game data. Must be before game screen is created.
+            // Local player is also created here.
+            GameData.new()
+
             // Create a new game screen stored locally. It will be shown to the user in the FINAL.
             // For now, loading screen is still being displayed. This is just so we can access the camera and whatnot.
             gameRenderer = GameScreen()
@@ -186,11 +188,12 @@ class GameHypervisor {
          * Contains calls which require a game to be loaded.
          */
         private fun doNewGamePOST(){
-            gameRenderer!!.createUI() // Populate the game screen with GUI. can't be done whilst gr is null.
+            for (i in 1..GameData.pref_civCount)
+                nation_new_random()
 
             unit_select(0)    // Select the first unit created at world gen. Should be a settler.
             unit_view()             // Focus the camera on that unit.
-            camera_skipMovement();  // Skip the camera travelling from 0,0 to the unit.
+            camera_skipMovement()   // Skip the camera travelling from 0,0 to the unit.
                                     // without that, the game always starts with the camera flying across the map.
 
             Spotify.create(autoOnly = true) // Try to connect to the api at startup. Don't prompt.
@@ -215,8 +218,8 @@ class GameHypervisor {
                 Server.sendToAllClients(Packet(PacketType.Start, GameData))
         }
 
-        private fun switchToGameScreen() {
-            client?.fadeScreen(gameRenderer!!)    // Show the game screen to the user.
+        fun switchToGameScreen() {
+            gameRenderer?.apply { client?.fadeScreen(this) }   // Show the game screen to the user.
         }
 
 
@@ -295,39 +298,44 @@ class GameHypervisor {
             spawn(pos.x.toInt(), pos.y.toInt(), spriteName)
         }
 
+        //TODO these shouldn't be in this region.
         /**
          * # Spawns a [unit] with the sprite of [spriteName] on iso co-oord [x],[y]
          * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
          */
         @JvmStatic
-        fun spawn(x: Int, y: Int, spriteName: UnitClass) {
-            // TODO check this
-            // TODO are null checks still needed?
-            // STOPSHIP: 20/05/2021 this is fucking garbage my g.
-            // TODO This can only spawn on player civ
-
-            var s: Unit? = null
-
-            try {
-                s = Unit(spriteName, x, y)
-            } catch (ignore: Exception) {
-                return
-                // TODO don't ignore this...
-            }
-
-            assert (s != null)
-
-
-            GameData.player!!.units.add(s)
+        fun spawn(x: Int, y: Int, spriteName: UnitClass, nation: Nation = GameData.player!!): Unit {
+            requireNotNull(GameData.world, { " Tried to spawn with no world. " })
+            require(GameData.nations.contains(nation)) { " Tried to spawn a unit into a nation which does not exist in this game. " }
+            return Unit(spriteName, x, y).apply { nation.addUnit(this) }
         }
 
-        fun civ_new(civType: NationType): Nation {
-            val c = Nation(civType)
-            GameData.civilisations.add(c)
-            return c
+        /**
+         * Creates a new random ai controlled nation.
+         *
+         * @param civType Civ type
+         * @param ai Ai
+         * @return [Nation]
+         */
+        fun nation_new_random(): Nation = nation_new(UtilityK.random(NationType.values()), ai = true)
+
+        fun nation_new(civType: NationType, ai : Boolean = false): Nation {
+            requireNotNull(GameData.world, { " Tried to create a new civilisation with no world. " })
+            val nation = Nation(civType, ai)
+            GameData.nations.add(nation)
+            GameData.world!!.randomPointOnLand().apply { spawn(x.toInt(), y.toInt(), UnitClass.settler, nation) }
+            return nation
         }
 
+        fun nation_dissolve(nation: Nation) {
+            nation.settlements.clear()
 
+            nation.units.forEach { unit_disband(it, nation) }
+            nation.units.clear()
+
+            GameData.nations.remove(nation)
+            System.gc()
+        }
 
         //========================================================================
         //#endregion saving
@@ -336,8 +344,9 @@ class GameHypervisor {
 
         // TODO api predicate for requiring a unit is selected.
 
+
         @JvmStatic
-        fun unit_select(index: Int) = unit_select(GameData.player!!.units.get(index))
+        fun unit_select(index: Int, nation: Nation = GameData.player!!) = unit_select(nation.units.get(index))
 
         /**
          * # Selects a unit for focus of manipulation
@@ -347,8 +356,8 @@ class GameHypervisor {
         fun unit_select(unit: Unit) {
             validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("Select a unit", "no game is loaded")))
 
-            if (!GameData.player!!.units.contains(unit))
-                throw IllegalArgumentException("Tried to select a unit that does not exist in the game data!")
+//            if (!GameData.player!!.units.contains(unit))
+//                throw IllegalArgumentException("Tried to select a unit that does not exist in the game data!")
 
             GameData.selectedUnit = unit
             unit_view()
@@ -396,8 +405,25 @@ class GameHypervisor {
         @JvmStatic
         fun unit_disband() {
             if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't disband a unit if no unit selected!"))) return
-            GameData.player!!.units.removeValue(GameData.selectedUnit, true)
+            unit_disband(unit_selected()!!)
             GameData.selectedUnit = null
+        }
+
+        @JvmStatic
+        fun unit_disband(unit: Unit, nation: Nation = GameData.player!!) {
+            if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't disband a unit if no unit selected!"))) return
+            nation.units.removeValue(unit, true)
+        }
+
+        fun unit_disband_global() {
+            unit_disband_global(GameData.selectedUnit!!)
+            GameData.selectedUnit = null
+        }
+
+        fun unit_disband_global(it: Unit) {
+            it.ownedBy()?.apply {
+                this.units.removeValue(it, true)
+            }
         }
 
         @JvmStatic
@@ -512,10 +538,9 @@ class GameHypervisor {
          * Unit is disbanded after.
          */
         fun settle(it : Unit) {
-            settle(it.isoVec.cpy())
-
-            unit_select(it)
-            unit_disband()
+            it.ownedBy()!!.settle(it.isoVec.cpy())
+            
+            unit_disband_global(it)
         }
 
         /**
@@ -752,8 +777,18 @@ class GameHypervisor {
             client!!.fadeScreen(MainMenu())
         }
 
+        /**
+         * calls [EndGame] only if we're in a game, as indicated by
+         * [inGame]
+         */
+        fun AssertEndGame() {
+            if (inGame) EndGame()
+        }
 
-    //========================================================================
+
+
+
+        //========================================================================
     //#endregion breakdown
     //#region misc
     //========================================================================
