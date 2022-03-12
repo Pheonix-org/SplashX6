@@ -43,11 +43,11 @@ import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.audio.Spotify
 import com.shinkson47.SplashX6.audio.Spotify.SpotifySourceType
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Assets.SPRITES_SPOTIFY_FAIL
-import com.shinkson47.SplashX6.utility.GraphicalConfig
+import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import com.shinkson47.SplashX6.utility.Utility
 import com.wrapper.spotify.model_objects.miscellaneous.CurrentlyPlayingContext
 import com.wrapper.spotify.model_objects.specification.Track
@@ -399,7 +399,7 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
     }
 
     private fun spotifyConnect() {
-        Gdx.app.postRunnable {GraphicalConfig.fullscreen = false }
+        Gdx.app.postRunnable { GraphicalConfig.fullscreen = false }
         if (Spotify.create()) // TODO this needs to be localised.
             dialog("", "specific.windows.music.alreadyConnected", "", "", null)
         else {

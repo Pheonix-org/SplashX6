@@ -29,14 +29,12 @@
  ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.utility
+package com.shinkson47.SplashX6.utility.debug
 
 import box2dLight.RayHandler
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -51,9 +49,10 @@ import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
-import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
+import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import com.strongjoshua.console.CommandExecutor
 import com.strongjoshua.console.GUIConsole
 import com.strongjoshua.console.LogLevel
@@ -90,7 +89,8 @@ object Console : GUIConsole() {
         fun ds() { logView(); console.log("Keyboard focus removed from console.") }
 
         @ConsoleDoc(description = "Toggle fullscreen")
-        fun fs() { GraphicalConfig.toggleFullscreen(); console.log("Toggled fullscreen.") }
+        fun fs() {
+            GraphicalConfig.toggleFullscreen(); console.log("Toggled fullscreen.") }
 
         @ConsoleDoc(description = "Disable camera - quickly stop the camera from moving.")
         fun dc() { GameHypervisor.gameRenderer?.cam!!.toggleMovement(); console.log("Toggled camera movement.") }

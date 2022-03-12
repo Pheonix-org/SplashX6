@@ -46,10 +46,10 @@ import com.shinkson47.SplashX6.game.Advancement.Companion.dependancyFor
 import com.shinkson47.SplashX6.game.Advancement.Companion.depth
 import com.shinkson47.SplashX6.game.AdvancementTree
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.DATA_TECHS
-import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
+import com.shinkson47.SplashX6.rendering.ui.AutoFocusScrollPane
 
 /**
  * # Window for viewing and selecting advancements.

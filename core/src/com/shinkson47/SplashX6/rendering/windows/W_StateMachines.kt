@@ -34,7 +34,7 @@ package com.shinkson47.SplashX6.rendering.windows
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.shinkson47.SplashX6.ai.StateMachine
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.SKIN_W95
 import com.shinkson47.SplashX6.utility.Utility

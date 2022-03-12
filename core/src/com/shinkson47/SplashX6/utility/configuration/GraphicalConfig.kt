@@ -30,185 +30,150 @@
  ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.rendering.screens
+package com.shinkson47.SplashX6.utility.configuration
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.badlogic.gdx.graphics.g2d.GlyphLayout
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.shinkson47.SplashX6.Client.Companion.client
-import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
-import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
+import FrustumCallibration
+import com.badlogic.gdx.Gdx.graphics
+import com.badlogic.gdx.Graphics.*
+import com.badlogic.gdx.utils.Scaling
+import com.shinkson47.SplashX6.Client
+import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
+import com.shinkson47.SplashX6.rendering.windows.NodeInfo
+import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
+import com.shinkson47.SplashX6.utility.APICondition.Companion.WARN
+import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
+
 
 /**
- * # The credits screen.
- * Prints the contents of `generic/credits.txt` character by character
- * on the top of the menu background, complete with automatic scrolling.
- *
- * This class is autonomus. It does not need to be modified in order to display
- * changes in credits text file. Simply change the text, the display logic
- * will handle it.
- * @author [Jordan T. Gray](https://www.shinkson47.in) on 23/05/2021
+ * # Object that manages rendering modes, scaling, and other graphical configurations.
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 15/06/2021
  * @since v1
  * @version 1
  */
-open class CreditsScreen (
-    val font : BitmapFont = REF_SKIN_W95.getFont("Vecna"),
-    var lines : List<String> = Assets.get<String>(Assets.LANG_CREDITS).split("\n"),
-    var renderBG: Boolean = true
-) : ScalingScreenAdapter() {
+object GraphicalConfig  {
 
+    fun callibrateCullingFrustum(parent : StageWindow){
+        if (invalidCall(REQ_IN_GAME, WARN("Frustrum changes can only be made whilst in-game.")))
+            return
 
+        GameHypervisor.gameRenderer!!.stage.addActor(FrustumCallibration())
+        parent.toggleShown()
+    }
+
+    // ============================================================
+    // region Resolutions
+    // ============================================================
     /**
-     * # Array of strings from credit text
-     * where each entry is one line from the text.
+     * # Current display mode.
      *
-     * Modified to have the first line removed when [lineIndex] reaches [maxLines]
-     */
-
-    init {font.setColor(0f,0f,0f,1f)}
-
-    /**
-     * # Current string to be rendered by [font]
-     */
-    private var glyph : GlyphLayout = GlyphLayout(font, "")
-
-    /**
-     * # Batch renderer used by [font] to draw.
-     * scaled with [stage].
-     */
-    private val batch : SpriteBatch = SpriteBatch()
-
-    /**
-     * # Time since progressing to the next character.
-     */
-    @Volatile
-    private var characterDelta: Float = 0f
-
-    /**
-     * # Index in [lines] of the line we are currently stamping the letters of.
-     * Once reaches [maxLines], stops incrementing. Instead, the first line of [lines] is removed
-     * to create the scrolling effect.
-     */
-    var lineIndex = 0f
-
-    /**
-     * # The index of character last stamped in the current line
-     */
-    var charIndex = 0
-
-    /**
-     * # The time to wait between each charater stamp.
-     */
-    private val DELAY : Float = .01f;
-
-
-    /**
-     * # Calculated max number of lines that can fit within the window before we have to start stripping the
-     * topmost line.
-     */
-    private var maxLines = 0
-
-    init { calcMaxLines() }
-
-    /**
-     * # Draws the next frame of the credits.
-     * Performs all logic and calculation.
+     * Setter changes the display mode.
      *
-     * Mutates this object with information for next frame.
+     * Changes display mode according to [mode] and [fullscreen],
+     * then calls [Client.client]'s resize and reloads menu screen.
      *
-     * Renders the credits screen in the current state.
-     *
-     *
-     * Will wait [delay] before increasing [charIndex] to
-     * render one more character of the current line. Thus after x frames
-     * one more character is drawn than the last.
-     *
-     * After reaching the end of the current line, [charIndex] is reset
-     * and [lineIndex] is incremented. This is repeated until [lineIndex]
-     * reaches [maxLines], at which point no more lines can fit in the window.
-     *
-     * From then on, [maxLines] remains the same, and the first line of [lines]
-     * is removed when moving to next line to create the scrolling effect.
-     *
-     * Once there are no more lines to progress to stamp, the remaining contents of [lines]
-     * is drawn with no changes.
      */
-    override fun render(delta: Float) {
+    var displayMode : DisplayMode = graphics.displayMode
+        set(it) {
+            if (fullscreen)
+                graphics.setFullscreenMode(it)
 
-        // If the user is pressing escape, return to the menu.
-        // TODO main menu input is not broken down.
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
-            client!!.fadeScreen(MainMenu())
+            else
+                graphics.setWindowedMode(
+                    it.width,
+                    it.height
+                )
 
-        // Increase time since last character
-        characterDelta += delta
-
-        if (characterDelta > DELAY)  {      // If we've waited longer than DELAY
-            charIndex++                     // Move to the next character
-            characterDelta = 0f             // and reset the timer.
+            field = graphics.displayMode
+            update()
         }
 
 
-        var currentLineIndex = 0            // Line we're currently drawing to vram in this frame.
-        var currentLineText: String         // Text of the the line identified by above.
+    /**
+     * Gets a list of all available display modes.
+     */
+    fun getDisplayModes() = graphics.displayModes
 
 
-        batch.begin()                       // Begin GL render semaphore
-        if (renderBG) REF_SKIN_W95.getDrawable("tiledtex").draw(batch,0f,0f,width, height)
-
-        // For every line up to the line we are stamping
-        while (currentLineIndex <= lineIndex && currentLineIndex < lines.size) {
-            // Get the text
-            currentLineText = lines[currentLineIndex]
-
-            // If it's the line we're stamping
-            if (currentLineIndex.toFloat() == lineIndex) {
-                // Then only take up to the character we're supposed to show.
-                glyph.setText(font, if (currentLineText.isNotEmpty()) currentLineText.subSequence(0,  charIndex) else currentLineText)
-
-                if (charIndex >= currentLineText.length) {  // If no more characters to stamp on this line, move to next line.
-                    charIndex = 0                           // by resetting stamp character index.
-                    if (lineIndex >= maxLines)              // If we're displaying max number of lines, remove first line.
-                        lines = lines.drop(1)
-                    else
-                        lineIndex ++                        // otherwise, draw one more line.
-                }
-            } else // If it's not the line we're stamping, then just draw the entire line.
-                glyph.setText(font, currentLineText)
-
-
-            // draw whatever we need to draw for the current line.
-            // TODO cache x and base of y
-            font.draw(batch, glyph, (width - glyph.width) * 0.5f, height - 50 - (glyph.height * 2 * currentLineIndex))
-
-
-            // move to next line to be drawn this frame
-            currentLineIndex++
+    // ============================================================
+    // endregion
+    // region fullscreen
+    // ============================================================
+    /**
+     * Flag representing the current fullscreen state.
+     *
+     * Setter Calls [setDisplayMode] after changing [fullscreen] to [value].
+     *
+     * if [value] is true, application will be asserted into fullscreen,
+     * and vice versa.
+    */
+    @NodeInfo("Determines if the games takes complete control over your GPU.")
+    var fullscreen = graphics.isFullscreen
+        set(it) {
+            field = it
+            displayMode = graphics.displayMode
         }
 
-        batch.end() // end GL semaphore
-        super.render(delta)
-    }
+    /**
+     * Asserts the application into exclusive fullscreen with the current display mode.
+     */
+    fun enterFullscreen() { fullscreen = true }
 
     /**
-     * Sets [maxLines] to the max number of lines that can be displayed with the given height.
+     * Asserts the application into windowed with the current display mode.
      */
-    private fun calcMaxLines() = calcMaxLines(height.toInt())
-    private fun calcMaxLines(height: Int) { maxLines = (height - 100) / (glyph.height.toInt() * 2) }
+    fun exitFullscreen() { fullscreen = false }
 
     /**
-     * # Updates the size of the viewport to match the screen.
-     * Also updates [maxLines] to contain the correct number of lines that can be displayed.
+     * If in [fullscreen], calls [exitFullscreen] and vice versa.
      */
-    override fun doResize(width: Int, height: Int) {
-        batch.projectionMatrix = stage.camera.combined
-        calcMaxLines(height)
+    fun toggleFullscreen() {
+        if (fullscreen)
+            exitFullscreen()
+        else
+            enterFullscreen()
     }
 
-    override fun show() {
-        if(batch.isDrawing) batch.end()
-    }
+    // ============================================================
+    // endregion
+    // region Scaling
+    // ============================================================
+
+
+    /**
+     * The way in which the window content will be injected into the
+     * display area (window).
+     */
+    var scalingMode = Scaling.fit
+        set (it) {
+            field = it
+            update();
+        }
+
+    /**
+     * Returns an array of [Scaling] modes.
+     *
+     * These can be used in [x] to define how the image is scaled within the window.
+     */
+    // TODO This was changed in an engine update. This used to be an enum, but now it's object oriented.
+    //fun getScalingModes() = Scaling.values()
+
+    /**
+     * Absolute minimum render size.
+     *
+     * If the display area (window) is smaller than this size, then
+     * the rendered output is scaled using [scalingMode] via ScalingScreenAdapter.
+     */
+    var MIN_STAGE_HEIGHT = 1080
+
+    /**
+     * Absolute minimum render size.
+     *
+     * If the display area (window) is smaller than this size, then
+     * the rendered output is scaled using [scalingMode] via ScalingScreenAdapter.
+     */
+    var MIN_STAGE_WITDH  = 1920
+
+    private fun update() = Client.client!!.resize()
+
 }

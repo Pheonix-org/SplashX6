@@ -35,14 +35,13 @@ package com.shinkson47.SplashX6.rendering.windows
 import com.badlogic.gdx.Graphics
 import com.badlogic.gdx.scenes.scene2d.ui.Tree
 import com.shinkson47.SplashX6.audio.AudioController
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.optionspanes.LanguageSelectionListener
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
-import com.shinkson47.SplashX6.utility.GraphicalConfig
-import com.shinkson47.SplashX6.utility.Languages
-import com.shinkson47.SplashX6.utility.UtilityK
+import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
+import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.configuration.LanguageConfig
 
 /**
  * # A collection of tabs that provide configurable options to the user.
@@ -61,7 +60,7 @@ class W_Options(val parent : ScalingScreenAdapter) : StageWindow("generic.any.op
         arrayOf(
             RootNode(
                     "generic.any.general",
-                    SelectNode(LanguageSelectionListener, "locale", "specific.preferences.general.selectLanguage", *Languages.values())
+                    SelectNode(LanguageSelectionListener, "locale", "specific.preferences.general.selectLanguage", *LanguageConfig.Languages.values())
             ),
 
             RootNode(
@@ -85,9 +84,9 @@ class W_Options(val parent : ScalingScreenAdapter) : StageWindow("generic.any.op
                 "specific.preferences.misc",
                 RootNode(
                     "!specific.preferences.tooltip.tooltip",
-                    SliderNode<Float>(UtilityK::class.objectInstance!!, "ttInitialTime", "specific.preferences.tooltip.initial", 0f, 5f, 0.5f),
-                    SliderNode<Float>(UtilityK, "ttSubsequentTime", "specific.preferences.tooltip.subsequent", 0f, 5f, 0.1f),
-                    SliderNode<Float>(UtilityK, "ttResetTime", "specific.preferences.tooltip.reset", 0f, 5f, 0.1f),
+                    SliderNode<Float>(LanguageConfig, "ttInitialTime", "specific.preferences.tooltip.initial", 0f, 5f, 0.5f),
+                    SliderNode<Float>(LanguageConfig, "ttSubsequentTime", "specific.preferences.tooltip.subsequent", 0f, 5f, 0.1f),
+                    SliderNode<Float>(LanguageConfig, "ttResetTime", "specific.preferences.tooltip.reset", 0f, 5f, 0.1f),
             )
 
 

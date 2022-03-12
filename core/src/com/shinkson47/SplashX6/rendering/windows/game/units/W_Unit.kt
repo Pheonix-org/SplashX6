@@ -37,7 +37,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.game.units.UnitActionDictionary
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 
 // TODO Remove window when unit is dispanded. How?

@@ -32,9 +32,7 @@
 
 package com.shinkson47.SplashX6.test
 
-import com.badlogic.gdx.Application.LOG_ERROR
-import com.badlogic.gdx.Gdx
-import com.shinkson47.SplashX6.utility.Console
+import com.shinkson47.SplashX6.utility.debug.Console
 import com.strongjoshua.console.LogLevel
 import kotlin.AssertionError
 import kotlin.system.exitProcess

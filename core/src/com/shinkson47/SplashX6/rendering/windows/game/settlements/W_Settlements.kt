@@ -36,7 +36,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.cities.Settlement
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Utility
 

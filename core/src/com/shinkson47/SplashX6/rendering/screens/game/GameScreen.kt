@@ -53,11 +53,11 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.Camera
-import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.renderers.KeyBindRenderer
 import com.shinkson47.SplashX6.rendering.screens.Warroom
-import com.shinkson47.SplashX6.utility.Debug
+import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
+import com.shinkson47.SplashX6.utility.debug.Debug
 import org.xguzm.pathfinding.grid.GridCell
 
 /**

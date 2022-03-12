@@ -57,12 +57,17 @@ import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.NetworkClient.connect
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.network.Server.alive
+import com.shinkson47.SplashX6.network.Server.boot
+import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.LANG_TIPS
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Assets.SKIN
 import com.shinkson47.SplashX6.utility.UtilityK.getIP
+import com.shinkson47.SplashX6.utility.Utility.getIP
 import java.io.InvalidClassException
 import java.net.ConnectException
 

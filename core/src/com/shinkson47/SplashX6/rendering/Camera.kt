@@ -33,17 +33,16 @@
 package com.shinkson47.SplashX6.rendering
 
 import com.badlogic.gdx.Preferences
-import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.utility.Debug
+import com.shinkson47.SplashX6.utility.debug.Debug
 import com.shinkson47.SplashX6.utility.lerpDesire
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.GraphicalConfig
+import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import kotlin.math.PI
 import kotlin.math.absoluteValue
 import kotlin.math.tan

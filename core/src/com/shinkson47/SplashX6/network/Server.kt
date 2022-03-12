@@ -98,7 +98,7 @@ object Server {
          * # Sends the status of the game to the client.
          */
         fun status() {
-            if (Client.client!!.screen is GameScreen)
+            if (Client.client.screen is GameScreen)
                 send(Packet(PacketType.Start, GameData))
             else
                 send(Packet(PacketType.Status, GameData))

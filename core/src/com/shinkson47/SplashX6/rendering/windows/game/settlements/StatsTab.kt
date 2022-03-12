@@ -31,10 +31,9 @@
 
 package com.shinkson47.SplashX6.rendering.windows.game.settlements
 
-import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.shinkson47.SplashX6.game.cities.Settlement
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 
 /**
  * # TODO

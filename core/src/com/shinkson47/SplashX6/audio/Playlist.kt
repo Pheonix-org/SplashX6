@@ -73,7 +73,7 @@ class Playlist(initialSongs : ArrayList<Music>) : ArrayList<Music>(initialSongs)
      * @return The song playing after skipping the current song.
      */
     operator fun next(): Music {
-        playingIndex = Utility.IncrementClampBoundary(playingIndex, 0, size - 1)
+        playingIndex = Utility.incrementBoundaryReset(playingIndex, 0, size - 1)
         return currentSong
     }
 
@@ -86,7 +86,7 @@ class Playlist(initialSongs : ArrayList<Music>) : ArrayList<Music>(initialSongs)
      * @return The song playing after skipping to the previous song.
      */
     fun previous(): Music {
-        playingIndex = Utility.DecrementClampBoundary(playingIndex, size - 1, 0)
+        playingIndex = Utility.decrementBoundaryReset(playingIndex, size - 1, 0)
         return currentSong
     }
 

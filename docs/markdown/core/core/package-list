@@ -871,7 +871,7 @@ $dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu.SubActionMen
 $dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu.SubActionMenu/set/#kotlin.Array[com.shinkson47.SplashX6.rendering.screens.game.Menu.MenuSubItem]/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering.screens.game/-menu/-sub-action-menu/set.md
 $dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu.SubActionMenu/show/#kotlin.Array[com.shinkson47.SplashX6.rendering.screens.game.Menu.MenuSubItem]#com.shinkson47.SplashX6.rendering.screens.game.Menu.MenuItem/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering.screens.game/-menu/-sub-action-menu/show.md
 $dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu.WindowAction///PointingToDeclaration/core/com.shinkson47.SplashX6.rendering.screens.game/-menu/-window-action/index.md
-$dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu.WindowAction/WindowAction/#com.shinkson47.SplashX6.rendering.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering.screens.game/-menu/-window-action/-window-action.md
+$dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu.WindowAction/WindowAction/#com.shinkson47.SplashX6.rendering.ui.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering.screens.game/-menu/-window-action/-window-action.md
 $dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu.WindowAction/run/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering.screens.game/-menu/-window-action/run.md
 $dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu.WindowAction/window/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering.screens.game/-menu/-window-action/window.md
 $dokka.location:com.shinkson47.SplashX6.rendering.screens.game/Menu///PointingToDeclaration/core/com.shinkson47.SplashX6.rendering.screens.game/-menu/index.md
@@ -1138,7 +1138,7 @@ $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/dialog/#com.badlog
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/dialog/#com.badlogic.gdx.scenes.scene2d.Stage#java.lang.String#java.lang.String#java.lang.String#java.lang.String#java.util.function.Consumer<java.lang.Boolean>#com.badlogic.gdx.scenes.scene2d.Actor.../PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/dialog.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/dialog/#java.lang.String#java.lang.String#java.lang.String#java.lang.String#java.util.function.Consumer<java.lang.Boolean>#com.badlogic.gdx.scenes.scene2d.Actor.../PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/dialog.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/doOnTurn/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/do-on-turn.md
-$dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/dock/#com.shinkson47.SplashX6.rendering.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/dock.md
+$dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/dock/#com.shinkson47.SplashX6.rendering.ui.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/dock.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/dontClose/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/dont-close.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/getGameWindows/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/get-game-windows.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/getWINDOW_DOCK/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/get-w-i-n-d-o-w_-d-o-c-k.md
@@ -1146,7 +1146,7 @@ $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/label/#java.lang.S
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/label/#java.lang.String#com.badlogic.gdx.scenes.scene2d.ui.Table/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/label.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/lightBG/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/light-b-g.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/onTurn/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/on-turn.md
-$dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/post/#com.shinkson47.SplashX6.rendering.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/post.md
+$dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/post/#com.shinkson47.SplashX6.rendering.ui.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/post.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/run/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/run.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/seperate/#com.badlogic.gdx.scenes.scene2d.ui.Table#java.lang.String/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/seperate.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/seperatorStyle/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/seperator-style.md
@@ -1155,8 +1155,8 @@ $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/toString/#/Pointin
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/toggleShown/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/toggle-shown.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/tooltip/#com.badlogic.gdx.scenes.scene2d.Actor#java.lang.String/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/tooltip.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/tooltip/#java.lang.String/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/tooltip.md
-$dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/unDock/#com.shinkson47.SplashX6.rendering.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/un-dock.md
-$dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/unPost/#com.shinkson47.SplashX6.rendering.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/un-post.md
+$dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/unDock/#com.shinkson47.SplashX6.rendering.ui.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/un-dock.md
+$dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/unPost/#com.shinkson47.SplashX6.rendering.ui.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/un-post.md
 $dokka.location:com.shinkson47.SplashX6.rendering/StageWindow/unPostAll/#/PointingToDeclaration/core/com.shinkson47.SplashX6.rendering/-stage-window/un-post-all.md
 $dokka.location:com.shinkson47.SplashX6.test////PointingToDeclaration/core/com.shinkson47.SplashX6.test/index.md
 $dokka.location:com.shinkson47.SplashX6.test/ReleaseTest///PointingToDeclaration/core/com.shinkson47.SplashX6.test/-release-test/index.md
@@ -1265,7 +1265,7 @@ $dokka.location:com.shinkson47.SplashX6.utility/Debug/update/#/PointingToDeclara
 $dokka.location:com.shinkson47.SplashX6.utility/GraphicalConfig///PointingToDeclaration/core/com.shinkson47.SplashX6.utility/-graphical-config/index.md
 $dokka.location:com.shinkson47.SplashX6.utility/GraphicalConfig/MIN_STAGE_HEIGHT/#/PointingToDeclaration/core/com.shinkson47.SplashX6.utility/-graphical-config/-m-i-n_-s-t-a-g-e_-h-e-i-g-h-t.md
 $dokka.location:com.shinkson47.SplashX6.utility/GraphicalConfig/MIN_STAGE_WITDH/#/PointingToDeclaration/core/com.shinkson47.SplashX6.utility/-graphical-config/-m-i-n_-s-t-a-g-e_-w-i-t-d-h.md
-$dokka.location:com.shinkson47.SplashX6.utility/GraphicalConfig/callibrateCullingFrustum/#com.shinkson47.SplashX6.rendering.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.utility/-graphical-config/callibrate-culling-frustum.md
+$dokka.location:com.shinkson47.SplashX6.utility/GraphicalConfig/callibrateCullingFrustum/#com.shinkson47.SplashX6.rendering.ui.StageWindow/PointingToDeclaration/core/com.shinkson47.SplashX6.utility/-graphical-config/callibrate-culling-frustum.md
 $dokka.location:com.shinkson47.SplashX6.utility/GraphicalConfig/displayMode/#/PointingToDeclaration/core/com.shinkson47.SplashX6.utility/-graphical-config/display-mode.md
 $dokka.location:com.shinkson47.SplashX6.utility/GraphicalConfig/enterFullscreen/#/PointingToDeclaration/core/com.shinkson47.SplashX6.utility/-graphical-config/enter-fullscreen.md
 $dokka.location:com.shinkson47.SplashX6.utility/GraphicalConfig/exitFullscreen/#/PointingToDeclaration/core/com.shinkson47.SplashX6.utility/-graphical-config/exit-fullscreen.md

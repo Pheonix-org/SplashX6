@@ -10,17 +10,16 @@ import com.shinkson47.SplashX6.game.GameHypervisor.cm_enter
 import com.shinkson47.SplashX6.game.GameHypervisor.cm_exit
 import com.shinkson47.SplashX6.game.GameHypervisor.cm_toggle
 import com.shinkson47.SplashX6.game.GameHypervisor.turn_end
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
-import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_Unit
 import com.shinkson47.SplashX6.utility.APICondition.Companion.MSG_TRIED_EXCEPT
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.THROW
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
-import com.shinkson47.SplashX6.utility.GraphicalConfig
+import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 
 /**
  * # Binds key presses to runnable actions.

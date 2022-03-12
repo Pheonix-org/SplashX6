@@ -33,9 +33,7 @@
 package com.shinkson47.SplashX6.game;
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -52,7 +50,7 @@ import com.shinkson47.SplashX6.input.KeyBinder
 import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
@@ -67,6 +65,7 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.WARN
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.debug.Debug
 import java.io.*
 
 import java.lang.Thread.sleep
@@ -94,7 +93,7 @@ object GameHypervisor {
         @Deprecated("Debug use only.")
         fun newGameRenderer() {
             gameRenderer = GameScreen()
-            client!!.fadeScreen(gameRenderer!!)
+            client.fadeScreen(gameRenderer!!)
         }
 
         /**
@@ -123,7 +122,7 @@ object GameHypervisor {
         //========================================================================
 
         fun ConnectGame() {
-            client!!.fadeScreen(WorldCreation(isConnecting = true))
+            client.fadeScreen(WorldCreation(isConnecting = true))
         }
 
         /**
@@ -314,7 +313,7 @@ object GameHypervisor {
          * @param ai Ai
          * @return [Nation]
          */
-        fun nation_new_random(): Nation = nation_new(UtilityK.random(NationType.values()), ai = true)
+        fun nation_new_random(): Nation = nation_new(Utility.random(NationType.values()), ai = true)
 
         fun nation_new(civType: NationType, ai : Boolean = false): Nation {
             requireNotNull(GameData.world, { " Tried to create a new civilisation with no world. " })
@@ -650,7 +649,7 @@ object GameHypervisor {
             if (cm_active) return false
             //cm_showStateCaps(true)
             cm_active = true
-            client!!.fadeScreen(gameRenderer!!.managementScreen)
+            client.fadeScreen(gameRenderer!!.managementScreen)
             cm_cancelDestinationSelect()
             return true
         }
@@ -664,7 +663,7 @@ object GameHypervisor {
 
             //cm_showStateCaps(false)
             cm_active = false
-            client!!.fadeScreen(gameRenderer!!)
+            client.fadeScreen(gameRenderer!!)
         }
 
         /**
@@ -685,7 +684,7 @@ object GameHypervisor {
         fun cm_selectedTile() : Vector3 {
             //validateCall(REQ_UNIT_CONTROL_MODE) { cm_enter(); }
 
-            return if (client!!.currentScreen is Warroom) {
+            return if (client.currentScreen is Warroom) {
                 // Get point on world that mouse is pointing to.
                 val unprojected = gameRenderer!!.managementScreen.camera.unproject(Vector3(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
 
@@ -740,8 +739,8 @@ object GameHypervisor {
             GameData.clear()
 
             // FIXME: 28/07/2021 Possible for this to not take effect if the user enters any other screen within a second of getting to the main menu.
-            Utility.DispatchDaemonThread("KeyBindingDisposer"){
-                while (client!!.screen !is MainMenu) {
+            Utility.dispatchDaemonThread("KeyBindingDisposer"){
+                while (client.screen !is MainMenu) {
                     sleep(1000)
                 }
                 KeyBinder.destroyGameBinds()
@@ -759,7 +758,7 @@ object GameHypervisor {
             if (!DEBUG_MODE) Spotify.pause()
 
             inGame = false
-            client!!.fadeScreen(MainMenu())
+            client.fadeScreen(MainMenu())
         }
 
         /**

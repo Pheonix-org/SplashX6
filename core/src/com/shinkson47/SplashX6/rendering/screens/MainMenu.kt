@@ -43,8 +43,8 @@ import com.shinkson47.SplashX6.game.GameHypervisor.ConnectGame
 import com.shinkson47.SplashX6.game.GameHypervisor.LoadGame
 import com.shinkson47.SplashX6.game.GameHypervisor.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
-import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
@@ -93,7 +93,13 @@ class MainMenu : ScalingScreenAdapter() {
             addButton("generic.game.load") { LoadGame() }
             addButton("!Connect") { ConnectGame() }
             addButton("generic.any.options") { optionsWindow.isVisible = true; optionsWindow.toFront() }
-            addButton("specific.menu.credits") { client!!.fadeScreen(CreditsScreen()) }
+            addButton("specific.menu.credits") {
+                client.fadeScreen(
+                    TextScreen(Assets.get(Assets.LANG_CREDITS),
+                        background = REF_SKIN_W95.getDrawable("tiledtex"),
+                        fontColor = Color.BLACK,
+                        onESC = this@MainMenu
+                    ) ) }
             addButton("generic.game.exit") { Gdx.app.exit() }
 
             isMovable = false

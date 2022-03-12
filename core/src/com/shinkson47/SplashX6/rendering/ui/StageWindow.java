@@ -30,7 +30,7 @@
  ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.rendering;
+package com.shinkson47.SplashX6.rendering.ui;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -46,14 +46,14 @@ import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.audio.AudioController;
 import com.shinkson47.SplashX6.game.GameHypervisor;
 import com.shinkson47.SplashX6.utility.*;
+import com.shinkson47.SplashX6.utility.configuration.LanguageConfig;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.shinkson47.SplashX6.Client.DEBUG_MODE;
 import static com.shinkson47.SplashX6.audio.AudioController.GUI_SOUND;
-import static com.shinkson47.SplashX6.utility.Utility.local;
+import static com.shinkson47.SplashX6.utility.configuration.LanguageConfig.local;
 import static java.lang.System.gc;
 
 /**
@@ -249,7 +249,7 @@ public abstract class StageWindow extends Window implements TurnHook {
         setResizable(resizable);
         setVisible(visible);
         updateColSpans();
-        if (com.shinkson47.SplashX6.utility.Debug.debugMode) debugAll();
+        if (com.shinkson47.SplashX6.utility.debug.Debug.debugMode) debugAll();
         GameHypervisor.turn_hook(this);
         post(this); // TODO no consideration for posting on other stages on creation. We might not want a window on the game screen.
     }
@@ -508,8 +508,8 @@ public abstract class StageWindow extends Window implements TurnHook {
         int _alignment = getAlign();
         align(Align.center);
         setPosition(
-                Utility.center(getStage().getWidth(), getWidth()),
-                Utility.center(getStage().getHeight(), getHeight())
+                Utility.INSTANCE.center(getStage().getWidth(), getWidth()),
+                Utility.INSTANCE.center(getStage().getHeight(), getHeight())
         );
         align(_alignment);
     }
@@ -630,7 +630,7 @@ public abstract class StageWindow extends Window implements TurnHook {
      * @return t
      */
     public static final Actor tooltip(Actor t, String s){
-        t.addListener(new TextTooltip(s, UtilityK.INSTANCE.getTtManager(), Assets.INSTANCE.getREF_SKIN_W95()));
+        t.addListener(new TextTooltip(s, LanguageConfig.INSTANCE.getTtManager(), Assets.INSTANCE.getREF_SKIN_W95()));
         return t;
     }
 

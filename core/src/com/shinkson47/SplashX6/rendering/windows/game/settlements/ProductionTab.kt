@@ -38,14 +38,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.production.ProductionManager
 import com.shinkson47.SplashX6.game.production.ProductionProject
-import com.shinkson47.SplashX6.rendering.StageWindow
-import com.shinkson47.SplashX6.rendering.StageWindow.label
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow.label
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
+import com.shinkson47.SplashX6.rendering.ui.AutoFocusScrollPane
 import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.configuration.LanguageConfig.local
 import kotlin.math.ceil
 
 /**
@@ -108,7 +108,7 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
 
         val midColumn : WidgetGroup = VerticalGroup()
         midColumn.addActor(
-            TextButton(Utility.local("generic.any.add"), Assets.REF_SKIN_W95)
+            TextButton(local("generic.any.add"), Assets.REF_SKIN_W95)
             .also {
                 it.addListener {
                     productionManager?.let {
@@ -136,7 +136,7 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
 
 
         val localisedLabel: (key: String) -> Unit = {
-            midColumn.addActor(Label(Utility.local(it), Assets.REF_SKIN_W95))
+            midColumn.addActor(Label(local(it), Assets.REF_SKIN_W95))
         }
 
         localisedLabel("specific.windows.settlements.cost")
@@ -145,7 +145,7 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
         localisedLabel("specific.windows.settlements.completeIn")
         midColumn.addActor(lblCompleteIn)
 
-        midColumn.addActor(TextButton(Utility.local("generic.any.remove"), Assets.REF_SKIN_W95).apply { addListener(StageWindow.LambdaClickListener {
+        midColumn.addActor(TextButton(local("generic.any.remove"), Assets.REF_SKIN_W95).apply { addListener(StageWindow.LambdaClickListener {
             selectedInQueue().let { productionManager?.queue?.removeValue(it, true) }
             refresh(null)
         })})

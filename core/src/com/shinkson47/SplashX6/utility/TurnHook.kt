@@ -41,12 +41,8 @@ interface TurnHook : Runnable {
 
     @Deprecated("Run should not be directly invoked on a TurnHook.", ReplaceWith("OnTurn()"))
     override fun run() = doOnTurn()
+    fun doOnTurn() =
+        onTurn()
 
     fun onTurn()
-
-    fun doOnTurn() {
-        onTurn()
-    }
-
-
 }

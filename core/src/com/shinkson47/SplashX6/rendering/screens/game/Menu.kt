@@ -49,7 +49,7 @@ import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.game.W_Advancement
 import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
@@ -60,8 +60,12 @@ import com.shinkson47.SplashX6.rendering.windows.game.Spotify
 import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
-import com.shinkson47.SplashX6.utility.Debug.DebugWindow
-import com.shinkson47.SplashX6.utility.Utility.*
+import com.shinkson47.SplashX6.utility.Utility.AssertEndsWith
+import com.shinkson47.SplashX6.utility.Utility.message
+import com.shinkson47.SplashX6.utility.Utility.warnDev
+import com.shinkson47.SplashX6.utility.configuration.LanguageConfig
+import com.shinkson47.SplashX6.utility.configuration.LanguageConfig.local
+import com.shinkson47.SplashX6.utility.debug.Debug.DebugWindow
 
 /**
  * # The menu bar used in-game to access tools, windows and more.

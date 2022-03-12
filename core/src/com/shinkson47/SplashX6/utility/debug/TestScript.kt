@@ -30,7 +30,7 @@
  ░                                                                                                                                                                                ░
  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░*/
 
-package com.shinkson47.SplashX6.utility
+package com.shinkson47.SplashX6.utility.debug
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3

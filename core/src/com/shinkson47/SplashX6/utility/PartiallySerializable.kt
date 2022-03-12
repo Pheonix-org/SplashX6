@@ -36,15 +36,16 @@ import java.io.Serializable
 import java.util.function.Predicate
 
 /**
- * # A serializable class with transient properties.
+ * A serializable class with transient properties.
  *
  * For use when you want to serialize a class which
  * contains things that are not serializable.
  *
  * Provides a deserialization method to reconstruct transient properties.
+ * It's up the implementation to figure out how.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 03/02/2022
  */
-interface PartiallySerializable : Serializable{
+interface PartiallySerializable : Serializable {
     fun deserialize()
 }
 

@@ -42,7 +42,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor.cm_enter
 import com.shinkson47.SplashX6.game.GameHypervisor.unit_selected
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 
 /**

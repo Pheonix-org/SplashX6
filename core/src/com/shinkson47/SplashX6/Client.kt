@@ -44,8 +44,8 @@ import com.shinkson47.SplashX6.rendering.screens.ScreenTransistion
 import com.shinkson47.SplashX6.rendering.screens.SplashScreen
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Debug
-import com.shinkson47.SplashX6.utility.GraphicalConfig
+import com.shinkson47.SplashX6.utility.debug.Debug
+import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import java.awt.Image
 import javax.imageio.ImageIO
 
@@ -167,7 +167,6 @@ class Client : Game() {
         @JvmField
         var CI_CD_FS: Boolean = false
 
-        @JvmField
-        var client: Client? = null
+        lateinit var client: Client
     }
 }

@@ -36,7 +36,10 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 
 /**
- * # A value which moves closer to the desired value by [alpha]
+ * A floating point or 3D vector which moves closer to a desired value by [alpha]
+ * on every update.
+ *
+ * TODO add support for vector 2.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 04/05/2021
  * @since v1
  * @version 1

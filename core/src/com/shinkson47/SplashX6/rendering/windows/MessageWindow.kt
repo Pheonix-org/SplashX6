@@ -33,7 +33,7 @@
 package com.shinkson47.SplashX6.rendering.windows
 
 import com.badlogic.gdx.Gdx
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 
 class MessageWindow(titleKey : String, MessageKey : String, val isError : Boolean = false)
     : StageWindow(titleKey, if (isError) "Message_error" else "Message")

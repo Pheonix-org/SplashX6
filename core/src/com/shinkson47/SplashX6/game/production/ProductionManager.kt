@@ -35,7 +35,6 @@ import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.utility.TurnHook
 import com.shinkson47.SplashX6.utility.Utility
-import com.shinkson47.SplashX6.utility.UtilityK
 import java.io.Serializable
 
 
@@ -90,7 +89,7 @@ abstract class ProductionManager<PT : ProductionProject<*>> (
     /**
      * @return the [ProductionProject] that this manager is currently working on.
      */
-    fun getWorkingOn() : PT? = UtilityK.tryOrNull { queue.first() }
+    fun getWorkingOn() : PT? = Utility.tryOrNull { queue.first() }
 
     /**
      * ## Remove the item currently being worked on.

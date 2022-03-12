@@ -36,16 +36,13 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.badlogic.gdx.utils.Align
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Utility
-import com.shinkson47.SplashX6.utility.Utility.local
-import java.awt.event.FocusListener
+import com.shinkson47.SplashX6.utility.configuration.LanguageConfig.local
 import kotlin.reflect.KMutableProperty
 import kotlin.reflect.full.declaredMembers
-import java.awt.event.MouseEvent
 
 
 /**

@@ -41,7 +41,7 @@ import com.shinkson47.SplashX6.game.GameHypervisor
 import com.auburn.fastnoiselite.FastNoiseLite
 import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion
 import com.shinkson47.SplashX6.game.world.generation.Generator
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_KENNEY
 import com.shinkson47.SplashX6.utility.Utility
 

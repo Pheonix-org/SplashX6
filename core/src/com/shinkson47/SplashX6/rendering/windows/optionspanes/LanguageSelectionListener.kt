@@ -32,23 +32,14 @@
 
 package com.shinkson47.SplashX6.rendering.windows.optionspanes
 
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.shinkson47.SplashX6.Client
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.rendering.screens.MainMenu
-import com.shinkson47.SplashX6.rendering.screens.game.Menu
-import com.shinkson47.SplashX6.utility.APICondition
-import com.shinkson47.SplashX6.utility.Assets
-import com.shinkson47.SplashX6.utility.Languages
+import com.shinkson47.SplashX6.utility.configuration.LanguageConfig
 
 /**
  * # Action performed when user desires to change language.
  */
 object LanguageSelectionListener {
     // FIXME move this to some language manager? idk, this is a fucking mess.
-    var locale : Languages = Languages.en
+    var locale : LanguageConfig.Languages = LanguageConfig.Languages.en
         set(value) {
             field = value
 

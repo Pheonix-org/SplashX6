@@ -59,6 +59,7 @@ import kotlin.collections.ArrayList
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.rendering.windows.game.Spotify
+import com.shinkson47.SplashX6.utility.configuration.LanguageConfig
 
 
 /**
@@ -538,7 +539,7 @@ internal object Assets : AssetManager() {
         load(LANG_BUNDLE, I18NBundle::class.java, I18NBundleLoader.I18NBundleParameter(Locale.ENGLISH))
         afterLoad {
             // Compile a list of all locales in languages.
-            for (language in Languages.values())
+            for (language in LanguageConfig.Languages.values())
                 languages.add(Locale(language.toString()))
         }
 
@@ -703,4 +704,23 @@ internal object Assets : AssetManager() {
         override fun getDependencies(fileName: String?, file: FileHandle?, parameter: AssetLoaderParameters<T>?): Array<AssetDescriptor<Any>>
             = Array()
     }
+}
+
+
+
+/**
+ * # Small collection of assets made available before [Assets] is loaded.
+ * @author [Jordan T. Gray](https://www.shinkson47.in) on 28/06/2021
+ * @since PRE-ALPHA 0.0.2
+ * @version 1
+ */
+object PrebootAssets {
+
+    @JvmStatic
+    val PB_SKIN : Skin = Skin(Gdx.files.internal("skins/W95/W95.json"))
+
+    val SPLASH_TEXT = Gdx.files.internal("lang/splash.txt").readString()
+
+    val splashBG: TextureAtlas = TextureAtlas("sprites/splash_bg.atlas")
+
 }

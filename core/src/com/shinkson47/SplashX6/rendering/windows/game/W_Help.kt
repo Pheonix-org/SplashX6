@@ -33,19 +33,14 @@
 package com.shinkson47.SplashX6.rendering.windows.game
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.scenes.scene2d.Event
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.utils.FocusListener
-import com.shinkson47.SplashX6.rendering.StageWindow
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.RootNode
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import xmlwise.Plist
-import com.badlogic.gdx.scenes.scene2d.Actor
-import com.badlogic.gdx.scenes.scene2d.InputEvent
 
-import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.shinkson47.SplashX6.rendering.windows.DoubleClickTreeListener
-import com.shinkson47.SplashX6.utility.AutoFocusScrollPane
+import com.shinkson47.SplashX6.rendering.ui.AutoFocusScrollPane
 
 
 class W_Help : StageWindow("!Help") {
