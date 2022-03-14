@@ -329,6 +329,9 @@ class Settlement(
     }
 
     override fun toString(): String = "$name $isoVec"
+    fun ownedBy() = GameData.nations.find { it.settlements.contains(this) }
+        // TODO abstract these things & cache itttt
+
 
     // ============================================================
     // endregion meta

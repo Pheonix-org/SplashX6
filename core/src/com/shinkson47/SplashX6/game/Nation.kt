@@ -37,7 +37,10 @@ import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.cities.CityType
+import com.shinkson47.SplashX6.game.production.ProductionManager
+import com.shinkson47.SplashX6.game.production.TechProductionManager
 import com.shinkson47.SplashX6.game.units.Unit
+import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_NATION_DATA
 import com.shinkson47.SplashX6.utility.TurnHook
 import java.io.Serializable
@@ -56,11 +59,16 @@ class Nation(val nationType: NationType, val ai: Boolean = false) : Serializable
      * # List of all units in the world that belong to this nation.
      */
     var units : Array<Unit> = Array()
+    var dissolved: Boolean = false
+        private set
 
     /**
      * # List of all settlements in the world that belong to this nation.
      */
     val settlements : Array<Settlement> = Array()
+
+    val advancementProuction = TechProductionManager()
+    val advancementTree = AdvancementTree(Assets.get(Assets.DATA_TECHS))
 
     /**
      *
@@ -89,6 +97,21 @@ class Nation(val nationType: NationType, val ai: Boolean = false) : Serializable
     fun addUnit(u:Unit) {
         units.add(u)
         if (ai) u.ai_init()
+    }
+
+
+    /**
+     * Breaks down data related to this nation.
+     *
+     * @Deprecated DO NOT INVOKE. Use [GameHypervisor.nation_dissolve]
+     * @see GameHypervisor.nation_dissolve
+     */
+    @Deprecated("DO NOT DIRECTLY INVOKE. Use GameHypervisor.nation_dissolve(it)")
+    fun dissolve() {
+        dissolved = true
+        settlements.clear()
+        units.forEach { GameHypervisor.unit_disband(it) }
+        units.clear()
     }
 
     fun cityType(): CityType = CityType.valueOf(data()["citytype"] as String)

@@ -32,6 +32,9 @@
 package com.shinkson47.SplashX6.game
 
 import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.game.Advancement.Companion.depth
+import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
+import java.lang.Integer.compare
 
 /**
  * A linked list data structure representing a tree of things which can be advanced.
@@ -85,6 +88,37 @@ class AdvancementTree(data : HashMap<String, *>) : ArrayList<Advancement>() {
             traverseDependancies(it, a, f)
         }
     }
+
+    fun deepestUncompleteDependency(i: Advancement) {
+        var deepest = i
+        var deepestDepth = 10000
+        traverseDependancies(i) {it, requiredby ->
+            if (it == null) return@traverseDependancies Unit
+            val oldDepth = deepestDepth
+            deepestDepth = deepestDepth.coerceAtMost(depth(it))
+
+            if (oldDepth >= deepestDepth && !deepest.complete)
+                deepest = it
+
+            Unit
+        }
+    }
+
+    /**
+     * A list of dependencies for [a] in order of depth.
+     */
+    fun orderedDependendencies(a: Advancement, onlyUncomplete: Boolean = false): Array<Advancement> {
+        var deps = Array<Advancement>().apply {
+            traverseDependancies(a) { it, requiredby -> add(requiredby) }
+            reverse()
+        }
+
+        deps.sort { o1, o2 -> depth(o1).compareTo(depth(o2)) }
+        deps = CollectionToGDXArray(deps.distinct())
+        return if(onlyUncomplete)
+                CollectionToGDXArray(deps.filter { !it.complete })
+        else deps
+    }
 }
 
 
@@ -92,7 +126,7 @@ class Advancement(
     val name : String = "root",
     val parent : Advancement? = null,
     val requires : Array<Advancement> = Array(),
-    val complete : Boolean = false
+    var complete : Boolean = false
 ) {
     companion object {
         /**
@@ -113,23 +147,23 @@ class Advancement(
             return found
         }
 
-        /**
-         * Determines the number of advancements in the largest chain of dependencies.
-         *
-         * @param level The current level of depth. Used in the recursion. Starts at 0.
-         * @param i the advancement to process.
-         * @return In the tree of requirements, the length of the longest chain.
-         */
-        fun depth(i: Advancement, level: Int = 0): Int {
-            return if (i.requires.isEmpty)
-                level
-            else {
-                var depth = level
-                i.requires.forEach {
-                    depth = depth(it, level + 1).coerceAtLeast(depth)
-                }
-                depth
+    /**
+     * Determines the number of advancements in the largest chain of dependencies.
+     *
+     * @param level The current level of depth. Used in the recursion. Starts at 0.
+     * @param i the advancement to process.
+     * @return In the tree of requirements, the length of the longest chain.
+     */
+    fun depth(i: Advancement, level: Int = 0): Int {
+        return if (i.requires.isEmpty)
+            level
+        else {
+            var depth = level
+            i.requires.forEach {
+                depth = depth(it, level + 1).coerceAtLeast(depth)
             }
+            depth
         }
     }
+}
 }

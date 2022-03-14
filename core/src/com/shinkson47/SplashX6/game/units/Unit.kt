@@ -45,9 +45,15 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.*
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGHT
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
+import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SPRITES_UNITS
+import com.shinkson47.SplashX6.utility.Assets.clear
+import com.shinkson47.SplashX6.utility.DataTable
 import com.shinkson47.SplashX6.utility.PartiallySerializable
+import com.shinkson47.SplashX6.utility.Utility.warnDev
+import com.sun.org.apache.xpath.internal.operations.Bool
 import org.xguzm.pathfinding.grid.GridCell
+import org.xguzm.pathfinding.grid.finders.AStarGridFinder
 import kotlin.Unit
 
 /**
@@ -76,59 +82,212 @@ open class Unit(
 
     constructor(unitClass: UnitClass, _x: Int, _y: Int) : this(unitClass, Vector3(_x.toFloat(), _y.toFloat(), 0f))
 
-    // =============================================
-    // region fields
-    // =============================================
 
-    var light: PointLight? = GameData.world!!.staticLight(isoVec.x, 100f)
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // region fields
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
     /**
-     * ## A user friendly name of this unit.
-     * For now, is just the [unitClass]
+     * The in-world light that this unit carries with it to act as fog of war.
+     * // TODO base on view distance.
      */
-    val displayName = unitClass.toString()
+    var light: PointLight?
+
+
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // endregion fields
+    // region movement
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
     /**
      * ## The unit's destination
      * the x, y that the unit desires to travel to,
      * if there is a destination set.
+     *
+     * Is null if there is no destination set, or is unable
+     * to travel to a destination that was requested.
      */
-    var destination: Pair<Int, Int>? = null
+    var destination: Vector2? = null
         private set
 
     /**
-     * A list of cells in the world, defines the path
+     * A list of cells in the world, defining the path
      * this unit is trying to take to reach [destination]
      */
     var pathNodes : List<GridCell>? = null
 
-    // TODO these need to be dictionary based values, depending on the unit's class.
-    var viewDistance = 10;
-    var travelDistance = 3;
-
-    /**
-     * ## The actions that this unit is able to perform.
-     * Fetched from [UnitActionDictionary], which defines what each class is able to do.
-     */
-    val actions: Array<UnitAction> = UnitActionDictionary[unitClass]
+    @Transient val pathfinder = AStarGridFinder(GridCell::class.java)
 
 
     /**
-     * ## [UnitAction] that this unit will perform on the next turn.
+     * The distance that this unit is able to see.
+     *
+     * Determines how much of the map is revealed,
+     * and how large the [light] is.
      */
-    var onTurnAction: UnitAction? = null
+    // TODO these need to be dictionary based values
+    var viewDistance: Int
 
-    // =============================================
-    // endregion fields
-    // region construction
-    // =============================================
+    /**
+     * Determines how many nodes in the [pathNodes]
+     * that may be traveled in one turn
+     */
+    // TODO these need to be dictionary based values
+    var travelDistance: Int
 
-    init { setLocation(isoVec) }
+    /**
+     * See [setLocation] (Int, Int) for documentation
+     */
+    fun setLocation(_pos : Vector3, dontPathfind: Boolean = false): Boolean = setLocation(_pos.x, _pos.y, dontPathfind)
 
-    // =============================================
-    // endregion construction
-    // region get / set deprication
-    // =============================================
+    /**
+     * See [setLocation] (Int, Int) for documentation
+     */
+    fun setLocation(x: Float, y: Float, dontPathfind: Boolean = false) : Boolean = setLocation(x.toInt(), y.toInt(), dontPathfind)
+
+    /**
+     * # Sets the isometric location of this unit
+     * Teleports this unit to the specified tile without question.
+     *
+     * Doesn't care as to wether or not a unit *should* be able to go onto this tile.
+     *
+     * where [x] and [y] are iso co-ordinates, and are stored in [isoX], [isoY].
+     *
+     * super.[x] and super.[y] store cartesian equivalents
+     * to position the sprite, which are calculated in [WorldTerrain.isoToCartesian]
+     *
+     * For a delta translation, see [deltaPosition]
+     *
+     * Teleports only within the boundaries of the world.
+     * co-ords will automatically be clamped.
+     *
+     * After the move, defogs area around new position and
+     * moves the light.
+     *
+     * Moving the unit also invalidates and updates the pathfinding.
+     * [destination] may be cleared if the new location cannot pathfind to the
+     * [destination].
+     *
+     * @param x The isometric x to teleport to.
+     * @param y The isometric y to teleport to.
+     * @param dontPathfind If true, will not invalidate the path. For efficiency when moving along path, i.e [TRAVEL]
+     * @return Result of pathfinding. True if still able to reach [destination], else false.
+     *         Always false if [dontPathfind] is true.
+     *         if [dontPathFind] == false and returns false, then [destination] has been cleared.
+     */
+    fun setLocation(x: Int, y: Int, dontPathfind: Boolean = false) : Boolean {
+        // Clamp to within bounds of the world.
+        val x = MathUtils.clamp(x, 0, GameData.world!!.width - 1)
+        val y = MathUtils.clamp(y, 0, GameData.world!!.height - 1)
+
+        // Store iso position
+        isoVec.set(x.toFloat(),y.toFloat(),0f)
+
+        // Defog
+        GameData.world!!.defog(isoVec.x.toInt(), isoVec.y.toInt(), viewDistance)
+
+        // Move the sprite & light
+        isoToCartesian(x, y).apply {
+            // Compensate for the origin, so that the sprite is in the center of the cell.
+            setX(this.x - TILE_HALF_WIDTH)
+            setY(this.y - TILE_HALF_HEIGHT)
+            light?.setPosition(this.x,this.y)
+        }
+
+        // Invalidate the pathfinding.
+        return if (dontPathfind)
+            false
+        else
+            calculatePath()
+    }
+
+    /**
+     * See [setDestination] (Int, Int) for documentation
+     */
+    fun setDestination(v : Vector2) = setDestination(v.x, v.y)
+
+    /**
+     * See [setDestination] (Int, Int) for documentation
+     */
+    fun setDestination(v : Vector3) = setDestination(v.x, v.y)
+
+    /**
+     * Sets a desired destination, then calculates the pathfinding required to reach it.
+     *
+     * [destination] will be null if there is no way to pathfind to the destination
+     *
+     * Has no effect if x, y matches [destination].
+     *
+     * @param x X Isometric x position of the destination
+     * @param y Y Isometric y position of the destination
+     * @return true if able to reach the destination, else false.
+     */
+    fun setDestination(x: Float, y: Float): Boolean {
+        val x = MathUtils.clamp(x, 0f, GameData.world!!.width - 1f)
+        val y = MathUtils.clamp(y, 0f, GameData.world!!.height - 1f)
+
+        // don't path find if destination is same.
+        if (x == destination?.x && y == destination?.y) return true
+
+        // Set new destination
+        destination = Vector2(x,y)
+
+        // Try pathfinding
+        return calculatePath()
+    }
+
+    /**
+     * Removes the destination and clears the path to it.
+     *
+     * Used when destination is invalid or removed.
+     */
+    fun clearDestination() {
+        destination = null
+        pathNodes = null
+        System.gc()
+    }
+
+    /**
+     * Performs A* pathfinding to attempt to determine a path to the [destination].
+     *
+     * Places resulting path into [pathNodes]
+     *
+     * Has no effect if [destination] is null.
+     *
+     * Will [clearDestination] if there is no way of reaching it.
+     *
+     * @return true if able to path find to destination, else false.
+     */
+    private fun calculatePath(): Boolean {
+        if (destination == null) return false
+
+        try {
+            with(GameData.world!!) {
+                pathNodes = pathfinder.findPath(isoVec.x.toInt(), isoVec.y.toInt(), destination!!.x.toInt(), destination!!.y.toInt(), navigationLayer)
+            }
+        } catch (e: ArrayIndexOutOfBoundsException) {
+            clearDestination()
+            return false
+        }
+
+        if (pathNodes == null || pathNodes?.size == 0) {
+            clearDestination()
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * Moves this sprite relative to it's current position by a x and y tiles,
+     * then invokes [setLocation] to update the sprite and pathfinding and whatnot.
+     */
+    fun deltaPosition(deltaX: Int, deltaY: Int) : Boolean {
+        isoVec.x += deltaX
+        isoVec.y += deltaY
+        return setLocation(isoVec)
+    }
+
 
     /**
      * Sets the location of the sprite. This should not be done.
@@ -154,114 +313,121 @@ open class Unit(
     @Deprecated("see [setLocation]")
     override fun setPosition(x: Float, y: Float) = super.setPosition(x, y)
 
-    // =============================================
-    // endregion get / set deprication
-    // region functions
-    // =============================================
+
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // endregion movement
+    // region action
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
 
     /**
-     * # Sets the location of this sprite in iso space.
-     * where [x] and [y] are iso co-ordinates, and are stored in [isoX], [isoY].
+     * The actions that this unit is able to perform.
      *
-     * super.[x] and super.[y] store cartesian equivelants, which are calculated in [WorldTerrain.isoToCartesian]
-     *
-     * For a delta translation, see [deltaPosition]
+     * Fetched from [UnitActionDictionary], which defines what each class is able to do.
      */
-    fun setLocation(_pos : Vector3): Vector3 = setLocation(_pos.x, _pos.y)
+    val availableActions: Array<UnitAction> = UnitActionDictionary[unitClass]
+
 
     /**
-     * # Sets the location of this unit.
+     * [UnitAction] that this unit will perform on the next turn.
      */
-    @Deprecated("This call shouldn't use floats. See sister method.")
-    fun setLocation(x: Float, y: Float) : Vector3 = setLocation(x.toInt(), y.toInt())
+    var onTurnAction: UnitAction? = null
+
 
     /**
-     * # Moves this unit to the specified tile.
-     * by updating the position of the underlying sprite.
-     *
-     * This method will clamp the position to within the bounds of the world.
-     *
-     * After the move, defogs area around new position.
+     * Performs this unit's [onTurnAction], if there is one.
      */
-    fun setLocation(x: Int, y: Int) : Vector3 {
-        val x = MathUtils.clamp(x, 0, GameData.world!!.width - 1)
-        val y = MathUtils.clamp(y, 0, GameData.world!!.height - 1)
+    fun doTurn() { onTurnAction?.run(this) }
 
-        isoVec.set(x.toFloat(),y.toFloat(),0f)
+    /**
+     * Removes [onTurnAction]
+     *
+     * preventing this unit from performing any action
+     * on each turn.
+     */
+    fun cancelAction() { onTurnAction = null }
 
-        val pos: Vector3 = isoToCartesian(x, y)
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // endregion action
+    // region other functions
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-        // Compensate for the origin, so that the sprite is in the center of the cell.
-        // Changing the sprite and atlas origins had no effect
-        setX(pos.x - TILE_HALF_WIDTH)
-        setY(pos.y - TILE_HALF_HEIGHT)
-
-        GameData.world!!.defog(isoVec.x.toInt(), isoVec.y.toInt(), viewDistance)
-        light?.setPosition(super.getX(),super.getY())
-
-        return pos
-    }
 
     // TODO cache?
     @Deprecated("Inefficient. Refrain from using if possible. Required for some global actions, though.")
     fun ownedBy() =
-        GameData.nations.find { it.units.contains(this)}
+        GameData.nations.find { it.units.contains(this) }
 
-    fun setDestination(v : Vector2)
-            = setDestination(v.x.toInt(), v.y.toInt())
-    fun setDestination(v : Vector3)
-            = setDestination(v.x.toInt(), v.y.toInt())
-    /**
-     * # Sets a desired destination
-     * and calculates the pathfinding required to reach it.
-     *
-     * @param x X Isometric x position of the destination
-     * @param y Y Isometric y position of the destination
-     */
-    fun setDestination(x: Int, y: Int) {
-        val x = MathUtils.clamp(x, 0, GameData.world!!.width - 1)
-        val y = MathUtils.clamp(y, 0, GameData.world!!.height - 1)
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // endregion fields
+    // region data
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
-        if (x == destination?.first && y == destination?.second) return // don't pathfind if destination is same.
-
-        destination = Pair(x,y)
-        calculatePath()
-
-        // TODO only one of these?
-        if (pathNodes == null || pathNodes?.size == 0)
-            destination = null
+    companion object {
+        val UnitData = DataTable(Assets.DATA_UNIT)
     }
 
-    fun clearDestination() { destination = null }
+    val data = UnitData.getSubTable(unitClass.toString())
+
+    fun helptext() = data.getString("helptext")
+    fun graphic() = data.getString("graphic")
+
+    //TODO enum
+    // TODO move default values to a base class.
+
+    val classification= data.getString("class")?: "_BASE"
+    val cost = data.getInt("build_cost")?: "40"
+    val attack = data.getInt("attack")?: 1
+    val defense = data.getInt("defense")?: 2
+    var hp = data.getInt("hitpoints")?: 10
+
+    fun reqMet(): Boolean {
+        return data.getString("tech_req")?.let {
+             (ownedBy()?.advancementTree ?: GameData.player!!.advancementTree)
+                    .getA(it)?.complete
+                 ?:
+                 true.apply { warnDev("$displayName requires $it, but it was not found in the tech tree.") }
+        }?:  true // TODO many units are not in data.
+    }
 
     /**
-     * # Performs A* pathfinding to determine a path to the destination.
-     * Has no effect if destination is null
+     * ## A user friendly name of this unit.
+     * For now, is just the [unitClass]
      */
-    private fun calculatePath() {
-        if (destination == null) return
+    val displayName = data.getString("name")
 
-        with(GameData.world!!) {
-            pathNodes = pathfinder.findPath(isoVec.x.toInt(), isoVec.y.toInt(), destination!!.first, destination!!.second, navigationLayer)
-        }
+    init {
+            viewDistance = data.getInt("vision_radius_sq")?: 2
+            travelDistance = data.getInt("move_rate")?: 2
     }
 
 
-    /**
-     * # Moves this sprite by a x and y tiles.
-     * then invokes [setLocation] to update the sprite and whatnot.
-     */
-    fun deltaPosition(deltaX: Int, deltaY: Int): Vector3 {
-        isoVec.x += deltaX
-        isoVec.y += deltaY
-        return setLocation(isoVec)
-    }
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // endregion data
+    // region AI
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
+    /**
+     * The state machine controlling this unit, if it is
+     * AI controlled.
+     */
     lateinit var ai: UnitAI
+
+    /**
+     * Configures this unit to be AI controlled, and autonomous.
+     *
+     * Invoked at spawn, if spawned into an AI controlled Nation.
+     */
     fun ai_init() {
         ai = UnitAI()
     }
 
+    /**
+     * Invokes the AI to evaluate and perform actions.
+     *
+     * Invoked in the turn hook to evaluate the state machine
+     * every turn.
+     */
     fun ai_update() {
         ai.run()
     }
@@ -272,7 +438,8 @@ open class Unit(
      * on Mon Mar 07 16:18:28 GMT 2022
      ******************************************************/
     /**
-     * h1>UnitAIA simple random movement ai
+     * Unit AI
+     * A simple random movement ai
      */
     inner class UnitAI : StateMachine("UnitAI") {
         private val isWandering = true
@@ -288,8 +455,6 @@ open class Unit(
                     {
                         // And travel towards to.
                         UnitActionDictionary.TRAVEL.run(this@Unit)
-
-//                        GameHypervisor.camera_focusOn(this@Unit)
                     },
                     this,
                     { setDestination(GameData.world!!.randomPointOnLand()) },
@@ -318,33 +483,26 @@ open class Unit(
         }
     }
 
-
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // endregion AI
+    // region other functions
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
     override fun toString() = "$displayName $isoVec"
 
-    // =============================================
-    // endregion functions
-    // region Game API
-    // =============================================
-
-    /**
-     * # Performs this unit's [onTurnAction], if there is one.
-     */
-    fun doTurn() { onTurnAction?.run(this) }
-
-    /**
-     * # Removes [onTurnAction]
-     * preventing this unit from performing any action
-     * on each turn.
-     */
-    fun cancelAction() { onTurnAction = null }
-
-    // =============================================
-    // endregion Game API
-    // =============================================
+    fun dispose() {
+        light?.remove()
+    }
 
     final override fun deserialize() {
         set(REF_SPRITES_UNITS.createSprite(unitClass.toString()))
         setLocation(isoVec)
+    }
+
+
+
+    init {
+        setLocation(isoVec)
+        light = GameData.world!!.staticLight(isoVec.x, isoVec.y, viewDistance*100f)
     }
 }

@@ -19,7 +19,8 @@ interface [TurnHook](index.md) : [Runnable](https://docs.oracle.com/javase/8/doc
 
 | Name |
 |---|
-| [StageWindow](../../com.shinkson47.SplashX6.rendering/-stage-window/index.md) |
+| [StageWindow](../../com.shinkson47.SplashX6.rendering.ui/-stage-window/index.md) |
+| [GameEndConditionChecker](../../com.shinkson47.SplashX6.game/-game-end-condition-checker/index.md) |
 | [Nation](../../com.shinkson47.SplashX6.game/-nation/index.md) |
 | [Settlement](../../com.shinkson47.SplashX6.game.cities/-settlement/index.md) |
 | [ProductionManager](../../com.shinkson47.SplashX6.game.production/-production-manager/index.md) |

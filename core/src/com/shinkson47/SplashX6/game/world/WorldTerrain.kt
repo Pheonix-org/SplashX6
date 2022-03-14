@@ -131,7 +131,6 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
      * # Pathfinder
      * Usage : pathfinder.find(fromx, fromy, tox, toy, [WorldTerrain.navigationLayer]).
      */
-    @Transient lateinit var pathfinder: AStarGridFinder<GridCell>
 
 
     /**
@@ -168,7 +167,6 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
 
     init {
         initLayers()
-        initPathfinder()
         configGDX()
     }
 
@@ -181,10 +179,6 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
         navigationLayer = NavigationTiledMapLayer(Array(height) { arrayOfNulls(width) })
         navigationLayer.width  = width
         navigationLayer.height = height
-    }
-
-    private fun initPathfinder() {
-        pathfinder = AStarGridFinder(GridCell::class.java)
     }
 
     /**
@@ -205,7 +199,6 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
 
         // Re-populate navigation data.
         NavigationDataMiscStage().execute(this)
-        initPathfinder()
 
         // Import layers and load tilesets.
         configGDX()

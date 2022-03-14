@@ -61,7 +61,7 @@ class Improvement(
         reqs?.forEach { requrement ->
             return when (requrement["type"]) {
                 "Building" -> city.improvements.find { it.name == requrement["name"] } != null
-                "Tech"     -> false // TODO match against researched techs.
+                "Tech"     -> city.ownedBy()!!.advancementTree.getA(requrement["name"]!!)!!.complete
                 else -> { throw XmlParseException("Requirement '${requrement[name]}' for improvement '$name' had the type of '${requrement["type"]}', which is not valid.") }
             }
         }

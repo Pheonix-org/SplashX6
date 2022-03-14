@@ -32,6 +32,7 @@
 package com.shinkson47.SplashX6.game.production
 
 import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.utility.Utility
@@ -58,7 +59,10 @@ class CityProductionManager(
      *
      * @return For now, just returns a list of all units.
      */
-    override fun evaluateProducible(): Array<UnitProductionProject> = Utility.CollectionToGDXArray((UnitClass.values().filter { it != UnitClass._BASE }.map { UnitProductionProject(it) }))
+    override fun evaluateProducible(): Array<UnitProductionProject> =
+        Utility.CollectionToGDXArray((UnitClass.values().filter { it != UnitClass._BASE }.map { UnitProductionProject(it).also { it.production = forCity.unitProduction } }).filter {
+            it.produce().reqMet()
+        })
 
     /**
      * Evaluates the quantity of production power that [city] has.

@@ -32,6 +32,7 @@
 package com.shinkson47.SplashX6.game.production
 
 import com.badlogic.gdx.math.MathUtils
+import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
@@ -114,6 +115,8 @@ abstract class ProductionProject<T>(
      */
     abstract fun doClaim(): T
     fun progress(): Float = contributed.toFloat() / cost.toFloat()
+
+    fun remainingCost() = cost - contributed
 }
 
 
@@ -128,7 +131,11 @@ abstract class ProductionProject<T>(
  * @property type The type of unit this project produces.
  */
 class UnitProductionProject(val type : UnitClass) : ProductionProject<Unit>() {
-    override fun doClaim() = GameHypervisor.spawn((production!! as CityProductionManager).forCity.isoVec, type)
+    override fun doClaim(): Unit {
+        return GameHypervisor.spawn((production!! as CityProductionManager).forCity.isoVec, type)
+    }
+
+    fun produce() : Unit = Unit(type, 0 ,0)
 
     override fun toString(): String = type.toString()
 }

@@ -94,7 +94,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
         height = 600f
     }
 
-    override fun refresh() {
+    public override fun refresh() {
         settlements.items = Utility.CollectionToGDXArray(GameData.player!!.settlements)
         if (settlements.selected == null) return
         productionTab.refresh(settlements.selected.unitProduction)

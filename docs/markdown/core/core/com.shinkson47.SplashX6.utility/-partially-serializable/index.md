@@ -5,11 +5,11 @@
 [jvm]\
 interface [PartiallySerializable](index.md) : [Serializable](https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html)
 
-# A serializable class with transient properties.
+A serializable class with transient properties.
 
 For use when you want to serialize a class which contains things that are not serializable.
 
-Provides a deserialization method to reconstruct transient properties.
+Provides a deserialization method to reconstruct transient properties. It's up the implementation to figure out how.
 
 #### Author
 

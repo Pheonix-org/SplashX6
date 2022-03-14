@@ -11,4 +11,4 @@ object [LanguageSelectionListener](index.md)
 
 | Name | Summary |
 |---|---|
-| [locale](locale.md) | [jvm]<br>var [locale](locale.md): [Languages](../../com.shinkson47.SplashX6.utility/-languages/index.md) |
+| [locale](locale.md) | [jvm]<br>var [locale](locale.md): [LanguageConfig.Languages](../../com.shinkson47.SplashX6.utility.configuration/-language-config/-languages/index.md) |

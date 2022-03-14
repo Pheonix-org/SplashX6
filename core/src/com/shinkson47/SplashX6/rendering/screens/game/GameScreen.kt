@@ -169,7 +169,7 @@ class GameScreen : ScalingScreenAdapter() {
             )
         }
 
-        if (cm_isSelectingDestination || GameData.selectedUnit?.destination?.first != -1)
+        if (cm_isSelectingDestination || GameData.selectedUnit?.destination?.x != -1f)
             renderDestinationLine()
 
         var v = mouse_focusOnTile()
@@ -243,7 +243,7 @@ class GameScreen : ScalingScreenAdapter() {
 
                 // If we're selecting, calculate new destination.
                 if (cm_isSelectingDestination)
-                    setDestination(sel.x.toInt(), sel.y.toInt())
+                    setDestination(sel.x, sel.y)
 
 
 

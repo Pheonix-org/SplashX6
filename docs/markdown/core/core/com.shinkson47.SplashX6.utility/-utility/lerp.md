@@ -3,9 +3,18 @@
 # lerp
 
 [jvm]\
-open fun [lerp](lerp.md)(a: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html), b: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html), f: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)): [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)
+fun [lerp](lerp.md)(a: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html), b: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html), f: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)): [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)
 
-Linear interpolation Returns a value between a and b, determined by f.  i.e  a = 0  b = 10  f = 0.5  -------  5  ------- 
+# Linear interpolation
+
+Returns a value between a and b, determined by f. i.e
+
+a = 0\
+b = 10\
+f = 0.5\
+-------\
+5\
+-------
 
 #### Return
 

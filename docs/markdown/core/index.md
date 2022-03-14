@@ -28,6 +28,7 @@
 | [com.shinkson47.SplashX6.rendering.renderers](core/com.shinkson47.SplashX6.rendering.renderers/index.md) |
 | [com.shinkson47.SplashX6.rendering.screens](core/com.shinkson47.SplashX6.rendering.screens/index.md) |
 | [com.shinkson47.SplashX6.rendering.screens.game](core/com.shinkson47.SplashX6.rendering.screens.game/index.md) |
+| [com.shinkson47.SplashX6.rendering.ui](core/com.shinkson47.SplashX6.rendering.ui/index.md) |
 | [com.shinkson47.SplashX6.rendering.windows](core/com.shinkson47.SplashX6.rendering.windows/index.md) |
 | [com.shinkson47.SplashX6.rendering.windows.game](core/com.shinkson47.SplashX6.rendering.windows.game/index.md) |
 | [com.shinkson47.SplashX6.rendering.windows.game.settlements](core/com.shinkson47.SplashX6.rendering.windows.game.settlements/index.md) |
@@ -36,3 +37,5 @@
 | [com.shinkson47.SplashX6.rendering.windows.optionspanes](core/com.shinkson47.SplashX6.rendering.windows.optionspanes/index.md) |
 | [com.shinkson47.SplashX6.test](core/com.shinkson47.SplashX6.test/index.md) |
 | [com.shinkson47.SplashX6.utility](core/com.shinkson47.SplashX6.utility/index.md) |
+| [com.shinkson47.SplashX6.utility.configuration](core/com.shinkson47.SplashX6.utility.configuration/index.md) |
+| [com.shinkson47.SplashX6.utility.debug](core/com.shinkson47.SplashX6.utility.debug/index.md) |

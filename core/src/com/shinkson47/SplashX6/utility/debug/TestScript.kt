@@ -34,8 +34,12 @@ package com.shinkson47.SplashX6.utility.debug
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
+import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.GameEndConditionChecker
 import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.units.Unit
+import com.shinkson47.SplashX6.game.units.UnitClass
 import com.strongjoshua.console.LogLevel
 
 /**
@@ -48,13 +52,13 @@ object TestScript : Runnable {
 
 
     private var _fail : Boolean = false
-    private fun log(Name: String, m: String, fail: Boolean) {
-        Console.log("[TEST ${if (fail) "FAILED" else "PASSED"} : ($Name) ] $m", if(fail) LogLevel.ERROR else LogLevel.SUCCESS)
+    private fun log(Name: String, Message: String, fail: Boolean) {
+        Console.log("[TEST ${if (fail) "FAILED" else "PASSED"} : ($Name) ] $Message", if(fail) LogLevel.ERROR else LogLevel.SUCCESS)
         if (fail) _fail = true
     }
 
     private fun header(tag: String) = header(tag, "==================================================")
-    private fun header(tag: String, m: String) = Gdx.app.log(tag, m)
+    private fun header(tag: String, m: String) = Console.log("[$tag] $m")
 
     private fun testBetween(name: String, value: Int, target: Int) = testBetween(name, value, target, 0)
     private fun testBetween(name: String, value: Int, target: Int, permittedDeviance: Int){
@@ -97,6 +101,8 @@ object TestScript : Runnable {
         camera_lookingAtY50()
         camera_lookingAtY60()
     }
+
+
 
     // META : This is disgusting, but i don't care.
     private fun camera_lookingAtY36(){
@@ -142,15 +148,48 @@ object TestScript : Runnable {
 
 
 
+
+
+
     private fun units(){
         header("TESTING UNITS", "")
         unit_location()
+        AI_nation_dissolve()
+    }
+
+
+    /**
+     * Checks if an AI player is automatically dissolved when they have no resources left.
+     */
+    private fun AI_nation_dissolve() {
+        GameData.nations.find { it.ai }.apply {
+            if (this == null) return@apply
+
+            settlements.clear()
+
+            // This task also uses the itterator of 'units'. Gdx does not allow nested use of array itterators,
+            // so i delay the removal task until after the itterator.
+            val removalList = ArrayList<Unit>()
+            units.forEach { removalList.add(it) }
+            removalList.forEach { GameHypervisor.unit_disband(it) }
+
+            // Force detection. usually done async in turn_end.
+            GameEndConditionChecker.run()
+
+            if (GameData.nations.contains(this))
+                log("AI_nation_dissolve", "Nation was not dissolved as expected after running out of resources.", true)
+            else
+                log("AI_nation_dissolve", "Nation was dissolved as expected after running out of resources.", false)
+            return
+        }
+
+        log("AI_nation_dissolve", "There are no AI players in this game.", true)
     }
 
     private fun unit_location() {
-        with (GameHypervisor.gameRenderer!!.cam!!) {
-            // Select the first unit.
-            GameHypervisor.unit_select(0)
+        with (GameHypervisor.gameRenderer!!.cam) {
+
+            GameHypervisor.unit_select(GameHypervisor.spawn(Vector3(0f,0f,0f), UnitClass.settler))
 
             // Have the camera at a known angle, so we know where it's looking.
             desiredTilt.present = 36f
@@ -188,6 +227,8 @@ object TestScript : Runnable {
                 testBetween("Sprite at -32x",     x.toInt(), -32)
                 testBetween("Sprite at 1392y",  y.toInt(), 1392)
             }
+
+            GameHypervisor.unit_disband()
 
             // TODO is the unit at the cartesian x, y we expect?
         }

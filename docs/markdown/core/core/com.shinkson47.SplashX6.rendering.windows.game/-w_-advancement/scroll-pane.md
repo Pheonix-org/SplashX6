@@ -3,6 +3,6 @@
 # scrollPane
 
 [jvm]\
-val [scrollPane](scroll-pane.md): [AutoFocusScrollPane](../../com.shinkson47.SplashX6.utility/-auto-focus-scroll-pane/index.md)
+val [scrollPane](scroll-pane.md): [AutoFocusScrollPane](../../com.shinkson47.SplashX6.rendering.ui/-auto-focus-scroll-pane/index.md)
 
 # The scroll pane that contains [mainTable](main-table.md), allowing it to be scrolled.

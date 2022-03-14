@@ -3,4 +3,4 @@
 # window
 
 [jvm]\
-val [window](window.md): [StageWindow](../../../com.shinkson47.SplashX6.rendering/-stage-window/index.md)
+val [window](window.md): [StageWindow](../../../com.shinkson47.SplashX6.rendering.ui/-stage-window/index.md)

@@ -3,7 +3,4 @@
 # client
 
 [jvm]\
-
-@[JvmField](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-field/index.html)
-
-var [client](client.md): [Client](../index.md)? = null
+lateinit var [client](client.md): [Client](../index.md)

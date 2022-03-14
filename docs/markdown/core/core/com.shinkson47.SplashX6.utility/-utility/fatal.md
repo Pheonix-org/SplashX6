@@ -3,4 +3,4 @@
 # fatal
 
 [jvm]\
-open fun [fatal](fatal.md)(string: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html), e: [Throwable](https://docs.oracle.com/javase/8/docs/api/java/lang/Throwable.html))
+fun [fatal](fatal.md)(string: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), e: [Throwable](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html))

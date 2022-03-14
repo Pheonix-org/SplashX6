@@ -61,6 +61,11 @@ import java.io.File
 
 
 object Console : GUIConsole() {
+
+    var consoleTrace : Boolean
+        get() = consoleTrace
+        set(v) { consoleTrace = v}
+
     init {
         setCommandExecutor(X6CommandExecutor())
         displayKeyID = Input.Keys.F12
@@ -95,9 +100,9 @@ object Console : GUIConsole() {
         @ConsoleDoc(description = "Disable camera - quickly stop the camera from moving.")
         fun dc() { GameHypervisor.gameRenderer?.cam!!.toggleMovement(); console.log("Toggled camera movement.") }
 
-        @ConsoleDoc(description = "Exits the game.")
-        fun halt() { exitApp() }
-        @ConsoleDoc(description = "Exits the game.")
+        @ConsoleDoc(description = "Forces the JVM to halt.")
+        fun halt() { System.exit(2) }
+        @ConsoleDoc(description = "Requests GDX to exit the game.")
         fun exit() { exitApp() }
 
         @ConsoleDoc(description = "Deletes user preferences from disk.")
@@ -385,6 +390,17 @@ object Console : GUIConsole() {
             Spotify.create(key)
         }
 
+        @ConsoleDoc(description = "Runs in-game unit test script")
+        fun test(){
+            TestScript.run()
+        }
+
+        @ConsoleDoc(description = "Toggles weather or not exceptions in console instructions are shown.")
+        fun toggleExceptions() {
+            Console.consoleTrace = !Console.consoleTrace
+            console.log("Exception logging = ${Console.consoleTrace}")
+        }
+
         //=============================
         //#endregion audio
         //=============================
@@ -448,4 +464,3 @@ object Console : GUIConsole() {
         }
     }
 }
-

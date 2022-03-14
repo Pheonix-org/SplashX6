@@ -3,4 +3,4 @@
 # W_Options
 
 [jvm]\
-fun [W_Options](-w_-options.md)(parent: [ScalingScreenAdapter](../../com.shinkson47.SplashX6.rendering/-scaling-screen-adapter/index.md))
+fun [W_Options](-w_-options.md)(parent: [ScalingScreenAdapter](../../com.shinkson47.SplashX6.rendering.ui/-scaling-screen-adapter/index.md))

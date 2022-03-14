@@ -84,13 +84,15 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
         with(it) {
             if (!REQ_DESTINATION.test(this)) return@SerializablePredicate false
 
-            pathNodes = pathNodes!!.drop(travelDistance)
+            pathNodes = pathNodes!!.drop(travelDistance.coerceAtMost(pathNodes!!.size - 1))
 
             if (pathNodes!!.isNotEmpty())
-                setLocation(pathNodes!![0].x, pathNodes!![0].y)
+                setLocation(pathNodes!![0].x, pathNodes!![0].y, true)
             else
                 clearDestination()
 
+            if (pathNodes!!.size == 1)
+                clearDestination()
             true
         }
     })

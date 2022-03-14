@@ -43,7 +43,7 @@ import com.shinkson47.SplashX6.utility.Assets
  * @since v1
  * @version 1
  */
-class ImprovementProductionManager(val forCity: Settlement) : ProductionManager<ImprovementProductionProject>() {
+class ImprovementProductionManager(val forCity: Settlement) : ProductionManager<ImprovementProductionProject>(basePower = 2) {
 
     // TODO This is a pretty damn taxing operation.
     override fun evaluateProducible(): Array<ImprovementProductionProject> =

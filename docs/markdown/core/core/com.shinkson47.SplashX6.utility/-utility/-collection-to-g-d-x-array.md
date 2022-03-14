@@ -3,13 +3,13 @@
 # CollectionToGDXArray
 
 [jvm]\
-open fun &lt;[T](-collection-to-g-d-x-array.md)&gt; [CollectionToGDXArray](-collection-to-g-d-x-array.md)(items: [Iterable](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html)&lt;[T](../-debug/-debug-window/index.md#1685238889%2FFunctions%2F971615585)&gt;): Array&lt;[T](../-debug/-debug-window/index.md#1685238889%2FFunctions%2F971615585)&gt;
+fun &lt;[T](-collection-to-g-d-x-array.md)&gt; [CollectionToGDXArray](-collection-to-g-d-x-array.md)(items: [Iterable](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/index.html)&lt;[T](-collection-to-g-d-x-array.md)&gt;): Array&lt;[T](-collection-to-g-d-x-array.md)&gt;
 
-Converts a collection of items into a GDX compatable Array
+Converts a collection of items into a GDX compatable [Array](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html)
 
 #### Return
 
-A GDX Array containing items
+A GDX [Array](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html) containing items</T>
 
 ## Parameters
 
@@ -17,5 +17,5 @@ jvm
 
 | | |
 |---|---|
-| items | [Iterable](https://docs.oracle.com/javase/8/docs/api/java/lang/Iterable.html) collection of items. |
-| &lt;T&gt; | The type of the items. |
+| items | [Iterable](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterable/index.html) collection of items. |
+|  | <T> The type of the items. |

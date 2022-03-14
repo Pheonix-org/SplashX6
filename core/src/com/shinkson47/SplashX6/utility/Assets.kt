@@ -175,6 +175,8 @@ internal object Assets : AssetManager() {
      */
     const val AUDIO_MUSIC_GAME_DEFAULT = "${DIR_AUDIO_SOUNDTRACK}Lively${SEP}6054$MP3"
 
+    const val AUDIO_MUSIC_GAME_OVER = "${DIR_AUDIO_SOUNDTRACK}game_over_iv$MP3"
+
     /**
      * Music played on the main menu.
      */
@@ -195,6 +197,7 @@ internal object Assets : AssetManager() {
      * - which sprites used to represent the cities
      */
     const val DATA_NATION = "$DIR_DATA${SEP}nationdata$PLIST"
+    const val DATA_UNIT = "$DIR_DATA${SEP}unitdata$PLIST"
     const val DATA_IMPROVEMENTS = "$DIR_DATA${SEP}buildingdata$PLIST"
 
     /**
@@ -271,6 +274,8 @@ internal object Assets : AssetManager() {
     const val SPRITES_CITIES      = "${DIR_SPRITES}cities$ATLAS"
 
     const val SPRITES_BUILDINGS      = "${DIR_SPRITES}buildings$ATLAS"
+
+    const val TEXTURE_ART      = "${DIR_SPRITES}gameart$ATLAS"
 
     /**
      * [TextureAtlas] containing keyboard key sprites for [KeyBindRenderer]
@@ -502,6 +507,7 @@ internal object Assets : AssetManager() {
         load(DATA_IMPROVEMENTS, Map::class.java)
         load(DATA_NATION, Map::class.java)
         load(DATA_TECHS, Map::class.java)
+        load(DATA_UNIT, Map::class.java)
 
         // Textures & Sprites
         load(SPRITES_UNITS, TextureAtlas::class.java)
@@ -509,6 +515,7 @@ internal object Assets : AssetManager() {
         load(SPRITES_MENUBG, TextureAtlas::class.java)
         load(SPRITES_BUILDINGS, TextureAtlas::class.java)
         load(SPRITES_KEYS, TextureAtlas::class.java)
+        load(TEXTURE_ART, TextureAtlas::class.java)
         load(SPRITES_SPOTIFY_FAIL, Texture::class.java)
         load(TEX_HITTEST, BufferedImage::class.java)
 
@@ -522,6 +529,7 @@ internal object Assets : AssetManager() {
         load(AUDIO_PLAYLIST_DATA, Map::class.java)
         load(AUDIO_MUSIC_GAME_DEFAULT, Music::class.java)
         load(AUDIO_MUSIC_MENU, Music::class.java)
+        load(AUDIO_MUSIC_GAME_OVER, Music::class.java)
         load(AUDIO_SFX_BUTTON, Sound::class.java)
 
         load(AUDIO_LOADLIST_DATA, StringArrayList::class.java)

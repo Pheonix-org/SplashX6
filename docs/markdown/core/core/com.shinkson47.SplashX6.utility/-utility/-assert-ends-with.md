@@ -3,4 +3,21 @@
 # AssertEndsWith
 
 [jvm]\
-open fun [AssertEndsWith](-assert-ends-with.md)(s: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html), suffix: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)): [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html)
+fun [AssertEndsWith](-assert-ends-with.md)(s: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), suffix: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)): [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)
+
+Makes sure that a the given string has the required suffix, adding it if it doesn't already contain it.
+
+Note that [s](-assert-ends-with.md) is returned unmodified if it already ends with [suffix](-assert-ends-with.md)
+
+#### Return
+
+[s](-assert-ends-with.md) ending with [suffix](-assert-ends-with.md).
+
+## Parameters
+
+jvm
+
+| | |
+|---|---|
+| s | The string to test. |
+| suffix | The suffix that the [s](-assert-ends-with.md) must end with. |

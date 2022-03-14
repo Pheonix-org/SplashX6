@@ -3,4 +3,4 @@
 # locale
 
 [jvm]\
-var [locale](locale.md): [Languages](../../com.shinkson47.SplashX6.utility/-languages/index.md)
+var [locale](locale.md): [LanguageConfig.Languages](../../com.shinkson47.SplashX6.utility.configuration/-language-config/-languages/index.md)

@@ -20,8 +20,8 @@ class [Menu](index.md)(_parent: [GameScreen](../-game-screen/index.md)) : Table
 | [Companion](-companion/index.md) | [jvm]<br>object [Companion](-companion/index.md) |
 | [MenuItem](-menu-item/index.md) | [jvm]<br>class [MenuItem](-menu-item/index.md)(parentMenu: [Menu](index.md), key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), action: [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html), subActions: [Menu.MenuSubItem](-menu-sub-item/index.md)) : TextButton<br>On the the main menu bar, this shows as a single button. This menu item may have multiple sub actions, but it also performs an action by itself. |
 | [MenuSubItem](-menu-sub-item/index.md) | [jvm]<br>class [MenuSubItem](-menu-sub-item/index.md)(key: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), action: [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)) |
-| [SubActionMenu](-sub-action-menu/index.md) | [jvm]<br>inner class [SubActionMenu](-sub-action-menu/index.md) : [StageWindow](../../com.shinkson47.SplashX6.rendering/-stage-window/index.md) |
-| [WindowAction](-window-action/index.md) | [jvm]<br>inner class [WindowAction](-window-action/index.md)(window: [StageWindow](../../com.shinkson47.SplashX6.rendering/-stage-window/index.md)) : [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)<br>When activated, toggles window visibility. |
+| [SubActionMenu](-sub-action-menu/index.md) | [jvm]<br>inner class [SubActionMenu](-sub-action-menu/index.md) : [StageWindow](../../com.shinkson47.SplashX6.rendering.ui/-stage-window/index.md) |
+| [WindowAction](-window-action/index.md) | [jvm]<br>inner class [WindowAction](-window-action/index.md)(window: [StageWindow](../../com.shinkson47.SplashX6.rendering.ui/-stage-window/index.md)) : [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html)<br>When activated, toggles window visibility. |
 
 ## Functions
 

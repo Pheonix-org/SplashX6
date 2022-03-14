@@ -29,6 +29,7 @@ Or since a player has control over one nation, it can be interpreted that this c
 | [cityNames](city-names.md) | [jvm]<br>fun [cityNames](city-names.md)(): [ArrayList](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-array-list/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html)&gt; |
 | [cityType](city-type.md) | [jvm]<br>fun [cityType](city-type.md)(): [CityType](../../com.shinkson47.SplashX6.game.cities/-city-type/index.md) |
 | [data](data.md) | [jvm]<br>fun [data](data.md)(): [HashMap](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-hash-map/index.html)&lt;[String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), *&gt; |
+| [dissolve](dissolve.md) | [jvm]<br>~~fun~~ [~~dissolve~~](dissolve.md)~~(~~~~)~~<br>Breaks down data related to this nation. |
 | [doOnTurn](../../com.shinkson47.SplashX6.utility/-turn-hook/do-on-turn.md) | [jvm]<br>open fun [doOnTurn](../../com.shinkson47.SplashX6.utility/-turn-hook/do-on-turn.md)() |
 | [onTurn](on-turn.md) | [jvm]<br>open override fun [onTurn](on-turn.md)() |
 | [run](../../com.shinkson47.SplashX6.utility/-turn-hook/run.md) | [jvm]<br>~~open~~ ~~override~~ ~~fun~~ [~~run~~](../../com.shinkson47.SplashX6.utility/-turn-hook/run.md)~~(~~~~)~~ |
@@ -40,6 +41,8 @@ Or since a player has control over one nation, it can be interpreted that this c
 | Name | Summary |
 |---|---|
 | [ai](ai.md) | [jvm]<br>val [ai](ai.md): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html) = false |
+| [dissolved](dissolved.md) | [jvm]<br>var [dissolved](dissolved.md): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html) = false |
 | [nationType](nation-type.md) | [jvm]<br>val [nationType](nation-type.md): [NationType](../-nation-type/index.md)<br>The type of nation. |
 | [settlements](settlements.md) | [jvm]<br>val [settlements](settlements.md): Array&lt;[Settlement](../../com.shinkson47.SplashX6.game.cities/-settlement/index.md)&gt; |
+| [techProduction](tech-production.md) | [jvm]<br>val [techProduction](tech-production.md): [TechProductionManager](../../com.shinkson47.SplashX6.game.production/-tech-production-manager/index.md) |
 | [units](units.md) | [jvm]<br>var [units](units.md): Array&lt;[Unit](../../com.shinkson47.SplashX6.game.units/-unit/index.md)&gt; |

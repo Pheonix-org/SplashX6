@@ -156,12 +156,7 @@
 		<key>genus</key>
 		<string>Improvement</string>
 		<key>reqs</key>
-		<array><dict>
-			<key>type</key>
-			<string>Tech</string>
-			<key>name</key>
-			<string>Religion</string>
-		</dict></array>
+		<array/>
 		<key>graphic</key>
 		<string>cathedral</string>
 		<key>cost</key>
@@ -1101,12 +1096,7 @@
 		<key>genus</key>
 		<string>GreatWonder</string>
 		<key>reqs</key>
-		<array><dict>
-			<key>type</key>
-			<string>Tech</string>
-			<key>name</key>
-			<string>Religion</string>
-		</dict></array>
+		<array/>
 		<key>graphic</key>
 		<string>js_bachs_cathedral</string>
 		<key>cost</key>
@@ -1210,12 +1200,7 @@
 		<key>genus</key>
 		<string>GreatWonder</string>
 		<key>reqs</key>
-		<array><dict>
-			<key>type</key>
-			<string>Tech</string>
-			<key>name</key>
-			<string>Religion</string>
-		</dict></array>
+		<array/>
 		<key>graphic</key>
 		<string>michelangelos_chapel</string>
 		<key>cost</key>

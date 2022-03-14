@@ -6,4 +6,4 @@
 
 | Name | Summary |
 |---|---|
-| [UnitsWindow](-units-window/index.md) | [jvm]<br>class [UnitsWindow](-units-window/index.md) : [StageWindow](../com.shinkson47.SplashX6.rendering/-stage-window/index.md), [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html) |
+| [UnitsWindow](-units-window/index.md) | [jvm]<br>class [UnitsWindow](-units-window/index.md) : [StageWindow](../com.shinkson47.SplashX6.rendering.ui/-stage-window/index.md), [Runnable](https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html) |

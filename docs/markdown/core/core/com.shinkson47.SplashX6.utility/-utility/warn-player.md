@@ -3,9 +3,10 @@
 # warnPlayer
 
 [jvm]\
-open fun [warnPlayer](warn-player.md)(message: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html))
+fun [warnPlayer](warn-player.md)(message: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), title: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = ""): [MessageWindow](../../com.shinkson47.SplashX6.rendering.windows/-message-window/index.md)
 
-Warns a player / user in any session to a problem that is not fatal - i.e player attempts to do something that they're not allowed to.
+Warns a player to a non-fatal problem in game. i.e player attempts to do something that they're not allowed to.
 
-[jvm]\
-open fun [warnPlayer](warn-player.md)(message: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html), title: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html))
+e.g
+
+That unit cannot move here!

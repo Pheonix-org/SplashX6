@@ -1,0 +1,1930 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>settler</key>
+	<dict>
+		<key>name</key>
+		<string>Settlers</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>settlers</string>
+		<key>sound_move</key>
+		<string>settlers</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>settlers</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>1</integer>
+		<key>attack</key>
+		<integer>0</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>0</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>1</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array>
+			<string>Settlers</string>
+			<string>Cant_Fortify</string>
+			<string>NonMil</string>
+			<string>AddToCity</string>
+			<string>Cities</string>
+			<string>NoVeteran</string>
+		</array>
+		<key>roles</key>
+		<array>
+			<string>Settlers</string>
+			<string>WorkerStartUnit</string>
+			<string>CitiesStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Settlers are one of the key units in the game, as they are your main 
+means of founding new cities, and can also improve terrain; see the 
+help on Terrain and Terrain Alterations.
+
+Upkeep for Settlers is in food as well as production, and a Settler
+ can die if its supporting city runs out of food. Settlers in a
+ Republic or Democracy require twice as much food per turn.
+</string>
+	</dict>
+	<key>militia</key>
+	<dict>
+		<key>name</key>
+		<string>Militia</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>obsolete_by</key>
+		<string>Musketeers</string>
+		<key>graphic</key>
+		<string>warriors</string>
+		<key>sound_move</key>
+		<string>warriors</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>warriors</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>10</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>1</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>DefendOk</string>
+			<string>DefendOkStartUnit</string>
+			<string>FirstBuild</string>
+		</array>
+		<key>helptext</key>
+		<string>
+This unit may be built from the start of the game.  It is the
+ weakest offensive unit.
+</string>
+	</dict>
+	<key>phalanx</key>
+	<dict>
+		<key>name</key>
+		<string>Phalanx</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Bronze Working</string>
+		<key>obsolete_by</key>
+		<string>Musketeers</string>
+		<key>graphic</key>
+		<string>phalanx</string>
+		<key>sound_move</key>
+		<string>phalanx</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>phalanx</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>20</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>1</integer>
+		<key>defense</key>
+		<integer>2</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>DefendGood</string>
+			<string>DefendGoodStartUnit</string>
+			<string>FirstBuild</string>
+		</array>
+		<key>helptext</key>
+		<string>
+The Phalanx is armored infantry, suitable for defending your cities.
+</string>
+	</dict>
+	<key>legion</key>
+	<dict>
+		<key>name</key>
+		<string>Legion</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Iron Working</string>
+		<key>obsolete_by</key>
+		<string>Musketeers</string>
+		<key>graphic</key>
+		<string>legion</string>
+		<key>sound_move</key>
+		<string>legion</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>legion</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>20</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>3</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>DefendOk</string>
+			<string>DefendOkStartUnit</string>
+			<string>Hut</string>
+			<string>BarbarianBuild</string>
+			<string>BarbarianSea</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Legions are heavily armed and well disciplined infantry
+ units with an excellent offensive value.
+</string>
+	</dict>
+	<key>musketeers</key>
+	<dict>
+		<key>name</key>
+		<string>Musketeers</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Gunpowder</string>
+		<key>obsolete_by</key>
+		<string>Riflemen</string>
+		<key>graphic</key>
+		<string>musketeers</string>
+		<key>sound_move</key>
+		<string>musketeers</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>musketeers</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>30</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>2</integer>
+		<key>defense</key>
+		<integer>3</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>DefendGood</string>
+			<string>DefendGoodStartUnit</string>
+			<string>FirstBuild</string>
+			<string>HutTech</string>
+			<string>BarbarianTech</string>
+			<string>BarbarianBuildTech</string>
+			<string>BarbarianSeaTech</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Musketeers are infantry equipped with early
+ firearms and replace Phalanx as the preferred
+ city defender.
+</string>
+	</dict>
+	<key>riflemen</key>
+	<dict>
+		<key>name</key>
+		<string>Riflemen</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Conscription</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>riflemen</string>
+		<key>sound_move</key>
+		<string>riflemen</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>riflemen</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>30</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>3</integer>
+		<key>defense</key>
+		<integer>5</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>DefendGood</string>
+			<string>DefendGoodStartUnit</string>
+			<string>FirstBuild</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Riflemen are World War-era infantry, very good
+ at defending your cities.
+</string>
+	</dict>
+	<key>mech_inf</key>
+	<dict>
+		<key>name</key>
+		<string>Mech. Inf.</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Labor Union</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>mech_inf</string>
+		<key>sound_move</key>
+		<string>mech_inf</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>mech_inf</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>50</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>6</integer>
+		<key>defense</key>
+		<integer>6</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>3</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>DefendGood</string>
+			<string>DefendGoodStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Mechanized Infantry; this unit has the strongest defense strength
+ of any land unit, but is only available near the end of the
+ technology tree.
+</string>
+	</dict>
+	<key>cavalry</key>
+	<dict>
+		<key>name</key>
+		<string>Cavalry</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Horseback Riding</string>
+		<key>obsolete_by</key>
+		<string>Musketeers</string>
+		<key>graphic</key>
+		<string>horsemen</string>
+		<key>sound_move</key>
+		<string>horsemen</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>horsemen</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>20</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>2</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>2</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>AttackFastStartUnit</string>
+			<string>Hut</string>
+			<string>Barbarian</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Cavalry are mounted warriors and an early
+ shock-troop that can penetrate deep into
+ enemy territory.
+</string>
+	</dict>
+	<key>chariot</key>
+	<dict>
+		<key>name</key>
+		<string>Chariot</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>The Wheel</string>
+		<key>obsolete_by</key>
+		<string>Knights</string>
+		<key>graphic</key>
+		<string>chariot</string>
+		<key>sound_move</key>
+		<string>chariot</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>chariot</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>4</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>2</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>AttackFastStartUnit</string>
+			<string>Hut</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Chariots are horse-pulled war wagons, stronger
+ but more expensive than Cavalry.
+</string>
+	</dict>
+	<key>knights</key>
+	<dict>
+		<key>name</key>
+		<string>Knights</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Chivalry</string>
+		<key>obsolete_by</key>
+		<string>Armor</string>
+		<key>graphic</key>
+		<string>knights</string>
+		<key>sound_move</key>
+		<string>knights</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>knights</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>4</integer>
+		<key>defense</key>
+		<integer>2</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>2</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>AttackFastStartUnit</string>
+			<string>HutTech</string>
+			<string>BarbarianTech</string>
+			<string>BarbarianBuildTech</string>
+			<string>BarbarianSeaTech</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Knights are mounted and heavily armored warriors.
+</string>
+	</dict>
+	<key>armor</key>
+	<dict>
+		<key>name</key>
+		<string>Armor</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Automobile</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>armor</string>
+		<key>sound_move</key>
+		<string>armor</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>armor</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>80</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>10</integer>
+		<key>defense</key>
+		<integer>5</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>3</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>AttackFastStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Armors are motorized war wagons that are faster,
+ stronger, and can take more damage than any
+ mounted unit.
+</string>
+	</dict>
+	<key>catapult</key>
+	<dict>
+		<key>name</key>
+		<string>Catapult</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Mathematics</string>
+		<key>obsolete_by</key>
+		<string>Cannon</string>
+		<key>graphic</key>
+		<string>catapult</string>
+		<key>sound_move</key>
+		<string>catapult</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>catapult</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>6</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>AttackStrongStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Catapults are large rock-throwing machines of war.
+ They are very strong attackers but equally weak
+ defenders and will need an escort to be effective.
+</string>
+	</dict>
+	<key>cannon</key>
+	<dict>
+		<key>name</key>
+		<string>Cannon</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Metallurgy</string>
+		<key>obsolete_by</key>
+		<string>Artillery</string>
+		<key>graphic</key>
+		<string>cannon</string>
+		<key>sound_move</key>
+		<string>cannon</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>cannon</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>8</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>AttackStrongStartUnit</string>
+			<string>BarbarianTech</string>
+			<string>BarbarianBuildTech</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Cannons are large firearms that can fire heavy
+ projectiles over long distances. They are very
+ strong attackers but equally weak defenders and
+ will need an escort to be effective.
+</string>
+	</dict>
+	<key>artillery</key>
+	<dict>
+		<key>name</key>
+		<string>Artillery</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Robotics</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>howitzer</string>
+		<key>sound_move</key>
+		<string>howitzer</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>howitzer</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>60</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>12</integer>
+		<key>defense</key>
+		<integer>2</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>2</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array>
+			<string>AttackStrongStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+The artillery is an upgraded cannon with improved
+ defensive as well as offensive capabilities.
+ It can shoot over city walls, ignoring their effect.
+</string>
+	</dict>
+	<key>fighter</key>
+	<dict>
+		<key>name</key>
+		<string>Fighter</string>
+		<key>class</key>
+		<string>Air</string>
+		<key>tech_req</key>
+		<string>Flight</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>fighter</string>
+		<key>sound_move</key>
+		<string>fighter</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>fighter</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>60</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>4</integer>
+		<key>defense</key>
+		<integer>2</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>10</integer>
+		<key>vision_radius_sq</key>
+		<integer>8</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>1</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>targets</key>
+		<string>Missile</string>
+		<key>flags</key>
+		<array>
+			<string>FieldUnit</string>
+		</array>
+		<key>roles</key>
+		<array/>
+		<key>helptext</key>
+		<string>
+Fighters are your first airborne units. They can
+ move anywhere and attack any unit.
+</string>
+	</dict>
+	<key>bomber</key>
+	<dict>
+		<key>name</key>
+		<string>Bomber</string>
+		<key>class</key>
+		<string>Air</string>
+		<key>tech_req</key>
+		<string>Advanced Flight</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>bomber</string>
+		<key>sound_move</key>
+		<string>bomber</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>bomber</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>120</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>12</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>8</integer>
+		<key>vision_radius_sq</key>
+		<integer>8</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>2</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array>
+			<string>FieldUnit</string>
+			<string>OneAttack</string>
+		</array>
+		<key>roles</key>
+		<array/>
+		<key>helptext</key>
+		<string>
+Bombers are specialized airborne units that may
+ only attack ground targets, not other airborne
+ units.
+</string>
+	</dict>
+	<key>trireme</key>
+	<dict>
+		<key>name</key>
+		<string>Trireme</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Map Making</string>
+		<key>obsolete_by</key>
+		<string>Sail</string>
+		<key>graphic</key>
+		<string>trireme</string>
+		<key>sound_move</key>
+		<string>trireme</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>trireme</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>1</integer>
+		<key>defense</key>
+		<integer>0</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>3</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>2</integer>
+		<key>fuel</key>
+		<integer>1</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>cargo</key>
+		<string>Land</string>
+		<key>flags</key>
+		<array>
+			<string>Coast</string>
+			<string>Provoking</string>
+		</array>
+		<key>roles</key>
+		<array>
+			<string>Ferryboat</string>
+			<string>FerryStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+The Trireme is your first boat unit. It can act
+ as a transport ship and has rudimentary offensive
+ capabilities, but may not stray too far from the shore.
+</string>
+	</dict>
+	<key>sail</key>
+	<dict>
+		<key>name</key>
+		<string>Sail</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Navigation</string>
+		<key>obsolete_by</key>
+		<string>Frigate</string>
+		<key>graphic</key>
+		<string>caravel</string>
+		<key>sound_move</key>
+		<string>caravel</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>caravel</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>1</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>3</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>3</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>cargo</key>
+		<string>Land</string>
+		<key>flags</key>
+		<array>
+			<string>Provoking</string>
+		</array>
+		<key>roles</key>
+		<array>
+			<string>Ferryboat</string>
+			<string>FerryStartUnit</string>
+			<string>BarbarianBoat</string>
+		</array>
+		<key>helptext</key>
+		<string>
+The Sail replaces the Trireme and is much
+ more reliable on the open seas.
+</string>
+	</dict>
+	<key>frigate</key>
+	<dict>
+		<key>name</key>
+		<string>Frigate</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Magnetism</string>
+		<key>obsolete_by</key>
+		<string>Transport</string>
+		<key>graphic</key>
+		<string>frigate</string>
+		<key>sound_move</key>
+		<string>frigate</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>frigate</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>2</integer>
+		<key>defense</key>
+		<integer>2</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>3</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>4</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>cargo</key>
+		<string>Land</string>
+		<key>flags</key>
+		<array>
+			<string>Provoking</string>
+		</array>
+		<key>roles</key>
+		<array>
+			<string>Ferryboat</string>
+			<string>FerryStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+The Frigate is a highly versatile boat unit,
+ that is both a strong offensive unit as well
+ as a decent transport ship.
+</string>
+	</dict>
+	<key>ironclad</key>
+	<dict>
+		<key>name</key>
+		<string>Ironclad</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Steam Engine</string>
+		<key>obsolete_by</key>
+		<string>Cruiser</string>
+		<key>graphic</key>
+		<string>ironclad</string>
+		<key>sound_move</key>
+		<string>ironclad</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>ironclad</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>60</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>4</integer>
+		<key>defense</key>
+		<integer>4</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>4</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array/>
+		<key>helptext</key>
+		<string>
+The Ironclad is an armored ship that is
+ much more sturdy than the Frigate but
+ loses the latter&apos;s transport capability.
+</string>
+	</dict>
+	<key>cruiser</key>
+	<dict>
+		<key>name</key>
+		<string>Cruiser</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Combustion</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>cruiser</string>
+		<key>sound_move</key>
+		<string>cruiser</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>cruiser</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>80</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>6</integer>
+		<key>defense</key>
+		<integer>6</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>6</integer>
+		<key>vision_radius_sq</key>
+		<integer>8</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array/>
+		<key>helptext</key>
+		<string>
+The Cruiser is a strong offensive boat unit.
+</string>
+	</dict>
+	<key>battleship</key>
+	<dict>
+		<key>name</key>
+		<string>Battleship</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Steel</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>battleship</string>
+		<key>sound_move</key>
+		<string>battleship</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>battleship</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>160</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>18</integer>
+		<key>defense</key>
+		<integer>12</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>4</integer>
+		<key>vision_radius_sq</key>
+		<integer>8</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array/>
+		<key>roles</key>
+		<array/>
+		<key>helptext</key>
+		<string>
+The Battleship is the supreme naval unit with
+ excellent offensive and defensive values.
+</string>
+	</dict>
+	<key>submarine</key>
+	<dict>
+		<key>name</key>
+		<string>Submarine</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Mass Production</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>submarine</string>
+		<key>sound_move</key>
+		<string>submarine</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>submarine</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>50</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>8</integer>
+		<key>defense</key>
+		<integer>2</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>3</integer>
+		<key>vision_radius_sq</key>
+		<integer>8</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array>
+			<string>Only_Native_Attack</string>
+		</array>
+		<key>roles</key>
+		<array>
+			<string>Hunter</string>
+		</array>
+		<key>helptext</key>
+		<string>
+Traveling under the surface of the ocean, Submarines have
+ a very high strategic value, but a weak defense if caught
+ off guard.
+</string>
+	</dict>
+	<key>carrier</key>
+	<dict>
+		<key>name</key>
+		<string>Carrier</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Advanced Flight</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>carrier</string>
+		<key>sound_move</key>
+		<string>carrier</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>carrier</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>160</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>1</integer>
+		<key>defense</key>
+		<integer>12</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>5</integer>
+		<key>vision_radius_sq</key>
+		<integer>8</integer>
+		<key>transport_cap</key>
+		<integer>8</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>cargo</key>
+		<string>Missile</string>
+		<key>flags</key>
+		<array>
+			<string>Provoking</string>
+		</array>
+		<key>roles</key>
+		<array/>
+		<key>helptext</key>
+		<string>
+The Carrier is a mobile airport.
+
+TIP:  Guard Carriers with a handful of fast-moving ships and a
+ battleship, as losing a fully-equipped Carrier is VERY
+ painful and expensive.
+</string>
+	</dict>
+	<key>transport</key>
+	<dict>
+		<key>name</key>
+		<string>Transport</string>
+		<key>class</key>
+		<string>Sea</string>
+		<key>tech_req</key>
+		<string>Industrialization</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>transport</string>
+		<key>sound_move</key>
+		<string>transport</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>transport</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>50</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>0</integer>
+		<key>defense</key>
+		<integer>3</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>4</integer>
+		<key>vision_radius_sq</key>
+		<integer>8</integer>
+		<key>transport_cap</key>
+		<integer>8</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>cargo</key>
+		<string>Land</string>
+		<key>flags</key>
+		<array>
+			<string>Provoking</string>
+		</array>
+		<key>roles</key>
+		<array>
+			<string>Ferryboat</string>
+			<string>FerryStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+The Transport cannot attack on its own but
+ may defend itself when under attack.
+</string>
+	</dict>
+	<key>nuclear</key>
+	<dict>
+		<key>name</key>
+		<string>Nuclear</string>
+		<key>class</key>
+		<string>Missile</string>
+		<key>tech_req</key>
+		<string>Rocketry</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>nuclear</string>
+		<key>sound_move</key>
+		<string>nuclear</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>nuclear</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>160</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>99</integer>
+		<key>defense</key>
+		<integer>0</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>16</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>1</integer>
+		<key>uk_happy</key>
+		<integer>1</integer>
+		<key>uk_shield</key>
+		<integer>1</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array>
+			<string>FieldUnit</string>
+			<string>OneAttack</string>
+			<string>Nuclear</string>
+		</array>
+		<key>roles</key>
+		<array/>
+		<key>helptext</key>
+		<string>
+You can build Nuclear units when you have the required advance, and
+ the Manhattan Project wonder has been built by any player.
+
+On impact, the blast will destroy any unit in an area 3 tiles wide
+ (3x3 squares for rectangular grids), including friendly units.
+ Any city within the blast area loses half its population, and
+ land tiles within the blast area are subject to nuclear fallout,
+ which appears as pollution and contributes to global warming.
+
+TIP 1:  Nuking the ocean will not generate fallout, and is a most
+ effective (but expensive!!) way of getting rid of enemy
+ ships.
+
+TIP 2:  You may be involved in a situation where you&apos;ve invaded an
+ enemy country en masse, but the enemy cities are too strong.
+ Before using a Nuclear unit, assemble a gang of Settlers
+ next to the city and have them ready to fix
+ the fallout on the same turn it occurs!  This minimizes the
+ chance of global warming.  Eco-friendly nukes!
+</string>
+	</dict>
+	<key>diplomat</key>
+	<dict>
+		<key>name</key>
+		<string>Diplomat</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Writing</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>diplomat</string>
+		<key>sound_move</key>
+		<string>diplomat</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>diplomat</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>30</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>0</integer>
+		<key>defense</key>
+		<integer>0</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>2</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>0</integer>
+		<key>uk_shield</key>
+		<integer>0</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array>
+			<string>Diplomat</string>
+			<string>IgZOC</string>
+			<string>NonMil</string>
+			<string>NoVeteran</string>
+			<string>Provoking</string>
+		</array>
+		<key>roles</key>
+		<array>
+			<string>Explorer</string>
+			<string>ExplorerStartUnit</string>
+			<string>DiplomatStartUnit</string>
+		</array>
+		<key>helptext</key>
+		<string>
+A Diplomat is an official that carries your dispatches and
+ is authorized to deal with foreign dignitaries. He may
+ also undertake various covert operations with the intent of
+ harming your opponents; Diplomats in your own cities defend
+ them against such actions.
+
+Many covert actions may be attempted even in peacetime, but the more
+ aggressive actions will be discovered and cause diplomatic incidents,
+ which can allow Republics and Democracies to break treaties.
+
+If a foreign unit is alone on a tile, you may attempt to bribe it
+ with your Diplomat. By paying a sum of gold the unit will immediately
+ become yours; the exact sum depends on the status of the unit and
+ that of the civilization owning it. However, units belonging to
+ Democratic governments cannot be bribed. Bribery when not at war
+ will cause a diplomatic incident.
+
+Diplomats can also perform a number of actions in another player&apos;s
+ city, although each Diplomat may attempt only one action. Most of
+ these actions have a chance of failure. Also, any enemy Diplomats or
+ Spies in the city will oppose hostile actions; in this case, either
+ your unit or the defending unit will die. If the defending unit dies,
+ you lose one movement point and may try again.
+
+The actions available to Diplomats in a city are:
+
+ - &quot;Establish Embassy&quot;: This action always succeeds, and gives
+ permanent contact with the city&apos;s owner, as well as intelligence
+ on their tax rates and technology.
+
+ - &quot;Investigate City&quot;: Your unit attempts to report detailed
+ information about the city: its status, what buildings and units are
+ within, and what it is currently producing.
+
+ - &quot;Sabotage City&quot;: Your unit attempts either to disrupt all the
+ city&apos;s work so far towards its current project, or to destroy an
+ existing building in the city, at random. Once built, Palaces and
+ Wonders cannot be sabotaged, and attempts to sabotage City Walls
+ or any building in a capital each halve the chance of success.
+ Sabotage may only be attempted when openly at war.
+
+ - &quot;Steal Technology&quot;: Your unit attempts to learn the secrets of a
+ random technology known to the city&apos;s owner but not to you. Technology
+ may only be stolen once from a given enemy city by Diplomats. This
+ action may be attempted even when not at war, but will cause a
+ diplomatic incident.
+
+ - &quot;Incite a Revolt&quot;: In return for gold a foreign city will change
+ allegiance and join your empire, bringing along all nearby units that
+ call it home, but reducing its size by 1. Units in other cities
+ remain in the enemy&apos;s control, but units outside cities are lost to
+ both players. The exact sum depends on the status of the city and
+ that of the civilization that owns it. It is not possible to incite
+ a rebellion in a capital, or in any city governed by a democracy.
+ Incitement may be attempted in peacetime, but will cause a
+ diplomatic incident.
+
+In some game strategies, hordes of Diplomats can be used to wreak
+ havoc on the enemy.  Little wonder that Diplomats are often
+ viewed with suspicion and fear!
+</string>
+	</dict>
+	<key>caravan</key>
+	<dict>
+		<key>name</key>
+		<string>Caravan</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>tech_req</key>
+		<string>Trade</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>caravan</string>
+		<key>sound_move</key>
+		<string>caravan</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>caravan</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>50</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>0</integer>
+		<key>defense</key>
+		<integer>1</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>1</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>0</integer>
+		<key>uk_shield</key>
+		<integer>0</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array>
+			<string>TradeRoute</string>
+			<string>HelpWonder</string>
+			<string>IgZOC</string>
+			<string>NonMil</string>
+		</array>
+		<key>roles</key>
+		<array/>
+		<key>helptext</key>
+		<string>
+A Caravan carries goods or material for trading with distant cities
+ and foreign countries, or to help build wonders in your cities.
+
+Caravans can establish trade routes with your own cities or those of other
+ nations (even enemies) by traveling to them. A route&apos;s ongoing revenue
+ is doubled if the two cities involved are on different continents, and
+ doubled again if the cities are from different civilizations. This last
+ condition means the net benefit to your civilization of a trade route
+ is the same regardless of whether you own both cities or only one of
+ them; if you only own one city, trade in each city is doubled, but you
+ only get the benefit from one end of the route. Each city can support a
+ maximum of three trade routes.
+
+Every Caravan that is used to build a wonder will add 50 shields
+ towards the production of the wonder.
+
+TIP:  You can stockpile a stack of Caravans in advance and bring
+ them all into a city where you have started to build a wonder,
+ and finish it in only one turn!
+</string>
+	</dict>
+	<key>barbarian_leader</key>
+	<dict>
+		<key>name</key>
+		<string>Barbarian Leader</string>
+		<key>class</key>
+		<string>Land</string>
+		<key>obsolete_by</key>
+		<string>None</string>
+		<key>graphic</key>
+		<string>barbarian_leader</string>
+		<key>sound_move</key>
+		<string>barbarian_leader</string>
+		<key>sound_move_alt</key>
+		<string>generic</string>
+		<key>sound_fight</key>
+		<string>barbarian_leader</string>
+		<key>sound_fight_alt</key>
+		<string>generic</string>
+		<key>build_cost</key>
+		<integer>40</integer>
+		<key>pop_cost</key>
+		<integer>0</integer>
+		<key>attack</key>
+		<integer>0</integer>
+		<key>defense</key>
+		<integer>0</integer>
+		<key>hitpoints</key>
+		<integer>10</integer>
+		<key>firepower</key>
+		<integer>10</integer>
+		<key>move_rate</key>
+		<integer>2</integer>
+		<key>vision_radius_sq</key>
+		<integer>2</integer>
+		<key>transport_cap</key>
+		<integer>0</integer>
+		<key>fuel</key>
+		<integer>0</integer>
+		<key>uk_happy</key>
+		<integer>0</integer>
+		<key>uk_shield</key>
+		<integer>0</integer>
+		<key>uk_food</key>
+		<integer>0</integer>
+		<key>uk_gold</key>
+		<integer>0</integer>
+		<key>flags</key>
+		<array>
+			<string>IgZOC</string>
+			<string>NonMil</string>
+			<string>NoBuild</string>
+		</array>
+		<key>roles</key>
+		<array>
+			<string>BarbarianLeader</string>
+		</array>
+		<key>helptext</key>
+		<string>
+One Barbarian Leader appears every time there is a barbarian uprising
+ somewhere in the world.
+
+When a Barbarian Leader is killed on a tile without any defending units,
+ the ransom is paid, but only to land units.
+ Usually the ransom is 100 gold, but can be less if the barbarian has
+ less money.
+</string>
+	</dict>
+</dict>
+</plist>

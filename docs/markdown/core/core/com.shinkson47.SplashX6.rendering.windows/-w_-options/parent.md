@@ -3,4 +3,4 @@
 # parent
 
 [jvm]\
-val [parent](parent.md): [ScalingScreenAdapter](../../com.shinkson47.SplashX6.rendering/-scaling-screen-adapter/index.md)
+val [parent](parent.md): [ScalingScreenAdapter](../../com.shinkson47.SplashX6.rendering.ui/-scaling-screen-adapter/index.md)

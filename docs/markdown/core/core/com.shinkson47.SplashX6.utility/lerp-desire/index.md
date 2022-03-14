@@ -5,7 +5,9 @@
 [jvm]\
 class [lerpDesire](index.md)&lt;[type](index.md)&gt;@[JvmOverloads](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.jvm/-jvm-overloads/index.html)constructor(_present: [type](index.md), _desired: [type](index.md), _alpha: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html))
 
-# A value which moves closer to the desired value by [alpha](alpha.md)
+A floating point or 3D vector which moves closer to a desired value by [alpha](alpha.md) on every update.
+
+TODO add support for vector 2.
 
 #### Author
 

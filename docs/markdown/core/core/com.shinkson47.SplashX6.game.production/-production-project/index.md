@@ -47,3 +47,4 @@ Using an abstract cost, this project will be completed when the cost required is
 |---|
 | [ImprovementProductionProject](../-improvement-production-project/index.md) |
 | [UnitProductionProject](../-unit-production-project/index.md) |
+| [TechProductionProject](../-tech-production-project/index.md) |

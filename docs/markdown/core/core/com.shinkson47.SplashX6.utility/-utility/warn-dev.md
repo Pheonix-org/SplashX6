@@ -3,8 +3,6 @@
 # warnDev
 
 [jvm]\
-open fun [warnDev](warn-dev.md)(message: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html))
-
-open fun [warnDev](warn-dev.md)(message: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html), title: [String](https://docs.oracle.com/javase/8/docs/api/java/lang/String.html))
+fun [warnDev](warn-dev.md)(message: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), title: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = "")
 
 Warns a developer / development session to a problem that is otherwise silent.

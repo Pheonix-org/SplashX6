@@ -32,10 +32,12 @@
 package com.shinkson47.SplashX6.game.production
 
 import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.game.Advancement
 import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.utility.TurnHook
 import com.shinkson47.SplashX6.utility.Utility
 import java.io.Serializable
+import kotlin.math.ceil
 
 
 /**
@@ -177,7 +179,22 @@ abstract class ProductionManager<PT : ProductionProject<*>> (
      *
      * @return true if [queue.size] is greater or equal to [QUEUE_LIMIT]
      */
-    fun isQueueFull() = queue.size >= queueSizeLimit
+    fun isQueueFull() = queue.size > queueSizeLimit
+
+    fun turnsToComplete(advancement: PT): Int {
+        if (!queue.contains(advancement))
+            return turnsToComplete(contributionPower, advancement.remainingCost())
+
+        var total = 0
+        for (i in queue) {
+            total += turnsToComplete(contributionPower, advancement.remainingCost())
+            if (i == advancement) break
+        }
+        return total
+    }
+
+    fun turnsToComplete(power: Int, cost: Int) =
+        ceil(cost.toDouble() / power.toDouble()).toInt()
 
     /**
      * For the implementation to populate.
@@ -185,6 +202,8 @@ abstract class ProductionManager<PT : ProductionProject<*>> (
      * @return an [Array] of [PT] type projects that may currently be produced.
      */
     abstract fun evaluateProducible() : Array<PT>
+
+
 
     /**
      * # ***Make sure you update [contributionPower] with result.***

@@ -3,4 +3,4 @@
 # MessageWindow
 
 [jvm]\
-fun [MessageWindow](-message-window.md)(titleKey: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), MessageKey: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), isError: [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html) = false)
+fun [MessageWindow](-message-window.md)(titleKey: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html) = "!", MessageKey: [String](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html), isError: [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html) = false, persistant: [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html) = false)

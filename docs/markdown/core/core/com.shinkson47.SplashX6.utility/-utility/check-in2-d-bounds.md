@@ -3,13 +3,13 @@
 # checkIn2DBounds
 
 [jvm]\
-open fun [checkIn2DBounds](check-in2-d-bounds.md)(x: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), y: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), arr: [Array](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html)&lt;[Array](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html)&lt;[Any](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html)&gt;&gt;): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)
+fun &lt;[T](check-in2-d-bounds.md)&gt; [checkIn2DBounds](check-in2-d-bounds.md)(x: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), y: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), arr: [Array](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html)&lt;[Array](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html)&lt;[T](check-in2-d-bounds.md)&gt;&gt;): [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)
 
 Determines if X and Y are within bounds of a 2d array
 
 #### Return
 
-true if x and y are within the bounds of the array.
+True if *both*[x](check-in2-d-bounds.md) and [y](check-in2-d-bounds.md) are within the bounds of the array.
 
 ## Parameters
 
@@ -17,5 +17,5 @@ jvm
 
 | | |
 |---|---|
-| x |  |
-| y |  |
+| x | The value to test |
+| y | The value to test |

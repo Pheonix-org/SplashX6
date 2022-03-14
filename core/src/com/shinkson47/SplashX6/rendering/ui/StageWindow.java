@@ -111,6 +111,13 @@ public abstract class StageWindow extends Window implements TurnHook {
      */
     private static ArrayList<StageWindow> GAME_WINDOWS = new ArrayList();
 
+    public static <T extends StageWindow> T docked(Class<T> a) {
+        return (T) GAME_WINDOWS.stream()
+                .filter(it -> a.isInstance(it))
+                .findAny()
+                .orElse(null);
+    }
+
     /**
      * A select box shown on the game screen containing all game windows.
      */
@@ -167,8 +174,9 @@ public abstract class StageWindow extends Window implements TurnHook {
         for (StageWindow sw : WINDOW_DOCK.getItems()) {
             WINDOW_DOCK.getItems().removeValue(sw, true);
             sw.clear();
-            gc();
         }
+        WINDOW_DOCK.clear();
+        gc();
     }
 
     /**
@@ -755,6 +763,7 @@ public abstract class StageWindow extends Window implements TurnHook {
      * the turn has ended, update if you need to.
      */
     protected void refresh() {}
+
 
     //=====================================================================
     //#endregion

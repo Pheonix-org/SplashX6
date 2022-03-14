@@ -3,4 +3,17 @@
 # roundToNearestMultiple
 
 [jvm]\
-open fun [roundToNearestMultiple](round-to-nearest-multiple.md)(value: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html), multiple: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)
+fun [roundToNearestMultiple](round-to-nearest-multiple.md)(value: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html), multiple: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)): [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)
+
+Rounds a float to a the nearest multiple.
+
+#### Return
+
+## Parameters
+
+jvm
+
+| | |
+|---|---|
+| value | Value |
+| multiple | Multiple |

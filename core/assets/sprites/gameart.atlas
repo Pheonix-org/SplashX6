@@ -1,0 +1,61 @@
+gameart.png
+size: 1920, 7071
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+img0
+  rotate: false
+  xy: 0, 0
+  size: 1920, 1280
+  orig: 1920, 1280
+  offset: 0, 0
+  index: -1
+img1
+  rotate: false
+  xy: 0, 1280
+  size: 1919, 1001
+  orig: 1919, 1001
+  offset: 0, 0
+  index: -1
+img2
+  rotate: false
+  xy: 0, 2281
+  size: 1920, 1083
+  orig: 1920, 1083
+  offset: 0, 0
+  index: -1
+img3
+  rotate: false
+  xy: 0, 3364
+  size: 1920, 1080
+  orig: 1920, 1080
+  offset: 0, 0
+  index: -1
+img4
+  rotate: false
+  xy: 0, 4444
+  size: 1920, 960
+  orig: 1920, 960
+  offset: 0, 0
+  index: -1
+img5
+  rotate: false
+  xy: 0, 5404
+  size: 1400, 746
+  orig: 1400, 746
+  offset: 0, 0
+  index: -1
+img6
+  rotate: false
+  xy: 0, 6150
+  size: 1280, 533
+  orig: 1280, 533
+  offset: 0, 0
+  index: -1
+img7
+  rotate: false
+  xy: 0, 6683
+  size: 899, 388
+  orig: 899, 388
+  offset: 0, 0
+  index: -1

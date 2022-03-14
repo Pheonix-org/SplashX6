@@ -3,4 +3,4 @@
 # WindowAction
 
 [jvm]\
-fun [WindowAction](-window-action.md)(window: [StageWindow](../../../com.shinkson47.SplashX6.rendering/-stage-window/index.md))
+fun [WindowAction](-window-action.md)(window: [StageWindow](../../../com.shinkson47.SplashX6.rendering.ui/-stage-window/index.md))

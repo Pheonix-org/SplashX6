@@ -264,8 +264,12 @@ object Utility {
      * Warns a developer / development session to a problem
      * that is otherwise silent.
      */
-    fun warnDev(message: String, title: String = "") {
+    fun warnDev(message: String, title: String = "", e: Exception? = null) {
         Console.log(message, LogLevel.ERROR)
+        if (Console.consoleTrace && e != null)
+            Console.log(e)
+
+
         if (Client.DEBUG_MODE && inGame) warnPlayer(message, title)
     }
 
@@ -293,8 +297,8 @@ object Utility {
      * @param isCrutial if true, presents a red message, indicating that it's more than just a message.
      * @return The message window created and displayed.
      */
-    fun message(message: String, title: String = "", isCrutial: Boolean = false) =
-        MessageWindow("!$title", "!$message", isCrutial)
+    fun message(message: String, title: String = "", isCrutial: Boolean = false, persistant: Boolean = false) =
+        MessageWindow("!$title", "!$message", isCrutial, persistant)
 
     //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     //#endregion

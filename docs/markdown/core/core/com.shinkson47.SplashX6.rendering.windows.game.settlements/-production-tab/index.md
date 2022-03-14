@@ -248,5 +248,6 @@ v1
 
 | Name |
 |---|
+| [TechProductionTab](../../com.shinkson47.SplashX6.game.production/-tech-production-tab/index.md) |
 | [UnitTab](../-unit-tab/index.md) |
 | [ImprovementsTab](../-improvements-tab/index.md) |

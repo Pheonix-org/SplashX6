@@ -38,6 +38,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.game.Advancement
 import com.shinkson47.SplashX6.game.production.ProductionManager
 import com.shinkson47.SplashX6.game.production.ProductionProject
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
@@ -69,7 +70,8 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
     private val lblWorkingOnProgress = Label("", Assets.REF_SKIN_W95)
     private val progWorkingOn = ProgressBar(0f,1f, 0.001f, false, Assets.REF_SKIN_W95)
     private val img = Image()
-    private var btnAddButton: Button
+    val btnAddButton: Button
+    val btnRemoveButton: Button
 
     init {
         padLeft(5f)
@@ -148,7 +150,9 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
         midColumn.addActor(TextButton(local("generic.any.remove"), Assets.REF_SKIN_W95).apply { addListener(StageWindow.LambdaClickListener {
             selectedInQueue().let { productionManager?.queue?.removeValue(it, true) }
             refresh(null)
-        })})
+        })
+        btnRemoveButton = this
+        })
         //expandfill(
         add(midColumn)
             .expand()
@@ -195,7 +199,7 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
         workingOn()?.let {
             progWorkingOn.value = it.progress()
             lblWorkingOn.setText("Working On : $it")
-            lblWorkingOnProgress.setText("Progress : ${it.contributed} / ${it.cost}")
+            lblWorkingOnProgress.setText("Progress : ${it.contributed} / ${it.cost}\nComplete in ${productionManager!!.turnsToComplete(it)} turns.")
             setImage(it)
         } ?: run {
             progWorkingOn.value = 0f
@@ -205,21 +209,26 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
         }
     }
 
+
+
     private fun setImage(it : T?) =
             it?.let { img.drawable = getImage(it) } ?: run { img.drawable = null }
 
-    abstract fun getImage(it : T) : TextureRegionDrawable
+    abstract fun getImage(it : T) : TextureRegionDrawable?
 
     private fun refreshCost(it : T?) {
         lblCost.setText(if (it == null) "0" else "${it.cost}")
-        productionManager?.contributionPower?.let { i -> lblCompleteIn.setText(if (it == null) "0" else "${ceil(it.cost.toDouble() / i.toDouble()).toInt()}")}
-        it?.let { setImage(it) }
+
+        it?.let {
+            setImage(it)
+            lblCompleteIn.setText(productionManager!!.turnsToComplete(it))
+        }
     }
 
     private fun <T> refresh(list : Array<T>, data : Array<T>) {
         list.clear()
         list.addAll(Utility.CollectionToGDXArray(data))
-        productionManager?.let { btnAddButton.touchable = if (it.isQueueFull()) Touchable.disabled else Touchable.enabled }
+        productionManager?.let { btnAddButton.touchable = if (it.isQueueFull() || btnRemoveButton.touchable == Touchable.disabled) Touchable.disabled else Touchable.enabled }
     }
 
     private fun selectedInQueue(): T? =

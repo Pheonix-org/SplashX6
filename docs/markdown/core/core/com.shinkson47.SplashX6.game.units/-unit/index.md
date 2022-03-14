@@ -40,6 +40,7 @@ PRE-ALPHA 0.0.1
 | [clearDestination](clear-destination.md) | [jvm]<br>fun [clearDestination](clear-destination.md)() |
 | [deltaPosition](delta-position.md) | [jvm]<br>fun [deltaPosition](delta-position.md)(deltaX: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html), deltaY: [Int](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html)): Vector3<br>then invokes [setLocation](set-location.md) to update the sprite and whatnot. |
 | [deserialize](deserialize.md) | [jvm]<br>override fun [deserialize](deserialize.md)() |
+| [dispose](dispose.md) | [jvm]<br>fun [dispose](dispose.md)() |
 | [doTurn](do-turn.md) | [jvm]<br>fun [doTurn](do-turn.md)() |
 | [draw](index.md#1695906424%2FFunctions%2F971615585) | [jvm]<br>open fun [draw](index.md#1695906424%2FFunctions%2F971615585)(p0: Batch)<br>open fun [draw](index.md#-1005726184%2FFunctions%2F971615585)(p0: Batch, p1: [Float](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float/index.html)) |
 | [flip](index.md#552322619%2FFunctions%2F971615585) | [jvm]<br>open override fun [flip](index.md#552322619%2FFunctions%2F971615585)(p0: [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html), p1: [Boolean](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html)) |

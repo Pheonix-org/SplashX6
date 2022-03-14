@@ -60,3 +60,4 @@ jvm
 |---|
 | [CityProductionManager](../-city-production-manager/index.md) |
 | [ImprovementProductionManager](../-improvement-production-manager/index.md) |
+| [TechProductionManager](../-tech-production-manager/index.md) |

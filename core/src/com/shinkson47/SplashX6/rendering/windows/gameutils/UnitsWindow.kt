@@ -159,7 +159,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
 
     private fun refreshActions() {
         val arr : Array<UnitAction> = Array();
-        GameHypervisor.unit_selected()?.actions?.forEach { arr.add(it) } // TODO copy of above. abstract.
+        GameHypervisor.unit_selected()?.availableActions?.forEach { arr.add(it) } // TODO copy of above. abstract.
         // TODO use gdx array in units to avoid this on every refresh.
 
         actions.setItems(arr)

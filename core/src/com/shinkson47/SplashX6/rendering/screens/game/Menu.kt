@@ -50,20 +50,16 @@ import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
-import com.shinkson47.SplashX6.rendering.windows.game.W_Advancement
 import com.shinkson47.SplashX6.rendering.windows.W_Options
 import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.rendering.windows.W_StateMachines
-import com.shinkson47.SplashX6.rendering.windows.game.Music
+import com.shinkson47.SplashX6.rendering.windows.game.*
 import com.shinkson47.SplashX6.rendering.windows.game.settlements.W_Settlements
-import com.shinkson47.SplashX6.rendering.windows.game.Spotify
-import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.rendering.windows.game.units.W_UnitsList
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 import com.shinkson47.SplashX6.utility.Utility.AssertEndsWith
 import com.shinkson47.SplashX6.utility.Utility.message
 import com.shinkson47.SplashX6.utility.Utility.warnDev
-import com.shinkson47.SplashX6.utility.configuration.LanguageConfig
 import com.shinkson47.SplashX6.utility.configuration.LanguageConfig.local
 import com.shinkson47.SplashX6.utility.debug.Debug.DebugWindow
 
@@ -137,7 +133,8 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
         )
 
         addMenuItem(this, "!Debug", WindowAction(DebugWindow()),
-                MenuSubItem("!Tech Test", WindowAction(W_Advancement("!Techs"))),
+            MenuSubItem("!Techs", WindowAction(W_AdvancementProduction())),
+
                 MenuSubItem("!Defog All") { GameData.world!!.removeFogOfWar() },
                 MenuSubItem("!Manage State Machines", WindowAction(W_StateMachines())),
                 MenuSubItem("!Hard reset server") { Server.shutdown(); Server.boot() },
@@ -164,14 +161,9 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
 
         addMenuItem(
             this, "!Manage", NOTHING,
-            //MenuSubItem("!War room view") { cm_toggle() },
             MenuSubItem("generic.game.settlements", WindowAction(W_Settlements())),
             MenuSubItem("generic.game.units", WindowAction(W_UnitsList())),
-            //MenuSubItem("!") { W_Settlements() },
-//            MenuSubItem("specific.windows.units.view") { GameHypervisor.unit_view() },
-//            MenuSubItem("specific.windows.units.viewDestination") { GameHypervisor.unit_viewDestination() },
-//            MenuSubItem("specific.windows.units.setDestination") { GameHypervisor.unit_setDestination() },
-//            MenuSubItem("specific.windows.units.disband") { GameHypervisor.unit_disband() },
+            MenuSubItem("!Advancements", WindowAction(W_Advancement("!Advancements"))),
         )
 
         addMenuItem(this, "generic.game.endTurn", { GameHypervisor.turn_end() })
