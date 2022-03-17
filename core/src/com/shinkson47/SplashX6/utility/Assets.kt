@@ -267,6 +267,7 @@ internal object Assets : AssetManager() {
      * [TextureAtlas] containing all sprites for [Unit]
      */
     const val SPRITES_UNITS     = "${DIR_SPRITES}units$ATLAS"
+    const val SPRITES_UNITEXTRAS     = "${DIR_SPRITES}unitextras$ATLAS"
 
     /**
      * [TextureAtlas] containing all sprites for [City]
@@ -510,6 +511,7 @@ internal object Assets : AssetManager() {
         load(DATA_UNIT, Map::class.java)
 
         // Textures & Sprites
+        load(SPRITES_UNITEXTRAS, TextureAtlas::class.java)
         load(SPRITES_UNITS, TextureAtlas::class.java)
         load(SPRITES_CITIES, TextureAtlas::class.java)
         load(SPRITES_MENUBG, TextureAtlas::class.java)

@@ -210,12 +210,6 @@ class GameScreen : ScalingScreenAdapter() {
         GameData.nations.forEach {
 
             it.units.forEach { sprite: Unit ->
-                // META : This draws a gl rect over the true area where sprites are rendered, so you can see where the sprites boundaries are.
-//                    if (Debug.enabled()) {
-//                        sr.begin(ShapeRenderer.ShapeType.Filled);
-//                        sr.rect(sprite.getBoundingRectangle().x,sprite.getBoundingRectangle().y,sprite.getBoundingRectangle().width,sprite.getBoundingRectangle().height);
-//                        sr.end();
-//                    }
                 sprite.draw(worldBatch)
             }
 

@@ -52,6 +52,7 @@ import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import com.strongjoshua.console.CommandExecutor
 import com.strongjoshua.console.GUIConsole
@@ -75,7 +76,7 @@ object Console : GUIConsole() {
         setSize(700, GraphicalConfig.displayMode.height)
         setPosition(GraphicalConfig.displayMode.width,0)
 
-        Thread(SystemListener()).start()
+        Utility.dispatchDaemonThread("Console", SystemListener())
 
         // TODO enable with debug mode?
     }
@@ -331,6 +332,18 @@ object Console : GUIConsole() {
             parseUnitIndex(nationIndex, unitIndex)
             GameHypervisor.unit_select(unitIndex, parseNationIndex(nationIndex))
             console.log("Selected = ${GameHypervisor.unit_selected()}")
+        }
+
+        @ConsoleDoc(description = "Sets the health of a unit.",
+            paramDescriptions = [
+                "The index ID of the nation to look at. See 'peekNations'",
+                "The index ID of the unit in that nation. See 'peekUnits'.",
+                "The new health of the unit. (typically out of ten, but may change. Will automatically be clamped in valid range.)"])
+        fun pokeHealth(nationIndex: Int, unitIndex: Int, health: Int) {
+            parseUnitIndex(nationIndex, unitIndex).apply {
+                hp = health
+                console.log("Health = $hp")
+            }
         }
 
 

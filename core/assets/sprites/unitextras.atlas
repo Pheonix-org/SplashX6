@@ -1,0 +1,208 @@
+unitextras.png
+size: 31, 272
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+auto
+  rotate: false
+  xy: 0, 0
+  size: 24, 13
+  orig: 24, 13
+  offset: 0, 0
+  index: -1
+connect
+  rotate: false
+  xy: 0, 13
+  size: 31, 12
+  orig: 31, 12
+  offset: 0, 0
+  index: -1
+hp_0
+  rotate: false
+  xy: 0, 25
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_10
+  rotate: false
+  xy: 0, 34
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_20
+  rotate: false
+  xy: 0, 43
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_30
+  rotate: false
+  xy: 0, 52
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_40
+  rotate: false
+  xy: 0, 61
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_50
+  rotate: false
+  xy: 0, 70
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_60
+  rotate: false
+  xy: 0, 79
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_70
+  rotate: false
+  xy: 0, 88
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_80
+  rotate: false
+  xy: 0, 97
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_90
+  rotate: false
+  xy: 0, 106
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+hp_100
+  rotate: false
+  xy: 0, 115
+  size: 31, 9
+  orig: 31, 9
+  offset: 0, 0
+  index: -1
+loaded
+  rotate: false
+  xy: 0, 124
+  size: 16, 15
+  orig: 16, 15
+  offset: 0, 0
+  index: -1
+lowfuel
+  rotate: false
+  xy: 0, 139
+  size: 17, 11
+  orig: 17, 11
+  offset: 0, 0
+  index: -1
+patrol
+  rotate: false
+  xy: 0, 150
+  size: 21, 23
+  orig: 21, 23
+  offset: 0, 0
+  index: -1
+stack
+  rotate: false
+  xy: 0, 173
+  size: 19, 19
+  orig: 19, 19
+  offset: 0, 0
+  index: -1
+tired
+  rotate: false
+  xy: 19, 173
+  size: 9, 17
+  orig: 9, 17
+  offset: 0, 0
+  index: -1
+vet_1
+  rotate: false
+  xy: 0, 192
+  size: 14, 21
+  orig: 14, 21
+  offset: 0, 0
+  index: -1
+vet_2
+  rotate: false
+  xy: 14, 192
+  size: 14, 12
+  orig: 14, 12
+  offset: 0, 0
+  index: -1
+vet_3
+  rotate: false
+  xy: 0, 213
+  size: 9, 24
+  orig: 9, 24
+  offset: 0, 0
+  index: -1
+vet_4
+  rotate: false
+  xy: 9, 213
+  size: 9, 18
+  orig: 9, 18
+  offset: 0, 0
+  index: -1
+vet_5
+  rotate: false
+  xy: 18, 213
+  size: 9, 21
+  orig: 9, 21
+  offset: 0, 0
+  index: -1
+vet_6
+  rotate: false
+  xy: 0, 237
+  size: 9, 19
+  orig: 9, 19
+  offset: 0, 0
+  index: -1
+vet_7
+  rotate: false
+  xy: 9, 237
+  size: 9, 15
+  orig: 9, 15
+  offset: 0, 0
+  index: -1
+vet_8
+  rotate: false
+  xy: 18, 237
+  size: 9, 11
+  orig: 9, 11
+  offset: 0, 0
+  index: -1
+vet_9
+  rotate: false
+  xy: 0, 256
+  size: 9, 16
+  orig: 9, 16
+  offset: 0, 0
+  index: -1
+vet_10
+  rotate: false
+  xy: 9, 256
+  size: 9, 14
+  orig: 9, 14
+  offset: 0, 0
+  index: -1
+vet_11
+  rotate: false
+  xy: 18, 256
+  size: 9, 10
+  orig: 9, 10
+  offset: 0, 0
+  index: -1

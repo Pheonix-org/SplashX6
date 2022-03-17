@@ -46,6 +46,4 @@ enum class Biome {
     d,
     p,
     s
-    //Crators
-    //eather (Corroupted land?)
 }

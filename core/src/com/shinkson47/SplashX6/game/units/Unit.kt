@@ -33,25 +33,30 @@
 package com.shinkson47.SplashX6.game.units
 
 import box2dLight.PointLight
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.ai.StateMachine
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.WorldTerrain.*
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGHT
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HEIGHT
+import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SPRITES_UNITS
-import com.shinkson47.SplashX6.utility.Assets.clear
+import com.shinkson47.SplashX6.utility.Assets.SPRITES_UNITEXTRAS
 import com.shinkson47.SplashX6.utility.DataTable
 import com.shinkson47.SplashX6.utility.PartiallySerializable
+import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.Utility.asPercentOf
+import com.shinkson47.SplashX6.utility.Utility.center
 import com.shinkson47.SplashX6.utility.Utility.warnDev
-import com.sun.org.apache.xpath.internal.operations.Bool
 import org.xguzm.pathfinding.grid.GridCell
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder
 import kotlin.Unit
@@ -96,6 +101,44 @@ open class Unit(
 
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     // endregion fields
+    // region data
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+    companion object {
+        val UnitData = DataTable(Assets.DATA_UNIT)
+    }
+
+    val data = UnitData.getSubTable(unitClass.toString())
+
+    fun helptext() = data.getString("helptext")
+    fun graphic() = data.getString("graphic")
+
+    //TODO enum
+    // TODO move default values to a base class.
+
+    val classification= data.getString("class")?: "_BASE"
+    val cost = data.getInt("build_cost")?: "40"
+    val attack = data.getInt("attack")?: 1
+    val defense = data.getInt("defense")?: 2
+
+    fun reqMet(): Boolean {
+        return data.getString("tech_req")?.let {
+            (ownedBy()?.advancementTree ?: GameData.player!!.advancementTree)
+                .getA(it)?.complete
+                ?:
+                true.apply { warnDev("$displayName requires $it, but it was not found in the tech tree.") }
+        }?:  true // TODO many units are not in data.
+    }
+
+    /**
+     * ## A user friendly name of this unit.
+     * For now, is just the [unitClass]
+     */
+    val displayName = data.getString("name")
+
+
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // endregion data
     // region movement
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
@@ -126,14 +169,14 @@ open class Unit(
      * and how large the [light] is.
      */
     // TODO these need to be dictionary based values
-    var viewDistance: Int
+    var viewDistance = data.getInt("vision_radius_sq")?: 2
 
     /**
      * Determines how many nodes in the [pathNodes]
      * that may be traveled in one turn
      */
     // TODO these need to be dictionary based values
-    var travelDistance: Int
+    var travelDistance: Int  = data.getInt("move_rate")?: 2
 
     /**
      * See [setLocation] (Int, Int) for documentation
@@ -186,12 +229,10 @@ open class Unit(
         // Defog
         GameData.world!!.defog(isoVec.x.toInt(), isoVec.y.toInt(), viewDistance)
 
-        // Move the sprite & light
+        // Move the sprites & light
         isoToCartesian(x, y).apply {
             // Compensate for the origin, so that the sprite is in the center of the cell.
-            setX(this.x - TILE_HALF_WIDTH)
-            setY(this.y - TILE_HALF_HEIGHT)
-            light?.setPosition(this.x,this.y)
+            setPosition(this.x, this.y)
         }
 
         // Invalidate the pathfinding.
@@ -306,16 +347,60 @@ open class Unit(
     override fun setY(y: Float) = super.setY(y)
 
     /**
-     * Sets the location of the sprite. This should not be done.
+     * Sets the location of the sprites and lighting.
      *
-     * Set the location of the unit instead.
+     * This should not be done externally. Set the location of the unit instead.
      */
     @Deprecated("see [setLocation]")
-    override fun setPosition(x: Float, y: Float) = super.setPosition(x, y)
+    override fun setPosition(x: Float, y: Float) {
+        super.setPosition(x - TILE_HALF_WIDTH, y - TILE_HALF_HEIGHT)
+        assertSpritePositions()
+    }
 
+    /**
+     * Ensures that the sub-sprites (health, status, light, etc) all match
+     * the position of the main unit sprite (super).
+     */
+    private fun assertSpritePositions() {
+        light?.setPosition(x, y)
+        // TODO cache these offsets globally.
+        hpSprite?.setPosition(x + center(width, hpSprite!!.width), y + TILE_HEIGHT + 2)
+        autoSprite?.setPosition(x + center(width, autoSprite!!.width), y + TILE_HEIGHT + 6)
+    }
 
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     // endregion movement
+    // region health
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+
+
+    val MAX_HP = data.getInt("hitpoints")?: 10
+
+    var hp = MAX_HP
+        set(value) {
+            field = value.coerceIn(0..MAX_HP)
+            updateHpSprite()
+        }
+
+    var hpSprite: Sprite? = null
+        set(value) {
+            field = value
+            field?.scale(-0.5f)
+            assertSpritePositions()
+        }
+
+    private fun updateHpSprite() {
+        hpSprite = Assets.get<TextureAtlas>(SPRITES_UNITEXTRAS)
+            .createSprite("hp_${Utility.roundToNearestMultiple(hp.asPercentOf(MAX_HP).toFloat(), 10f)}")
+    }
+
+    init {
+        updateHpSprite()
+    }
+
+
+    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // endregion health
     // region action
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
@@ -360,50 +445,6 @@ open class Unit(
 
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     // endregion fields
-    // region data
-    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-
-    companion object {
-        val UnitData = DataTable(Assets.DATA_UNIT)
-    }
-
-    val data = UnitData.getSubTable(unitClass.toString())
-
-    fun helptext() = data.getString("helptext")
-    fun graphic() = data.getString("graphic")
-
-    //TODO enum
-    // TODO move default values to a base class.
-
-    val classification= data.getString("class")?: "_BASE"
-    val cost = data.getInt("build_cost")?: "40"
-    val attack = data.getInt("attack")?: 1
-    val defense = data.getInt("defense")?: 2
-    var hp = data.getInt("hitpoints")?: 10
-
-    fun reqMet(): Boolean {
-        return data.getString("tech_req")?.let {
-             (ownedBy()?.advancementTree ?: GameData.player!!.advancementTree)
-                    .getA(it)?.complete
-                 ?:
-                 true.apply { warnDev("$displayName requires $it, but it was not found in the tech tree.") }
-        }?:  true // TODO many units are not in data.
-    }
-
-    /**
-     * ## A user friendly name of this unit.
-     * For now, is just the [unitClass]
-     */
-    val displayName = data.getString("name")
-
-    init {
-            viewDistance = data.getInt("vision_radius_sq")?: 2
-            travelDistance = data.getInt("move_rate")?: 2
-    }
-
-
-    // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
-    // endregion data
     // region AI
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
@@ -412,6 +453,12 @@ open class Unit(
      * AI controlled.
      */
     lateinit var ai: UnitAI
+    var autoSprite: Sprite? = null
+        set(value) {
+            field = value
+            field?.scale(-0.5f)
+            assertSpritePositions()
+        }
 
     /**
      * Configures this unit to be AI controlled, and autonomous.
@@ -420,6 +467,7 @@ open class Unit(
      */
     fun ai_init() {
         ai = UnitAI()
+        autoSprite = Assets.get<TextureAtlas>(SPRITES_UNITEXTRAS).createSprite("auto")
     }
 
     /**
@@ -488,6 +536,12 @@ open class Unit(
     // region other functions
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
+    override fun draw(batch: Batch?) {
+        super.draw(batch)
+        hpSprite?.draw(batch)
+        autoSprite?.draw(batch)
+    }
+
     override fun toString() = "$displayName $isoVec"
 
     fun dispose() {
@@ -498,8 +552,6 @@ open class Unit(
         set(REF_SPRITES_UNITS.createSprite(unitClass.toString()))
         setLocation(isoVec)
     }
-
-
 
     init {
         setLocation(isoVec)

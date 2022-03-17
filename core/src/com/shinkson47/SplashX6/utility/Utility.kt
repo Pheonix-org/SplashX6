@@ -200,6 +200,13 @@ object Utility {
     fun roundToNearestMultiple(value: Float, multiple: Float) = (multiple * (value / multiple).roundToInt()).toInt()
 
 
+    fun Int.asPercentOf(of: Int) =
+        if (of == 0)
+                0
+        else
+            (this * 100) / of
+
+
     //░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     //#endregion
     //#region                Strings
