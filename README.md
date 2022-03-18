@@ -44,17 +44,17 @@ Splash X6 is not a game of intuition, many find it confusing.
 
 In game the `help` window, located on the menu bar at the top of the screen, can be used to display [help text](https://github.com/Shinkson47/UniX6/blob/develop/core/assets/lang/helptext.plist), guiding you through starting with your first game and learning how to use the systems.
 
-***SCREENSHOT***
+![Screen Shot 2022-03-18 at 4 49 21 pm](https://user-images.githubusercontent.com/50697488/159046936-9cb74592-8559-40c1-8c1b-7b74940fc9cf.png)
 
-## Wiki
+## [Wiki](https://github.com/Shinkson47/UniX6/wiki)
 > Help for players & contributors
 
-More detailed and technical information about the engine and the various game systems can be found [here](https://github.com/Shinkson47/UniX6/wiki)
+More detailed and technical information about the engine and the various game systems.
 
-## Dokka
+## [Dokka](https://www.shinkson47.in/UniX6/)
 > Help for contributors
 
-[Here](https://www.shinkson47.in/UniX6/) is the web version of the exported Kotlin documentation.
+Web version of the exported Kotlin documentation.
 
 I try to add half decent documentation to my implementations. The Kotlin documentation export engine [Dokka](https://github.com/Kotlin/dokka) is used via gradle to export the technical documentation to [HMTL](https://github.com/Shinkson47/UniX6/tree/develop/docs/HTML) and [Github friendly Markdown](https://github.com/Shinkson47/UniX6/tree/develop/docs/markdown).
 
