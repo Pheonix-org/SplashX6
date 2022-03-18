@@ -141,7 +141,7 @@ jobs:
   #===============================================================
   # Pack build result into mac
   #===============================================================
-  pack-linux: 
+  pack-mac: 
     runs-on: macos-latest
     needs: build
     steps:
