@@ -41,7 +41,6 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.physics.box2d.World
-import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.game.world.generation.stages.NavigationDataMiscStage
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.TEX_HITTEST
@@ -50,8 +49,6 @@ import com.shinkson47.SplashX6.utility.Assets.TILED_TILESETS_DATA
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 import com.shinkson47.SplashX6.utility.Utility
 import org.xguzm.pathfinding.gdxbridge.NavigationTiledMapLayer
-import org.xguzm.pathfinding.grid.GridCell
-import org.xguzm.pathfinding.grid.finders.AStarGridFinder
 import java.awt.image.BufferedImage
 import java.util.function.Consumer
 import kotlin.math.floor

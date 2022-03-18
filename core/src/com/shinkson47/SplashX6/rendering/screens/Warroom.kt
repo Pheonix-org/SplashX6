@@ -32,17 +32,13 @@
 
 package com.shinkson47.SplashX6.rendering.screens
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.camera_focusOn
-import com.shinkson47.SplashX6.game.GameHypervisor.unit_selected
-import com.shinkson47.SplashX6.game.GameHypervisor.unit_view
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.rendering.Camera
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
@@ -107,7 +103,7 @@ class Warroom(val parent : GameScreen) : ScreenAdapter() {
      * # Renders a circle on the tile the cursor is pointing to.
      */
     private fun renderMouseCircle() {
-        val iso = GameHypervisor.cm_selectedTile()
+        val iso = Hypervisor.cm_selectedTile()
         val isocart = WorldTerrain.isoToCartesian(iso.x.toInt(), iso.y.toInt())
         parent.sr.circle(isocart.x, isocart.y, 10f)
     }

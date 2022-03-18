@@ -34,7 +34,7 @@ package com.shinkson47.SplashX6.rendering.windows.game.settlements
 
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
@@ -55,7 +55,7 @@ class W_Settlements : StageWindow("generic.game.settlements") {
 
     init {
         settlements.addListener(LambdaChangeListener {
-            settlements.selected?.let { GameHypervisor.camera_focusOn(it) }
+            settlements.selected?.let { Hypervisor.camera_focusOn(it) }
             refresh()
         })
 
@@ -82,8 +82,8 @@ class W_Settlements : StageWindow("generic.game.settlements") {
             )
         )
 
-        GameHypervisor.turn_unhook(this)
-        GameHypervisor.turn_hook { GameHypervisor.turn_asyncTask(this) }
+        Hypervisor.turn_unhook(this)
+        Hypervisor.turn_hook { Hypervisor.turn_asyncTask(this) }
     }
 
     override fun show() {

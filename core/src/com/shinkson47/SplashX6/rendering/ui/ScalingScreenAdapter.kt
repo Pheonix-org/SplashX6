@@ -78,6 +78,7 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
         Console.resetInputProcessing()
     }
 
+    // TODO the stage isn't rendered here????
     override fun render(delta: Float) {
         Console.draw()
     }

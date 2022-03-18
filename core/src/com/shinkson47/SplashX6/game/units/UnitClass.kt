@@ -61,7 +61,7 @@ enum class UnitClass {
     destroyer,
     diplomat,
     dragoon,
-    elepants,
+    elephants,
     engineers,
     explorer,
     fanatics,

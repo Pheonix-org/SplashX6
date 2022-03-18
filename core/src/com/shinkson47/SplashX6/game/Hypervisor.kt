@@ -37,6 +37,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -50,6 +51,7 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
+import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
@@ -76,48 +78,53 @@ import java.io.*
 import java.lang.Thread.sleep
 
 /**
- * # The main overseer and API for the game.
- *
- * Manages and handles all interactions with the current game from the client.
+ * # Centralised control functions and API for the game.
+ * Manages and handles interactions with the current game from the client.
  *
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 16/04/2021
  * @version 1
  * @since PRE-ALPHA 0.0.1
  */
-object GameHypervisor {
+object Hypervisor {
     //========================================================================
     //#region fields
     //========================================================================
 
     /**
-     * ## The screen being used to display the game
+     * The screen being used to display the game
      */
     @JvmStatic
     var gameRenderer: GameScreen? = null
     private set
 
+    /**
+     * Creates a brand new [GameScreen] in [gameRenderer],
+     * and displays it on the client
+     */
     @Deprecated("Debug use only.")
     fun newGameRenderer() {
         gameRenderer = GameScreen()
         client.fadeScreen(gameRenderer!!)
+        System.gc()
     }
 
     /**
-     * # Are we in a game? i.e is a game currently loaded and playable?
-     * If false, game api calls are not valid.
+     * True if the hypervisor considers a game to be active.
+     *
+     * Whilst false, many API calls will be rejected.
      */
     @JvmStatic
     var inGame: Boolean = false
     private set
 
     /**
-     * # Runnables to be performed on [turnEnd].
+     * Runnables to be performed on [turn_end].
      * Removed after being performed once.
      */
     private val TURN_ASYNC_TASKS: ArrayList<TurnHook> = ArrayList()
 
     /**
-     * # Runnables to be performed on [turnEnd].
+     * Runnables to be performed on [turn_end].
      * Kept until removed, activated every turn.
      */
     private val TURN_HOOKS: ArrayList<TurnHook> = ArrayList()
@@ -128,34 +135,41 @@ object GameHypervisor {
     //#region construction
     //========================================================================
 
-    fun ConnectGame() {
-        client.fadeScreen(WorldCreation(isConnecting = true))
-    }
+    /**
+     * Attempts to load a game over the network.
+     */
+    fun ConnectGame() = client.fadeScreen(WorldCreation(isConnecting = true))
 
     /**
-     * # Initiates the creation of a new game
+     * Initiates the creation of a new game, but does not actually create it.
      *
-     * But does not actually create it. This method switches to the world creation window,
-     * which will callback when the user has configured the game and has rendered the loading screen.
-     * The game will then be generated in [GameHypervisor#doNewGameCallback()], during which the programme will be
-     * un-responsive and unable to render.
+     * This method switches to the world creation window, which will callback
+     * when the user has configured the game and has rendered the loading screen.
+     * The game will then be generated in [GameHypervisor#doNewGameCallback()],
+     * during which the programme will be un-responsive and unable to render.
+     *
+     * if [inGame], will [endGame] first.
      */
     @JvmStatic
     fun NewGame() {
-        if (inGame) EndGame()
+        assertEndGame()
         client.fadeScreen(WorldCreation())
     }
 
     /**
-     * # Initiates the loading of a game
+     * Initiates the loading of a game
+     *
+     * By switching to world creation with [WorldCreation.isLoading] = true.
+     *
+     * if [inGame], will [endGame] first.
      */
     fun LoadGame() {
-        if (inGame) EndGame()
+        assertEndGame()
         client.fadeScreen(WorldCreation(isLoading = true))
     }
 
     /**
-     * # Actually creates a new game
+     * Creates or loads a game.
      * This is the main game creation routine that is ran under the loading screen.
      *
      * called by the world creation screen after it has rendered the "creating world" message to the user.
@@ -165,6 +179,12 @@ object GameHypervisor {
         doGameLoadCallback()
     }
 
+    /**
+     * Activates game creation after loading
+     * This is the main game creation routine that is ran under the loading screen.
+     *
+     * called by the world creation screen after it has rendered the "creating world" message to the user.
+     */ // TODO this still creates a new gd on load???
     fun doGameLoadCallback() {
         doNewGamePRE()
         inGame = true
@@ -172,9 +192,11 @@ object GameHypervisor {
     }
 
     /**
-     * # Game creation sub-routine
-     * This is ran before we are considered to be in-game.
-     * Contains calls which do not require a game to be loaded.
+     * Game creation sub-routine
+     *
+     * This is ran before we are considered to be [inGame].
+     * Contains steps which do not require a game to be loaded,
+     * and are required by many other loading steps.
      */
     private fun doNewGamePRE() {
         // create game data. Must be before game screen is created.
@@ -189,9 +211,10 @@ object GameHypervisor {
     }
 
     /**
-     * # Game creation sub-routine
-     * Ran AFTER we are considered to be in-game.
-     * Contains calls which require a game to be loaded.
+     * Game creation sub-routine
+     *
+     * Ran after we are considered to be [inGame].
+     * Contains calls which requires game data or game renderer.
      */
     private fun doNewGamePOST() {
         for (i in 1..GameData.pref_civCount)
@@ -210,25 +233,33 @@ object GameHypervisor {
      * Final touches applied after game has been created
      */
     fun doNewGameFINAL() {
+        // TODO could this be PRE or INIT?
         gameRenderer!!.createUI() // Populate the game screen with GUI. can't be done whilst gr is null.
 
         // TODO This couldn't be done before a world is created, but is only temporary.
         // STOPSHIP : 17/04/2021 this is dumb and shouldn't stay
         Debug.create()
+
         KeyBinder.createGameBinds()
+        MouseHandler.configureGameInput(gameRenderer!!.stage)
 
+        // TODO change this to be spotify first. If listening to spotify, pause game music.
         if (!DEBUG_MODE) Spotify.pause()      // If possible, stop spotify.
-
         AudioController.playPlaylist(Assets.DEFAULT_PLAYLIST)
-        switchToGameScreen()
 
         if (Server.alive)
             Server.sendToAllClients(Packet(PacketType.Start, GameData))
+
+        switchToGameScreen()
     }
 
-    fun switchToGameScreen() {
-        gameRenderer?.apply { client.fadeScreen(this) }   // Show the game screen to the user.
-    }
+    /**
+     * Displays [gameRenderer] on the [client].
+     *
+     * @return the [gameRenderer]
+     */
+    fun switchToGameScreen() =
+        gameRenderer?.apply { client.fadeScreen(this) }
 
 
     //========================================================================
@@ -236,6 +267,9 @@ object GameHypervisor {
     //#region saving API
     //========================================================================
 
+    /**
+     * Loads the last file saved.
+     */
     @JvmStatic
     fun quickload() {
         validateCall(REQ_IN_GAME, THROW("Can only quickload in game. This should not be possible."))
@@ -243,7 +277,7 @@ object GameHypervisor {
     }
 
     /**
-     * We are not in game, and are loading one.
+     * Loads a .X6 game file.
      *
      * Populates GameData from a serialized file, then loads the game ui.
      */
@@ -254,9 +288,9 @@ object GameHypervisor {
     }
 
     /**
-     * We are not in game, and are loading one.
+     * Loads a .X6 game file.
      *
-     * Populates GameDate from an existing instance, then loads the ui.
+     * Populates GameData from a serialized file, then loads the game ui.
      */
     @JvmStatic
     fun load(gd: _GameData) {
@@ -272,7 +306,7 @@ object GameHypervisor {
      *
      * GameData is replaced and de-serialized.
      *
-     * A new renderer is created to render the world.
+     * A new renderer is created inside the [gameRenderer] to show the new world.
      */
     @JvmStatic
     fun update(newData: _GameData) {
@@ -280,8 +314,13 @@ object GameHypervisor {
         GameData = newData
         GameData.deserialize()
         gameRenderer!!.newRenderer()
+        System.gc()
     }
 
+
+    /**
+     * Saves current game in last file saved to.
+     */
     @JvmStatic
     fun quicksave() {
         if (
@@ -290,51 +329,52 @@ object GameHypervisor {
         TODO()
     }
 
+    /**
+     * Saves the current game to a .X6 game file.
+     *
+     * Serializes [GameData] to f.
+     * @param f The file to save to.
+     */
     @JvmStatic
     fun save(f: File) {
         validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("save a game", "no game is loaded")))
         ObjectOutputStream(FileOutputStream(f)).writeObject(GameData)
     }
 
-    /**
-     * # Spawns a [unit] with the sprite of [spriteName] on iso co-oord [x],[y]
-     * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
-     */
-    @JvmStatic
-    fun spawn(pos: Vector3, spriteName: UnitClass) =
-        spawn(pos.x.toInt(), pos.y.toInt(), spriteName)
-
-    //TODO these shouldn't be in this region.
-    /**
-     * # Spawns a [unit] with the sprite of [spriteName] on iso co-oord [x],[y]
-     * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
-     */
-    @JvmStatic
-    fun spawn(x: Int, y: Int, spriteName: UnitClass, nation: Nation = GameData.player!!): Unit {
-        requireNotNull(GameData.world, { " Tried to spawn with no world. " })
-        require(GameData.nations.contains(nation)) { " Tried to spawn a unit into a nation which does not exist in this game. " }
-        return Unit(spriteName, x, y).apply { nation.addUnit(this) }
-    }
+    //========================================================================
+    //#endregion saving
+    //#region nations
+    //========================================================================
 
     /**
      * Creates a new random ai controlled nation.
      *
-     * @param civType Civ type
-     * @param ai Ai
-     * @return [Nation]
+     * @return The [Nation] created
      */
     fun nation_new_random(): Nation = nation_new(Utility.random(NationType.values()), ai = true)
 
+    /**
+     * Creates a new nation in the current game.
+     *
+     * The nation starts with one settler.
+     *
+     * @param civType The type of nation. Determines what sprites to use to represent the
+     *                settlements.
+     * @param ai Determines if the nation is controlled by statemachine AI. False by default.
+     * @return The [Nation] created.
+     */
     fun nation_new(civType: NationType, ai: Boolean = false): Nation {
         requireNotNull(GameData.world, { " Tried to create a new civilisation with no world. " })
-        val nation = Nation(civType, ai)
-        GameData.nations.add(nation)
-        GameData.world!!.randomPointOnLand().apply { spawn(x.toInt(), y.toInt(), UnitClass.settler, nation) }
-        return nation
+        return Nation(civType, ai).apply {
+            GameData.nations.add(this)
+            GameData.world!!.randomPointOnLand().let {
+                spawn(it.x.toInt(), it.y.toInt(), UnitClass.settler, this)
+            }
+        }
     }
 
     /**
-     * Eradicates the existance of a nation.
+     * Eradicates the existence of a nation.
      *
      * Breaks down the relationships involved with it, and removes it from
      * [GameData.nations]
@@ -345,55 +385,90 @@ object GameHypervisor {
      * @see Nation.dissolve
      */
     fun nation_dissolve(nation: Nation) {
-        nation.dissolve()
-        GameData.nations.remove(nation)
+        with(nation) {
+            dissolve()
+            GameData.nations.remove(this)
+        }
         System.gc()
     }
 
+
     //========================================================================
-    //#endregion saving
+    //#endregion nations
     //#region units
     //========================================================================
 
-    // TODO api predicate for requiring a unit is selected.
-
-
-    @JvmStatic
-    fun unit_select(index: Int, nation: Nation = GameData.player!!) = unit_select(nation.units.get(index))
-
     /**
-     * # Selects a unit for focus of manipulation
-     * Other unit calls will use this selected unit.
+     *  Spawns a [unit] with the sprite of [spriteName] on iso co-oord [x],[y]
+     * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
      */
     @JvmStatic
-    fun unit_select(unit: Unit) {
-        validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("Select a unit", "no game is loaded")))
+    fun spawn(pos: Vector3, spriteName: UnitClass) =
+        spawn(pos.x.toInt(), pos.y.toInt(), spriteName)
 
-//            if (!GameData.player!!.units.contains(unit))
-//                throw IllegalArgumentException("Tried to select a unit that does not exist in the game data!")
-
-        GameData.selectedUnit = unit
-        unit_view()
+    /**
+     * Spawns a [unit] with the sprite of [spriteName] on iso co-oord [x],[y]
+     * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
+     */
+    @JvmStatic
+    fun spawn(x: Int, y: Int, spriteName: UnitClass, nation: Nation = GameData.player!!): Unit {
+        requireNotNull(GameData.world, { " Tried to spawn with no world. " })
+        require(GameData.nations.contains(nation)) { " Tried to spawn a unit into a nation which does not exist in this game. " }
+        return Unit(spriteName, x, y).apply { nation.addUnit(this) }
     }
 
     /**
-     * # Sets the destination of the selected unit to the cursor
-     * in tile space.
+     * Selects a unit to be of focus for manipulation in other calls.
+     *
+     * Camera is moved to look at the unit after selection.
+     *
+     * @param UnitIndex Index of the unit within the nation.
+     * @param nation The nation owning the unit to select.
+     * @return The selected unit.
+     */
+    @JvmStatic
+    fun unit_select(UnitIndex: Int, nation: Nation = GameData.player!!) = unit_select(nation.units.get(UnitIndex))
+
+    /**
+     * Selects a unit to be of focus for manipulation in other calls.
+     *
+     * Does not validate that the unit exists within the [GameData].
+     *
+     * Camera is moved to look at the unit after selection.
+     *
+     * @param unit The unit to select.
+     * @return The selected unit.
+     */
+    @JvmStatic
+    fun unit_select(unit: Unit): Unit? {
+        validateCall(REQ_IN_GAME, THROW(MSG_TRIED_EXCEPT("Select a unit", "no game is loaded")))
+
+        GameData.selectedUnit = unit
+        unit_view()
+        return unit_selected()
+    }
+
+    /**
+     * Sets the destination of the selected unit to the cursor.
+     *
+     * Selecting the destination of a unit will automatically invoke
+     * it's pathfinding, and switch the selected unit to [UnitActionDictionary.TRAVEL]
      */
     @JvmStatic
     fun unit_setDestination() {
         if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't set a unit's destination if no unit selected!"))) return
 
         with(GameData.selectedUnit!!) {
-            val dest: Vector3 = cm_selectedTile()
-            setDestination(dest.x, dest.y)
+            cm_selectedTile().apply {
+                setDestination(x, y)
+            }
 
             unit_selectAction("Travel to destination")
         }
     }
 
     /**
-     * # Focusses the camera on the selected units destination.
+     * Focusses the camera on the selected units destination.
      */
     @JvmStatic
     fun unit_viewDestination() {
@@ -403,7 +478,7 @@ object GameHypervisor {
 
 
     /**
-     * # focuesses the camera on the selected unit
+     * focuesses the camera on the selected unit
      */
     @JvmStatic
     fun unit_view() {
@@ -412,8 +487,9 @@ object GameHypervisor {
     }
 
     /**
-     * # Destroys the selected unit
-     * Giving the user some resources in return.
+     * Destroys the selected unit
+     *
+     * TODO Giving the user some resources in return.
      */
     @JvmStatic
     fun unit_disband() {
@@ -421,6 +497,11 @@ object GameHypervisor {
         unit_disband(unit_selected()!!)
     }
 
+    /**
+     * Destroys a unit.
+     *
+     * @param unit Unit
+     */
     @JvmStatic
     fun unit_disband(unit: Unit) {
         if (GameData.selectedUnit == unit) GameData.selectedUnit = null
@@ -428,35 +509,55 @@ object GameHypervisor {
         unit.dispose()
     }
 
-    /**
-     * Determines what units are within a given range
-     *
-     * @param range Range
-     */
-    fun unit_proximity(unit: Unit = unit_selected()!!, range: Int = 1) {
 
+
+    /**
+     * Determines an array of units that are within a certain range of the selected unit.
+     *
+     * @param unit The unit of focus
+     * @param range The range of proximity to the unit. (inclusive)
+     * @return An array of units that are within range of [unit]
+     */
+    fun unit_proximity(unit: Unit = unit_selected()!!): Array<Unit> {
+        return Array<Unit>().apply {
+            GameData.forEveryUnit {
+                if (it == unit) return@forEveryUnit
+                if (it.isoVec.dst(unit.isoVec) <= unit.viewDistance)
+                    this.add(it)
+            }
+        }
     }
 
+    /**
+     * @return The [Unit] selected by [unit_select] for api operations.
+     */
     @JvmStatic
     fun unit_selected(): Unit? = GameData.selectedUnit
 
+    /**
+     * Selects the action that the [unit_selected] will perform on the next turn/
+     *
+     * @param displayName Display name of the action.
+     */
     @JvmStatic
     fun unit_selectAction(displayName: String) {
         if (invalidCall(REQ_UNIT_SELECTED, WARN("Can't mutate a unit if no unit selected!"))) return
         with(GameData.selectedUnit!!) {
             onTurnAction = availableActions.find { it.displayName == displayName }
         }
-        unit_updateUnitWindow()
     }
 
-    @Deprecated("Windows now automatically update on turn end.")
+    /**
+     * Determines if a unit may enter the given tile.
+     *
+     * @param unit Unit
+     * @param x X
+     * @param y Y
+     * @return
+     * @Deprecated not used. Boundary detection is performed by the world generation layer.
+     */
     @JvmStatic
-    fun unit_updateUnitWindow() {
-        //(GameWindowManager.WINDOW_DOCK.items.find { it.title == "Units" } as W_UnitsList).run()
-    }
-
-    @JvmStatic
-    fun unit_canEnter(x: Int, y: Int): Boolean = GameData.world!!.getTile(x, y)!!.isLand
+    fun unit_canEnter(unit: Unit, x: Int, y: Int): Boolean = GameData.world!!.getTile(x, y)!!.isLand
 
 
     //========================================================================
@@ -464,6 +565,11 @@ object GameHypervisor {
     //#region game control
     //========================================================================
 
+    /**
+     * True whilst the control is withdrawn from the player
+     * to perform a cinematic turn end over many frames.
+     */
+    var isCinematingLocalTurn = false
 
     /**
      * Ends this turn, performing actions on units and invoking opposing players to
@@ -474,12 +580,83 @@ object GameHypervisor {
      */
     @JvmStatic
     fun turn_end() {
-        doEndTurn_Units()
+        //doEndTurn_Units()
+        turn_end_cinemate()
         doEndTurn_Async()
+        doEndTurn_Hook()
+    }
+
+    val cin_units = Array<Unit>()
+    val cin_settlements = Array<Settlement>()
+    var lastUnit: Unit? = null
+    var lastSettlement: Settlement? = null
+    var stepDelay = 0f
+    const val CIN_STEP_DELAY = 0.1f
+
+    private fun turn_end_cinemate() {
+        isCinematingLocalTurn = true
+        gameRenderer!!.drawStage = false
+        cin_units.clear()
+        cin_units.addAll(GameData.player!!.units)
+        cin_settlements.clear()
+        cin_settlements.addAll(GameData.player!!.settlements)
+        lastUnit = null
+        lastSettlement = null
+        stepDelay = 0f
+    }
+
+    fun turn_end_cinemate_update() {
+    // TODO timeout test for safety?
+        if (camera_distance() > 1f)
+            return
+
+        doEndTurn_Async()
+
+        if (stepDelay <= 0f)
+            stepDelay = CIN_STEP_DELAY
+        else {
+            stepDelay -= Gdx.graphics.deltaTime
+            return
+        }
+
+        lastUnit?.let {
+            it.doTurn()
+            lastUnit = null
+            return
+        }
+
+        lastSettlement?.let {
+            lastSettlement = null
+            return
+        }
+
+        if (cin_units.notEmpty()) {
+            // skip units with nothing to do. FIXME doesn't work lol
+            while (cin_units.notEmpty() && cin_units.first()?.onTurnAction == null)
+                cin_units.removeIndex(0)
+
+            if (cin_units.isEmpty) return
+
+            lastUnit = cin_units.first()
+            cin_units.removeIndex(0)
+            camera_focusOn(lastUnit!!)
+            return
+        }
+
+        if (cin_settlements.notEmpty()) {
+            lastSettlement = cin_settlements.first()
+            cin_settlements.removeIndex(0)
+            camera_focusOn(lastSettlement!!)
+            return
+        }
+
+        isCinematingLocalTurn = false
+        gameRenderer!!.drawStage = true
+        unit_selected()?.let { camera_focusOn(it) }
     }
 
     /**
-     * # Stores a task to be run at the end of the next [turn_end].
+     * Stores a task to be run at the end of the next [turn_end].
      * Also used as a work-around for not being able to modify some game data from within
      * actions run on [turn_end]
      */
@@ -495,7 +672,7 @@ object GameHypervisor {
     })
 
     /**
-     * # Stores a runnable that will be invoked after every turn.
+     * Stores a runnable that will be invoked after every turn.
      */
     @JvmStatic
     fun turn_hook(runnable: TurnHook) = TURN_HOOKS.add(runnable)
@@ -510,7 +687,7 @@ object GameHypervisor {
     })
 
     /**
-     * # Removes a [turn_hook]
+     * Removes a [turn_hook]
      */
     @JvmStatic
     fun turn_unhook(runnable: TurnHook) = TURN_HOOKS.remove(runnable)
@@ -526,17 +703,29 @@ object GameHypervisor {
     private fun doEndTurn_Units() {
         // META : If you get a concurrent modification exception here, then
         // an onTurnAction has modified the GameData units list.
+        // TODO this does not support other nations.
+        // TODO also wtf how does the ai still get invoked?!?!
         GameData.player!!.units.forEach { it.doTurn() }
     }
 
+    /**
+     * Performs turn hooks on [turn_end]
+     */
     private fun doEndTurn_Async() {
         TURN_ASYNC_TASKS.forEach { impldoEndTurn_Async(it)  }
         TURN_ASYNC_TASKS.clear()
+    }
+
+    private fun doEndTurn_Hook() {
         TURN_HOOKS.forEach { impldoEndTurn_Async(it) }
     }
 
+    /**
+     * implementation co-routune for [doEndTurn_Async] which
+     * posts turn hook tasks to the main gdx thread.
+     */
     private fun impldoEndTurn_Async(r: Runnable) {
-        Gdx.app.postRunnable {
+        Gdx.app.postRunnable { // FIXME don't post this, but prevent concurrent modification.
             try {
                 r.run()
             } catch (e: Exception) {
@@ -546,11 +735,12 @@ object GameHypervisor {
         }
     }
 
+
+
     //========================================================================
     //#endregion game control
     //#region settlement
     //========================================================================
-
 
     /**
      * # Creates a size 0 settlement at [x],[y] in style matching the player's [civType]
@@ -582,6 +772,11 @@ object GameHypervisor {
      */
     @JvmStatic
     fun camera_focusOn(city: Settlement) = camera_focusOn(city.cartesianPosition())
+
+    /**
+     * Get the distance between the camera's desired and present positions.
+     */
+    fun camera_distance() = gameRenderer!!.cam.desiredPosition.let{ it.desired.dst(it.present) }
 
     /**
      * # Focusses the camera on the provided unit.
@@ -637,7 +832,7 @@ object GameHypervisor {
 
     @JvmStatic
     fun camera_moveToTile(x: Float, y: Float) =
-        GameHypervisor.camera_moveToTile(x.toInt(), y.toInt())
+        Hypervisor.camera_moveToTile(x.toInt(), y.toInt())
 
     /**
      * Sets the camera's position to it's destination, skipping the travel between the two.
@@ -778,6 +973,7 @@ object GameHypervisor {
         GameData.clear()
         TURN_HOOKS.clear()
         TURN_ASYNC_TASKS.clear()
+        isCinematingLocalTurn = false
 
         // FIXME: 28/07/2021 Possible for this to not take effect if the user enters any other screen within a second of getting to the main menu.
         Utility.dispatchDaemonThread("KeyBindingDisposer") {
@@ -793,7 +989,7 @@ object GameHypervisor {
      * Can't be called from a UnitAction. See [turn_asyncTask].
      */
     @JvmStatic
-    fun EndGame() {
+    fun endGame() {
         cm_exit()
         dispose()
         if (!DEBUG_MODE) Spotify.pause()
@@ -803,11 +999,11 @@ object GameHypervisor {
     }
 
     /**
-     * calls [EndGame] only if we're in a game, as indicated by
+     * calls [endGame] only if we're in a game, as indicated by
      * [inGame]
      */
-    fun AssertEndGame() {
-        if (inGame) EndGame()
+    fun assertEndGame() {
+        if (inGame) endGame()
     }
 
 
@@ -818,26 +1014,47 @@ object GameHypervisor {
 
 }
 
+/**
+ * On [turn_end], checks for end game conditions.
+ */
 object GameEndConditionChecker : TurnHook {
+
+    /**
+     * Adds the checker to the turn hook
+     * on a new game.
+     */
     fun init() {
-        GameHypervisor.turn_hook(this)
+        Hypervisor.turn_hook(this)
     }
+
+    /**
+     * An async list of nations that won or lost on the last turn.
+     * prevents concurrent modification by delayling dissolving.
+     */
     private val dissolveList = ArrayList<Nation>()
 
     override fun onTurn() {
 
+        // Check all nations to see if they have won or lost.
         GameData.nations.forEach { nation ->
             checkGameOver(nation)?.let {
-                dissolveList.add(nation)
-                message("The nation of ${GameData.player!!.nationType} has fallen!", isCrutial = true, persistant = true)
+                if (!it.second) {
+                    // This nation has lost.
+                    dissolveList.add(nation)
+                    message("The nation of ${nation.nationType} has fallen!", isCrutial = true, persistant = true)
 
-                if (nation == GameData.player!!)
-                    onLocalGameOver(it)
+                    if (nation == GameData.player!!)
+                        onLocalGameOver(it)
+                } else {
+                    // This nation has won the game.
+                }
             }
         }
 
+
+        // dissolve any nations that have failed
         dissolveList.forEach {
-            GameHypervisor.nation_dissolve(it)
+            Hypervisor.nation_dissolve(it)
         }
         dissolveList.clear()
     }
@@ -850,17 +1067,20 @@ object GameEndConditionChecker : TurnHook {
             TextScreen(
                 text = "Game Over! \n\n The nation of ${GameData.player!!.nationType} has fallen. \n(${it.first}) \n\n Press ESC to observe others or end the game.",
                 background = TextureRegionDrawable(Assets.get<TextureAtlas>(TEXTURE_ART).findRegion(if (it.second) "img3" else "img6")),
-                onESC = GameHypervisor.gameRenderer!!
+                onESC = Hypervisor.gameRenderer!!
             )
         )
-
         AudioController.play(Assets.get<Music>(AUDIO_MUSIC_GAME_OVER))
     }
 
+
+
+
+
     /**
-     * Checks to see if any conditions have been met to end the game
+     * Checks to see if any conditions have been met to end the game for a given nation.
      *
-     * @return Null if no game over conditions are met. A message as to why the game ended, and a boolean representing win or loss. (true = win)
+     * @return Null if no game over conditions are met. Otherwise, A message as to why the game ended and a boolean representing win or loss. (true = win)
      */
     private fun checkGameOver(it: Nation): Pair<String, Boolean>? {
         with(it) {

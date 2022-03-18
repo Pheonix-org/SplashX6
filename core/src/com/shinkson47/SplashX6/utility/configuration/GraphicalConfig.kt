@@ -37,7 +37,7 @@ import com.badlogic.gdx.Gdx.graphics
 import com.badlogic.gdx.Graphics.*
 import com.badlogic.gdx.utils.Scaling
 import com.shinkson47.SplashX6.Client
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.NodeInfo
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
@@ -57,7 +57,7 @@ object GraphicalConfig  {
         if (invalidCall(REQ_IN_GAME, WARN("Frustrum changes can only be made whilst in-game.")))
             return
 
-        GameHypervisor.gameRenderer!!.stage.addActor(FrustumCallibration())
+        Hypervisor.gameRenderer!!.stage.addActor(FrustumCallibration())
         parent.toggleShown()
     }
 

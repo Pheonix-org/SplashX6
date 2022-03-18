@@ -33,13 +33,10 @@
 package com.shinkson47.SplashX6.network
 
 import com.badlogic.gdx.Gdx
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.load
-import com.shinkson47.SplashX6.game.GameHypervisor.update
+import com.shinkson47.SplashX6.game.Hypervisor.update
 import com.shinkson47.SplashX6.utility.Utility.warnDev
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.io.OptionalDataException
 import java.io.StreamCorruptedException
 import java.lang.Exception
 import java.net.Socket

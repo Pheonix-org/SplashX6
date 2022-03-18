@@ -42,7 +42,7 @@ import com.badlogic.gdx.utils.Scaling
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.audio.Spotify
 import com.shinkson47.SplashX6.audio.Spotify.SpotifySourceType
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
@@ -343,7 +343,7 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
         @Volatile var last = System.currentTimeMillis()
 
         override fun run() {
-            while (GameHypervisor.inGame) {
+            while (Hypervisor.inGame) {
                 sync()
                 if (!isVisible) continue
 

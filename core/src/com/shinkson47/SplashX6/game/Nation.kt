@@ -32,12 +32,10 @@
 
 package com.shinkson47.SplashX6.game
 
-import com.badlogic.gdx.Game
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.cities.CityType
-import com.shinkson47.SplashX6.game.production.ProductionManager
 import com.shinkson47.SplashX6.game.production.TechProductionManager
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.utility.Assets
@@ -85,7 +83,7 @@ class Nation(val nationType: NationType, val ai: Boolean = false) : Serializable
     }
 
     init {
-        GameHypervisor.turn_hook(this)
+        Hypervisor.turn_hook(this)
     }
 
     override fun onTurn() {
@@ -103,14 +101,14 @@ class Nation(val nationType: NationType, val ai: Boolean = false) : Serializable
     /**
      * Breaks down data related to this nation.
      *
-     * @Deprecated DO NOT INVOKE. Use [GameHypervisor.nation_dissolve]
-     * @see GameHypervisor.nation_dissolve
+     * @Deprecated DO NOT INVOKE. Use [Hypervisor.nation_dissolve]
+     * @see Hypervisor.nation_dissolve
      */
     @Deprecated("DO NOT DIRECTLY INVOKE. Use GameHypervisor.nation_dissolve(it)")
     fun dissolve() {
         dissolved = true
         settlements.clear()
-        units.forEach { GameHypervisor.unit_disband(it) }
+        units.forEach { Hypervisor.unit_disband(it) }
         units.clear()
     }
 

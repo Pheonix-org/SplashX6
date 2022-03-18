@@ -32,7 +32,6 @@
 package com.shinkson47.SplashX6.game.production
 
 import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.utility.Utility
@@ -61,7 +60,10 @@ class CityProductionManager(
      */
     override fun evaluateProducible(): Array<UnitProductionProject> =
         Utility.CollectionToGDXArray((UnitClass.values().filter { it != UnitClass._BASE }.map { UnitProductionProject(it).also { it.production = forCity.unitProduction } }).filter {
-            it.produce().reqMet()
+            // STOPSHIP: 17/3/22 fuck off massive memory leak here.
+            // FIXME Huge memory leak.
+            // Patched with an inline dispose for now, but this is ridiculously inefficient.
+            it.produce().apply { dispose() }.requirementsMet()
         })
 
     /**

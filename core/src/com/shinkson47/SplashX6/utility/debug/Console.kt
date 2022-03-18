@@ -40,7 +40,7 @@ import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.audio.Spotify
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.Nation
 import com.shinkson47.SplashX6.game.NationType
 import com.shinkson47.SplashX6.game.cities.CityType
@@ -99,7 +99,7 @@ object Console : GUIConsole() {
             GraphicalConfig.toggleFullscreen(); console.log("Toggled fullscreen.") }
 
         @ConsoleDoc(description = "Disable camera - quickly stop the camera from moving.")
-        fun dc() { GameHypervisor.gameRenderer?.cam!!.toggleMovement(); console.log("Toggled camera movement.") }
+        fun dc() { Hypervisor.gameRenderer?.cam!!.toggleMovement(); console.log("Toggled camera movement.") }
 
         @ConsoleDoc(description = "Forces the JVM to halt.")
         fun halt() { System.exit(2) }
@@ -138,16 +138,16 @@ object Console : GUIConsole() {
         }
 
         @ConsoleDoc(description = "Ends the game.")
-        fun endGame() { GameHypervisor.AssertEndGame() }
+        fun endGame() { Hypervisor.assertEndGame() }
 
         @ConsoleDoc(description = "Switches the client to display GameHypervisor.gameRenderer")
         fun showGameScreen() {
-            GameHypervisor.switchToGameScreen()
+            Hypervisor.switchToGameScreen()
         }
 
         @ConsoleDoc(description = "Creates a new game screen without altering the game.")
         fun newGameScreen() {
-            GameHypervisor.newGameRenderer()
+            Hypervisor.newGameRenderer()
         }
 
 
@@ -165,8 +165,8 @@ object Console : GUIConsole() {
                 }
 
                 try {
-                    GameHypervisor.EndGame()
-                    GameHypervisor.load(this)
+                    Hypervisor.endGame()
+                    Hypervisor.load(this)
                 } catch (e : Exception) {
                     console.log(e)
                 }
@@ -221,7 +221,7 @@ object Console : GUIConsole() {
             }
 
             try {
-                GameHypervisor.spawn(
+                Hypervisor.spawn(
                     x,
                     y,
                     UnitClass.valueOf(classification),
@@ -238,7 +238,7 @@ object Console : GUIConsole() {
         }
 
         @ConsoleDoc(description = "Creates a new AI controlled civilisation in the current game of a random type.")
-        fun newNation() = console.log("Generated civilisation : ${GameHypervisor.nation_new_random()}")
+        fun newNation() = console.log("Generated civilisation : ${Hypervisor.nation_new_random()}")
 
 
         @ConsoleDoc(description = "Creates a new AI controlled civilisation in the current game.",
@@ -258,7 +258,7 @@ object Console : GUIConsole() {
                 return
 
             try {
-                GameHypervisor.nation_new(
+                Hypervisor.nation_new(
                     NationType.valueOf(type),
                     ai
                 )
@@ -274,7 +274,7 @@ object Console : GUIConsole() {
         @ConsoleDoc(description = "Erraticates the existance of a nation.",
             paramDescriptions = ["The index ID of the nation to look at. See 'peekNations'"])
         fun dissolveNation(nationIndex: Int) {
-            GameHypervisor.nation_dissolve(parseNationIndex(nationIndex))
+            Hypervisor.nation_dissolve(parseNationIndex(nationIndex))
             peekNations()
             console.log("Dissolved Nation")
         }
@@ -330,8 +330,8 @@ object Console : GUIConsole() {
                     "The index ID of the unit in that nation. See 'peekUnits'."])
         fun selectunit(nationIndex: Int, unitIndex: Int) {
             parseUnitIndex(nationIndex, unitIndex)
-            GameHypervisor.unit_select(unitIndex, parseNationIndex(nationIndex))
-            console.log("Selected = ${GameHypervisor.unit_selected()}")
+            Hypervisor.unit_select(unitIndex, parseNationIndex(nationIndex))
+            console.log("Selected = ${Hypervisor.unit_selected()}")
         }
 
         @ConsoleDoc(description = "Sets the health of a unit.",
@@ -349,16 +349,16 @@ object Console : GUIConsole() {
 
         @ConsoleDoc(description = "Disbands the selected unit.")
         fun disband() {
-            console.log("Disbanded ${GameHypervisor.unit_disband()}.")
+            console.log("Disbanded ${Hypervisor.unit_disband()}.")
         }
 
         @ConsoleDoc(description = "Focusses the camera on the given isometric co-ordinate.",
                     paramDescriptions = ["Isometric Y position", "Isometric Y position"])
         fun lookat(x: Int, y: Int) =
-            WorldTerrain.isoToCartesian(x,y).apply { GameHypervisor.camera_focusOn(this.x, this.y) }
+            WorldTerrain.isoToCartesian(x,y).apply { Hypervisor.camera_focusOn(this.x, this.y) }
 
         fun lookAtSelected() =
-            GameHypervisor.unit_selected()?.let { GameHypervisor.camera_focusOn(it) }
+            Hypervisor.unit_selected()?.let { Hypervisor.camera_focusOn(it) }
 
         @ConsoleDoc(description = "Chages the position of a unit.",
                     paramDescriptions = [

@@ -40,9 +40,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.ConnectGame
-import com.shinkson47.SplashX6.game.GameHypervisor.EndGame
+import com.shinkson47.SplashX6.game.Hypervisor
+import com.shinkson47.SplashX6.game.Hypervisor.ConnectGame
+import com.shinkson47.SplashX6.game.Hypervisor.endGame
 import com.shinkson47.SplashX6.game.production.UnitProductionProject
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.network.NetworkClient
@@ -104,7 +104,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
 
         chooser.setResultListener { success, result ->
             if (success)
-                GameHypervisor.save(Gdx.files.external(AssertEndsWith(result.path(), ".X6")).file())
+                Hypervisor.save(Gdx.files.external(AssertEndsWith(result.path(), ".X6")).file())
             true
         }
 
@@ -119,17 +119,17 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
 
         addMenuItem(this, "generic.game.game", NOTHING,
                 MenuSubItem("generic.any.options", WindowAction(W_Options(_parent))) ,
-                MenuSubItem("generic.game.new")         { GameHypervisor.NewGame() } ,
+                MenuSubItem("generic.game.new")         { Hypervisor.NewGame() } ,
                 //MenuSubItem("generic.game.load")           { GameHypervisor.load() } ,
-                MenuSubItem("generic.game.quickload")   { GameHypervisor.quickload() } ,
+                MenuSubItem("generic.game.quickload")   { Hypervisor.quickload() } ,
                 MenuSubItem("generic.game.save")        { chooser.show(stage) } ,
-                MenuSubItem("generic.game.quicksave")   { GameHypervisor.quicksave() } ,
-                MenuSubItem("!Rejoin")   { if (NetworkClient.isConnected()) { EndGame(); ConnectGame(); } } ,
-                MenuSubItem("generic.game.end")         { EndGame() }
+                MenuSubItem("generic.game.quicksave")   { Hypervisor.quicksave() } ,
+                MenuSubItem("!Rejoin")   { if (NetworkClient.isConnected()) { endGame(); ConnectGame(); } } ,
+                MenuSubItem("generic.game.end")         { endGame() }
         )
 
         addMenuItem(this, "!Help", WindowAction(W_Help()),
-            MenuSubItem("!Toggle Key Binding HUD.") { GameHypervisor.gameRenderer!!.kbr.apply { isVisible = !isVisible }}
+            MenuSubItem("!Toggle Key Binding HUD.") { Hypervisor.gameRenderer!!.kbr.apply { isVisible = !isVisible }}
         )
 
         addMenuItem(this, "!Debug", WindowAction(DebugWindow()),
@@ -145,7 +145,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
                 MenuSubItem("!Notify Start") {Server.sendToAllClients(Packet(PacketType.Start, GameData))},
                 MenuSubItem("!Show a message") { message("Everything is fine :)")},
                 MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},
-            MenuSubItem("!Reload UI") { GameHypervisor.gameRenderer!!.let { it.stage.clear(); it.createUI() }  },
+            MenuSubItem("!Reload UI") { Hypervisor.gameRenderer!!.let { it.stage.clear(); it.createUI() }  },
 
                 MenuSubItem("!Add a production project") { GameData.player!!.settlements[0].unitProduction.queueProject(UnitProductionProject(UnitClass.chariot)) }
         )
@@ -166,7 +166,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
             MenuSubItem("!Advancements", WindowAction(W_Advancement("!Advancements"))),
         )
 
-        addMenuItem(this, "generic.game.endTurn", { GameHypervisor.turn_end() })
+        addMenuItem(this, "generic.game.endTurn", { Hypervisor.turn_end() })
     }
 
 

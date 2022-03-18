@@ -37,7 +37,7 @@ import com.badlogic.gdx.graphics.PerspectiveCamera
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.utility.debug.Debug
 import com.shinkson47.SplashX6.utility.lerpDesire
 import com.shinkson47.SplashX6.game.world.WorldTerrain
@@ -286,7 +286,7 @@ class Camera: PerspectiveCamera() {
         // (badly) Change viewport to match field of view
         // this can't really be improved, the staggared isometric renderer does not support a perspective camera, or it's culling frustum.
         // TODO As a work-around we could add a user adjustable varable to the width
-        GameHypervisor.gameRenderer!!.r!!.setView(combined,position.x - cachedFrustrumStartX ,position.y,  cachedFrustrumWidth, viewportHeight * fieldOfView)
+        Hypervisor.gameRenderer!!.r!!.setView(combined,position.x - cachedFrustrumStartX ,position.y,  cachedFrustrumWidth, viewportHeight * fieldOfView)
 
         // Move towards desired position
         desiredPosition.next();

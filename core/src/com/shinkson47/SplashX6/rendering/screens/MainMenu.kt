@@ -39,9 +39,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
-import com.shinkson47.SplashX6.game.GameHypervisor.ConnectGame
-import com.shinkson47.SplashX6.game.GameHypervisor.LoadGame
-import com.shinkson47.SplashX6.game.GameHypervisor.NewGame
+import com.shinkson47.SplashX6.game.Hypervisor.ConnectGame
+import com.shinkson47.SplashX6.game.Hypervisor.LoadGame
+import com.shinkson47.SplashX6.game.Hypervisor.NewGame
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
 import com.shinkson47.SplashX6.rendering.ui.StageWindow

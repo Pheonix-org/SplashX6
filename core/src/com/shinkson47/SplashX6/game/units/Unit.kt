@@ -40,13 +40,14 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.ai.StateMachine
+import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.WorldTerrain.*
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_HEIGHT
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HEIGHT
-import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SPRITES_UNITS
@@ -59,7 +60,6 @@ import com.shinkson47.SplashX6.utility.Utility.center
 import com.shinkson47.SplashX6.utility.Utility.warnDev
 import org.xguzm.pathfinding.grid.GridCell
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder
-import kotlin.Unit
 
 /**
  * # A controllable in-game character
@@ -69,7 +69,7 @@ import kotlin.Unit
  * @since PRE-ALPHA 0.0.1
  * @version 1
  */
-open class Unit(
+open class Unit (
 
     /**
      * ## The type of unit
@@ -117,11 +117,9 @@ open class Unit(
     // TODO move default values to a base class.
 
     val classification= data.getString("class")?: "_BASE"
-    val cost = data.getInt("build_cost")?: "40"
-    val attack = data.getInt("attack")?: 1
-    val defense = data.getInt("defense")?: 2
 
-    fun reqMet(): Boolean {
+    val cost = data.getInt("build_cost")?: "40"
+    fun requirementsMet(): Boolean {
         return data.getString("tech_req")?.let {
             (ownedBy()?.advancementTree ?: GameData.player!!.advancementTree)
                 .getA(it)?.complete
@@ -178,13 +176,24 @@ open class Unit(
     // TODO these need to be dictionary based values
     var travelDistance: Int  = data.getInt("move_rate")?: 2
 
+
     /**
-     * See [setLocation] (Int, Int) for documentation
+     * Set the location of the object to the given position.
+     *
+     * @param _pos The position you want to move to.
+     * @param dontPathfind If true, the bot will not pathfind to the location.
+     * @see setLocation (Int, Int) for full docs
      */
     fun setLocation(_pos : Vector3, dontPathfind: Boolean = false): Boolean = setLocation(_pos.x, _pos.y, dontPathfind)
 
+
     /**
-     * See [setLocation] (Int, Int) for documentation
+     * Set the location of the player
+     *
+     * @param x The x coordinate of the location you want to move to.
+     * @param y The y coordinate of the location to set the player to.
+     * @param dontPathfind If true, the character will not pathfind to the location.
+     * @see setLocation (Int, Int) for full docs
      */
     fun setLocation(x: Float, y: Float, dontPathfind: Boolean = false) : Boolean = setLocation(x.toInt(), y.toInt(), dontPathfind)
 
@@ -306,7 +315,7 @@ open class Unit(
             with(GameData.world!!) {
                 pathNodes = pathfinder.findPath(isoVec.x.toInt(), isoVec.y.toInt(), destination!!.x.toInt(), destination!!.y.toInt(), navigationLayer)
             }
-        } catch (e: ArrayIndexOutOfBoundsException) {
+        } catch (e: Exception) {
             clearDestination()
             return false
         }
@@ -370,18 +379,70 @@ open class Unit(
 
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
     // endregion movement
-    // region health
+    // region health & combat
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
 
+    /**
+     * Attack power of this unit.
+     *
+     * Determines how much damage an attack from thus far will deal.
+     *
+     * Defaults to 0 if no 'attack' attribute is found in the data.
+     */
+    val attack = data.getInt("attack")?: 0
+
+    /**
+     * Defense ability of this unit.
+     *
+     * When attacked, determines how much of the received damage
+     * is mitigated.
+     */
+    val defense = data.getInt("defense")?: 2
+
+    /**
+     * Target of attack actions.
+     *
+     * In future, may be used for more than attacks.
+     */
+    var target: Unit? = null
+
+    /**
+     *  The max value of the hitpoints based on the units data.
+     *
+     *  If there is no hp data, defaults to 10.
+     */
     val MAX_HP = data.getInt("hitpoints")?: 10
 
+    /**
+     * The hitpoints health of this unit.
+     *
+     * Starts at [MAX_HP]. When changed, the [hpSprite]
+     * is automatically updated to show the health.
+     *
+     * When set to below 0, this unit is automatically disbanded.
+     */
     var hp = MAX_HP
         set(value) {
-            field = value.coerceIn(0..MAX_HP)
+            if (value < 0)
+                // FIXME when rebates are implemented, this will reward the player with resources when the unit is killed...
+                Hypervisor.unit_disband(this)
+
+            field = value.coerceIn(-1..MAX_HP)
             updateHpSprite()
         }
 
+    /**
+     * Returns true if the unit is dead.
+     * @return true if the unit's hit points are less than or equal to zero.
+     */
+    fun isDead() = hp <= 0
+
+    /**
+     * Sprite used to display the current health of this unit.
+     *
+     * Automatically updates when the health of this unit is changed.
+     */
     var hpSprite: Sprite? = null
         set(value) {
             field = value
@@ -389,14 +450,60 @@ open class Unit(
             assertSpritePositions()
         }
 
+    /**
+     * Updates the health sprite used to display the current health of this unit.
+     *
+     * Only call if a change is required.
+     */
     private fun updateHpSprite() {
         hpSprite = Assets.get<TextureAtlas>(SPRITES_UNITEXTRAS)
             .createSprite("hp_${Utility.roundToNearestMultiple(hp.asPercentOf(MAX_HP).toFloat(), 10f)}")
     }
 
+    /**
+     * Attacks this unit with another.
+     *
+     * This unit takes damage equal to the attacking unit's [attack] - this units [defense]
+     *
+     * This unit retaliates damage equal to [attack] to the attacking unit.
+     *
+     * @param by is the unit that is attacking, and this is the unit that is being attacked.
+     */
+    fun attacked(by: Unit): Boolean {
+        by.damage(attack)
+        return damage(by.attack) == -1
+    }
+
+    /**
+     * If there is a [target], it will be [attacked].
+     */
+    fun attack() {
+        AudioController.fight()
+        target?.let {
+            it.attacked(this)
+            if (it.isDead())
+                target = null
+        }
+    }
+
+    /**
+     * Subtract the attack strength from the hp.
+     *
+     * Damage dealt is [strength] - [defense].
+     *
+     * Prevents damage from actually causing hp to rise strength is lower than defense.
+     *
+     * @param strength The base amount of damage to be dealt.
+     */
+    fun damage(strength: Int) : Int = hp.apply { hp -= (strength - defense).coerceAtLeast(0) }
+
+
     init {
         updateHpSprite()
     }
+
+
+
 
 
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -510,7 +617,7 @@ open class Unit(
                 )
             )
             // Switch : from Wander to Wander
-            registerSwitchCondition(Wander, Wander) { unit: Unit? -> destination == null }
+            registerSwitchCondition(Wander, Wander) { unit: kotlin.Unit? -> destination == null }
             // State : Settle
             addState(
                 State(
@@ -522,7 +629,7 @@ open class Unit(
                 )
             )
             // Switch : from Wander to Settle
-            registerSwitchCondition(Wander, Settle) { unit: Unit? -> destination == null && unitClass == UnitClass.settler && MathUtils.randomBoolean() }
+            registerSwitchCondition(Wander, Settle) { unit: kotlin.Unit? -> destination == null && unitClass == UnitClass.settler && MathUtils.randomBoolean() }
             defaultState(0)
         }
 
@@ -536,6 +643,12 @@ open class Unit(
     // region other functions
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
 
+    /**
+     * Draw the sprite, the health bar and
+     * other sub sprites.
+     *
+     * @param batch The Batch object that will be used to draw the sprite.
+     */
     override fun draw(batch: Batch?) {
         super.draw(batch)
         hpSprite?.draw(batch)
@@ -552,6 +665,8 @@ open class Unit(
         set(REF_SPRITES_UNITS.createSprite(unitClass.toString()))
         setLocation(isoVec)
     }
+
+
 
     init {
         setLocation(isoVec)

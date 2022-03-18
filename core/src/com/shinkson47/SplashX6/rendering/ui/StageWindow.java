@@ -44,7 +44,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
 import com.shinkson47.SplashX6.Client;
 import com.shinkson47.SplashX6.audio.AudioController;
-import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.Hypervisor;
 import com.shinkson47.SplashX6.utility.*;
 import com.shinkson47.SplashX6.utility.configuration.LanguageConfig;
 
@@ -142,8 +142,8 @@ public abstract class StageWindow extends Window implements TurnHook {
      * Windows must be added to the screen manually for now.
      */
     public static void post(StageWindow sw) {
-        if (!GameHypervisor.getInGame()) return;
-        Stage s = GameHypervisor.getGameRenderer().stage;
+        if (!Hypervisor.getInGame()) return;
+        Stage s = Hypervisor.getGameRenderer().stage;
         s.addActor(sw);
 
         // IMPLEMENT a way for the user to configure where windows are created.
@@ -258,7 +258,7 @@ public abstract class StageWindow extends Window implements TurnHook {
         setVisible(visible);
         updateColSpans();
         if (com.shinkson47.SplashX6.utility.debug.Debug.debugMode) debugAll();
-        GameHypervisor.turn_hook(this);
+        Hypervisor.turn_hook(this);
         post(this); // TODO no consideration for posting on other stages on creation. We might not want a window on the game screen.
     }
 
@@ -697,7 +697,7 @@ public abstract class StageWindow extends Window implements TurnHook {
      */
     @Override
     public final void clear() {
-        GameHypervisor.turn_unhook(this);
+        Hypervisor.turn_unhook(this);
         onClose();
 
         unPost(this);

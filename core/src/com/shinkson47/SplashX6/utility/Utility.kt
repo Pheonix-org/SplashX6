@@ -35,7 +35,7 @@ package com.shinkson47.SplashX6.utility
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
 import com.shinkson47.SplashX6.Client
-import com.shinkson47.SplashX6.game.GameHypervisor.inGame
+import com.shinkson47.SplashX6.game.Hypervisor.inGame
 import com.shinkson47.SplashX6.rendering.screens.TextScreen
 import com.shinkson47.SplashX6.rendering.windows.MessageWindow
 import com.shinkson47.SplashX6.utility.PrebootAssets.PB_SKIN

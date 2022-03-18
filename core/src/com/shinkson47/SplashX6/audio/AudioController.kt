@@ -35,9 +35,12 @@ package com.shinkson47.SplashX6.audio
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
-
+import com.shinkson47.SplashX6.utility.Assets.AUDIO_SFX_ERROR
+import com.shinkson47.SplashX6.utility.Assets.AUDIO_SFX_FIGHT
+import com.shinkson47.SplashX6.utility.Assets.AUDIO_SFX_WALK
 /**
  * # Controller for in-built audio and music.
  * Note that this does not handle [Spotify].
@@ -229,4 +232,25 @@ object AudioController {
     fun resetPlaylist() {
         play(currentPlaylist?.reset())
     }
+
+    // ==================================================
+    //#endregion
+    //#region sfx
+    // ==================================================
+
+    fun playSfx(path: String) =
+        playSfx(Assets.get<Sound>(path))
+    fun playSfx(sound: Sound) =
+        sound.play(SFXVolume)
+
+    fun walk() =  playCinematicSfx(AUDIO_SFX_WALK)
+    fun error() = playSfx(AUDIO_SFX_ERROR)
+    fun fight() = playCinematicSfx(AUDIO_SFX_FIGHT)
+
+    fun playCinematicSfx(path: String) {
+        if (!Hypervisor.isCinematingLocalTurn) return;
+        playSfx(path)
+    }
+
 }
+

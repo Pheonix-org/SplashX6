@@ -39,7 +39,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.production.CityProductionManager
 import com.shinkson47.SplashX6.game.production.ImprovementProductionManager
 import com.shinkson47.SplashX6.game.world.WorldTerrain
@@ -320,7 +320,7 @@ class Settlement(
 
     init {
         updateSprite()
-        GameHypervisor.turn_hook(this)
+        Hypervisor.turn_hook(this)
         GameData.world!!.staticLight(isoVec)
     }
 

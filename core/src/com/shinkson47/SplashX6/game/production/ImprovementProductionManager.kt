@@ -72,6 +72,7 @@ class ImprovementProductionProject(
     val name: String,
     var forCity: Settlement? = null
 ) : ProductionProject<Improvement>() {
+
     override fun doClaim() =
         with (Assets.get<Map<String, *>>(Assets.DATA_IMPROVEMENTS)[name] as HashMap<String, *>) {
             Improvement(
@@ -83,11 +84,7 @@ class ImprovementProductionProject(
                 this["sound"] as String?,
                 this["reqs"] as ArrayList<HashMap<String, String>>?
             ).also { y -> forCity?.let { y.claim(it) } } // Add to city.
-
-
         }
-
-
 
     override fun toString() = name
 }

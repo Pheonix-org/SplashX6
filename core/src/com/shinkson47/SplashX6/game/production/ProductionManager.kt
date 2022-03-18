@@ -32,8 +32,7 @@
 package com.shinkson47.SplashX6.game.production
 
 import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.game.Advancement
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.utility.TurnHook
 import com.shinkson47.SplashX6.utility.Utility
 import java.io.Serializable
@@ -217,5 +216,5 @@ abstract class ProductionManager<PT : ProductionProject<*>> (
     /**
      * Hooks this system to be updated on every turn.
      */
-    init { GameHypervisor.turn_hook(this) }
+    init { Hypervisor.turn_hook(this) }
 }

@@ -33,7 +33,7 @@
 package com.shinkson47.SplashX6.rendering.windows.game.units
 
 import com.badlogic.gdx.scenes.scene2d.ui.List
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.game.units.UnitActionDictionary
@@ -58,23 +58,15 @@ class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
      */
     private val actions: List<UnitAction> = List(Assets.REF_SKIN_W95)
 
-    init {
-//        addButton("specific.windows.units.view", false, true) { GameHypervisor.unit_view() }
-//        tooltip("specific.windows.units.ttView")
+    private val lstCloseUnits: List<Unit> = List(Assets.REF_SKIN_W95)
 
-//        hsep()
-//
-//        addButton("specific.windows.units.viewDestination", false) { GameHypervisor.unit_viewDestination(); refresh() }
-//        tooltip("specific.windows.units.ttViewDestination")
-//        addButton("specific.windows.units.moveUnitToCursor") { if (!cm_enter()) GameHypervisor.cm_destinationSelect(); refresh() }
-//        tooltip("specific.windows.units.ttMoveUnitToCursor")
-//
+    init {
         seperate("specific.windows.units.turnAction")
 
         actions.selection.required = false
         actions.addListener(
             LambdaClickListener {
-                GameHypervisor.unit_selected()?.onTurnAction = actions.selected
+                Hypervisor.unit_selected()?.onTurnAction = actions.selected
                 refresh()
             }
         )
@@ -82,19 +74,29 @@ class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
         span(add(actions))
         tooltip("specific.windows.units.ttActions")
 
-        addButton("specific.windows.units.cancleAction", false, true) { GameHypervisor.unit_selected()?.cancelAction(); refresh() }
+        addButton("specific.windows.units.cancleAction", false, true) { Hypervisor.unit_selected()?.cancelAction(); refresh() }
         tooltip("specific.windows.units.ttCancelAction")
 
-        // TODO this is not specific to this unit.
+        seperate("!Units close by")
+        expandfill(add(lstCloseUnits).also { cell ->
+            cell.actor.apply {
+                addListener(LambdaChangeListener {
+                    selected?.apply { unit.target = this }
+                })
+            }
+        })
+        row()
+
+
         hsep()
-        addButton("specific.windows.units.disband", false, true) { GameHypervisor.unit_disband(); refresh() }
+        addButton("specific.windows.units.disband", false, true) { Hypervisor.unit_disband(unit); refresh() }
         tooltip("specific.windows.units.ttDisband")
 
         addButton("!OK", false, true) { super.close() }
 
         refresh()
 
-        GameHypervisor.turn_hook(this)
+        Hypervisor.turn_hook(this)
         updateColSpans()
         allowClose()
     }
@@ -104,7 +106,16 @@ class W_Unit(val unit : Unit) : StageWindow("!${unit.displayName}") {
             *UnitActionDictionary[unit.unitClass]
         )
 
-        actions.selected = GameHypervisor.unit_selected()?.onTurnAction
+        lstCloseUnits.setItems(Hypervisor.unit_proximity(unit))
+
+        // FIXME this is dodgy. Needs to be checked on the unit,
+        // and before it's used.
+        if (unit.target != null && !lstCloseUnits.items.contains(unit.target))
+            unit.target = null
+
+        actions.selected = Hypervisor.unit_selected()?.onTurnAction
+
+        pack()
     }
 
 }

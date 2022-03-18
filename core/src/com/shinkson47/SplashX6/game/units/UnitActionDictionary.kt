@@ -32,10 +32,9 @@
 
 package com.shinkson47.SplashX6.game.units
 
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.audio.AudioController
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.utility.SerializablePredicate
-import java.io.Serializable
-import java.util.function.Predicate
 
 /**
  * # A map of actions which units can perform
@@ -59,6 +58,8 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
      * # Marks an action that is always available
      */
     val ALWAYS_AVAILABLE = SerializablePredicate<Unit> {true}
+
+    val REQ_TARGET = SerializablePredicate<Unit> { it.target != null }
 
     /**
      * # Marks an action that requires an active destination.
@@ -86,9 +87,10 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
 
             pathNodes = pathNodes!!.drop(travelDistance.coerceAtMost(pathNodes!!.size - 1))
 
-            if (pathNodes!!.isNotEmpty())
+            if (pathNodes!!.isNotEmpty()) {
                 setLocation(pathNodes!![0].x, pathNodes!![0].y, true)
-            else
+                AudioController.walk()
+            } else
                 clearDestination()
 
             if (pathNodes!!.size == 1)
@@ -100,8 +102,10 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     /**
      * # Creates a city.
      */
-    val SETTLE   =  UnitAction("Settle", ALWAYS_AVAILABLE, SerializablePredicate<Unit> { GameHypervisor.turn_asyncTask { GameHypervisor.settle(it) } })
+    val SETTLE   =  UnitAction("Settle", ALWAYS_AVAILABLE, SerializablePredicate<Unit> { Hypervisor.turn_asyncTask { Hypervisor.settle(it) } })
 
+    // REQ_TARGET
+    val ATTACK   =  UnitAction("Attack", REQ_TARGET, SerializablePredicate<Unit> { Hypervisor.turn_asyncTask { it.attack(); AudioController.fight() } ; true; })
 
     /**
      * # Invokes an update to a unit's AI.
@@ -117,11 +121,37 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
      * Constructs the map of actions.
      */
     init {
-            put(UnitClass._BASE,   arrayOf(TRAVEL))
 
+        // Actions that apply to all units.
+        put(UnitClass._BASE,   arrayOf(TRAVEL))
 
-            put(UnitClass.settler, arrayOf(SETTLE))
+        // Actions based on data.
+        UnitClass.values().drop(1).forEach { type ->
+            val actionsForThisUnitType = ArrayList<UnitAction>()
+
+            with (Unit.UnitData.getSubTable(type.toString())) {
+                if (getInt("attack") != 0)
+                    actionsForThisUnitType.add(ATTACK)
+            }
+
+            put(type, actionsForThisUnitType.toTypedArray())
+        }
+
+        append(UnitClass.settler, SETTLE)
     }
+
+    /**
+     * Append the given action to the list of actions for the given type.
+     *
+     * If there is not yet an entry for the given type, it will be created.
+     *
+     * @param type The type of the unit.
+     * @param action The action to be performed.
+     *
+     */
+    private fun append(type: UnitClass, action: UnitAction) =
+        put(type, super.get(type)?.let { it + action } ?: arrayOf(action))
+
 
 
     /**

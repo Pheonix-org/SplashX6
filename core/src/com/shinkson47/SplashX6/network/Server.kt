@@ -33,11 +33,9 @@
 package com.shinkson47.SplashX6.network
 
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.lang.Exception
 import java.net.BindException
 import java.net.ServerSocket
 import java.net.Socket

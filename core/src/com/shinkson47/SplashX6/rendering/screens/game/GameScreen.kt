@@ -42,11 +42,11 @@ import com.badlogic.gdx.maps.MapRenderer
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.cm_isSelectingDestination
-import com.shinkson47.SplashX6.game.GameHypervisor.inGame
-import com.shinkson47.SplashX6.game.GameHypervisor.mouse_focusOnTile
-import com.shinkson47.SplashX6.game.GameHypervisor.unit_selected
+import com.shinkson47.SplashX6.game.Hypervisor
+import com.shinkson47.SplashX6.game.Hypervisor.cm_isSelectingDestination
+import com.shinkson47.SplashX6.game.Hypervisor.inGame
+import com.shinkson47.SplashX6.game.Hypervisor.mouse_focusOnTile
+import com.shinkson47.SplashX6.game.Hypervisor.unit_selected
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.WorldTerrain
@@ -71,6 +71,8 @@ class GameScreen : ScalingScreenAdapter() {
     //========================================================================
     //#region fields
     //========================================================================
+
+    var drawStage = true
 
     /**
      * <h2>Camera used to observe the world</h2>
@@ -132,10 +134,6 @@ class GameScreen : ScalingScreenAdapter() {
      * <h2>Constructs GUI shown within the game window</h2>
      */
     fun createUI() {
-        // Have the mouse handler accept this stage for receiving mouse input
-        MouseHandler.configureGameInput(stage)
-
-        // Add to stage
         with (stage) {
             addActor(Menu(this@GameScreen))
             addActor(StageWindow.getWINDOW_DOCK())
@@ -151,6 +149,9 @@ class GameScreen : ScalingScreenAdapter() {
      * <h2>Renders the next frame</h2>
      */
     override fun render(delta: Float) {
+        if (Hypervisor.isCinematingLocalTurn)
+            Hypervisor.turn_end_cinemate_update()
+
         // Render the world
         r!!.render()
 
@@ -192,14 +193,13 @@ class GameScreen : ScalingScreenAdapter() {
         // META : Draw FPS as 10x, 10y in the world
         //font.draw(worldBatch, "FPS : " + Gdx.graphics.getFramesPerSecond(), 10, 10);
 
+        if (drawStage) {
+            // Update the UI (listen for inputs, etc)
+            stage.act(delta)
 
-        // Update the UI (listen for inputs, etc)
-        stage.act(delta)
-
-
-
-        // Draw the UI
-        stage.draw()
+            // Draw the UI
+            stage.draw()
+        }
         Debug.update()
         super.render(delta)
     }
@@ -233,7 +233,7 @@ class GameScreen : ScalingScreenAdapter() {
             if (this != null) { // If there's a selected unit
 
                 // Cache the selected tile.
-                val sel = GameHypervisor.cm_selectedTile()
+                val sel = Hypervisor.cm_selectedTile()
 
                 // If we're selecting, calculate new destination.
                 if (cm_isSelectingDestination)

@@ -37,7 +37,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.GL20
 import com.shinkson47.SplashX6.audio.AudioController
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.input.KeyBinder
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.screens.ScreenTransistion
@@ -122,7 +122,7 @@ class Client : Game() {
      */
     override fun dispose() {
         super.dispose()
-        GameHypervisor.dispose()
+        Hypervisor.dispose()
         Debug.dispose()
         Assets.dispose()
     }

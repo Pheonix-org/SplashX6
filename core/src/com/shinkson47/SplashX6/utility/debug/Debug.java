@@ -38,7 +38,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.shinkson47.SplashX6.Client;
-import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.Hypervisor;
 import com.shinkson47.SplashX6.game.world.WorldTerrain;
 import com.shinkson47.SplashX6.rendering.ui.StageWindow;
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen;
@@ -68,7 +68,7 @@ public class Debug {
     public static boolean enabled() { return debugMode; }
 
     public static void create(){
-        gameRenderer = GameHypervisor.getGameRenderer();
+        gameRenderer = Hypervisor.getGameRenderer();
     }
 
 
@@ -109,10 +109,10 @@ public class Debug {
 
             seperate("Camera");
 
-            addButton("Experimental : Toggle Camera Pan Tilt", o -> GameHypervisor.getGameRenderer().getCam().setEnableMoveTilt(!GameHypervisor.getGameRenderer().getCam().getEnableMoveTilt()));
-            addButton("Experimental : Toggle Camera Zoom Tilt", o -> GameHypervisor.getGameRenderer().getCam().setEnableZoomTilt(!GameHypervisor.getGameRenderer().getCam().getEnableZoomTilt()));
-            addButton("Rotate camera +", o -> GameHypervisor.getGameRenderer().getCam().getCam().rotate(10,0,0,1));
-            addButton("Rotate camera -", o -> GameHypervisor.getGameRenderer().getCam().getCam().rotate(-10,0,0,1));
+            addButton("Experimental : Toggle Camera Pan Tilt", o -> Hypervisor.getGameRenderer().getCam().setEnableMoveTilt(!Hypervisor.getGameRenderer().getCam().getEnableMoveTilt()));
+            addButton("Experimental : Toggle Camera Zoom Tilt", o -> Hypervisor.getGameRenderer().getCam().setEnableZoomTilt(!Hypervisor.getGameRenderer().getCam().getEnableZoomTilt()));
+            addButton("Rotate camera +", o -> Hypervisor.getGameRenderer().getCam().getCam().rotate(10,0,0,1));
+            addButton("Rotate camera -", o -> Hypervisor.getGameRenderer().getCam().getCam().rotate(-10,0,0,1));
 
             addButton("Unit test", o -> { TestScript.INSTANCE.run(); dialog("Test script complete", "Check terminal for results."); });
         }
@@ -172,7 +172,7 @@ public class Debug {
         gameRenderer.getSr().setProjectionMatrix(gameRenderer.getCam().combined);
 
         // White dot on the tile that te camera is looking at.
-        Vector3 v = GameHypervisor.camera_focusingOnTile();
+        Vector3 v = Hypervisor.camera_focusingOnTile();
         v = WorldTerrain.isoToCartesian((int)v.x, (int)v.y);
         gameRenderer.getSr().setColor(Color.RED);
         gameRenderer.getSr().circle(v.x, v.y, 4);

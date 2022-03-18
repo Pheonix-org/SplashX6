@@ -43,11 +43,9 @@ import com.gdx.musicevents.tool.file.FileChooser
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.ai.StateMachine
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.doNewGameCallback
-import com.shinkson47.SplashX6.game.GameHypervisor.load
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.doNewGameCallback
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
+import com.shinkson47.SplashX6.game.Hypervisor
+import com.shinkson47.SplashX6.game.Hypervisor.doNewGameCallback
+import com.shinkson47.SplashX6.game.Hypervisor.load
 import com.shinkson47.SplashX6.game.Nation
 import com.shinkson47.SplashX6.game.NationType
 import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
@@ -118,7 +116,7 @@ class WorldCreation(
                 controller.switchState(2)
                 true
             } else {
-                GameHypervisor.EndGame()
+                Hypervisor.endGame()
                 false
             }
 
@@ -334,7 +332,7 @@ class WorldCreation(
             row()
             label("!Wait for players, then click start.")
             row()
-            addButton("!Start Game!") { userFinished = true; }
+            addButton("!Start Game!") { Hypervisor.doNewGameFINAL() }
 
             pack()
         }
@@ -450,11 +448,11 @@ class WorldCreation(
                                 load(Gdx.files.external(chooser.result.path()).file())
                             } catch (e : InvalidClassException) {
                                 constructText("!This save file is incompatable with this version of X6.")
-                                this@WorldCreation.dialog("!Unable to load", "!This save file is incompatable with this version of X6.") { GameHypervisor.EndGame() }
+                                this@WorldCreation.dialog("!Unable to load", "!This save file is incompatable with this version of X6.") { Hypervisor.endGame() }
                                 switchState(1)
                             } catch (e : Exception) {
                                 constructText("!Unable to load")
-                                this@WorldCreation.dialog("!Unable to load", "!Encountered some error whilst loading that save : \n ${e.message}") { GameHypervisor.EndGame() }
+                                this@WorldCreation.dialog("!Unable to load", "!Encountered some error whilst loading that save : \n ${e.message}") { Hypervisor.endGame() }
                                 switchState(1)
                             }
                         } else {
@@ -471,7 +469,7 @@ class WorldCreation(
                     "Complete",
                     {},
                     this,
-                    { GameHypervisor.doNewGameFINAL() },
+                    { Hypervisor.doNewGameFINAL() },
                     null
                 )
             )
@@ -485,7 +483,7 @@ class WorldCreation(
                         try {
                             connect()
                         } catch (e: ConnectException) {
-                                this@WorldCreation.dialog("!Unable to connect", "!Failed to connect. Check there's another client hosting.") { GameHypervisor.EndGame() }
+                                this@WorldCreation.dialog("!Unable to connect", "!Failed to connect. Check there's another client hosting.") { Hypervisor.endGame() }
                         }
                         isDeserializing = true
                     },

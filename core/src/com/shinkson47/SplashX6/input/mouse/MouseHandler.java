@@ -37,7 +37,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.shinkson47.SplashX6.game.GameHypervisor;
+import com.shinkson47.SplashX6.game.Hypervisor;
 import com.shinkson47.SplashX6.input.KeyBinder;
 
 /**
@@ -76,7 +76,7 @@ public class MouseHandler {
      */
     public static void Poll() {
         // TODO gotta a be a way to abstract this garbage...
-        if (!GameHypervisor.getInGame()) return;
+        if (!Hypervisor.getInGame()) return;
         // If releasing, notify drag logistics that it's been released
         if (DragLogistics.LEFT.isDown() && !Gdx.input.isButtonPressed(Input.Buttons.LEFT))
             DragLogistics.LEFT.up();
@@ -94,20 +94,20 @@ public class MouseHandler {
         if (Gdx.input.isButtonJustPressed(Input.Buttons.MIDDLE))
             DragLogistics.MIDDLE.down();
 
-        if (GameHypervisor.getCm_active()) {
+        if (Hypervisor.getCm_active()) {
             if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
-                GameHypervisor.unit_setDestination();
+                Hypervisor.unit_setDestination();
         }
 
         // If down, then update camera's target with the mouse's movement
         if (DragLogistics.RIGHT.isDown())
-            GameHypervisor.getGameRenderer().getCam().deltaPosition(DragLogistics.RIGHT.x(), DragLogistics.RIGHT.y());
+            Hypervisor.getGameRenderer().getCam().deltaPosition(DragLogistics.RIGHT.x(), DragLogistics.RIGHT.y());
 
 
 
         if (DragLogistics.MIDDLE.isDown()) {
             DragLogistics.MIDDLE.x(); // Side effect of calculating y.
-            GameHypervisor.getGameRenderer().getCam().deltaTilt(DragLogistics.MIDDLE.y());
+            Hypervisor.getGameRenderer().getCam().deltaTilt(DragLogistics.MIDDLE.y());
         }
     }
 
@@ -148,8 +148,8 @@ public class MouseHandler {
          */
         @Override
         public boolean scrolled(float amountX, float amountY) {
-            if(GameHypervisor.getInGame()) {
-                GameHypervisor.getGameRenderer().getCam().deltaZoom(amountY);
+            if(Hypervisor.getInGame()) {
+                Hypervisor.getGameRenderer().getCam().deltaZoom(amountY);
                 return true;
             } else
                 return false;

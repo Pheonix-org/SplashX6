@@ -36,10 +36,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
-import com.shinkson47.SplashX6.game.GameHypervisor.camera_focusOn
-import com.shinkson47.SplashX6.game.GameHypervisor.cm_enter
-import com.shinkson47.SplashX6.game.GameHypervisor.unit_selected
+import com.shinkson47.SplashX6.game.Hypervisor
+import com.shinkson47.SplashX6.game.Hypervisor.camera_focusOn
+import com.shinkson47.SplashX6.game.Hypervisor.cm_enter
+import com.shinkson47.SplashX6.game.Hypervisor.unit_selected
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitAction
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
@@ -63,7 +63,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
      */
     private class SELECT_LISTENER(val parent: UnitsWindow, val list: List<Unit>) : LambdaClickListener({
         list.selected?.let { // Only if an item is selected,
-            GameHypervisor.unit_select(it)
+            Hypervisor.unit_select(it)
             parent.refreshSelected()
         }
     })
@@ -95,16 +95,16 @@ class UnitsWindow : StageWindow("Units"), Runnable {
         // Buttons
         // TODO localise
         // TODO lots of repeating code here
-        add(button("moveUnitToCursor") { if (!cm_enter()) GameHypervisor.cm_destinationSelect(); refresh() }).row()
+        add(button("moveUnitToCursor") { if (!cm_enter()) Hypervisor.cm_destinationSelect(); refresh() }).row()
         tooltip("ttMoveUnitToCursor")
 
-        add(button("viewDestination") { GameHypervisor.unit_viewDestination(); refresh() }).row()
+        add(button("viewDestination") { Hypervisor.unit_viewDestination(); refresh() }).row()
         tooltip("ttViewDestination")
 
-        add(button("cancleAction") { GameHypervisor.unit_selected()?.cancelAction(); refresh() }).row()
+        add(button("cancleAction") { Hypervisor.unit_selected()?.cancelAction(); refresh() }).row()
         tooltip("ttCancleAction")
 
-        add(button("disband") { GameHypervisor.unit_disband(); refresh() }).row()
+        add(button("disband") { Hypervisor.unit_disband(); refresh() }).row()
         tooltip("ttDisband")
 
         seperate("actions")
@@ -116,7 +116,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
         actions.addListener(
             LambdaClickListener {
                 GameData.selectedUnit?.let {
-                    GameHypervisor.unit_selected()?.onTurnAction = actions.selected
+                    Hypervisor.unit_selected()?.onTurnAction = actions.selected
                     refresh()
                 }
             }
@@ -154,17 +154,17 @@ class UnitsWindow : StageWindow("Units"), Runnable {
 
     private fun populate(list: List<Unit>, array: Array<Unit>){
         list.setItems(array)
-        list.selected = GameHypervisor.unit_selected()
+        list.selected = Hypervisor.unit_selected()
     }
 
     private fun refreshActions() {
         val arr : Array<UnitAction> = Array();
-        GameHypervisor.unit_selected()?.availableActions?.forEach { arr.add(it) } // TODO copy of above. abstract.
+        Hypervisor.unit_selected()?.availableActions?.forEach { arr.add(it) } // TODO copy of above. abstract.
         // TODO use gdx array in units to avoid this on every refresh.
 
         actions.setItems(arr)
 
-        actions.selected = GameHypervisor.unit_selected()?.onTurnAction
+        actions.selected = Hypervisor.unit_selected()?.onTurnAction
 
         }
 
@@ -176,11 +176,11 @@ class UnitsWindow : StageWindow("Units"), Runnable {
     // ============================================================
 
     init {
-        GameHypervisor.turn_hook(this)
+        Hypervisor.turn_hook(this)
     }
 
     override fun onClose() {
-        GameHypervisor.turn_unhook(this)
+        Hypervisor.turn_unhook(this)
     }
 
     /**

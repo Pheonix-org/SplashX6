@@ -37,7 +37,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.shinkson47.SplashX6.game.GameData
-import com.shinkson47.SplashX6.game.GameHypervisor
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.auburn.fastnoiselite.FastNoiseLite
 import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion
 import com.shinkson47.SplashX6.game.world.generation.Generator
@@ -151,7 +151,7 @@ class TerrainGenerationEditor : StageWindow("Terrain Generation Editor") {
         try {
             Generator.fastBuild = fastBuild.isChecked
             GameData.new()
-            GameHypervisor.gameRenderer!!.r = IsometricStaggeredTiledMapRenderer(GameData.world)
+            Hypervisor.gameRenderer!!.r = IsometricStaggeredTiledMapRenderer(GameData.world)
             buildButton.setText("Done!")
         } catch ( e : Exception ) {
             GameData.world = x
