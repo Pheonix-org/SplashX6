@@ -428,6 +428,15 @@ object GameHypervisor {
         unit.dispose()
     }
 
+    /**
+     * Determines what units are within a given range
+     *
+     * @param range Range
+     */
+    fun unit_proximity(unit: Unit = unit_selected()!!, range: Int = 1) {
+
+    }
+
     @JvmStatic
     fun unit_selected(): Unit? = GameData.selectedUnit
 

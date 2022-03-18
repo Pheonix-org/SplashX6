@@ -131,6 +131,7 @@ internal object Assets : AssetManager() {
     const val TMX   = ".tmx"
     const val PNG   = ".png"
     const val WAV   = ".wav"
+    const val OGG   = ".ogg"
 
     // endregion
     // region Audio
@@ -169,6 +170,9 @@ internal object Assets : AssetManager() {
      * Audio played when a button is clicked.
      */
     const val AUDIO_SFX_BUTTON = "${DIR_AUDIO_SFX}click33$WAV"
+    const val AUDIO_SFX_WALK = "${DIR_AUDIO_SFX}foot3$OGG"
+    const val AUDIO_SFX_FIGHT = "${DIR_AUDIO_SFX}woodbrk$OGG"
+    const val AUDIO_SFX_ERROR = "${DIR_AUDIO_SFX}illegal$OGG"
 
     /**
      * Default game music track.
@@ -533,6 +537,9 @@ internal object Assets : AssetManager() {
         load(AUDIO_MUSIC_MENU, Music::class.java)
         load(AUDIO_MUSIC_GAME_OVER, Music::class.java)
         load(AUDIO_SFX_BUTTON, Sound::class.java)
+        load(AUDIO_SFX_WALK, Sound::class.java)
+        load(AUDIO_SFX_FIGHT, Sound::class.java)
+        load(AUDIO_SFX_ERROR, Sound::class.java)
 
         load(AUDIO_LOADLIST_DATA, StringArrayList::class.java)
         afterLoad {
