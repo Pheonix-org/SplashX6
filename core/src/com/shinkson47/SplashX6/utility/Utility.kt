@@ -39,6 +39,7 @@ import com.shinkson47.SplashX6.game.Hypervisor.inGame
 import com.shinkson47.SplashX6.rendering.screens.TextScreen
 import com.shinkson47.SplashX6.rendering.windows.MessageWindow
 import com.shinkson47.SplashX6.utility.PrebootAssets.PB_SKIN
+import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import com.shinkson47.SplashX6.utility.debug.Console
 import com.strongjoshua.console.LogLevel
 import java.net.InetAddress
@@ -314,6 +315,7 @@ object Utility {
 
 
     fun fatal(string: String, e: Throwable) {
+        GraphicalConfig.fullscreen = false
         Console.log(e)
         Console.log(string, LogLevel.ERROR)
         TextScreen(
@@ -339,7 +341,7 @@ object Utility {
             font.color = Color.WHITE
             lineIndex = (lines.size - 1).toFloat()
             lineIndex = (lines[lineIndex.toInt()].length - 1).toFloat()
-            Client.client.fadeScreen(this)
+            Client.client.screen = this
         }
     }
 

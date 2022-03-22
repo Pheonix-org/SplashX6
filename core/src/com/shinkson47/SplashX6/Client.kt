@@ -44,6 +44,7 @@ import com.shinkson47.SplashX6.rendering.screens.ScreenTransistion
 import com.shinkson47.SplashX6.rendering.screens.SplashScreen
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.debug.Debug
 import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import java.awt.Image
@@ -111,9 +112,13 @@ class Client : Game() {
      */
     override fun render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
-        currentScreen?.render(Gdx.graphics.deltaTime)
-        KeyBinder.poll()
-        MouseHandler.Poll()
+        try {
+            currentScreen?.render(Gdx.graphics.deltaTime)
+            KeyBinder.poll()
+            MouseHandler.Poll()
+        } catch (e : Throwable) {
+            Utility.fatal("How very pre-alpha of me.", e)
+        }
     }
 
     /**
