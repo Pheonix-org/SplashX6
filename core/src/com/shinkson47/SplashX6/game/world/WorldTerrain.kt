@@ -281,13 +281,14 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
      * <br></br><br></br>That's what this method is for, it corrects for this stagger offset such that [x+1][y+1] would always return the tile which can be seen to the north east side of another.
      * @return if on an odd row, tile at raw array position [x - 1][y], if even at [x][y].
      */
-    fun getStaggeredTile(x: Int, y: Int, source : Array<Array<Tile?>> = worldTiles): Tile? = getStaggeredISO(x,y).let{ getTile(it.x.toInt(), it.y.toInt(), source) }
+    fun getStaggeredTile(x: Int, y: Int, source : Array<Array<Tile?>> = worldTiles): Tile? = getStaggeredISO(x,y).let { getTile(it.x.toInt(), it.y.toInt(), source) }
+
 
 
     /**
-     * <h2>
+     * Remove fog of war from this world.
+     *
      * Converts all map data into a single, total, complete map.
-    </h2> *
      */
     fun removeFogOfWar() {
         defog(width / 2, height / 2, Math.max(width, height))
@@ -320,21 +321,25 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
         }
     }
 
-
+    /**
+     * Chooses a random point in the world.
+     *
+     * Has no regard for water / land.
+     *
+     * TODO not seed based.
+     */
     fun randomPoint() = Vector3(
             MathUtils.random(0, width - 1).toFloat(),
             MathUtils.random(0, height - 1).toFloat(), 0f)
 
 
-    fun randomPointOnLand(): Vector3 {
-        var vec: Vector3?
-        var t: Tile?
+    fun randomNavigableTile(): Vector3 {
         while (true) {
-            vec = randomPoint()
-            t = getTile(vec)
-            if (t?.isLand == true) return vec
+            randomPoint().apply {
+                    if (isNavligable(x,y)) return this
+                }
+            }
         }
-    }
 
     fun isInWorld(vec: Vector3) = isInWorld(vec.x.toInt(), vec.y.toInt())
     fun isInWorld(vec: Vector2) = isInWorld(vec.x.toInt(), vec.y.toInt())
@@ -367,9 +372,10 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
     /**
      *
      */
+    fun isNavligable(x : Float, y : Float) = isNavligable(x.toInt(), y.toInt())
     fun isNavligable(x : Int, y : Int) : Boolean {
         // TODO should this be staggered???
-        return getStaggeredTile(x,y)!!.isLand && getStaggeredTile(x,y,heightTiles) == null && getStaggeredTile(x,y,FoliageLayerTiles) == null
+        return getTile(x,y)!!.isLand && getTile(x,y,heightTiles) == null && getTile(x,y,FoliageLayerTiles) == null
     }
 
     companion object {

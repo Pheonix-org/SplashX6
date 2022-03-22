@@ -55,8 +55,8 @@ public class Tile implements Serializable {
      * Resource names for particular tile types
      */
     public static final String
-            OCEANS = "o_o_o_o",
-            WATER  = "s_s_s_s";
+            OCEANS = "o",
+            WATER  = "s";
 
     /**
      * Full resource name of this tile.
@@ -148,6 +148,6 @@ public class Tile implements Serializable {
     }
 
     public boolean isWater() {
-        return tileName.equals(OCEANS) || tileName.equals(WATER);
+        return tileName.contains(OCEANS) || tileName.contains(WATER);
     }
 }
