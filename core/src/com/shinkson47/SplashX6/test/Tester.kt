@@ -102,7 +102,7 @@ abstract class Tester : Runnable {
         // If the assertion was not true, and we have not yet failed,
         // record failure. Any other state has no effect.
         if (!it) {
-            Console.log("[TESTER] ✗ [## FAIL ##]  : $failMessage", LogLevel.ERROR)
+            System.err.println("[TESTER] ✗ [## FAIL ##]  : $failMessage")
 
             failed = true
             AssertionError("[TEST FAILURE] : $failMessage").printStackTrace()
@@ -110,7 +110,7 @@ abstract class Tester : Runnable {
         }
 
         if (passMessage != "")
-            Console.log("[TESTER] ✔ [PASS]  : $passMessage", LogLevel.SUCCESS)
+            println("[TESTER] ✔ [PASS]  : $passMessage")
 
         return !it
     }
