@@ -373,10 +373,11 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
      *
      */
     fun isNavligable(x : Float, y : Float) = isNavligable(x.toInt(), y.toInt())
-    fun isNavligable(x : Int, y : Int) : Boolean {
-        // TODO should this be staggered???
-        return getTile(x,y)!!.isLand && getTile(x,y,heightTiles) == null && getTile(x,y,FoliageLayerTiles) == null
-    }
+    fun isNavligable(x : Int, y : Int) : Boolean =
+        isInWorld(x, y)
+     && getTile(x,y)!!.isLand
+     && getTile(x,y,heightTiles) == null
+     && getTile(x,y,FoliageLayerTiles) == null
 
     companion object {
         fun getStaggeredISO(x: Int, y: Int): Vector2 = Vector2((x + if (x != 0) if (y % 2 == 0) -1 else 0 else 0).toFloat(), y.toFloat())
