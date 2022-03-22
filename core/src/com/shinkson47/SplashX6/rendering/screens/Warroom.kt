@@ -42,6 +42,7 @@ import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.rendering.Camera
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
+import com.shinkson47.SplashX6.utility.debug.Console
 import com.shinkson47.SplashX6.utility.lerpDesire
 
 /**
@@ -95,7 +96,10 @@ class Warroom(val parent : GameScreen) : ScreenAdapter() {
 
             sr.end()
         }
-        GameData.world!!.rayHandler.updateAndRender()
+
+        // TODO lighting doesn't render correctly on either of the matricies.
+        //GameData.world!!.rayHandler.updateAndRender()
+        Console.draw()
     }
 
 
