@@ -309,7 +309,7 @@ open class Unit (
      * @return true if able to path find to destination, else false.
      */
     private fun calculatePath(): Boolean {
-        if (destination == null) return false
+        if (destination?.let { !GameData.world!!.isNavligable(it.x, it.y) } == true) return false
 
         try {
             with(GameData.world!!) {
@@ -612,7 +612,7 @@ open class Unit (
                         UnitActionDictionary.TRAVEL.run(this@Unit)
                     },
                     this,
-                    { setDestination(GameData.world!!.randomPointOnLand()) },
+                    { setDestination(GameData.world!!.randomNavigableTile()) },
                     null
                 )
             )
