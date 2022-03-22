@@ -414,6 +414,35 @@ object Console : GUIConsole() {
             console.log("Exception logging = ${Console.consoleTrace}")
         }
 
+        @ConsoleDoc(description = "Shows information about a tile.")
+        fun peekTile(x: Int, y: Int) {
+            if (!Hypervisor.inGame) {
+                console.log("No game is loaded.", LogLevel.ERROR)
+                return
+            }
+
+            with (GameData.world!!) {
+                if (!isInWorld(x,y)) {
+                    console.log("Co-ordinate out of the world!", LogLevel.ERROR)
+                    return
+                }
+
+                getTile(x,y)?.apply {
+                    console.log(
+                        """
+                        Full resource name : $tileName
+                        Is land? : $isLand
+                        Is Water? : $isWater
+                        Is navigable : ${isNavligable(x,y)}            
+                        Location : $x, $y
+                        """.trimIndent()
+                    )
+                } ?: {
+                    console.log("Though inside the world, no tile was found at this location.", LogLevel.ERROR)
+                }
+            }
+        }
+
         //=============================
         //#endregion audio
         //=============================

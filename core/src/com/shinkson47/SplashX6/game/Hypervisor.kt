@@ -367,7 +367,7 @@ object Hypervisor {
         requireNotNull(GameData.world, { " Tried to create a new civilisation with no world. " })
         return Nation(civType, ai).apply {
             GameData.nations.add(this)
-            GameData.world!!.randomPointOnLand().let {
+            GameData.world!!.randomNavigableTile().let {
                 spawn(it.x.toInt(), it.y.toInt(), UnitClass.settler, this)
             }
         }
@@ -460,7 +460,8 @@ object Hypervisor {
 
         with(GameData.selectedUnit!!) {
             cm_selectedTile().apply {
-                setDestination(x, y)
+                if (!setDestination(x, y))
+                    AudioController.error()
             }
 
             unit_selectAction("Travel to destination")
