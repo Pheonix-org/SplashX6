@@ -581,6 +581,7 @@ object Hypervisor {
      */
     @JvmStatic
     fun turn_end() {
+        if (isCinematingLocalTurn) return
         //doEndTurn_Units()
         turn_end_cinemate()
         doEndTurn_Async()
