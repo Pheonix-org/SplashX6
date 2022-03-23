@@ -2,6 +2,7 @@
 
 ![Screen Shot 2022-02-17 at 10 27 13 pm](https://user-images.githubusercontent.com/50697488/154581520-308c3a30-5396-47d1-88b9-fbbc3b303e44.png)
 
+[![Release Build check](https://github.com/Shinkson47/UniX6/actions/workflows/gradle.yml/badge.svg)](https://github.com/Shinkson47/UniX6/actions/workflows/gradle.yml)
 
 ## What is this
 X6 is a work-in-progress turn based 4X settlement strategy game heavily inspired by early editions of Civilisation and it's remakes, Anno, OpenTTD, and more.
