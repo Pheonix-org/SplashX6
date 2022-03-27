@@ -36,15 +36,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
-import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
 
 /**
@@ -66,7 +63,12 @@ open class TextScreen (
     var onComplete: Screen? = null,
     fontColor: Color = Color.WHITE,
     val font : BitmapFont = REF_SKIN_W95.getFont("Serif"),
-    val background: Drawable? = null
+    val background: Drawable? = null,
+
+    /**
+     * # The time to wait between each charater stamp.
+     */
+    val delay : Float = .01f
 ) : ScalingScreenAdapter() {
 
     var lines : List<String> = text.split("\n")
@@ -110,10 +112,6 @@ open class TextScreen (
      */
     var charIndex = 0
 
-    /**
-     * # The time to wait between each charater stamp.
-     */
-    private val DELAY : Float = .01f;
 
 
     /**
@@ -158,7 +156,7 @@ open class TextScreen (
         // Increase time since last character
         characterDelta += delta
 
-        if (characterDelta > DELAY)  {      // If we've waited longer than DELAY
+        if (characterDelta > delay)  {      // If we've waited longer than DELAY
             charIndex++                     // Move to the next character
             characterDelta = 0f             // and reset the timer.
         }
