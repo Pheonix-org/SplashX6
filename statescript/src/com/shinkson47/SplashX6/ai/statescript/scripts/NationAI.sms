@@ -1,0 +1,34 @@
+name = NationAI;
+description = "The meta behaviour of a nation. Controls cities, production and research.";
+default = Peace;
+
+code {
+	private static void DevelopSettlements() {
+		settlements.forEach( city -> {
+			if (city.unitProduction.queue.size == 0) {
+				city.unitProduction.queueProject(new UnitProductionProject(UnitClass.settler));
+			}
+
+			if (city.improvementProduction.queue.size == 0) {
+				city.improvementProduction.queueProject(
+					city.improvementProduction.evaluateProducible().get(0)
+				);
+			}
+		});
+	}
+
+	private static void DevelopTechs() {
+		// Not possible, X6's API calls don't support operating advancements on non host players atm.
+	}
+}
+
+state Peace {
+	behaviour {
+		DevelopSettlements();
+		DevelopTechs();
+	}
+}
+
+state War {}
+
+switch from Peace to War if (false);

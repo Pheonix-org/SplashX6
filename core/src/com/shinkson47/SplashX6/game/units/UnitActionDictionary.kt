@@ -81,7 +81,7 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
     /**
      * # Moves towards destination
      */
-    val TRAVEL  =  UnitAction("Travel to destination", REQ_DESTINATION, SerializablePredicate<Unit> {
+    val TRAVEL  =  UnitAction("Travel to destination", REQ_DESTINATION, SerializablePredicate {
         with(it) {
             if (!REQ_DESTINATION.test(this)) return@SerializablePredicate false
 
@@ -96,6 +96,7 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
             if (pathNodes?.size == 1)
                 clearDestination()
 
+            true
         }
     })
 
