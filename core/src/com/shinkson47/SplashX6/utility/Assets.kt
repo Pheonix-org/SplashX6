@@ -42,6 +42,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -292,6 +293,8 @@ internal object Assets : AssetManager() {
      */
     const val SPRITES_MENUBG    = "${DIR_SPRITES}menu_bg$ATLAS"
 
+    const val SPRITES_CURSOR    = "${DIR_SPRITES}cursor$PNG"
+
     /**
      * A [PNG] [Texture] displayed on [Spotify]
      */
@@ -524,6 +527,15 @@ internal object Assets : AssetManager() {
         load(TEXTURE_ART, TextureAtlas::class.java)
         load(SPRITES_SPOTIFY_FAIL, Texture::class.java)
         load(TEX_HITTEST, BufferedImage::class.java)
+
+        load(SPRITES_CURSOR, Pixmap::class.java)
+        afterLoad {
+            get<Pixmap>(SPRITES_CURSOR).apply {
+                with (Gdx.graphics) {
+                    setCursor(newCursor(this@apply, 0, 0))
+                }
+            }
+        }
 
         // Tilesets
         load(TILED_TILESETS, TiledMap::class.java)
