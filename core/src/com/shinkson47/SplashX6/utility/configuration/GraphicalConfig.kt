@@ -110,6 +110,7 @@ object GraphicalConfig  {
     @NodeInfo("Determines if the games takes complete control over your GPU.")
     var fullscreen = graphics.isFullscreen
         set(it) {
+            if (it == field) return
             field = it
             displayMode = graphics.displayMode
         }
