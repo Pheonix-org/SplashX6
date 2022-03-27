@@ -346,6 +346,17 @@ object Console : GUIConsole() {
             }
         }
 
+        @ConsoleDoc(description = "Teleports the selected unit to a location.",
+            paramDescriptions = ["X destination", "Y destination."])
+        fun teleport(X: Int, Y: Int) {
+            Hypervisor.unit_selected()?.let{
+                it.setLocation(X, Y)
+                Hypervisor.unit_view()
+            } ?: run {
+                Console.log("There is no unit selected.",LogLevel.ERROR)
+            }
+        }
+
 
         @ConsoleDoc(description = "Disbands the selected unit.")
         fun disband() {
