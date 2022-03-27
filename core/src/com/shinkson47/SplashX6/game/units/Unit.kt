@@ -58,6 +58,8 @@ import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.asPercentOf
 import com.shinkson47.SplashX6.utility.Utility.center
 import com.shinkson47.SplashX6.utility.Utility.warnDev
+import com.shinkson47.SplashX6.utility.debug.Console
+import com.strongjoshua.console.LogLevel
 import org.xguzm.pathfinding.grid.GridCell
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder
 
@@ -156,6 +158,19 @@ open class Unit (
      * this unit is trying to take to reach [destination]
      */
     var pathNodes : List<GridCell>? = null
+        set (value) {
+            if (value?.get(0)?.let { !inRange(it.x, it.y) } == true) {
+                // TODO remove this guard once confident that this issue has indeed be solved.
+
+                // this is a shitty guard against a bug that i had a lot of difficulty tracking down.
+                // I left if here as i can't be 100% sure that the fix i implemented has solved the issue.
+                // I added a throw to make it clear if the problem ever happens again so i know it's not
+                // solved. I'll remove it some time later once the fix has aged without this triggering
+                // giving me more confidence in the fix.
+                throw IllegalStateException("#67 has not been fixed. Tried to set a path that started out of range of this unit.")
+            } else
+                field = value
+        }
 
     @Transient val pathfinder = AStarGridFinder(GridCell::class.java)
 
@@ -314,6 +329,7 @@ open class Unit (
         try {
             with(GameData.world!!) {
                 pathNodes = pathfinder.findPath(isoVec.x.toInt(), isoVec.y.toInt(), destination!!.x.toInt(), destination!!.y.toInt(), navigationLayer)
+                            .toList()
             }
         } catch (e: Exception) {
             clearDestination()
@@ -337,6 +353,13 @@ open class Unit (
         isoVec.y += deltaY
         return setLocation(isoVec)
     }
+
+    fun inRange(x: Int, y: Int, viewingDistance: Boolean = false) = inRange(x.toFloat(), y.toFloat(), viewingDistance)
+    fun inRange(v: Vector3, viewingDistance: Boolean = false) = inRange(v.x, v.y, viewingDistance)
+    fun inRange(v: Vector2, viewingDistance: Boolean = false) = inRange(v.x, v.y, viewingDistance)
+    fun inRange(x: Float, y: Float, viewingDistance: Boolean = false) =
+        isoVec.dst(x,y,0f) <= if (viewingDistance) (viewDistance + 1) * 2 else (travelDistance + 1) * 2
+
 
 
     /**
