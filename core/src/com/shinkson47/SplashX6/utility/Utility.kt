@@ -42,6 +42,8 @@ import com.shinkson47.SplashX6.utility.PrebootAssets.PB_SKIN
 import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import com.shinkson47.SplashX6.utility.debug.Console
 import com.strongjoshua.console.LogLevel
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.net.InetAddress
 import java.util.*
 import java.util.function.Consumer
@@ -315,7 +317,6 @@ object Utility {
 
 
     fun fatal(string: String, e: Throwable) {
-        GraphicalConfig.fullscreen = false
         Console.log(e)
         Console.log(string, LogLevel.ERROR)
         TextScreen(
@@ -326,16 +327,30 @@ object Utility {
             
             
             $string
-            ${e.message}
-            
-            
-            
+                                
             Quit the game.
+            ${if (GraphicalConfig.fullscreen) "(F11 to exit fullscreen.)" else ""}
             
-            ALT + F4 on PC
-            CMD + OPT + ESC on Mac
             
-            (F12 to show console to copy and report.)
+            
+            
+            
+            Technical Info
+            ========
+            
+            Type : ${e::class.simpleName}
+            Exception message : ${e.message}
+            Stack trace :
+            (F12 to show console to copy stack and report.)
+            ${
+                StringWriter().let {
+                    e.printStackTrace(PrintWriter(it))
+                    it.toString()
+                }
+            }
+            
+            
+            
             """
         ).apply {
             font.color = Color.WHITE
