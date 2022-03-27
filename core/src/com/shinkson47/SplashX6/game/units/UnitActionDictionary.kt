@@ -87,15 +87,15 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
 
             pathNodes = pathNodes!!.drop(travelDistance.coerceAtMost(pathNodes!!.size - 1))
 
-            if (pathNodes!!.isNotEmpty()) {
+            if (pathNodes?.isNotEmpty() == true) {
                 setLocation(pathNodes!![0].x, pathNodes!![0].y, true)
                 AudioController.walk()
             } else
                 clearDestination()
 
-            if (pathNodes!!.size == 1)
+            if (pathNodes?.size == 1)
                 clearDestination()
-            true
+
         }
     })
 
