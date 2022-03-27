@@ -946,7 +946,7 @@ Fighters are your first airborne units. They can
  move anywhere and attack any unit.
 </string>
 	</dict>
-	<key>bomber</key>
+	<key>stealthbomber</key>
 	<dict>
 		<key>name</key>
 		<string>Bomber</string>
