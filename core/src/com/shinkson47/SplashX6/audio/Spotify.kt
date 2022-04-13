@@ -145,11 +145,9 @@ object Spotify {
             return true
 
         // Otherwise initiate two part auth, if enabled.
-        return if (!autoOnly) {
-                    authoriseClient()
-                    true
-                } else
-                    false
+
+        if (!autoOnly) authoriseClient()
+        return false
     }
 
     /**
@@ -557,9 +555,35 @@ object Spotify {
         val paging = execute(REQUEST_SAVED_PLAYLISTS)!!
         val items = Utility.MapToGDXArray(paging.items.asIterable()) { it.name }
 
-
         return paging
     }
+
+    /**
+     * # Gets all meta data for a given playlist.
+     *
+     * @param playlistID The ID or the URI of the playlist.
+     *                   (Either 'XXXXXXXXXXXX' OR 'spotify:playlist:XXXXXXXXXXXX'.)
+     */
+    fun aboutPlaylist(playlistID: String) =
+        execute(spotifyApi.getPlaylist(IDFromURI(playlistID)).build())
+
+    /**
+     * # Gets all meta for a given artist.
+     *
+     * @param playlistID The ID or the URI of the playlist.
+     *                   (Either 'XXXXXXXXXXXX' OR 'spotify:playlist:XXXXXXXXXXXX'.)
+     */
+    fun aboutArtist(artistID: String) =
+        execute(spotifyApi.getArtist(IDFromURI(artistID)).build())
+
+    /**
+     * # Gets all meta for a given album.
+     *
+     * @param playlistID The ID or the URI of the playlist.
+     *                   (Either 'XXXXXXXXXXXX' OR 'spotify:playlist:XXXXXXXXXXXX'.)
+     */
+    fun aboutAlbum(AlbumID: String) =
+        execute(spotifyApi.getAlbum(IDFromURI(AlbumID)).build())
 
     /**
      * # Gets a list of 50 of the user's saved songs.
@@ -674,5 +698,15 @@ object Spotify {
     var cache_GdxAlbums     : Array<String>? = null
         private set
 
+    /**
+     * # Extracts an ID from a spotify URI
+     * Expected format is 'spotify:`type`:XXXXXXXXXXXX'.
+     *
+     * @return the `XXXXXXXXXXXX` segment of the URI.
+     */
+    fun IDFromURI(URI: String) =
+        URI
+            .dropWhile { it != ':' }.drop(1)
+            .dropWhile { it != ':' }.drop(1)
 
 }

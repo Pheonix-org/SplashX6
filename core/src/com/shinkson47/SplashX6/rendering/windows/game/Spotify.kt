@@ -42,6 +42,9 @@ import com.badlogic.gdx.utils.Scaling
 import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.audio.Spotify
 import com.shinkson47.SplashX6.audio.Spotify.SpotifySourceType
+import com.shinkson47.SplashX6.audio.Spotify.aboutAlbum
+import com.shinkson47.SplashX6.audio.Spotify.aboutArtist
+import com.shinkson47.SplashX6.audio.Spotify.aboutPlaylist
 import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
@@ -167,18 +170,19 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
      * > whilst updating the ui. This may effect other async threads accessing [Spotify]
      */
     @Synchronized private fun update() {
-        if (!isVisible) return
+        if (Spotify.DISABLE || !isVisible) return
 
         // Attempt to fetch the current state of playback.
         playbackState = Spotify.info()
 
         // If there was an issue with the api request
         if (Spotify.ERROR != null) {
-            fail("Unable to talk to spotify.\n(${Spotify.ERROR!!.javaClass.simpleName}: ${Spotify.ERROR!!.message})")
+            //fail("Unable to talk to spotify.\n(${Spotify.ERROR!!.javaClass.simpleName}: ${Spotify.ERROR!!.message})")
+            //Window is hidden, so there's no point.
             if (!Spotify.testConnection()) spotifyConnect()
             isVisible = false
             AudioController.resumeMusic()
-            return;
+            return
         }
 
         // If the api request was made, but there's no playback info
@@ -210,8 +214,21 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
 
         // Show correct playback context type.
         // NOTE : This has to be last cause of it's changed event.
-        if (playbackState!!.context != null)
-            typeSelectBox.selected = SpotifySourceType.valueOf(playbackState?.context?.type.toString().lowercase())
+        playbackState!!.context?.apply {
+            typeSelectBox.selection.set(SpotifySourceType.valueOf(type.toString().lowercase()))
+            contentSelectBox.selection.set(with(uri) {
+                Spotify.enable()
+                if (contains("playlist"))
+                    aboutPlaylist(this)?.name ?: "Couldn't fetch the name of the playlist."
+                else if (contains("artist"))
+                    aboutArtist(this)?.name ?: "Couldn't fetch the name of the arist."
+                else if (contains("album"))
+                    aboutAlbum(this)?.name ?: "Couldn't fetch the name of the album."
+                else "Not sure what source you're jamming to."
+            }.also { Spotify.disable() }
+            )
+        }
+
 
         // Re-enable spotify api requests.
         Spotify.enable()
@@ -405,15 +422,15 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
         else {
 
             dialog(
-                "!Connect to spotify", "A browser should've opened." +
-                        "\n Authorize with spotify, then paste the code in the box" +
-                        "\n and click 'Ok'.", "", "",
+                "!Connect to spotify", "!A browser should've opened." +
+                        "\n Authorize with spotify, then copy the code and click 'OK'."
+                        , "", "",
                 {
                     try {
                         if (Spotify.create(Toolkit.getDefaultToolkit().systemClipboard.getData(DataFlavor.stringFlavor) as String))
-                            dialog("generic.any.success", "")
+                            dialog("!", "generic.any.success")
                     } catch (e : java.lang.Exception) {
-                        dialog("!Spotify Connection Error", "${Spotify.ERROR?.message}" )
+                        dialog("!Spotify Connection Error", "!${Spotify.ERROR?.message}" )
                     }
                 }
             )
