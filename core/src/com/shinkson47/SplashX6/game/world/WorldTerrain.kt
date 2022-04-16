@@ -332,7 +332,10 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
             MathUtils.random(0, width - 1).toFloat(),
             MathUtils.random(0, height - 1).toFloat(), 0f)
 
-
+    /**
+     * Chooses a random tile in the world that may be walked on,
+     * according to [isNavligable]
+     */
     fun randomNavigableTile(): Vector3 {
         while (true) {
             randomPoint().apply {
@@ -341,8 +344,19 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
             }
         }
 
+    /**
+     * Determines if a vector is within the boundaries of the world
+     */
     fun isInWorld(vec: Vector3) = isInWorld(vec.x.toInt(), vec.y.toInt())
+
+    /**
+     * Determines if a vector is within the boundaries of the world
+     */
     fun isInWorld(vec: Vector2) = isInWorld(vec.x.toInt(), vec.y.toInt())
+
+    /**
+     * Determines if a co-ordinate is within the boundaries of the world
+     */
     fun isInWorld(x: Int, y: Int) = x in 0..width && y in 0..height
 
 
@@ -351,6 +365,11 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
      */
     fun forEachTile(action: (Int, Int, Tile?) -> Unit) = forEachTile(worldTiles, action)
 
+    /**
+     * Applies [action] to every tile in [source].
+     *
+     * @param action (X, Y, Tile) The function invoked with every tile.
+     */
     fun forEachTile(source : Array<Array<Tile?>>, action: (Int, Int, Tile?) -> Unit) {
         var x: Int; var y = 0
         source.forEach {
@@ -363,16 +382,50 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
         }
     }
 
-    fun putEachTile(action: (Int, Int, Tile?) -> Tile?) =
-        putEachTile(worldTiles, action)
-
-    fun putEachTile(source : Array<Array<Tile?>>, action: (Int, Int, Tile?) -> Tile?) =
-        forEachTile(source) { x, y, tile -> source[y][x] = action.invoke(x,y, tile) }
+    /**
+     * Replaces every tile in [worldTiles] with the result of [mutation]
+     *
+     * [mutation] is some function that either modifies the given tile, or returns the same tile.
+     *
+     * Used in world generation to apply some function world-wide.
+     */
+    fun putEachTile(mutation: (Int, Int, Tile?) -> Tile?) =
+        putEachTile(worldTiles, mutation)
 
     /**
+     * Replaces every tile in [source] with the result of [mutation]
      *
+     * [mutation] is some function that either modifies the given tile, or returns the same tile.
+     *
+     * Used in world generation to apply some function world-wide.
+     */
+    fun putEachTile(source : Array<Array<Tile?>>, mutation: (Int, Int, Tile?) -> Tile?) =
+        forEachTile(source) { x, y, tile -> source[y][x] = mutation.invoke(x,y, tile) }
+
+    /**
+     * Returns true if [x], [y] can be navigated, according to the landscape at that location.
+     *
+     * Conditions :
+     *  - Must be land
+     *  - There must be no foliage
+     *  - There must be no hill or mountain
+     *
+     * > n.b this does not apply navigation data of units, or peek the [navigationLayer].
+     * > In fact, this function is used to define the pathfinding graph in the [navigationLayer].
      */
     fun isNavligable(x : Float, y : Float) = isNavligable(x.toInt(), y.toInt())
+
+    /**
+     * Returns true if [x], [y] can be navigated, according to the landscape at that location.
+     *
+     * Conditions :
+     *  - Must be land
+     *  - There must be no foliage
+     *  - There must be no hill or mountain
+     *
+     * > n.b this does not apply navigation data of units, or peek the [navigationLayer].
+     * > In fact, this function is used to define the pathfinding graph in the [navigationLayer].
+     */
     fun isNavligable(x : Int, y : Int) : Boolean =
         isInWorld(x, y)
      && getTile(x,y)!!.isLand
@@ -380,8 +433,17 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
      && getTile(x,y,FoliageLayerTiles) == null
 
     companion object {
+
+        /**
+         * Adjusts a co-ordinate to match the staggered isometric co-ordinate space.
+         *
+         * Where [y] is even. [x] is shifted left.
+         */
         fun getStaggeredISO(x: Int, y: Int): Vector2 = Vector2((x + if (x != 0) if (y % 2 == 0) -1 else 0 else 0).toFloat(), y.toFloat())
+
+
         init { RayHandler.useDiffuseLight(true) }
+
         /**
          * # Width of tiles in pixels
          */
