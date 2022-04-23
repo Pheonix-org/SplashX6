@@ -57,6 +57,7 @@ import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.renderers.KeyBindRenderer
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
+import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.utility.debug.Debug
 import org.xguzm.pathfinding.grid.GridCell
 
@@ -138,6 +139,11 @@ class GameScreen : ScalingScreenAdapter() {
             addActor(Menu(this@GameScreen))
             addActor(StageWindow.getWINDOW_DOCK())
             addActor(kbr)
+        }
+
+        StageWindow.docked(W_Help::class.java)?.apply {
+            stage.addActor(this)
+            this.isVisible = true
         }
     }
     //========================================================================

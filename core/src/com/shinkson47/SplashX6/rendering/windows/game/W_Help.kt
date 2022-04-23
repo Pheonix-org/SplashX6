@@ -34,6 +34,7 @@ package com.shinkson47.SplashX6.rendering.windows.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.*
+import com.badlogic.gdx.scenes.scene2d.ui.Tree.Node
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.RootNode
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
@@ -41,6 +42,7 @@ import xmlwise.Plist
 
 import com.shinkson47.SplashX6.rendering.windows.DoubleClickTreeListener
 import com.shinkson47.SplashX6.rendering.ui.AutoFocusScrollPane
+import com.shinkson47.SplashX6.utility.Utility
 
 
 class W_Help : StageWindow("!Help") {
@@ -64,7 +66,7 @@ class W_Help : StageWindow("!Help") {
             tree.nodes.first().isExpanded = true
         }
 
-
+        lateinit var welcomeNode: RootNode
 
         fun readStruct(parent: RootNode, m : Map<String, *>): RootNode {
             m.keys.forEach {
@@ -73,6 +75,9 @@ class W_Help : StageWindow("!Help") {
                 if (x !is String)
                     readStruct(pwdNode, x as Map<String, *>)
                 parent.add(pwdNode)
+
+                // FIXME i hate this
+                if (it == "A. Welcome") welcomeNode = pwdNode
             }
             return parent
         }
@@ -166,6 +171,10 @@ class W_Help : StageWindow("!Help") {
                 l.text = "Select something to display!"
             } } )
 
+        x = Utility.center(stage.width, width)
+        y = 0f
+        dock(this)
 
+        tree.selection.set(welcomeNode)
     }
 }
