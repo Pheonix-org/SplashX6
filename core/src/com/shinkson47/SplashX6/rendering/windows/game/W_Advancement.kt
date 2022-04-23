@@ -47,6 +47,8 @@ import com.shinkson47.SplashX6.game.Advancement.Companion.depth
 import com.shinkson47.SplashX6.game.AdvancementTree
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.Hypervisor
+import com.shinkson47.SplashX6.game.production.AdvancementProductionProject
+import com.shinkson47.SplashX6.game.production.ProductionProject
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.rendering.ui.AutoFocusScrollPane
@@ -156,7 +158,12 @@ open class W_Advancement(titleKey: String, val advancementTree : AdvancementTree
                 table.add(
                     Label(ad.name, Assets.REF_SKIN_W95).also {
                         allLabels.add(it)
-                        //tooltip(it, "Cost: $)
+
+                        val adproj = AdvancementProductionProject(ad)
+
+                        tooltip(it, "Has been researched? : ${if (ad.complete) "Yes" else "No"} \n\n" + "Cost: ${adproj.cost} research power (About ${GameData.player
+                            !!.advancementProuction!!.turnsToComplete(adproj)} turns.)")
+
                         it.addListener(
                             object : ClickListener() {
                                 override fun clicked(event: InputEvent?, x: Float, y: Float) {
