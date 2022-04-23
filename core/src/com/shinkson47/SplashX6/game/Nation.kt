@@ -37,7 +37,7 @@ import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.ai.StateMachine
 import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.cities.CityType
-import com.shinkson47.SplashX6.game.production.TechProductionManager
+import com.shinkson47.SplashX6.game.production.AdvancementProductionManager
 import com.shinkson47.SplashX6.game.production.UnitProductionProject
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
@@ -68,7 +68,7 @@ class Nation(val nationType: NationType, val ai: Boolean = false) : Serializable
      */
     val settlements : Array<Settlement> = Array()
 
-    val advancementProuction = TechProductionManager()
+    val advancementProuction = AdvancementProductionManager()
     val advancementTree = AdvancementTree(Assets.get(Assets.DATA_TECHS))
 
     lateinit var AI: NationAI

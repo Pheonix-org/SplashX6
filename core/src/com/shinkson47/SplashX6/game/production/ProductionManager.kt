@@ -67,7 +67,7 @@ abstract class ProductionManager<PT : ProductionProject<*>> (
     /**
      * The quantity of power that this production system starts with.
      */
-    val basePower: Int = 5,
+    var basePower: Int = 5,
 
     /**
      * The maximum number of projects that this system can have in it's queue.

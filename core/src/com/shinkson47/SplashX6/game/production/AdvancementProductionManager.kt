@@ -45,23 +45,21 @@ import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
  * @since v1
  * @version 1
  */
-class TechProductionManager : ProductionManager<TechProductionProject>(2, 10000) {
-    override fun evaluateProducible(): Array<TechProductionProject> =
-        CollectionToGDXArray(GameData.player!!.advancementTree.map { TechProductionProject(it) })
+class AdvancementProductionManager : ProductionManager<AdvancementProductionProject>(2, 10000) {
+    override fun evaluateProducible(): Array<AdvancementProductionProject> =
+        CollectionToGDXArray(GameData.player!!.advancementTree.map { AdvancementProductionProject(it) })
 
 
-    override fun evaluatePower(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun evaluatePower(): Int = basePower
 
     fun select(that: Advancement) {
         queue.clear()
-        GameData.player!!.advancementTree.orderedDependendencies(that).filterNotNull().map { TechProductionProject(it) }
+        GameData.player!!.advancementTree.orderedDependendencies(that).toList().map { AdvancementProductionProject(it) }
             .forEach { queueProject(it) }
     }
 }
 
-class TechProductionProject(val advancement: Advancement) : ProductionProject<Advancement>(
+class AdvancementProductionProject(val advancement: Advancement) : ProductionProject<Advancement>(
     cost = 28 + (depth(advancement) * 5)
 ) {
 
@@ -76,6 +74,6 @@ class TechProductionProject(val advancement: Advancement) : ProductionProject<Ad
     override fun toString() = advancement.name
 }
 
-class TechProductionTab() : ProductionTab<TechProductionProject, TechProductionManager>() {
-    override fun getImage(it: TechProductionProject): TextureRegionDrawable? = null
+class TechProductionTab() : ProductionTab<AdvancementProductionProject, AdvancementProductionManager>() {
+    override fun getImage(it: AdvancementProductionProject): TextureRegionDrawable? = null
 }

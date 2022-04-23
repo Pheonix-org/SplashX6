@@ -62,6 +62,7 @@ import com.shinkson47.SplashX6.utility.debug.Console
 import com.strongjoshua.console.LogLevel
 import org.xguzm.pathfinding.grid.GridCell
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder
+import java.lang.System.gc
 
 /**
  * # A controllable in-game character
@@ -681,7 +682,9 @@ open class Unit (
     override fun toString() = "$displayName $isoVec"
 
     fun dispose() {
-        light?.remove()
+        try {
+            light?.remove()
+        } catch (ignored : IllegalArgumentException) { light = null; gc(); }
     }
 
     final override fun deserialize() {
