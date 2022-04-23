@@ -458,8 +458,35 @@ object Console : GUIConsole() {
         //#endregion audio
         //=============================
 
+        @ConsoleDoc(description = "Sets the base unit production power of a given city.", paramDescriptions = ["Index of the nation", "Index of the city in the nation", "The new base power value"])
+        fun pokeUnitProductionPower(nationIndex: Int, cityIndex: Int, power: Int) {
+            parseCityIndex(nationIndex, cityIndex).unitProduction.apply {
+                basePower = power
+                contributionPower = evaluatePower()
+            }
+        }
 
-        private fun parseNationIndex(i: Int): Nation {
+        @ConsoleDoc(description = "Sets the base unit production power of a given city.", paramDescriptions = ["Index of the nation", "Index of the city in the nation"])
+        fun peekUnitProductionPower(nationIndex: Int, cityIndex: Int) {
+            log(parseCityIndex(nationIndex, cityIndex).unitProduction.basePower.toString())
+        }
+
+        @ConsoleDoc(description = "Sets the base unit production power of a given city.", paramDescriptions = ["Index of the nation", "Index of the city in the nation", "The new base power value"])
+        fun pokeAdvancementProductionPower(nationIndex: Int, power: Int) {
+            parseNationIndex(nationIndex).advancementProuction.apply {
+                basePower = power
+                contributionPower = evaluatePower()
+            }
+        }
+
+        @ConsoleDoc(description = "Sets the base unit production power of a given city.", paramDescriptions = ["Index of the nation", "Index of the city in the nation"])
+        fun peekAdvancementProductionPower(nationIndex: Int) {
+            log(parseNationIndex(nationIndex).advancementProuction.basePower.toString())
+        }
+
+
+
+            private fun parseNationIndex(i: Int): Nation {
             try {
                 return GameData.nations[i]
             } catch (e: IndexOutOfBoundsException) {
