@@ -97,6 +97,9 @@ object Server {
 
                 onClientConnect()
                 assignNation()
+
+                if(!running)
+                    return
                 status()
 
                 while (running) {
