@@ -33,8 +33,11 @@
 package com.shinkson47.SplashX6.network
 
 import com.badlogic.gdx.Gdx
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.Hypervisor.update
+import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Utility.warnDev
+import com.shinkson47.SplashX6.utility.debug.Console
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.StreamCorruptedException
@@ -55,6 +58,11 @@ object NetworkClient {
     var lastState: Packet? = null
         private set
 
+    fun disconnect() {
+        socketListener.host.interrupt()
+        socketListener.host.stop()
+    }
+
     fun connect() {
         hasStarted = false
         socket = Socket("localhost",25565)
@@ -70,10 +78,10 @@ object NetworkClient {
 
     fun resetConnection() {
         println("Connection reset.")
-        socketListener.host.interrupt()
-        socketListener.host.stop()
+        disconnect()
         connect()
     }
+
 
     fun postUpdate () {
         statusUpdate(read())
@@ -85,14 +93,16 @@ object NetworkClient {
             while (!this::host.isInitialized);
             while (!host.isInterrupted) {
                 val pkt = read()
+                Console.log("Client (${Thread.currentThread().name}) recieved : $pkt")
                 when (pkt.type) {
                     PacketType.Ping -> send(Packet(PacketType.Pong))
                     PacketType.Pong -> warnDev("The server sent the client a random pong?")
                     PacketType.Ack -> warnDev("The server sent the client a random ack?")
                     PacketType.Status -> statusUpdate(pkt)
                     PacketType.Start -> statusUpdate(pkt)
-                    PacketType.End -> TODO("The client doesn't know how to repond to the server.")
-                    PacketType.Disconnect -> TODO("The client doesn't know how to repond to the server.")
+                    PacketType.End -> TODO("The client doesn't know how to respond to the server.")
+                    PacketType.Disconnect -> {Hypervisor.endGame(); disconnect()}
+                    PacketType.Identify -> send(Packet(PacketType.Identify, data = Assets.REF_PREFERENCES.getString("USER_NAME")))
                 }
             }
         }
@@ -124,10 +134,13 @@ object NetworkClient {
         }
 
         with (lastState!!.gameState!!) {
-            if (pkt.type == PacketType.Start)
+            if (hasStarted)
+                Gdx.app.postRunnable { Hypervisor.update(this) }
+            else if (pkt.type == PacketType.Start) {
                 hasStarted = true
+                Gdx.app.postRunnable { Hypervisor.load(this); }
+            }
 
-            Gdx.app.postRunnable { update(this) }
         }
 
         send(Packet(PacketType.Ack, null))

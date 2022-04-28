@@ -234,6 +234,8 @@ internal object Assets : AssetManager() {
      */
     const val LANG_TIPS  = "${DIR_LANG}tips$CSV"
 
+    const val DIR_LICENCES  = "${DIR_LANG}licences$SEP"
+
     /**
      * [I18NBundle] containing localized text to be displayed throughout the game.
      */

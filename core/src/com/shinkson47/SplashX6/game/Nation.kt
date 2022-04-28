@@ -44,7 +44,6 @@ import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.REF_NATION_DATA
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 import com.shinkson47.SplashX6.utility.TurnHook
-import java.io.Serializable
 
 /**
  * # A container representing an entire nation.
@@ -54,7 +53,7 @@ import java.io.Serializable
  *
  * @property nationType The type of nation.
  */
-class Nation(val nationType: NationType, val ai: Boolean = false) : PartiallySerializable, TurnHook {
+class Nation(val nationType: NationType, val ai: Boolean = false, val userName: String) : PartiallySerializable, TurnHook {
 
     /**
      * # List of all units in the world that belong to this nation.

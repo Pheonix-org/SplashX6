@@ -58,8 +58,6 @@ import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.Utility.asPercentOf
 import com.shinkson47.SplashX6.utility.Utility.center
 import com.shinkson47.SplashX6.utility.Utility.warnDev
-import com.shinkson47.SplashX6.utility.debug.Console
-import com.strongjoshua.console.LogLevel
 import org.xguzm.pathfinding.grid.GridCell
 import org.xguzm.pathfinding.grid.finders.AStarGridFinder
 import java.lang.System.gc

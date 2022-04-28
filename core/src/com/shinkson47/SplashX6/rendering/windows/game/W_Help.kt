@@ -34,7 +34,6 @@ package com.shinkson47.SplashX6.rendering.windows.game
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.ui.*
-import com.badlogic.gdx.scenes.scene2d.ui.Tree.Node
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.RootNode
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
@@ -42,6 +41,7 @@ import xmlwise.Plist
 
 import com.shinkson47.SplashX6.rendering.windows.DoubleClickTreeListener
 import com.shinkson47.SplashX6.rendering.ui.AutoFocusScrollPane
+import com.shinkson47.SplashX6.rendering.ui.ScrollableTextArea
 import com.shinkson47.SplashX6.utility.Utility
 
 
@@ -96,12 +96,7 @@ class W_Help : StageWindow("!Help") {
     }
 
 
-    private val l : TextArea =  object : TextArea("Select something to display!", REF_SKIN_W95) {
-        override fun getPrefHeight(): Float {
-            return lines * style.font.lineHeight
-        }
-    }
-
+    private val l : TextArea =  ScrollableTextArea("Select something to display!")
 
     init {
         reload()

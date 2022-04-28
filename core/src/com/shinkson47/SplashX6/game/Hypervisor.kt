@@ -73,6 +73,7 @@ import com.shinkson47.SplashX6.utility.APICondition.Companion.validateCall
 import com.shinkson47.SplashX6.utility.Assets.AUDIO_MUSIC_GAME_OVER
 import com.shinkson47.SplashX6.utility.Assets.TEXTURE_ART
 import com.shinkson47.SplashX6.utility.Utility.message
+import com.shinkson47.SplashX6.utility.Utility.warnDev
 import com.shinkson47.SplashX6.utility.debug.Debug
 import java.io.*
 import java.lang.Thread.sleep
@@ -294,11 +295,11 @@ object Hypervisor {
      */
     @JvmStatic
     fun load(gd: _GameData) {
-        validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
-
+//        validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
+//
         doGameLoadCallback()
-        GameData = gd
-        GameData.deserialize()
+        update(gd)
+        doNewGameFINAL()
     }
 
     /**
@@ -313,6 +314,8 @@ object Hypervisor {
         if (!inGame) return
         GameData = newData
         GameData.deserialize()
+        GameData.determineLocalPlayer()
+
         gameRenderer!!.newRenderer()
         System.gc()
     }
@@ -361,11 +364,20 @@ object Hypervisor {
      * @param civType The type of nation. Determines what sprites to use to represent the
      *                settlements.
      * @param ai Determines if the nation is controlled by statemachine AI. False by default.
+     * @param userName The name of the user
      * @return The [Nation] created.
      */
-    fun nation_new(civType: NationType, ai: Boolean = false): Nation {
+    fun nation_new(civType: NationType, ai: Boolean = false, userName: String = ""): Nation {
+        if (!ai && userName.isEmpty())
+            warnDev("A nation was created with no name!")
+
         requireNotNull(GameData.world, { " Tried to create a new civilisation with no world. " })
-        return Nation(civType, ai).apply {
+
+        return Nation(civType, ai,
+                if (ai)
+                    "AI [${GameData.nations.filter { it.ai }.size + 1}]"
+                else userName
+            ).apply {
             GameData.nations.add(this)
             GameData.world!!.randomNavigableTile().let {
                 spawn(it.x.toInt(), it.y.toInt(), UnitClass.settler, this)

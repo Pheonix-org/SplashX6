@@ -373,8 +373,8 @@ public abstract class StageWindow extends Window implements TurnHook {
      * @param title The title of the dialog window
      * @param text  The body content of the dialog
      */
-    protected void dialog(String title, String text) {
-        dialog(title, text, "");
+    protected Dialog dialog(String title, String text) {
+        return dialog(title, text, "");
     }
 
     /**
@@ -384,8 +384,8 @@ public abstract class StageWindow extends Window implements TurnHook {
      * @param text     The body content of the dialog
      * @param positive The text shown in the positive button. If empty, shows "OK!"
      */
-    protected void dialog(String titleKey, String textKey, String positive) {
-        dialog(titleKey, textKey, positive, "");
+    protected Dialog dialog(String titleKey, String textKey, String positive) {
+        return dialog(titleKey, textKey, positive, "");
     }
 
     /**
@@ -396,8 +396,8 @@ public abstract class StageWindow extends Window implements TurnHook {
      * @param positive The text shown in the positive button. If empty, shows "OK!"
      * @param negative The text shown in the negative button. If empty, no button is added.
      */
-    protected void dialog(String titleKey, String textKey, String positive, String negative) {
-        dialog(titleKey, textKey, positive, negative, null);
+    protected Dialog dialog(String titleKey, String textKey, String positive, String negative) {
+        return dialog(titleKey, textKey, positive, negative, null);
     }
 
     /**
@@ -409,20 +409,20 @@ public abstract class StageWindow extends Window implements TurnHook {
      * @param negative      The text shown in the negative button. If empty, no button is added.
      * @param resultHandler The handler which handles the button press. If null, no handler is added.
      */
-    public void dialog(String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler, Actor... actors) {
-        dialog(this, titleKey, textKey, positive, negative, resultHandler, actors);
+    public Dialog dialog(String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler, Actor... actors) {
+        return dialog(this, titleKey, textKey, positive, negative, resultHandler, actors);
     }
 
 
     // TODO change all strings to keys fetches
     // TODO test the dialog. Fairly sure it's broken after changing the theme.
-    public static void dialog(Actor actor, String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler,
+    public static Dialog dialog(Actor actor, String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler,
         Actor... actors
     ) {
-        dialog(actor.getStage(), titleKey, textKey, positive, negative, resultHandler, actors);
+        return dialog(actor.getStage(), titleKey, textKey, positive, negative, resultHandler, actors);
     }
 
-    public static void dialog (Stage s, String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler,
+    public static Dialog dialog (Stage s, String titleKey, String textKey, String positive, String negative, Consumer<Boolean> resultHandler,
         Actor... actors
     ) {
         // Construct dialog, that gives the result to the handler
@@ -452,6 +452,7 @@ public abstract class StageWindow extends Window implements TurnHook {
             dialog.button(negative, false);
 
         dialog.show(s);
+        return dialog;
     }
 
     /**

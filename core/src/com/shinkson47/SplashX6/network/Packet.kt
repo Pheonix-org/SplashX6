@@ -38,12 +38,14 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
 
-class Packet(val type : PacketType, val gameState : _GameData? = null) : Serializable {
+class Packet(val type : PacketType, val gameState : _GameData? = null, val data: Any? = null) : Serializable {
     companion object {
         fun send(packet : Packet, _in : ObjectInputStream, _out : ObjectOutputStream)  {
             _out.writeObject(packet)
         }
     }
+
+    override fun toString() = "Packet { $type, ${if (gameState == null) "no" else "has"} game data, ${if (data == null) "no" else "has"} misc data }"
 }
 
 enum class PacketType : Serializable {
@@ -58,7 +60,8 @@ enum class PacketType : Serializable {
     Status,      // Request a copy of the game data
     Start,       // Nofify a client that it's now it's turn in the game.
     End,         // Notify the server that the client has ended it's turn.
-    Disconnect
+    Disconnect,
+    Identify
 }
 
 
@@ -69,52 +72,53 @@ abstract class PacketHandler {
     abstract fun handle(packet : Packet) : Packet?
 }
 
-//TODO forgot that i made these.
-/**
- * # [PacketHandler] for a server
- * Responds to client packets
- */
-object ServerPacketHandler : PacketHandler() {
-    override fun handle(packet: Packet): Packet? {
-        return when (packet.type) {
-            PacketType.Ping     -> Packet(PacketType.Pong)
-            PacketType.End      -> Packet(PacketType.Ack)
-            PacketType.Status   -> Packet(PacketType.Ack, GameData)
-            PacketType.Disconnect-> Packet(PacketType.Ack)
-
-            // Things the server shouldn't receive from the client.
-            PacketType.Start    -> null
-            PacketType.Pong     -> null
-            PacketType.Ack      -> null
-            PacketType.Resend   -> null
-        }
-    }
-}
-
-/**
- * # [PacketHandler] for a client.
- * Responds to server packets
- */
-object ClientPacketHandler : PacketHandler() {
-    override fun handle(packet: Packet) : Packet? {
-        return when (packet.type) {
-            // Things the client should not receive from the server
-            PacketType.Ping     -> null
-
-
-            // Things that require no response
-            PacketType.Pong     -> null
-            PacketType.Ack      -> null
-            PacketType.Status   -> {
-                GameData.networkSet(packet.gameState!!)
-                null
-            }
-            PacketType.Start    -> null
-            PacketType.End      -> null
-            PacketType.Disconnect-> null
-            PacketType.Resend   -> null
-        }
-    }
-}
+////TODO forgot that i made these.
+///**
+// * # [PacketHandler] for a server
+// * Responds to client packets
+// */
+//object ServerPacketHandler : PacketHandler() {
+//    override fun handle(packet: Packet): Packet? {
+//        return when (packet.type) {
+//            PacketType.Identify -> Packet(PacketType.Identify)
+//            PacketType.Ping     -> Packet(PacketType.Pong)
+//            PacketType.End      -> Packet(PacketType.Ack)
+//            PacketType.Status   -> Packet(PacketType.Ack, GameData)
+//            PacketType.Disconnect-> Packet(PacketType.Ack)
+//
+//            // Things the server shouldn't receive from the client.
+//            PacketType.Start    -> null
+//            PacketType.Pong     -> null
+//            PacketType.Ack      -> null
+//            PacketType.Resend   -> null
+//        }
+//    }
+//}
+//
+///**
+// * # [PacketHandler] for a client.
+// * Responds to server packets
+// */
+//object ClientPacketHandler : PacketHandler() {
+//    override fun handle(packet: Packet) : Packet? {
+//        return when (packet.type) {
+//            // Things the client should not receive from the server
+//            PacketType.Ping     -> null
+//
+//
+//            // Things that require no response
+//            PacketType.Pong     -> null
+//            PacketType.Ack      -> null
+//            PacketType.Status   -> {
+//                GameData.networkSet(packet.gameState!!)
+//                null
+//            }
+//            PacketType.Start    -> null
+//            PacketType.End      -> null
+//            PacketType.Disconnect-> null
+//            PacketType.Resend   -> null
+//        }
+//    }
+//}
 
 

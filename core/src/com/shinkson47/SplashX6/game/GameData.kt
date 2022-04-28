@@ -33,9 +33,12 @@
 package com.shinkson47.SplashX6.game
 
 
+import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.generation.Generator
+import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.REF_PREFERENCES
 import com.shinkson47.SplashX6.utility.PartiallySerializable
 
 /**
@@ -120,9 +123,7 @@ class _GameData : PartiallySerializable {
         world = Generator.doYourThing()
 
         // Create a new local player
-        player = Hypervisor.nation_new(pref_civType)
-
-
+        player = Hypervisor.nation_new(pref_civType, userName = REF_PREFERENCES.getString("USER_NAME"))
     }
 
 
@@ -141,6 +142,15 @@ class _GameData : PartiallySerializable {
             it.units.forEach  { it.deserialize() }
             it.settlements.forEach { it.deserialize() }
         }
+    }
+
+    fun findNationByName(name: String) =
+        nations.find { it.userName == name }
+
+    fun determineLocalPlayer() {
+        player = findNationByName(Assets.REF_PREFERENCES.getString("USER_NAME"))
+        if (player == null)
+            throw IllegalStateException("Local player does not exist within the world!")
     }
 
 }

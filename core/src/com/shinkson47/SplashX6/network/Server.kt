@@ -34,7 +34,12 @@ package com.shinkson47.SplashX6.network
 
 import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.Hypervisor
+import com.shinkson47.SplashX6.game.NationType
+import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.rendering.screens.game.GameScreen
+import com.shinkson47.SplashX6.utility.Utility
+import com.shinkson47.SplashX6.utility.debug.Console
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.net.BindException
@@ -43,10 +48,12 @@ import java.net.Socket
 import java.net.SocketException
 
 
+
 /**
  * # A server socket that can be used to connect other clients to a game loaded on this client.
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 19/05/2021
  */
+// This architecture is a mess.
 object Server {
 
     /**
@@ -74,35 +81,68 @@ object Server {
         lateinit var _clientOutput : ObjectOutputStream
         var running : Boolean = true
 
-        private val packetQueue = ArrayList<Packet>()
+        @Volatile private var packetQueue = ArrayList<Packet>()
 
 
         fun isConnected() = this::_clientSocket.isInitialized && _clientSocket.isConnected
 
 
         override fun run() {
-            // Open thread. Listen for a new client trying to connect.
-            _clientSocket = socket.accept()
-            _clientInput  = ObjectInputStream (_clientSocket.getInputStream())
-            _clientOutput = ObjectOutputStream(_clientSocket.getOutputStream())
+            try {
+                // Open thread. Listen for a new client trying to connect.
+                _clientSocket = socket.accept()
+                _clientInput = ObjectInputStream(_clientSocket.getInputStream())
+                _clientOutput = ObjectOutputStream(_clientSocket.getOutputStream())
 
-            onClientConnect()
-            status()
-            newSocketThread()
+                onClientConnect()
+                assignNation()
+                status()
+                newSocketThread()
 
-            while (!Thread.currentThread().isInterrupted){
-                if (packetQueue.isNotEmpty()) {
-                    packetQueue.apply {
-                        forEach { implSend(it) }
-                        packetQueue.clear()
+                while (running) {
+                    if (packetQueue.isNotEmpty()) {
+                        synchronized(packetQueue) {
+                            ArrayList(packetQueue).apply {
+                                forEach { implSend(it) }
+                                packetQueue.removeAll(this.toSet())
+                            }
+                        }
                     }
                 }
+            } catch (e : java.lang.Exception) {
+                Console.log("Server thread died!")
+                Console.log(e)
             }
         }
 
         fun stop() {
             running = false
             onClientDisconnect()
+        }
+
+        fun kick() {
+            send(Packet(PacketType.Disconnect))
+            stop()
+        }
+
+        fun assignNation() {
+            val ID = implSend(Packet(PacketType.Identify))?.data as String
+
+            GameData.findNationByName(ID)?.let {
+
+                // An existing player of this game is re-connecting.
+                Thread.currentThread().name = "Server connection to $ID"
+                Utility.warnPlayer("Existing player re-joined game : $ID")
+            } ?: run {
+                // A new player is connecting.
+                if (Client.client.screen is WorldCreation) {
+                    Hypervisor.nation_new(NationType.china, userName = ID)
+                    Console.log("New player joined the game : $ID")
+                } else {
+                    kick()
+                    Utility.warnPlayer("A new player tried tried to join, but was rejected because the game has started without them.")
+                } // Too late to join; game has started without this player.
+            }
         }
 
         /**
@@ -120,15 +160,22 @@ object Server {
             packetQueue.add(packet)
         }
 
-        private fun implSend(packet: Packet) {
+        /**
+         * @return null if not connected to a client.
+         */
+        private fun implSend(packet: Packet): Packet? {
             if (isConnected()) {
                 while (true) {
+                    Console.log("Server (${Thread.currentThread().name}) sending : $packet")
                     Packet.send(packet, _clientInput, _clientOutput)
+
                     val response = read()
+                    Console.log("Server (${Thread.currentThread().name}) received : $response in response to $packet")
                     if (response.type != PacketType.Resend)
-                        break
+                        return response
+                    else Console.log("Server (${Thread.currentThread().name}) is re-sending : $packet by request")
                 }
-            }
+            } else return null
         }
 
         fun read() : Packet {
@@ -181,7 +228,7 @@ object Server {
     }
 
     fun printStatus() : Boolean {
-        println("server ${if (alive) "alive" else "dead"}")
+        Console.log("server ${if (alive) "alive" else "dead"}")
         return alive
     }
 

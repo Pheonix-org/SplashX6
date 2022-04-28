@@ -455,10 +455,10 @@ class WorldCreation(
                                 this@WorldCreation.dialog("!Unable to load", "!Encountered some error whilst loading that save : \n ${e.message}") { Hypervisor.endGame() }
                                 switchState(1)
                             }
-                        } else {
-                            //NetworkClient.postUpdate()
-                            Gdx.app.postRunnable { NetworkClient.lastState!!.gameState?.let { load(it) } }
-                        }
+                        } //else {
+//                            //NetworkClient.postUpdate()
+//                            Gdx.app.postRunnable { NetworkClient.lastState!!.gameState?.let { load(it) } }
+//                        }
                     },
                     null
                 )

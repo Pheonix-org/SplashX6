@@ -54,6 +54,7 @@ import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
 import com.shinkson47.SplashX6.utility.Assets
+import com.shinkson47.SplashX6.utility.Assets.REF_PREFERENCES
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import com.strongjoshua.console.CommandExecutor
@@ -396,6 +397,10 @@ object Console : GUIConsole() {
         @ConsoleDoc(description = "Determines if lighting is diffused.")
         fun diffuseLights(boolean: Boolean) =
             RayHandler.useDiffuseLight(boolean)
+
+        fun assignClientTemporaryUserName(name: String) {
+            REF_PREFERENCES.putString("USER_NAME", name)
+        }
 
         //=============================
         //#endregion Hypervisor
