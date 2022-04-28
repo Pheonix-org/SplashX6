@@ -598,6 +598,7 @@ open class Unit (
      * Invoked at spawn, if spawned into an AI controlled Nation.
      */
     fun ai_init() {
+        _ai = true
         ai = UnitAI()
         autoSprite = Assets.get<TextureAtlas>(SPRITES_UNITEXTRAS).createSprite("auto")
     }
