@@ -119,7 +119,7 @@ object NetworkClient {
     fun statusUpdate(pkt : Packet) {
         lastState = pkt
         if (pkt.gameState == null) {
-            warnDev("Recieved an state update from server that contained no state!")
+            warnDev("Received an state update from server that contained no state!")
             return
         }
 
