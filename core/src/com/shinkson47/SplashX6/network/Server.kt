@@ -92,8 +92,10 @@ object Server {
                 // Open thread. Listen for a new client trying to connect.
                 _clientSocket = socket.accept()
                 newSocketThread()
+                
                 _clientInput = ObjectInputStream(_clientSocket.getInputStream())
                 _clientOutput = ObjectOutputStream(_clientSocket.getOutputStream())
+
 
                 onClientConnect()
                 assignNation()
@@ -103,18 +105,24 @@ object Server {
                 status()
 
                 while (running) {
-                    if (packetQueue.isNotEmpty()) {
-                        synchronized(packetQueue) {
-                            ArrayList(packetQueue).apply {
-                                forEach { implSend(it) }
-                                packetQueue.removeAll(this.toSet())
-                            }
-                        }
-                    }
+                    if (packetQueue.isNotEmpty())
+                        drainQueue()
                 }
             } catch (e : java.lang.Exception) {
-                Console.log("Server thread died!")
+                Console.log("Server thread crashed!")
                 Console.log(e)
+            }
+
+            socket.close()
+        }
+
+        @Synchronized
+        fun drainQueue() {
+            synchronized(packetQueue) {
+                ArrayList(packetQueue).apply {
+                    forEach { implSend(it) }
+                    packetQueue.removeAll(this.toSet())
+                }
             }
         }
 
@@ -124,7 +132,9 @@ object Server {
         }
 
         fun kick() {
+            packetQueue.clear()
             send(Packet(PacketType.Disconnect))
+            drainQueue()
             stop()
         }
 
@@ -142,8 +152,8 @@ object Server {
                     Hypervisor.nation_new(NationType.china, userName = ID)
                     Console.log("New player joined the game : $ID")
                 } else {
+                    Utility.warnPlayer("$ID tried tried to join, but was rejected because the game has started without them.")
                     kick()
-                    Utility.warnPlayer("A new player tried tried to join, but was rejected because the game has started without them.")
                 } // Too late to join; game has started without this player.
             }
         }
