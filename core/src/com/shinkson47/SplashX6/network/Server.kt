@@ -91,13 +91,13 @@ object Server {
             try {
                 // Open thread. Listen for a new client trying to connect.
                 _clientSocket = socket.accept()
+                newSocketThread()
                 _clientInput = ObjectInputStream(_clientSocket.getInputStream())
                 _clientOutput = ObjectOutputStream(_clientSocket.getOutputStream())
 
                 onClientConnect()
                 assignNation()
                 status()
-                newSocketThread()
 
                 while (running) {
                     if (packetQueue.isNotEmpty()) {
