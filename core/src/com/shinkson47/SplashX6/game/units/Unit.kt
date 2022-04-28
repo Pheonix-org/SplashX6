@@ -99,7 +99,7 @@ open class Unit (
      * The in-world light that this unit carries with it to act as fog of war.
      * // TODO base on view distance.
      */
-    var light: PointLight?
+    @Transient var light: PointLight? = null
 
 
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -158,7 +158,7 @@ open class Unit (
      * A list of cells in the world, defining the path
      * this unit is trying to take to reach [destination]
      */
-    var pathNodes : List<GridCell>? = null
+    @Transient var pathNodes : List<GridCell>? = null
         set (value) {
             if (value?.get(0)?.let { !inRange(it.x, it.y) } == true) {
                 // TODO remove this guard once confident that this issue has indeed be solved.
@@ -467,7 +467,7 @@ open class Unit (
      *
      * Automatically updates when the health of this unit is changed.
      */
-    var hpSprite: Sprite? = null
+    @Transient var hpSprite: Sprite? = null
         set(value) {
             field = value
             field?.scale(-0.5f)
@@ -583,8 +583,9 @@ open class Unit (
      * The state machine controlling this unit, if it is
      * AI controlled.
      */
-    lateinit var ai: UnitAI
-    var autoSprite: Sprite? = null
+    @Transient lateinit var ai: UnitAI
+    private var _ai = false
+    @Transient var autoSprite: Sprite? = null
         set(value) {
             field = value
             field?.scale(-0.5f)
@@ -690,12 +691,19 @@ open class Unit (
     final override fun deserialize() {
         set(REF_SPRITES_UNITS.createSprite(unitClass.toString()))
         setLocation(isoVec)
+        updateHpSprite()
+        setLight()
+        if (_ai) ai_init()
+        calculatePath()
     }
 
+    fun setLight() {
+        light = GameData.world!!.staticLight(isoVec.x, isoVec.y, viewDistance*100f)
+    }
 
 
     init {
         setLocation(isoVec)
-        light = GameData.world!!.staticLight(isoVec.x, isoVec.y, viewDistance*100f)
+        setLight()
     }
 }

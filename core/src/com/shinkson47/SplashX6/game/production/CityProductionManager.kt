@@ -58,13 +58,13 @@ class CityProductionManager(
      *
      * @return For now, just returns a list of all units.
      */
-    override fun evaluateProducible(): Array<UnitProductionProject> =
-        Utility.CollectionToGDXArray((UnitClass.values().filter { it != UnitClass._BASE }.map { UnitProductionProject(it).also { it.production = forCity.unitProduction } }).filter {
+    override fun evaluateProducible(): ArrayList<UnitProductionProject> =
+        (UnitClass.values().filter { it != UnitClass._BASE }.map { UnitProductionProject(it).also { it.production = forCity.unitProduction } }.filter {
             // STOPSHIP: 17/3/22 fuck off massive memory leak here.
             // FIXME Huge memory leak.
             // Patched with an inline dispose for now, but this is ridiculously inefficient.
             it.produce().apply { dispose() }.requirementsMet()
-        })
+        }) as ArrayList<UnitProductionProject>
 
     /**
      * Evaluates the quantity of production power that [city] has.

@@ -37,8 +37,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.List
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Array
-import com.shinkson47.SplashX6.game.Advancement
 import com.shinkson47.SplashX6.game.production.ProductionManager
 import com.shinkson47.SplashX6.game.production.ProductionProject
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
@@ -47,7 +45,6 @@ import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.rendering.ui.AutoFocusScrollPane
 import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.configuration.LanguageConfig.local
-import kotlin.math.ceil
 
 /**
  * # TODO
@@ -148,7 +145,7 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
         midColumn.addActor(lblCompleteIn)
 
         midColumn.addActor(TextButton(local("generic.any.remove"), Assets.REF_SKIN_W95).apply { addListener(StageWindow.LambdaClickListener {
-            selectedInQueue().let { productionManager?.queue?.removeValue(it, true) }
+            selectedInQueue().let { productionManager?.queue?.remove(it) }
             refresh(null)
         })
         btnRemoveButton = this
@@ -225,7 +222,7 @@ abstract class ProductionTab<T : ProductionProject<*>, P : ProductionManager<T>>
         }
     }
 
-    private fun <T> refresh(list : Array<T>, data : Array<T>) {
+    private fun <T> refresh(list : com.badlogic.gdx.utils.Array<T>, data : ArrayList<T>) {
         list.clear()
         list.addAll(Utility.CollectionToGDXArray(data))
         productionManager?.let { btnAddButton.touchable = if (it.isQueueFull() || btnRemoveButton.touchable == Touchable.disabled) Touchable.disabled else Touchable.enabled }

@@ -46,8 +46,8 @@ import com.shinkson47.SplashX6.utility.Assets
 class ImprovementProductionManager(val forCity: Settlement) : ProductionManager<ImprovementProductionProject>(basePower = 2) {
 
     // TODO This is a pretty damn taxing operation.
-    override fun evaluateProducible(): Array<ImprovementProductionProject> =
-        Array<ImprovementProductionProject>(0).apply {
+    override fun evaluateProducible(): ArrayList<ImprovementProductionProject> =
+        ArrayList<ImprovementProductionProject>(0).apply {
             Assets.get<Map<String, *>>(Assets.DATA_IMPROVEMENTS).forEach {
 
                 if ( // This guard rejects improvements that are already completed or in the queue.

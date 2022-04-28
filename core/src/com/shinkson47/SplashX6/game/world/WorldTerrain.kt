@@ -139,8 +139,9 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
 
     //#endregion navigation
     //#region lighting
-    val world = World(Vector2(0f,0f),false)
-    val rayHandler = RayHandler(world).also { it.setCulling(false); }
+    @Transient val world = World(Vector2(0f,0f),false)
+
+    @Transient var rayHandler = RayHandler(world).also { it.setCulling(false); }
 
 
     fun staticLight(vector3: Vector3, radius: Float = 400f) =
@@ -190,7 +191,9 @@ class WorldTerrain(val width : Int, val height : Int) : TiledMap(), PartiallySer
     /**
      * Re-creates the world layers after loading this instance from stream.
      */
-    final override fun deserialize() {
+    override fun deserialize() {
+        rayHandler = RayHandler(world).also { it.setCulling(false); }
+
         // Create transient layers
         initLayers()
 

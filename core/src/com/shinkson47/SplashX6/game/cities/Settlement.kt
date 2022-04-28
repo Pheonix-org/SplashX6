@@ -37,7 +37,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
-import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.production.CityProductionManager
@@ -172,8 +171,8 @@ class Settlement(
 
 
     private val saughtRadius = 2
-    private val ownedLand = Array<Vector2>()
-    private val borderVectors = Array<Vector2>()
+    private val ownedLand = ArrayList<Vector2>()
+    private val borderVectors = ArrayList<Vector2>()
 
     init { initOwnedLand() }
 
@@ -233,7 +232,7 @@ class Settlement(
      * and [radius] which defines the gap between settlement and the border.
      */
     fun isInCityBoundary(vec : Vector2)
-        = ownedLand.contains(vec, false)
+        = ownedLand.contains(vec)
 
 
     fun isInCityBoundary(x: Float, y: Float)

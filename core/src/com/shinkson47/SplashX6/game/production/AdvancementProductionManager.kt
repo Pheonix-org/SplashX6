@@ -46,8 +46,8 @@ import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
  * @version 1
  */
 class AdvancementProductionManager : ProductionManager<AdvancementProductionProject>(2, 10000) {
-    override fun evaluateProducible(): Array<AdvancementProductionProject> =
-        CollectionToGDXArray(GameData.player!!.advancementTree.map { AdvancementProductionProject(it) })
+    override fun evaluateProducible(): ArrayList<AdvancementProductionProject> =
+        GameData.player!!.advancementTree.map { AdvancementProductionProject(it) } as ArrayList<AdvancementProductionProject>
 
 
     override fun evaluatePower(): Int = basePower

@@ -35,6 +35,7 @@ import box2dLight.RayHandler
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -48,6 +49,7 @@ import com.shinkson47.SplashX6.game.cities.Settlement
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.units.UnitClass
 import com.shinkson47.SplashX6.game.world.WorldTerrain
+import com.shinkson47.SplashX6.rendering.screens.MainMenu
 import com.shinkson47.SplashX6.rendering.screens.WorldCreation
 import com.shinkson47.SplashX6.utility.APICondition.Companion.REQ_IN_GAME
 import com.shinkson47.SplashX6.utility.APICondition.Companion.invalidCall
@@ -452,6 +454,10 @@ object Console : GUIConsole() {
                     console.log("Though inside the world, no tile was found at this location.", LogLevel.ERROR)
                 }
             }
+        }
+
+        fun forceMainMenu() {
+            Client.client.screen = MainMenu()
         }
 
         //=============================

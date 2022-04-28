@@ -4,9 +4,7 @@ description = "This is a test Statemachine Script.";
 // Start by selecting a new destination.
 default = MoveOrTravel;
 
-import {
-	import com.shinkson47.SplashX6.game.GameHypervisor;
-}
+import com.shinkson47.SplashX6.game.GameHypervisor;
 
 // While we have a pathfinding nodes to follow, travels along path.
 state Travel {
@@ -31,7 +29,7 @@ state MoveOrSettle {
 }
 
 // If we've reached our destination (No pathfinding nodes left), choose new destination.
-switch Travel > MoveOrSettle if ( GameHypervisor.unit_selected() == null )
+switch from Travel to MoveOrSettle if ( GameHypervisor.unit_selected() == null );
 
 // Always go back to traveling after choosing a new location.
-switch MoveOrSettle > Travel
+switch from MoveOrSettle to Travel;

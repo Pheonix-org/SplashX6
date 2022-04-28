@@ -62,7 +62,7 @@ class _GameData : PartiallySerializable {
     /**
      * # The unit that the hypervisor is currently operating on.
      */
-    @JvmField var selectedUnit : Unit? = null
+    @Transient @JvmField var selectedUnit : Unit? = null
 
     @JvmField var player : Nation? = null
 

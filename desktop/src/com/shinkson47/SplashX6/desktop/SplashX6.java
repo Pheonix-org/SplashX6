@@ -60,6 +60,8 @@ public class SplashX6 {
 	// TODO some kind of swing or java FX launcher GUI?
 	public static void main (String[] arg) {
 
+		System.setProperty("Dsun.io.serialization.extendedDebugInfo", "true");
+
 		// ===========================
 		// DO NOT COMMIT.
 		// ===========================

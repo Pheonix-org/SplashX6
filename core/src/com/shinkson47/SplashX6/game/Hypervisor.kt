@@ -295,10 +295,10 @@ object Hypervisor {
     @JvmStatic
     fun load(gd: _GameData) {
         validateCall(REQ_NOT_IN_GAME, THROW(MSG_TRIED_EXCEPT("load a game", "a game is already loaded")))
+
+        doGameLoadCallback()
         GameData = gd
         GameData.deserialize()
-        doGameLoadCallback()
-
     }
 
     /**
@@ -506,7 +506,7 @@ object Hypervisor {
     @JvmStatic
     fun unit_disband(unit: Unit) {
         if (GameData.selectedUnit == unit) GameData.selectedUnit = null
-        unit.ownedBy()?.units?.removeValue(unit, true)
+        unit.ownedBy()?.units?.remove(unit)
         unit.dispose()
     }
 
@@ -588,8 +588,8 @@ object Hypervisor {
         doEndTurn_Hook()
     }
 
-    val cin_units = Array<Unit>()
-    val cin_settlements = Array<Settlement>()
+    val cin_units = ArrayList<Unit>()
+    val cin_settlements = ArrayList<Settlement>()
     var lastUnit: Unit? = null
     var lastSettlement: Settlement? = null
     var stepDelay = 0f
@@ -632,22 +632,22 @@ object Hypervisor {
             return
         }
 
-        if (cin_units.notEmpty()) {
+        if (cin_units.isNotEmpty()) {
             // skip units with nothing to do. FIXME doesn't work lol
-            while (cin_units.notEmpty() && cin_units.first()?.onTurnAction == null)
-                cin_units.removeIndex(0)
+            while (cin_units.isNotEmpty() && cin_units.first()?.onTurnAction == null)
+                cin_units.removeAt(0)
 
-            if (cin_units.isEmpty) return
+            if (cin_units.isEmpty()) return
 
             lastUnit = cin_units.first()
-            cin_units.removeIndex(0)
+            cin_units.removeAt(0)
             camera_focusOn(lastUnit!!)
             return
         }
 
-        if (cin_settlements.notEmpty()) {
+        if (cin_settlements.isNotEmpty()) {
             lastSettlement = cin_settlements.first()
-            cin_settlements.removeIndex(0)
+            cin_settlements.removeAt(0)
             camera_focusOn(lastSettlement!!)
             return
         }
@@ -1086,7 +1086,7 @@ object GameEndConditionChecker : TurnHook {
      */
     private fun checkGameOver(it: Nation): Pair<String, Boolean>? {
         with(it) {
-            if (units.isEmpty && settlements.isEmpty)
+            if (units.isEmpty() && settlements.isEmpty())
                 return Pair("No units or settlements remain", false)
 
         }

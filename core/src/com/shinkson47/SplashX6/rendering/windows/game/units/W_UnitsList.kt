@@ -79,7 +79,7 @@ class W_UnitsList : StageWindow("generic.game.units"){
 
     override fun refresh() {
         // TODO i hate this
-        list.setItems(CollectionToGDXArray(GameData.player!!.units.items.filterNotNull()))
+        list.setItems(CollectionToGDXArray(GameData.player!!.units))
         pack()
     }
 

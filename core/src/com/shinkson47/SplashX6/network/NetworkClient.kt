@@ -126,9 +126,11 @@ object NetworkClient {
         with (lastState!!.gameState!!) {
             if (pkt.type == PacketType.Start)
                 hasStarted = true
-            else
-                Gdx.app.postRunnable { update(this) }
+
+            Gdx.app.postRunnable { update(this) }
         }
+
+        send(Packet(PacketType.Ack, null))
     }
 
 

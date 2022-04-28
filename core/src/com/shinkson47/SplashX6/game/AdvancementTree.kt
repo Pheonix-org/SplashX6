@@ -31,10 +31,8 @@
 
 package com.shinkson47.SplashX6.game
 
-import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.Advancement.Companion.depth
 import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
-import java.lang.Integer.compare
 
 /**
  * A linked list data structure representing a tree of things which can be advanced.
@@ -81,7 +79,7 @@ class AdvancementTree(data : HashMap<String, *>) : ArrayList<Advancement>() {
     fun traverseDependancies(a: Advancement, parent: Advancement? = null, f : (Advancement?, Advancement) -> Any)  {
         f(parent, a)
 
-        if (a.requires.isEmpty) // TODO no requirements alias.
+        if (a.requires.isEmpty()) // TODO no requirements alias.
             return
 
         a.requires.forEach {
@@ -107,16 +105,16 @@ class AdvancementTree(data : HashMap<String, *>) : ArrayList<Advancement>() {
     /**
      * A list of dependencies for [a] in order of depth.
      */
-    fun orderedDependendencies(a: Advancement, onlyUncomplete: Boolean = false): Array<Advancement> {
-        var deps = Array<Advancement>().apply {
-            traverseDependancies(a) { it, requiredby -> add(requiredby) }
+    fun orderedDependendencies(a: Advancement, onlyUncomplete: Boolean = false): ArrayList<Advancement> {
+        var deps = ArrayList<Advancement>().apply {
+            traverseDependancies(a) { _, requiredby -> add(requiredby) }
             reverse()
         }
 
-        deps.sort { o1, o2 -> depth(o1).compareTo(depth(o2)) }
-        deps = CollectionToGDXArray(deps.distinct())
+        deps.sortWith { o1, o2 -> depth(o1).compareTo(depth(o2)) }
+        deps = deps.distinct() as ArrayList<Advancement>
         return if(onlyUncomplete)
-                CollectionToGDXArray(deps.filter { !it.complete })
+            deps.filter { !it.complete } as ArrayList<Advancement>
         else deps
     }
 }
@@ -125,16 +123,16 @@ class AdvancementTree(data : HashMap<String, *>) : ArrayList<Advancement>() {
 class Advancement(
     val name : String = "root",
     val parent : Advancement? = null,
-    val requires : Array<Advancement> = Array(),
+    val requires : ArrayList<Advancement> = ArrayList(),
     var complete : Boolean = false
-) {
+) : java.io.Serializable {
     companion object {
         /**
          * Determines if [a] is in the dependency tree of [that].
          * @return true if it is, else false.
          */
         fun dependancyFor(a: Advancement, that: Advancement): Boolean {
-            if (that.requires.isEmpty) return false
+            if (that.requires.isEmpty()) return false
             if (that.requires.contains(a)) return true
 
             var found = false
@@ -155,7 +153,7 @@ class Advancement(
      * @return In the tree of requirements, the length of the longest chain.
      */
     fun depth(i: Advancement, level: Int = 0): Int {
-        return if (i.requires.isEmpty)
+        return if (i.requires.isEmpty())
             level
         else {
             var depth = level

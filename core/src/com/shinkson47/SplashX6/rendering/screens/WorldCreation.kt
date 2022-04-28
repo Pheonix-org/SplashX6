@@ -456,7 +456,7 @@ class WorldCreation(
                                 switchState(1)
                             }
                         } else {
-                            NetworkClient.postUpdate()
+                            //NetworkClient.postUpdate()
                             Gdx.app.postRunnable { NetworkClient.lastState!!.gameState?.let { load(it) } }
                         }
                     },
