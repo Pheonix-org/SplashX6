@@ -80,6 +80,11 @@ abstract class ScalingScreenAdapter() : ScreenAdapter() {
 
     // TODO the stage isn't rendered here????
     override fun render(delta: Float) {
-        Console.draw()
+        try {
+            Console.draw()
+        } catch (e : Exception) {
+            Utility.warnDev("Console failed to render.")
+
+        }
     }
 }
