@@ -141,7 +141,7 @@ class UnitsWindow : StageWindow("Units"), Runnable {
         val _busy : Array<Unit> = Array()
 
 
-        GameData.player!!.units.forEach {            // Go through all units,
+        GameData.localPlayer!!.units.forEach {            // Go through all units,
             if (it.onTurnAction == null)    // and add them to the
                 _waiting.add(it)            // Right list.
             else

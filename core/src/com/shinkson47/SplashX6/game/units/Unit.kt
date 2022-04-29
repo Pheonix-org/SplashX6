@@ -122,7 +122,7 @@ open class Unit (
     val cost = data.getInt("build_cost")?: "40"
     fun requirementsMet(): Boolean {
         return data.getString("tech_req")?.let {
-            (ownedBy()?.advancementTree ?: GameData.player!!.advancementTree)
+            (ownedBy()?.advancementTree ?: GameData.localPlayer!!.advancementTree)
                 .getA(it)?.complete
                 ?:
                 true.apply { warnDev("$displayName requires $it, but it was not found in the tech tree.") }

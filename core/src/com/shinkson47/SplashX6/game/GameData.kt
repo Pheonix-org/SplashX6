@@ -33,7 +33,6 @@
 package com.shinkson47.SplashX6.game
 
 
-import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.game.units.Unit
 import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.generation.Generator
@@ -60,6 +59,15 @@ class _GameData : PartiallySerializable {
 
     @JvmField var nations : ArrayList<Nation> = ArrayList()
 
+    var currentPlayerIndex = 0
+
+    fun currentPlayer() = nations.get(currentPlayerIndex)
+
+    fun nextPlayer() {
+        currentPlayerIndex = (currentPlayerIndex + 1) % nations.size
+    }
+
+    fun isLocalPlayersTurn() = currentPlayer() == localPlayer
 
     // This client's data
     /**
@@ -67,7 +75,7 @@ class _GameData : PartiallySerializable {
      */
     @Transient @JvmField var selectedUnit : Unit? = null
 
-    @JvmField var player : Nation? = null
+    @JvmField var localPlayer : Nation? = null
 
 
     // ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
@@ -106,7 +114,7 @@ class _GameData : PartiallySerializable {
      */
     fun clear() {
         world = null
-        player = null
+        localPlayer = null
         selectedUnit = null
         nations.clear()
     }
@@ -123,7 +131,7 @@ class _GameData : PartiallySerializable {
         world = Generator.doYourThing()
 
         // Create a new local player
-        player = Hypervisor.nation_new(pref_civType, userName = REF_PREFERENCES.getString("USER_NAME"))
+        localPlayer = Hypervisor.nation_new(pref_civType, userName = REF_PREFERENCES.getString("USER_NAME"))
     }
 
 
@@ -142,14 +150,16 @@ class _GameData : PartiallySerializable {
             it.units.forEach  { it.deserialize() }
             it.settlements.forEach { it.deserialize() }
         }
+
+        determineLocalPlayer()
     }
 
     fun findNationByName(name: String) =
         nations.find { it.userName == name }
 
     fun determineLocalPlayer() {
-        player = findNationByName(Assets.REF_PREFERENCES.getString("USER_NAME"))
-        if (player == null)
+        localPlayer = findNationByName(Assets.REF_PREFERENCES.getString("USER_NAME"))
+        if (localPlayer == null)
             throw IllegalStateException("Local player does not exist within the world!")
     }
 

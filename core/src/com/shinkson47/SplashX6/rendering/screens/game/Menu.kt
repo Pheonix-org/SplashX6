@@ -147,7 +147,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
                 MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},
             MenuSubItem("!Reload UI") { Hypervisor.gameRenderer!!.let { it.stage.clear(); it.createUI() }  },
 
-                MenuSubItem("!Add a production project") { GameData.player!!.settlements[0].unitProduction.queueProject(UnitProductionProject(UnitClass.chariot)) }
+                MenuSubItem("!Add a production project") { GameData.localPlayer!!.settlements[0].unitProduction.queueProject(UnitProductionProject(UnitClass.chariot)) }
         )
 
 

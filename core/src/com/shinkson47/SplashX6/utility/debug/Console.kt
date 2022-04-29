@@ -284,7 +284,7 @@ object Console : GUIConsole() {
 
         @ConsoleDoc(description = "peeks the cities in the local player's nation.")
         fun cities() {
-            GameData.player!!.cityNames().forEach {
+            GameData.localPlayer!!.cityNames().forEach {
                 console.log(it)
             }
         }

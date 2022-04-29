@@ -32,12 +32,10 @@
 package com.shinkson47.SplashX6.game.production
 
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.badlogic.gdx.utils.Array
 import com.shinkson47.SplashX6.game.Advancement
 import com.shinkson47.SplashX6.game.Advancement.Companion.depth
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.rendering.windows.game.settlements.ProductionTab
-import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
 
 /**
  * # TODO
@@ -47,14 +45,14 @@ import com.shinkson47.SplashX6.utility.Utility.CollectionToGDXArray
  */
 class AdvancementProductionManager : ProductionManager<AdvancementProductionProject>(2, 10000) {
     override fun evaluateProducible(): ArrayList<AdvancementProductionProject> =
-        GameData.player!!.advancementTree.map { AdvancementProductionProject(it) } as ArrayList<AdvancementProductionProject>
+        GameData.localPlayer!!.advancementTree.map { AdvancementProductionProject(it) } as ArrayList<AdvancementProductionProject>
 
 
     override fun evaluatePower(): Int = basePower
 
     fun select(that: Advancement) {
         queue.clear()
-        GameData.player!!.advancementTree.orderedDependendencies(that).toList().map { AdvancementProductionProject(it) }
+        GameData.localPlayer!!.advancementTree.orderedDependendencies(that).toList().map { AdvancementProductionProject(it) }
             .forEach { queueProject(it) }
     }
 }

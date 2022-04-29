@@ -48,7 +48,6 @@ import com.shinkson47.SplashX6.game.AdvancementTree
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game.production.AdvancementProductionProject
-import com.shinkson47.SplashX6.game.production.ProductionProject
 import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.rendering.ui.AutoFocusScrollPane
@@ -63,7 +62,7 @@ import com.shinkson47.SplashX6.rendering.windows.game.settlements.W_Settlements
  * @param advancementTree The advancement tree to be displayed.
  * @param titleKey Localised text to be displayed in the title.
  */
-open class W_Advancement(titleKey: String, val advancementTree : AdvancementTree = GameData.player!!.advancementTree) : StageWindow(titleKey) {
+open class W_Advancement(titleKey: String, val advancementTree : AdvancementTree = GameData.localPlayer!!.advancementTree) : StageWindow(titleKey) {
 
     companion object {
         /**
@@ -161,7 +160,7 @@ open class W_Advancement(titleKey: String, val advancementTree : AdvancementTree
 
                         val adproj = AdvancementProductionProject(ad)
 
-                        tooltip(it, "Has been researched? : ${if (ad.complete) "Yes" else "No"} \n\n" + "Cost: ${adproj.cost} research power (About ${GameData.player
+                        tooltip(it, "Has been researched? : ${if (ad.complete) "Yes" else "No"} \n\n" + "Cost: ${adproj.cost} research power (About ${GameData.localPlayer
                             !!.advancementProuction!!.turnsToComplete(adproj)} turns.)")
 
                         it.addListener(
@@ -204,7 +203,7 @@ open class W_Advancement(titleKey: String, val advancementTree : AdvancementTree
      */
     private fun onSelect(a: Label) {
         selected = Pair(advancementTree.getA(a.text.toString())!!, a)
-        GameData.player!!.advancementProuction.select(selected.first)
+        GameData.localPlayer!!.advancementProuction.select(selected.first)
         docked(W_AdvancementProduction::class.java).refresh()
         docked(W_Settlements::class.java).refresh()
 

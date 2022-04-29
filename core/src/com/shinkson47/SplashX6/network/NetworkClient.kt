@@ -140,7 +140,6 @@ object NetworkClient {
                 hasStarted = true
                 Gdx.app.postRunnable { Hypervisor.load(this); }
             }
-
         }
 
         send(Packet(PacketType.Ack, null))

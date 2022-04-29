@@ -61,7 +61,7 @@ class W_AdvancementProduction : StageWindow("!Tech advancements") {
     }
 
     public override fun refresh() {
-        tab.refresh(GameData.player!!.advancementProuction)
+        tab.refresh(GameData.localPlayer!!.advancementProuction)
     }
 
 }

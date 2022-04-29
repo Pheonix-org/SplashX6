@@ -32,6 +32,7 @@
 
 package com.shinkson47.SplashX6.game
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.ai.StateMachine
 import com.shinkson47.SplashX6.game.cities.Settlement
@@ -87,8 +88,7 @@ class Nation(val nationType: NationType, val ai: Boolean = false, val userName: 
     }
 
     init {
-        Hypervisor.turn_hook(this)
-
+//        Hypervisor.turn_hook(this)
         checkInitAI()
     }
 
@@ -96,6 +96,9 @@ class Nation(val nationType: NationType, val ai: Boolean = false, val userName: 
         if (ai) {
             units.forEach { it.ai_update() }
             AI.run()
+
+            // Always automatically end the AI player's turn.
+            Gdx.app.postRunnable { Hypervisor.turn_end() }
         }
     }
 

@@ -237,6 +237,8 @@ object Hypervisor {
         // TODO could this be PRE or INIT?
         gameRenderer!!.createUI() // Populate the game screen with GUI. can't be done whilst gr is null.
 
+        update_lockout()
+
         // TODO This couldn't be done before a world is created, but is only temporary.
         // STOPSHIP : 17/04/2021 this is dumb and shouldn't stay
         Debug.create()
@@ -314,10 +316,17 @@ object Hypervisor {
         if (!inGame) return
         GameData = newData
         GameData.deserialize()
-        GameData.determineLocalPlayer()
 
         gameRenderer!!.newRenderer()
+        update_lockout()
+
         System.gc()
+    }
+
+    fun update_lockout() {
+        gameRenderer!!.drawStage = GameData.isLocalPlayersTurn().also {
+            message("It is now ${if (!it) "${GameData.currentPlayer().userName}'s" else "your"} turn.")
+        }
     }
 
 
@@ -423,7 +432,7 @@ object Hypervisor {
      * Cannot be used in a UnitAction; Modifies GameData.units. See [turn_asyncTask].
      */
     @JvmStatic
-    fun spawn(x: Int, y: Int, spriteName: UnitClass, nation: Nation = GameData.player!!): Unit {
+    fun spawn(x: Int, y: Int, spriteName: UnitClass, nation: Nation = GameData.localPlayer!!): Unit {
         requireNotNull(GameData.world, { " Tried to spawn with no world. " })
         require(GameData.nations.contains(nation)) { " Tried to spawn a unit into a nation which does not exist in this game. " }
         return Unit(spriteName, x, y).apply { nation.addUnit(this) }
@@ -439,7 +448,7 @@ object Hypervisor {
      * @return The selected unit.
      */
     @JvmStatic
-    fun unit_select(UnitIndex: Int, nation: Nation = GameData.player!!) = unit_select(nation.units.get(UnitIndex))
+    fun unit_select(UnitIndex: Int, nation: Nation = GameData.localPlayer!!) = unit_select(nation.units.get(UnitIndex))
 
     /**
      * Selects a unit to be of focus for manipulation in other calls.
@@ -594,10 +603,26 @@ object Hypervisor {
     @JvmStatic
     fun turn_end() {
         if (isCinematingLocalTurn) return
-        //doEndTurn_Units()
-        turn_end_cinemate()
+
+        if (GameData.isLocalPlayersTurn())
+            turn_end_cinemate()
+        else GameData.currentPlayer().apply {
+            if (ai) {
+                doOnTurn()
+                turn_end_over()
+            }
+        }
+
+
+    }
+
+    private fun turn_end_over() {
+        Server.updateAllClients()
+
         doEndTurn_Async()
         doEndTurn_Hook()
+        GameData.nextPlayer()
+        update_lockout()
     }
 
     val cin_units = ArrayList<Unit>()
@@ -611,12 +636,13 @@ object Hypervisor {
         isCinematingLocalTurn = true
         gameRenderer!!.drawStage = false
         cin_units.clear()
-        cin_units.addAll(GameData.player!!.units)
+        cin_units.addAll(GameData.currentPlayer().units)
         cin_settlements.clear()
-        cin_settlements.addAll(GameData.player!!.settlements)
+        cin_settlements.addAll(GameData.currentPlayer().settlements)
         lastUnit = null
         lastSettlement = null
         stepDelay = 0f
+        turn_end_over()
     }
 
     fun turn_end_cinemate_update() {
@@ -719,7 +745,7 @@ object Hypervisor {
         // an onTurnAction has modified the GameData units list.
         // TODO this does not support other nations.
         // TODO also wtf how does the ai still get invoked?!?!
-        GameData.player!!.units.forEach { it.doTurn() }
+        GameData.localPlayer!!.units.forEach { it.doTurn() }
     }
 
     /**
@@ -771,7 +797,7 @@ object Hypervisor {
      * # Creates a size 0 settlement at [x],[y] with the provided style.
      */
     fun settle(pos: Vector3) {
-        GameData.player!!.settle(pos)
+        GameData.localPlayer!!.settle(pos)
     }
 
 
@@ -1057,7 +1083,7 @@ object GameEndConditionChecker : TurnHook {
                     dissolveList.add(nation)
                     message("The nation of ${nation.nationType} has fallen!", isCrutial = true, persistant = true)
 
-                    if (nation == GameData.player!!)
+                    if (nation == GameData.localPlayer!!)
                         onLocalGameOver(it)
                 } else {
                     // This nation has won the game.
@@ -1079,7 +1105,7 @@ object GameEndConditionChecker : TurnHook {
     private fun onLocalGameOver(it: Pair<String, Boolean>) {
         client.fadeScreen(
             TextScreen(
-                text = "Game Over! \n\n The nation of ${GameData.player!!.nationType} has fallen. \n(${it.first}) \n\n Press ESC to observe others or end the game.",
+                text = "Game Over! \n\n The nation of ${GameData.localPlayer!!.nationType} has fallen. \n(${it.first}) \n\n Press ESC to observe others or end the game.",
                 background = TextureRegionDrawable(Assets.get<TextureAtlas>(TEXTURE_ART).findRegion(if (it.second) "img3" else "img6")),
                 onESC = Hypervisor.gameRenderer!!
             )

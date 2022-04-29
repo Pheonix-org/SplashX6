@@ -65,7 +65,7 @@ object Server {
     /**
      * The runnables inside of [socketConnectionThreads]
      */
-    private var socketConnections : ArrayList<serverThreadRunnable> = ArrayList()
+    private var clientConnections : ArrayList<clientConnection> = ArrayList()
 
 
     /**
@@ -85,7 +85,7 @@ object Server {
     /**
      * # A thread which runs in the [socketPool] talks to a single [NetworkClient] via a [socket]
      */
-    private class serverThreadRunnable : Runnable {
+    private class clientConnection : Runnable {
         lateinit var _clientSocket : Socket
         lateinit var _clientInput  : ObjectInputStream
         lateinit var _clientOutput : ObjectOutputStream
@@ -132,12 +132,12 @@ object Server {
                 _clientOutput = ObjectOutputStream(_clientSocket.getOutputStream())
 
                 // Notify of connection
-                onClientConnect()
+                onClientConnect(this)
 
                 // Identifies this client, and thier place in the game.
                 // This will [kick] this client if the server is already in-game,
                 // and they do not exist within the game
-                assignNation()
+                identify()
 
                 // Don't continue if the client was kicked during ident.
                 if(!running) return
@@ -158,11 +158,17 @@ object Server {
                 e.printStackTrace()
             }
 
+
             socket.close()
         }
 
+        /**
+         * Sends all queued packets to the client.
+         *
+         * Intended to be ran on the client thread.
+         */
         @Synchronized
-        fun drainQueue() {
+        private fun drainQueue() {
             synchronized(packetQueue) {
                 ArrayList(packetQueue).apply {
                     forEach { implSend(it) }
@@ -171,41 +177,60 @@ object Server {
             }
         }
 
-        fun stop() {
+        /**
+         * Gracefully stop the thread, and notify that
+         * a client has disconnected.
+         */
+        fun closeConnection() {
             running = false
-            onClientDisconnect()
-        }
-
-        fun kick() {
-            packetQueue.clear()
-            send(Packet(PacketType.Disconnect))
             drainQueue()
-            stop()
+            socket.close()
+            onClientDisconnect(this)
         }
 
-        fun assignNation() {
-            val ID = implSend(Packet(PacketType.Identify))?.data as String
+        /**
+         * Forcefully ejects this player's connection.
+         */
+        fun kick() {
+            // Don't bother sending any queued packets.
+            packetQueue.clear()
 
-            GameData.findNationByName(ID)?.let {
+            // Notify client of disconnect
+            send(Packet(PacketType.Disconnect))
 
-                // An existing player of this game is re-connecting.
-                Thread.currentThread().name = "Server connection to $ID"
-                Utility.warnPlayer("Existing player re-joined game : $ID")
+            // Close connection to the client.
+            closeConnection()
+        }
+
+        /**
+         * Identifies the connected client.
+         */
+        private fun identify() {
+            // Retrieve the username from the client.
+            val clientsUserName = implSend(Packet(PacketType.Identify))?.data as String
+
+            // Check to see if they're in the game.
+            GameData.findNationByName(clientsUserName)?.let {
+                // They do; An existing player of this game is re-connecting.
+                Thread.currentThread().name = "Server connection to $clientsUserName"
+                Utility.warnPlayer("Existing player re-joined game : $clientsUserName")
             } ?: run {
-                // A new player is connecting.
+                // They don't; A new player is connecting. Has the game started yet?
                 if (Client.client.screen is WorldCreation) {
-                    Hypervisor.nation_new(NationType.china, userName = ID)
+                    Hypervisor.nation_new(NationType.china, userName = clientsUserName)
                     //Console.log("New player joined the game : $ID")
                 } else {
-                    Utility.warnPlayer("$ID tried tried to join, but was rejected because the game has started without them.")
+                    // Too late to join; game has started without this player.
+                    Utility.warnPlayer("$clientsUserName tried tried to join, but was rejected because the game has started without them.")
                     kick()
-                } // Too late to join; game has started without this player.
+                }
             }
         }
 
         /**
          * # Sends the status of the game to the client.
          */
+        // TODO this needs to also notify whose turn it is. Maybe include it in the data?
         fun status() {
             if (Client.client.screen is GameScreen)
                 send(Packet(PacketType.Start, GameData))
@@ -213,13 +238,20 @@ object Server {
                 send(Packet(PacketType.Status, GameData))
         }
 
+        /**
+         * Queues a packet to be sent to the client asyncronously
+         */
         @Synchronized
         fun send(packet: Packet) {
             packetQueue.add(packet)
         }
 
         /**
-         * @return null if not connected to a client.
+         * Actually sends a packet to the client.
+         *
+         * Will resend if the client asks.
+         *
+         * @return the client's response, or null if no [isConnected].
          */
         private fun implSend(packet: Packet): Packet? {
             if (isConnected()) {
@@ -236,27 +268,32 @@ object Server {
             } else return null
         }
 
-        fun read() : Packet {
-            return _clientInput.readObject() as Packet
+        /**
+         * Reads a packet from the client.
+         */
+        private fun read() : Packet = _clientInput.readObject() as Packet
+    }
+
+    private fun newSocketThread() =
+        clientConnection().let {
+            clientConnections.add(it)
+            Thread(it).let { socketConnectionThreads.add( it.also { it.start() }); it }
         }
-    }
 
-    private fun newSocketThread() {
-        val r = serverThreadRunnable()
-        socketConnectionThreads.add(Thread(r))
-        socketConnectionThreads.last().start()
-        socketConnections.add(r)
-    }
-
-    private fun stopAllThreads() {
-        socketConnections.forEach { it.stop() }
-    }
-
+    /**
+     * invokes [serverSocketThread#closeConnection] on all connections.
+     */
+    private fun stopAllThreads() = clientConnections.forEach { it.closeConnection() }
 
     // ============================================
     //#region           Power
     // ============================================
 
+    /**
+     * Starts the server
+     *
+     * @return true if the server started successfully.
+     */
     fun boot() : Boolean {
         if (!alive) {
             try {
@@ -265,27 +302,36 @@ object Server {
                 e.printStackTrace()
                 return false
             }
-            newSocketThread()
+
+            // Start the first client connection.
+            // It will start replacements automatically when consumed
+            // by a client.
+            alive = newSocketThread().isAlive
         }
-        alive = socketConnectionThreads.last().isAlive
+
         return printStatus()
     }
 
+    /**
+     * Closes the server
+     */
     fun shutdown()  {
         if (!alive) return
 
         alive = false
-        socket.close()
 
-        socketConnections.forEach { it.stop() }
-        socketConnections.clear()
+        stopAllThreads()
+
+        socket.close()
 
         socketConnectionThreads.forEach { it.stop() }
         socketConnectionThreads.clear()
+        clientConnections.clear()
+
         printStatus()
     }
 
-    fun printStatus() : Boolean {
+    private fun printStatus() : Boolean {
         Console.log("server ${if (alive) "alive" else "dead"}")
         return alive
     }
@@ -298,14 +344,16 @@ object Server {
     /**
      * # A client has just connected. Handle it.
      */
-    private fun onClientConnect() {}
+    private fun onClientConnect(client : clientConnection) {
+
+    }
 
     /**
      * # A client has just disconnected.
      */
-    private fun onClientDisconnect() {}
+    private fun onClientDisconnect(client : clientConnection) {
 
-
+    }
 
     // ============================================
     //#endregion        Internal
@@ -321,7 +369,9 @@ object Server {
      *
      * pass to local, and wait for turn end.
      */
-    fun turn()  {}
+    fun turn()  {
+
+    }
 
     fun poll()  {}
 
@@ -329,14 +379,21 @@ object Server {
     //#endregion        API
     // ============================================
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        boot()
+    fun sendToAllClients(pkt : Packet) {
+        clientConnections.forEach {
+            try {
+                it.send(pkt)
+            } catch (e : SocketException) { it.dirty; it.closeConnection() }
+        }
+
+        clientConnections.removeIf { it.dirty }
+        socketConnectionThreads.removeIf { !it.isAlive }
+        System.gc();
     }
 
-    fun sendToAllClients(pkt : Packet) {
-        socketConnections.forEach {
-            it.send(pkt)
-        }
+    fun updateAllClients() {
+        sendToAllClients(Packet(PacketType.Ping))
+        clientConnections.map { it.status() }
+
     }
 }
