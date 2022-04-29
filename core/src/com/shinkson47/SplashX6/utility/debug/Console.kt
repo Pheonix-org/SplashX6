@@ -402,6 +402,10 @@ object Console : GUIConsole() {
             REF_PREFERENCES.putString("USER_NAME", name)
         }
 
+        fun ident() {
+            Console.log(REF_PREFERENCES.getString("USER_NAME"))
+        }
+
         //=============================
         //#endregion Hypervisor
         //#region audio

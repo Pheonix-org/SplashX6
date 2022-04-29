@@ -57,53 +57,97 @@ import java.net.SocketException
 object Server {
 
     /**
-     * # Pool of sockets.
+     * # Pool of sockets to communicate to clients.
+     * One client per thread.
      */
     private var socketConnectionThreads : ArrayList<Thread> = ArrayList()
+
+    /**
+     * The runnables inside of [socketConnectionThreads]
+     */
     private var socketConnections : ArrayList<serverThreadRunnable> = ArrayList()
 
-    var alive: Boolean = false
-        private set
 
     /**
      * # A socket which can be used to talk to clients.
      */
     lateinit var socket : ServerSocket;
 
-
+    /**
+     * Indicates weather or not the server is running.
+     */
+    var alive: Boolean = false
+        private set(value) {
+            field = value
+            stopAllThreads()
+        }
 
     /**
-     * # A thread which runs in the [socketPool] talks to a single [NetworkClient] via [socket]
+     * # A thread which runs in the [socketPool] talks to a single [NetworkClient] via a [socket]
      */
     private class serverThreadRunnable : Runnable {
         lateinit var _clientSocket : Socket
         lateinit var _clientInput  : ObjectInputStream
         lateinit var _clientOutput : ObjectOutputStream
+
+        /**
+         * Flag indicating this connection is bad.
+         *
+         * If true When this thread is used to send a packet,
+         * the thread is closed.
+         */
+        var dirty : Boolean = false
+
+        /**
+         * Flag indicating that this connection is still open.
+         */
         var running : Boolean = true
 
+        /**
+         * A queue of [Packet]s posted for the thread to send to the client asyncronously.
+         *
+         * This avoids other threads, especially the rendering thread, from pausing to talk over
+         * the network; that's the job of this thread.
+         */
         @Volatile private var packetQueue = ArrayList<Packet>()
 
-
-        fun isConnected() = this::_clientSocket.isInitialized && _clientSocket.isConnected
+        /**
+         * Determines if this thread has connected to a client.
+         *
+         * false if waiting idle for a new client, or has been marked dirty.
+         */
+        fun isConnected() = this::_clientSocket.isInitialized && _clientSocket.isConnected && !dirty
 
 
         override fun run() {
             try {
                 // Open thread. Listen for a new client trying to connect.
                 _clientSocket = socket.accept()
+
+                // immediately start a new thread to replace this one in
+                // waiting for a new client to connect.
                 newSocketThread()
-                
+
                 _clientInput = ObjectInputStream(_clientSocket.getInputStream())
                 _clientOutput = ObjectOutputStream(_clientSocket.getOutputStream())
 
-
+                // Notify of connection
                 onClientConnect()
+
+                // Identifies this client, and thier place in the game.
+                // This will [kick] this client if the server is already in-game,
+                // and they do not exist within the game
                 assignNation()
 
-                if(!running)
-                    return
-                status()
+                // Don't continue if the client was kicked during ident.
+                if(!running) return
+                // TODO check that packets after here are queued.
 
+                // Update the client as to the status of the game.
+                status()
+                // TODO noftify who's turn it is
+
+                // Main client communication loop.
                 while (running) {
                     if (packetQueue.isNotEmpty())
                         drainQueue()
