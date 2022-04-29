@@ -101,7 +101,7 @@ object NetworkClient {
                     PacketType.Status -> statusUpdate(pkt)
                     PacketType.Start -> statusUpdate(pkt)
                     PacketType.End -> TODO("The client doesn't know how to respond to the server.")
-                    PacketType.Disconnect -> {Hypervisor.endGame(); disconnect()}
+                    PacketType.Disconnect -> { Gdx.app.postRunnable {Hypervisor.endGame()}; send(Packet(PacketType.Ack)); disconnect()}
                     PacketType.Identify -> send(Packet(PacketType.Identify, data = Assets.REF_PREFERENCES.getString("USER_NAME")))
                 }
             }
