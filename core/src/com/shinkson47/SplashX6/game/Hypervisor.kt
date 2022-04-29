@@ -251,7 +251,7 @@ object Hypervisor {
         AudioController.playPlaylist(Assets.DEFAULT_PLAYLIST)
 
         if (Server.alive)
-            Server.sendToAllClients(Packet(PacketType.Start, GameData))
+            Server.sendToAllClients(Packet(PacketType.Start, GameData, GameData.currentPlayerIndex))
 
         switchToGameScreen()
     }

@@ -182,9 +182,13 @@ object Server {
          * a client has disconnected.
          */
         fun closeConnection() {
-            running = false
-            drainQueue()
-            _clientSocket.close()
+
+            if (isConnected()) {
+                running = false
+                drainQueue()
+                _clientSocket.close()
+            }
+
             onClientDisconnect(this)
         }
 
@@ -233,9 +237,9 @@ object Server {
         // TODO this needs to also notify whose turn it is. Maybe include it in the data?
         fun status() {
             if (Client.client.screen is GameScreen)
-                send(Packet(PacketType.Start, GameData))
+                send(Packet(PacketType.Start, GameData, GameData.currentPlayerIndex))
             else
-                send(Packet(PacketType.Status, GameData))
+                send(Packet(PacketType.Status, GameData, GameData.currentPlayerIndex))
         }
 
         /**

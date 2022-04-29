@@ -142,7 +142,7 @@ class Menu(_parent : GameScreen) : Table(REF_SKIN_W95) {
                 MenuSubItem("!World Generation", WindowAction(TerrainGenerationEditor())),
                 MenuSubItem("!Publish Game") { Server.boot() },
                 MenuSubItem("!Connect Locally") { NetworkClient.connect() },
-                MenuSubItem("!Notify Start") {Server.sendToAllClients(Packet(PacketType.Start, GameData))},
+                MenuSubItem("!Notify Start") {Server.sendToAllClients(Packet(PacketType.Start, GameData, GameData.currentPlayerIndex))},
                 MenuSubItem("!Show a message") { message("Everything is fine :)")},
                 MenuSubItem("!Show an error") { warnDev("Everything is broken :(")},
             MenuSubItem("!Reload UI") { Hypervisor.gameRenderer!!.let { it.stage.clear(); it.createUI() }  },

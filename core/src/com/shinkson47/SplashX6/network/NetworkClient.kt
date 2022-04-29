@@ -90,21 +90,30 @@ object NetworkClient {
     private class NetworkClientListener() : Runnable {
         lateinit var host : Thread
         override fun run() {
+            println("Client alive")
             while (!this::host.isInitialized);
             while (!host.isInterrupted) {
-                val pkt = read()
-                Console.log("Client (${Thread.currentThread().name}) recieved : $pkt")
-                when (pkt.type) {
-                    PacketType.Ping -> send(Packet(PacketType.Pong))
-                    PacketType.Pong -> warnDev("The server sent the client a random pong?")
-                    PacketType.Ack -> warnDev("The server sent the client a random ack?")
-                    PacketType.Status -> statusUpdate(pkt)
-                    PacketType.Start -> statusUpdate(pkt)
-                    PacketType.End -> TODO("The client doesn't know how to respond to the server.")
-                    PacketType.Disconnect -> { Gdx.app.postRunnable {Hypervisor.endGame()}; send(Packet(PacketType.Ack)); disconnect()}
-                    PacketType.Identify -> send(Packet(PacketType.Identify, data = Assets.REF_PREFERENCES.getString("USER_NAME")))
+                try {
+                    val pkt = read()
+                    println("Client (${Thread.currentThread().name}) recieved : $pkt")
+                    when (pkt.type) {
+                        PacketType.Ping -> send(Packet(PacketType.Pong))
+                        PacketType.Pong -> warnDev("The server sent the client a random pong?")
+                        PacketType.Ack -> warnDev("The server sent the client a random ack?")
+                        PacketType.Status -> statusUpdate(pkt)
+                        PacketType.Start -> statusUpdate(pkt)
+                        PacketType.End -> TODO("The client doesn't know how to respond to the server.")
+                        PacketType.Disconnect -> {
+                            Gdx.app.postRunnable { Hypervisor.endGame() }; send(Packet(PacketType.Ack)); disconnect()
+                        }
+                        PacketType.Identify -> send(Packet(PacketType.Identify, data = Assets.REF_PREFERENCES.getString("USER_NAME")))
+                    }
+                }catch (e: Exception) {
+                    println("Client packet failure")
+                    e.printStackTrace()
                 }
             }
+            println("Client dead")
         }
     }
 
@@ -134,6 +143,7 @@ object NetworkClient {
         }
 
         with (lastState!!.gameState!!) {
+            this.currentPlayerIndex = pkt.data as Int
             if (hasStarted)
                 Gdx.app.postRunnable { Hypervisor.update(this) }
             else if (pkt.type == PacketType.Start) {
