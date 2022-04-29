@@ -72,6 +72,7 @@ class Nation(val nationType: NationType, val ai: Boolean = false, val userName: 
     val advancementTree = AdvancementTree(Assets.get(Assets.DATA_TECHS))
 
     @Transient lateinit var AI: NationAI
+    var lastAIState = NationAI().Peace
 
     /**
      *
@@ -96,6 +97,7 @@ class Nation(val nationType: NationType, val ai: Boolean = false, val userName: 
         if (ai) {
             units.forEach { it.ai_update() }
             AI.run()
+            lastAIState = AI.states.indexOf( AI.currentState )
 
             // Always automatically end the AI player's turn.
             Gdx.app.postRunnable { Hypervisor.turn_end() }
@@ -131,6 +133,7 @@ class Nation(val nationType: NationType, val ai: Boolean = false, val userName: 
     fun data(): HashMap<String, *> = data(nationType)
     override fun deserialize() {
         checkInitAI()
+        AI.forceState(AI.states[lastAIState])
     }
 
     override fun toString() = "${nationType}"

@@ -33,6 +33,7 @@
 package com.shinkson47.SplashX6.network
 
 import com.badlogic.gdx.Game
+import com.badlogic.gdx.Gdx
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game._GameData
@@ -82,8 +83,10 @@ object ServerPacketHandler : PacketHandler() {
             PacketType.Ping     -> Packet(PacketType.Pong)
             PacketType.End      -> Packet(PacketType.Ack)
             PacketType.Status   ->  {
-                NetworkClient.statusUpdate(packet)
-                Server.updateAllClients()
+                Gdx.app.postRunnable {
+                    Hypervisor.update(packet.let { it.gameState!!.also { it1 -> it1.currentPlayerIndex = it.data as Int} })
+                    Server.updateAllClients()
+                }
 
                 null
             }

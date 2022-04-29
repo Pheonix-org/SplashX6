@@ -120,6 +120,7 @@ object Server {
 
 
         override fun run() {
+            var cothread: Thread? = null
             try {
                 // Open thread. Listen for a new client trying to connect.
                 _clientSocket = socket.accept()
@@ -129,6 +130,9 @@ object Server {
                 newSocketThread()
 
                 _clientInput = ObjectInputStream(_clientSocket.getInputStream())
+
+
+
                 _clientOutput = ObjectOutputStream(_clientSocket.getOutputStream())
 
                 // Notify of connection
@@ -147,12 +151,14 @@ object Server {
                 status()
                 // TODO noftify who's turn it is
 
+                // Co thread
+
                 // Main client communication loop.
                 while (running) {
                     if (packetQueue.isNotEmpty())
                         drainQueue()
 
-                    if (_clientInput.available() != 0)
+                    if (_clientSocket.getInputStream().available() != 0)
                         ServerPacketHandler.handle(read())
                 }
             } catch (e : java.lang.Exception) {
@@ -161,7 +167,7 @@ object Server {
                 e.printStackTrace()
             }
 
-
+            cothread?.stop()
             _clientSocket.close()
         }
 
@@ -399,7 +405,7 @@ object Server {
     }
 
     fun updateAllClients() {
-        sendToAllClients(Packet(PacketType.Ping))
+//        sendToAllClients(Packet(PacketType.Ping))
         clientConnections.map { it.status() }
 
     }
