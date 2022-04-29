@@ -35,6 +35,7 @@ package com.shinkson47.SplashX6.rendering.ui
 import com.badlogic.gdx.ScreenAdapter
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.viewport.ScalingViewport
+import com.shinkson47.SplashX6.utility.Utility
 import com.shinkson47.SplashX6.utility.debug.Console
 import com.shinkson47.SplashX6.utility.configuration.GraphicalConfig
 import java.util.function.Consumer

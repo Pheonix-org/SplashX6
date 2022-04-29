@@ -109,8 +109,9 @@ object Server {
                         drainQueue()
                 }
             } catch (e : java.lang.Exception) {
-                Console.log("Server thread crashed!")
-                Console.log(e)
+                println("Server thread crashed!")
+                //Console.log(e)
+                e.printStackTrace()
             }
 
             socket.close()
@@ -150,7 +151,7 @@ object Server {
                 // A new player is connecting.
                 if (Client.client.screen is WorldCreation) {
                     Hypervisor.nation_new(NationType.china, userName = ID)
-                    Console.log("New player joined the game : $ID")
+                    //Console.log("New player joined the game : $ID")
                 } else {
                     Utility.warnPlayer("$ID tried tried to join, but was rejected because the game has started without them.")
                     kick()
@@ -179,14 +180,14 @@ object Server {
         private fun implSend(packet: Packet): Packet? {
             if (isConnected()) {
                 while (true) {
-                    Console.log("Server (${Thread.currentThread().name}) sending : $packet")
+                    println("Server (${Thread.currentThread().name}) sending : $packet")
                     Packet.send(packet, _clientInput, _clientOutput)
 
                     val response = read()
-                    Console.log("Server (${Thread.currentThread().name}) received : $response in response to $packet")
+                    println("Server (${Thread.currentThread().name}) received : $response in response to $packet")
                     if (response.type != PacketType.Resend)
                         return response
-                    else Console.log("Server (${Thread.currentThread().name}) is re-sending : $packet by request")
+                    else println("Server (${Thread.currentThread().name}) is re-sending : $packet by request")
                 }
             } else return null
         }
