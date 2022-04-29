@@ -159,7 +159,7 @@ object Server {
             }
 
 
-            socket.close()
+            _clientSocket.close()
         }
 
         /**
@@ -184,7 +184,7 @@ object Server {
         fun closeConnection() {
             running = false
             drainQueue()
-            socket.close()
+            _clientSocket.close()
             onClientDisconnect(this)
         }
 
