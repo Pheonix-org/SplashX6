@@ -126,6 +126,7 @@ class _GameData : PartiallySerializable {
         // Delete all data.
         clear()
         System.gc()
+        currentPlayerIndex = 0
 
         // Create a new world
         world = Generator.doYourThing()

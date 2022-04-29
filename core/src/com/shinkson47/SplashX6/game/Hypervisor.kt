@@ -617,12 +617,11 @@ object Hypervisor {
     }
 
     private fun turn_end_over() {
-        Server.updateAllClients()
-
         doEndTurn_Async()
         doEndTurn_Hook()
         GameData.nextPlayer()
         update_lockout()
+        Server.updateAllClients()
     }
 
     val cin_units = ArrayList<Unit>()
