@@ -32,7 +32,9 @@
 
 package com.shinkson47.SplashX6.network
 
+import com.badlogic.gdx.Game
 import com.shinkson47.SplashX6.game.GameData
+import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.game._GameData
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
@@ -72,29 +74,30 @@ abstract class PacketHandler {
     abstract fun handle(packet : Packet) : Packet?
 }
 
-////TODO forgot that i made these.
-///**
-// * # [PacketHandler] for a server
-// * Responds to client packets
-// */
-//object ServerPacketHandler : PacketHandler() {
-//    override fun handle(packet: Packet): Packet? {
-//        return when (packet.type) {
-//            PacketType.Identify -> Packet(PacketType.Identify)
-//            PacketType.Ping     -> Packet(PacketType.Pong)
-//            PacketType.End      -> Packet(PacketType.Ack)
-//            PacketType.Status   -> Packet(PacketType.Ack, GameData)
-//            PacketType.Disconnect-> Packet(PacketType.Ack)
-//
-//            // Things the server shouldn't receive from the client.
-//            PacketType.Start    -> null
-//            PacketType.Pong     -> null
-//            PacketType.Ack      -> null
-//            PacketType.Resend   -> null
-//        }
-//    }
-//}
-//
+
+object ServerPacketHandler : PacketHandler() {
+    override fun handle(packet: Packet): Packet? {
+        return when (packet.type) {
+            PacketType.Identify -> Packet(PacketType.Identify)
+            PacketType.Ping     -> Packet(PacketType.Pong)
+            PacketType.End      -> Packet(PacketType.Ack)
+            PacketType.Status   ->  {
+                NetworkClient.statusUpdate(packet)
+                Server.updateAllClients()
+
+                null
+            }
+            PacketType.Disconnect-> Packet(PacketType.Ack)
+
+            // Things the server shouldn't receive from the client.
+            PacketType.Start    -> null
+            PacketType.Pong     -> null
+            PacketType.Ack      -> null
+            PacketType.Resend   -> null
+        }
+    }
+}
+
 ///**
 // * # [PacketHandler] for a client.
 // * Responds to server packets

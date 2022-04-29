@@ -52,6 +52,7 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.TILE_HALF_WIDTH
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.cartesianToIso
 import com.shinkson47.SplashX6.input.KeyBinder
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
+import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.Packet
 import com.shinkson47.SplashX6.network.PacketType
 import com.shinkson47.SplashX6.network.Server
@@ -252,6 +253,8 @@ object Hypervisor {
 
         if (Server.alive)
             Server.sendToAllClients(Packet(PacketType.Start, GameData, GameData.currentPlayerIndex))
+        else if (NetworkClient.isConnected())
+            NetworkClient.send(Packet(PacketType.Status, GameData, GameData.currentPlayerIndex))
 
         switchToGameScreen()
     }

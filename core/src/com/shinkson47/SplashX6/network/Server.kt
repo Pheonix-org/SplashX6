@@ -151,6 +151,9 @@ object Server {
                 while (running) {
                     if (packetQueue.isNotEmpty())
                         drainQueue()
+
+                    if (_clientInput.available() != 0)
+                        ServerPacketHandler.handle(read())
                 }
             } catch (e : java.lang.Exception) {
                 println("Server thread crashed!")
