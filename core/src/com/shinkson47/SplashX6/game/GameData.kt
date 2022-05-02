@@ -148,6 +148,7 @@ class _GameData : PartiallySerializable {
         world!!.deserialize()
 
         nations.forEach {
+            it.deserialize()
             it.units.forEach  { it.deserialize() }
             it.settlements.forEach { it.deserialize() }
         }

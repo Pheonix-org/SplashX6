@@ -36,6 +36,23 @@ import com.shinkson47.SplashX6.audio.AudioController
 import com.shinkson47.SplashX6.game.Hypervisor
 import com.shinkson47.SplashX6.utility.SerializablePredicate
 
+/*
+@startuml
+class UnitAction {
+    +displayName : String
+    +isAvailable : SerializablePredicate
+    +action : SerializablePredicate
+
+    +run() : Boolean
+}
+
+class UnitActionDictionary {
+    +get(UnitClass) : Array<UnitAction>
+}
+@enduml
+*/
+
+
 /**
  * # A map of actions which units can perform
  * Maps a given class of unit to a collection of actions
@@ -171,5 +188,7 @@ object UnitActionDictionary : HashMap<UnitClass, Array<UnitAction>>() {
         } catch (e : NullPointerException) {
             super.get(UnitClass._BASE)!!
         }
+
+
     }
 }

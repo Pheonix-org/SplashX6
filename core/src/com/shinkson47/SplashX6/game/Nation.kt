@@ -72,7 +72,7 @@ class Nation(val nationType: NationType, val ai: Boolean = false, val userName: 
     val advancementTree = AdvancementTree(Assets.get(Assets.DATA_TECHS))
 
     @Transient lateinit var AI: NationAI
-    var lastAIState = NationAI().Peace
+    var lastAIState = 0
 
     /**
      *
@@ -132,8 +132,13 @@ class Nation(val nationType: NationType, val ai: Boolean = false, val userName: 
     fun cityNames(): ArrayList<String> = data()["cities"] as ArrayList<String>
     fun data(): HashMap<String, *> = data(nationType)
     override fun deserialize() {
-        checkInitAI()
-        AI.forceState(AI.states[lastAIState])
+
+        try {
+            checkInitAI()
+            if (ai) AI.forceState(AI.states[lastAIState])
+        } catch (e : UninitializedPropertyAccessException) {
+            println()
+        }
     }
 
     override fun toString() = "${nationType}"

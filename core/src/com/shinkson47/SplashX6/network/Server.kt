@@ -47,10 +47,26 @@ import java.net.ServerSocket
 import java.net.Socket
 import java.net.SocketException
 
+/*
 
+@startuml
+
+class server {
+    f(): String
+}
+
+@enduml
+
+Server
+
+*/
 
 /**
  * # A server socket that can be used to connect other clients to a game loaded on this client.
+ *
+ *
+ *
+ *
  * @author [Jordan T. Gray](https://www.shinkson47.in) on 19/05/2021
  */
 // This architecture is a mess.
