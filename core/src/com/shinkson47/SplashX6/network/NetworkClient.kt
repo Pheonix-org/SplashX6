@@ -65,7 +65,7 @@ object NetworkClient {
 
     fun connect() {
         hasStarted = false
-        socket = Socket("localhost",25565)
+        socket = Socket("192.168.1.167",25565)
         _clientOutput = ObjectOutputStream(socket!!.getOutputStream())
         _clientInput  = ObjectInputStream (socket!!.getInputStream())
                 //TODO

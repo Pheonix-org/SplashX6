@@ -38,6 +38,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Array
+import com.shinkson47.SplashX6.Client
 import com.shinkson47.SplashX6.Client.Companion.DEBUG_MODE
 import com.shinkson47.SplashX6.Client.Companion.client
 import com.shinkson47.SplashX6.audio.AudioController
@@ -625,6 +626,9 @@ object Hypervisor {
         GameData.nextPlayer()
         update_lockout()
         Server.updateAllClients()
+
+        if (NetworkClient.isConnected())
+            NetworkClient.send(Packet(PacketType.Status, GameData, GameData.currentPlayerIndex))
     }
 
     val cin_units = ArrayList<Unit>()
