@@ -112,7 +112,7 @@ class AdvancementTree(data : HashMap<String, *>) : ArrayList<Advancement>() {
         }
 
         deps.sortWith { o1, o2 -> depth(o1).compareTo(depth(o2)) }
-        deps = deps.distinct() as ArrayList<Advancement>
+        deps = ArrayList(deps.distinct())
         return if(onlyUncomplete)
             deps.filter { !it.complete } as ArrayList<Advancement>
         else deps

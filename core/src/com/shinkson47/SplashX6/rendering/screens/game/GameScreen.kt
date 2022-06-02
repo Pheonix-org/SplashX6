@@ -40,6 +40,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.maps.MapRenderer
 import com.badlogic.gdx.maps.tiled.renderers.IsometricStaggeredTiledMapRenderer
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.shinkson47.SplashX6.game.GameData
 import com.shinkson47.SplashX6.game.Hypervisor
@@ -53,10 +54,10 @@ import com.shinkson47.SplashX6.game.world.WorldTerrain
 import com.shinkson47.SplashX6.game.world.WorldTerrain.Companion.isoToCartesian
 import com.shinkson47.SplashX6.input.mouse.MouseHandler
 import com.shinkson47.SplashX6.rendering.Camera
-import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.renderers.KeyBindRenderer
 import com.shinkson47.SplashX6.rendering.screens.Warroom
 import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
+import com.shinkson47.SplashX6.rendering.ui.StageWindow
 import com.shinkson47.SplashX6.rendering.windows.game.W_Help
 import com.shinkson47.SplashX6.utility.debug.Debug
 import org.xguzm.pathfinding.grid.GridCell
@@ -175,6 +176,8 @@ class GameScreen : ScalingScreenAdapter() {
                 WorldTerrain.TILE_HALF_HEIGHT.toFloat()
             )
         }
+        sr.end()
+        sr.begin(ShapeRenderer.ShapeType.Filled)
 
         if (cm_isSelectingDestination || GameData.selectedUnit?.destination?.x != -1f)
             renderDestinationLine()
@@ -269,7 +272,7 @@ class GameScreen : ScalingScreenAdapter() {
                         currentNode = isoToCartesian(it.x, it.y)
 
                         // Draw line
-                        sr.line(lastNode.x, lastNode.y, currentNode.x, currentNode.y)
+                        sr.rectLine(Vector2(lastNode.x, lastNode.y), Vector2( currentNode.x, currentNode.y), 5f)
 
                         // Set this node as the last one. Next.
                         lastNode = currentNode
@@ -286,7 +289,7 @@ class GameScreen : ScalingScreenAdapter() {
                 // Draw a red line to the intended destination.
                 sr.color = Color.RED
                 val mouse = isoToCartesian(sel.x.toInt(), sel.y.toInt())
-                sr.line(Vector3(x, y, 0f), mouse)
+                sr.rectLine(Vector2(x, y), Vector2(mouse.x, mouse.y), 2f)
                 sr.color = Color.WHITE
             }
         }

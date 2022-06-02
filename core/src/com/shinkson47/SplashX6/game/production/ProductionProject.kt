@@ -131,7 +131,7 @@ abstract class ProductionProject<T>(
  */
 class UnitProductionProject(val type : UnitClass) : ProductionProject<Unit>() {
     override fun doClaim(): Unit {
-        return (production!! as CityProductionManager).forCity.let { Hypervisor.spawn(it.isoVec.y.toInt(), it.isoVec.y.toInt(), type, it.ownedBy()!!) }
+        return (production!! as CityProductionManager).forCity.let { Hypervisor.spawn(it.isoVec.x.toInt(), it.isoVec.y.toInt(), type, it.ownedBy()!!) }
     }
 
     fun produce() : Unit = Unit(type, 0 ,0)

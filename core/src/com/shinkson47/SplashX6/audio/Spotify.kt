@@ -235,7 +235,7 @@ object Spotify {
             // STOPSHIP the fucking secret is in the public source code lmaooo
             // TODO this is super bad but idk how to get around it. Should not keep secret in public source.
             //  Perhaps we could use github secret's storage?
-        .setRedirectUri(SpotifyHttpManager.makeUri("https://www.shinkson47.in/SplashX6/spotify-callback"))
+        .setRedirectUri(SpotifyHttpManager.makeUri("https://jordantgray.uk/SplashX6/spotify-callback"))
         .build()
 
     /**

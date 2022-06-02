@@ -89,7 +89,7 @@ class Warroom(val parent : GameScreen) : ScreenAdapter() {
             stage.draw()
 
 
-            sr.begin(ShapeRenderer.ShapeType.Line)
+            sr.begin(ShapeRenderer.ShapeType.Filled)
                 // Shape renderer functions.
                 renderMouseCircle()
                 parent.renderDestinationLine()

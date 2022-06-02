@@ -170,10 +170,11 @@ class Nation(val nationType: NationType, val ai: Boolean = false, val userName: 
                     if (city.unitProduction.queue.size == 0) {
                         city.unitProduction.queueProject(UnitProductionProject(UnitClass.settler))
                     }
-                    if (city.improvementProduction.queue.size == 0) {
+                    val producable = city.improvementProduction.evaluateProducible()
+                    if (city.improvementProduction.queue.size == 0 && producable.size > 0) {
                         Hypervisor.turn_asyncTask {
                             city.improvementProduction.queueProject(
-                                city.improvementProduction.evaluateProducible().get(0)
+                                producable[0]
                             )
                         }
                     }

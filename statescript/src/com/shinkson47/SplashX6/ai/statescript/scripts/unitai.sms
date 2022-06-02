@@ -39,7 +39,6 @@ state Wander {
 	}
 }
 
-switch from Wander to Wander if (destination == null);
 
 state Settle {
 	enter {
@@ -47,4 +46,5 @@ state Settle {
 	}
 }
 
+switch from Wander to Wander if (destination == null);
 switch from Wander to Settle if (destination == null && unitClass == UnitClass.settler && MathUtils.randomBoolean());

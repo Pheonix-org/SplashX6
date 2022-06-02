@@ -684,7 +684,7 @@ open class Unit (
     fun dispose() {
         try {
             light?.remove()
-        } catch (ignored : IllegalArgumentException) { light = null; gc(); }
+        } catch (ignored : Exception) { light = null; gc(); }
     }
 
     final override fun deserialize() {

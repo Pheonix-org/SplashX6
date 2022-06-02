@@ -648,7 +648,6 @@ object Hypervisor {
         lastUnit = null
         lastSettlement = null
         stepDelay = 0f
-        turn_end_over()
     }
 
     fun turn_end_cinemate_update() {
@@ -699,6 +698,7 @@ object Hypervisor {
         isCinematingLocalTurn = false
         gameRenderer!!.drawStage = true
         unit_selected()?.let { camera_focusOn(it) }
+        turn_end_over()
     }
 
     /**
@@ -776,7 +776,7 @@ object Hypervisor {
                 r.run()
             } catch (e: Exception) {
                 Utility.warnDev("A turn hook failed! \n${e.message}", e = e)
-                //Utility.warnDev("$")
+                e.printStackTrace()
             }
         }
     }

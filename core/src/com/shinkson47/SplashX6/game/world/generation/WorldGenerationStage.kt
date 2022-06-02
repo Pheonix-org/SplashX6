@@ -35,6 +35,27 @@
  ******************************************************************/
 
 
+/*
+
+@startuml
+
+abstract class WorldGenerationStage {
+    {abstract} execute(it: WorldTerrain) : Unit
+}
+
+abstract class BaseGenerationStage
+abstract class ModifyingGenerationStage
+abstract class MiscellaneousGenerationStage
+
+BaseGenerationStage --> WorldGenerationStage
+ModifyingGenerationStage --> WorldGenerationStage
+MiscellaneousGenerationStage --> WorldGenerationStage
+
+@enduml
+
+
+*/
+
 package com.shinkson47.SplashX6.game.world.generation
 
 import com.badlogic.gdx.math.MathUtils

@@ -102,8 +102,8 @@ object KeyBinder : InputAdapter() {
 //            bind(this, Input.Keys.NUM_0) { select(9) }
 
             if (Client.DEBUG_MODE) {
-                bind(this, Input.Keys.NUMPAD_ADD, true) { Hypervisor.gameRenderer?.cam!!.desiredPosition.desired.z += 30; }
-                bind(this, Input.Keys.NUMPAD_SUBTRACT, true) { Hypervisor.gameRenderer?.cam!!.desiredPosition.desired.z -+ 30; }
+                bind(this, Input.Keys.COMMA, true) { Hypervisor.gameRenderer?.cam!!.desiredPosition.desired.z += 30; }
+                bind(this, Input.Keys.PERIOD, true) { Hypervisor.gameRenderer?.cam!!.desiredPosition.desired.z -+ 30; }
             }
 
             bind(this, Input.Keys.E) { turn_end() }

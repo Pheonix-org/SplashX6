@@ -61,7 +61,7 @@ class _GameData : PartiallySerializable {
 
     var currentPlayerIndex = 0
 
-    fun currentPlayer() = nations.get(currentPlayerIndex)
+    fun currentPlayer() = nations.get(currentPlayerIndex.coerceAtMost(nations.size - 1))
 
     fun nextPlayer() {
         currentPlayerIndex = (currentPlayerIndex + 1) % nations.size

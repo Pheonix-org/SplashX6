@@ -215,6 +215,7 @@ class Spotify : StageWindow("specific.windows.music.spotify") {
         // Show correct playback context type.
         // NOTE : This has to be last cause of it's changed event.
         playbackState!!.context?.apply {
+            if (type == null) return@apply
             typeSelectBox.selection.set(SpotifySourceType.valueOf(type.toString().lowercase()))
             contentSelectBox.selection.set(with(uri) {
                 Spotify.enable()
