@@ -32,8 +32,6 @@
 
 package com.shinkson47.SplashX6.rendering.screens
 
-import com.shinkson47.SplashX6.rendering.ScalingScreenAdapter
-import com.shinkson47.SplashX6.utility.Assets
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.math.MathUtils
@@ -48,13 +46,10 @@ import com.shinkson47.SplashX6.game.Hypervisor.doNewGameCallback
 import com.shinkson47.SplashX6.game.Hypervisor.load
 import com.shinkson47.SplashX6.game.Nation
 import com.shinkson47.SplashX6.game.NationType
-import com.shinkson47.SplashX6.game.GameHypervisor.Companion.load
-import com.shinkson47.SplashX6.game.cities.CityType
 import com.shinkson47.SplashX6.game.world.generation.GenerationCompanion
 import com.shinkson47.SplashX6.network.NetworkClient
 import com.shinkson47.SplashX6.network.NetworkClient.connect
 import com.shinkson47.SplashX6.network.Server
-import com.shinkson47.SplashX6.rendering.StageWindow
 import com.shinkson47.SplashX6.network.Server.alive
 import com.shinkson47.SplashX6.network.Server.boot
 import com.shinkson47.SplashX6.rendering.ui.ScalingScreenAdapter
@@ -63,11 +58,10 @@ import com.shinkson47.SplashX6.rendering.windows.TerrainGenerationEditor
 import com.shinkson47.SplashX6.utility.Assets
 import com.shinkson47.SplashX6.utility.Assets.LANG_TIPS
 import com.shinkson47.SplashX6.utility.Assets.REF_SKIN_W95
-import com.shinkson47.SplashX6.utility.Assets.SKIN
-import com.shinkson47.SplashX6.utility.UtilityK.getIP
 import com.shinkson47.SplashX6.utility.Utility.getIP
 import java.io.InvalidClassException
 import java.net.ConnectException
+
 
 /**
  * # Provides the user a place to configure the game and world generation
@@ -84,7 +78,7 @@ class WorldCreation(
 ) : ScalingScreenAdapter() {
 
     //==========================================
-    //#region fields
+    //#region actors
     //==========================================
 
     /**
@@ -93,18 +87,13 @@ class WorldCreation(
     private lateinit var tipLabel: Label
 
     /**
-     * Used to ensure that the loading screen has been rendered
-     * before starting the loading. Ensures there's something
-     * displayed.
+     * # Table containing content displayed whilst loading
      */
     private lateinit var loadingContainer: Table
-    private var loadingScreenRendered = false
 
     /**
-     * True when the user has clicked 'New Game'.
+     * # Window containing game configuration controls.
      */
-    private var userFinished = false
-
     private val gameCreationWindow = W_GameCreation()
 
     private val chooser = FileChooser.createPickDialog("Choose save file", REF_SKIN_W95, Gdx.files.external("/"))
@@ -137,7 +126,6 @@ class WorldCreation(
     val controller = WorldCreationScreenController()
 
     //==========================================
-    //#endregion fields
     //#region operations
     //==========================================
 
@@ -151,30 +139,9 @@ class WorldCreation(
             REF_SKIN_W95.getDrawable("tiledtex").draw(batch, 0f, 0f, width, height)
             batch.end()
 
-        // Second part of this test ensures that we outwait any transision screen before the callback.
-        //if (hasRendered && Client.client!!.screen === this) doNewGameCallback()
-
-        if (userFinished && Client.client!!.currentScreen == this)
-            if (!inGame && loadingScreenRendered)
-                doNewGameCallback()
-            else {
-                constructLoadingGUI()
-                loadingScreenRendered = true
-            }
-        else if (isConnecting && !loadingScreenRendered) {
-            renderConnecting()
-            loadingScreenRendered = true
+            act()
+            draw()
         }
-
-        stage.batch.begin()
-        SKIN.getDrawable("tiledtex").draw(stage.batch, 0f, 0f, width, height)
-        stage.batch.end()
-
-        stage.act()
-        stage.draw()
-
-        // For debug, stay on the loading screen if any key is pressed.
-        //if (!Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) hasRendered = true
 
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE))
             cancel()
@@ -212,15 +179,9 @@ class WorldCreation(
             add(tipLabel)
         }
 
-        //table.add(Label("WIDTH : " + WorldTerrain.DEFAULT_WIDTH, Assets.SKIN)).left().row()
-        //table.add(Label("HEIGHT : " + WorldTerrain.DEFAULT_HEIGHT, Assets.SKIN)).left().row()
-        //table.add(Label("MAX FOLIAGE SPAWNS : " + WorldTerrain.FOLIAGE_QUANTITY_MAX, Assets.SKIN)).left().padBottom(50f).row()
-        nextTip()
-        table.add(tipLabel).row()
 
-        stage.clear()
-        stage.addActor(table)
     }
+
 
     /**
      * # Cancels the world generation, and returns to the main menu
@@ -234,10 +195,6 @@ class WorldCreation(
     //#endregion operations
     //==========================================
 
-    init {
-        if (Client.DEBUG_MODE) {
-            userFinished = true
-        } else {
 
     fun addw(w: Window) {
         stage.addActor(w)
@@ -314,10 +271,10 @@ class WorldCreation(
             })
             row()
             span(addButton("!LAN") {
-                if (Server.boot())
-                    addw(W_NetworkConnect())
-                else
-                    dialog("!Not available!", "!Failed to start the server. Is there already one running?")
+                GameData.pref_civType = x.selected
+                controller.switchState(4)
+//                else TODO
+//                    dialog("!Not available!", "!Failed to start the server. Is there already one running?")
             })
             row()
             span(addButton("generic.buttons.cancel", false) { cancel() })
@@ -326,7 +283,7 @@ class WorldCreation(
         }
     }
 
-    private inner class W_NetworkConnect : StageWindow("!Connect") {
+    private inner class W_NetworkConnect : StageWindow() {
         init {
             label("!HOST IP : ${getIP().hostAddress}")
             row()

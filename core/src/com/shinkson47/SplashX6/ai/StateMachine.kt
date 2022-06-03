@@ -50,7 +50,7 @@ import java.util.function.Predicate
  * @since PRE-ALPHA 0.0.3
  * @version 1
  */
-open class StateMachine : Runnable {
+open class StateMachine(val name: String) : Runnable {
 
     companion object {
         val activeMachines = ArrayList<StateMachine>()
@@ -359,19 +359,14 @@ open class StateMachine : Runnable {
                 }
             }
         }
-    }
-
-
-    companion object {
 
         /**
-         * # An object which has underlying statemachine behaviours.
-         *
-         * Just an alias for a [StateMachine], but reads nicer when implementing.
+         * Returns a string representation of the object.
          */
-        abstract class StateObject : StateMachine()
+        override fun toString(): String {
+            return name
+        }
     }
-
 
     // ===============================================
     //# endregion companion

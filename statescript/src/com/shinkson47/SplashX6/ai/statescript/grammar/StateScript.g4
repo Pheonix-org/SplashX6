@@ -36,7 +36,7 @@ switchState: SWITCH FROM Identifier TO Identifier (IF parExpression)? SEMI;
 
 state: STATE Identifier
 	LBRACE
-	behaviour
+	behaviour?
 	enterScript?
 	exitScript?
 	RBRACE;
@@ -46,4 +46,8 @@ script:
 	description?
 	defaultState
 
-	(code|state|switchState)*;
+	(importDeclaration|code|state|switchState)*;
+
+	// TODO enumerate states
+	// TODO else clause on switches
+	// TODO a way to identify states, ie thier name on tostring.
