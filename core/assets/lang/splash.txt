@@ -1,5 +1,0 @@
-SPLASH X6
-ver pre-alpha 0.0.2 wip
-by Jordan Gray & Dylan Brand
-
-LOADING FROM DISK.

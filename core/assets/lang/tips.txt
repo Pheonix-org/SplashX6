@@ -1,3 +1,0 @@
-Press 'E' to end your turn.
-Press 'TAB' to toggle between 3D and 2D camera modes.
-A City's population will grow as the game progresses.
