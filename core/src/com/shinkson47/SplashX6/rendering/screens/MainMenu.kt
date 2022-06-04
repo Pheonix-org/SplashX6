@@ -98,7 +98,7 @@ class MainMenu : ScalingScreenAdapter() {
                 .row()
 
             add(
-                Label("PRE-ALPHA 0.0.2", REF_SKIN_W95)
+                Label("PRE-ALPHA 0.0.3", REF_SKIN_W95)
             ).padBottom(50f).row()
 
             addButton("generic.game.new") { NewGame() }
